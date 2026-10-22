@@ -1,0 +1,19 @@
+R 1: col1='Lịch làm Zone Six 214 LNH (5/10 -11/10)' | col2=None            | fill1=Values must be of type <class 'str'> | fill2=00000000
+R 2: col1='Vị Trí'             | col2=Thứ 2           | fill1=00000000 | fill2=00000000
+R 3: col1=None                 | col2=2026-10-05 00:00:00 | fill1=00000000 | fill2=00000000
+R 4: col1='Pha chế '           | col2=Hưng            | fill1=Values must be of type <class 'str'> | fill2=Values must be of type <class 'str'>
+R 5: col1='Giữ xe'             | col2=Đạt             | fill1=Values must be of type <class 'str'> | fill2=Values must be of type <class 'str'>
+R 6: col1=None                 | col2=None            | fill1=Values must be of type <class 'str'> | fill2=00000000
+R 7: col1='Pha chế '           | col2=khánh ngọc      | fill1=Values must be of type <class 'str'> | fill2=Values must be of type <class 'str'>
+R 8: col1='Giữ xe'             | col2=bảo ngọc        | fill1=Values must be of type <class 'str'> | fill2=Values must be of type <class 'str'>
+R 9: col1=None                 | col2=None            | fill1=Values must be of type <class 'str'> | fill2=00000000
+R10: col1='Pha chế '           | col2=Luy             | fill1=Values must be of type <class 'str'> | fill2=Values must be of type <class 'str'>
+R11: col1='Giữ xe'             | col2=Thảo            | fill1=Values must be of type <class 'str'> | fill2=00000000
+R12: col1=None                 | col2=None            | fill1=Values must be of type <class 'str'> | fill2=00000000
+R13: col1='All'                | col2=Đạt             | fill1=Values must be of type <class 'str'> | fill2=00000000
+R14: col1=None                 | col2=None            | fill1=00000000 | fill2=00000000
+R15: col1='1. Bạn nào Pass ca, xoay ca dùng bút xóa ghi tên mình vào, cuối ca tô vàng để chấm công' | col2=None            | fill1=00000000 | fill2=00000000
+R16: col1='2. Phạt: Đi muộn 1p= 1k, bỏ ca 140k, số tiền này sẽ được chia đều cho các bạn trong ca' | col2=None            | fill1=00000000 | fill2=00000000
+R17: col1='3. Lịch làm tuần tiếp theo sẽ được cập nhật vào tối chủ nhật hàng tuần' | col2=None            | fill1=00000000 | fill2=00000000
+R18: col1=None                 | col2=None            | fill1=00000000 | fill2=00000000
+R19: col1='Quản lí Thảo: 0985 648 421' | col2=None            | fill1=00000000 | fill2=00000000

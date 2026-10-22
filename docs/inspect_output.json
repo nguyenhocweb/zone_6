@@ -1,0 +1,5155 @@
+{
+  "Sheet1": {
+    "max_row": 19,
+    "max_col": 12,
+    "merged": [
+      "F15:F16",
+      "A12:H12",
+      "A9:H9",
+      "A18:H18",
+      "F19:H19",
+      "A16:E16",
+      "A15:E15",
+      "G15:H16",
+      "A19:E19",
+      "A14:H14",
+      "A2:A3",
+      "A1:H1",
+      "A17:E17",
+      "G17:H17",
+      "A6:H6"
+    ],
+    "rows": [
+      {
+        "row": 1,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Lịch làm Zone Six 214 LNH (5/10 -11/10)",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 16.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Tên",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "Số ca",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Vị Trí",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "Thứ 2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Thứ 3",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "Thứ 4",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "Thứ 5",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Thứ 6 ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "Thứ 7",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Chủ nhật",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Nguyên",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "2026-10-05 00:00:00",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "=B3+1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "=C3+1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "=D3+1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "=E3+1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "=F3+1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "=G3+1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Lộc",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Pha chế ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "Hưng",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Nhi",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "dịu",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "hiền ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Hưng",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "hiền ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Dịu",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "3",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Trâm ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Giữ xe",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "Đạt",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Đạt",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "Hưng",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "Dịu",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "nhi",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "None"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "vũ ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Hiền",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "4",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Ngọc",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 6,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "5",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Hải",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "7",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 7,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Pha chế ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "khánh ngọc",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "khánh ngọc",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "khánh ngọc",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "khánh ngọc",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Dịu",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "Nguyên",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Lệ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "6",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Tương",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 8,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Giữ xe",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "bảo ngọc ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Lệ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "bảo ngọc ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "bảo ngọc ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Khôi",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "Dịu",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Khôi",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "7",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Hiền",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 9,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "8",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Diệu",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 10,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Pha chế ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "Luy",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Lệ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "None"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "Luy",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "Luy",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Khôi",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "Nguyên",
+            "fill": "FFFFFFFF",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "FF000000"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Khôi",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "FF000000"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "9",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Quỳnh ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 11,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Giữ xe",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "Thảo",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Thảo",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "Khôi",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "Khôi",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Nguyên",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": "bảo ngọc ",
+            "fill": "FFFFFFFF",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "FF000000"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Nguyên",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "FF000000"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "10",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Kiên",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 12,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "11",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Quân",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": "đủ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 13,
+        "cells": [
+          {
+            "col": 1,
+            "val": "All",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "None"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "12",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Luy",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 14,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "13",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Vũ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 15,
+        "cells": [
+          {
+            "col": 1,
+            "val": "1. Bạn nào Pass ca, xoay ca dùng bút xóa ghi tên mình vào, cuối ca tô vàng để chấm công",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Trưởng ca",
+            "fill": "FFFFFF00",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "14",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 16,
+        "cells": [
+          {
+            "col": 1,
+            "val": "2. Phạt: Đi muộn 1p= 1k, bỏ ca 140k, số tiền này sẽ được chia đều cho các bạn trong ca",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "15",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Mai",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 17,
+        "cells": [
+          {
+            "col": 1,
+            "val": "3. Lịch làm tuần tiếp theo sẽ được cập nhật vào tối chủ nhật hàng tuần",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Ca trống",
+            "fill": "FFFF0000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": "16",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": "Bích hiền",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 18,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 19,
+        "cells": [
+          {
+            "col": 1,
+            "val": "Quản lí Thảo: 0985 648 421",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 5,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 6,
+            "val": "Các bạn thắc mắc hay góp ý liên hệ mình!",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": "center",
+              "wrap": null
+            }
+          },
+          {
+            "col": 7,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 8,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 9,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 10,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 11,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 12,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Sheet2": {
+    "max_row": 20,
+    "max_col": 4,
+    "merged": [],
+    "rows": [
+      {
+        "row": 1,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Tên",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "Số ca",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "1",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Nguyên",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Lộc",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "3",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Trâm ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "4",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Ngọc",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 6,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "5",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Hải",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "7",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 7,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "6",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Tương",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 8,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "7",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Hiền",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 9,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "8",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Diệu",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 10,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "9",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Quỳnh ",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 11,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "10",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Kiên",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 12,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "11",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Quân",
+            "fill": "Values must be of type <class 'str'>",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 13,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "12",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Luy",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 14,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "13",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Vũ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": "2",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 15,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "14",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Đạt",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 16,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "15",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Mai",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 17,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "16",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Bích hiền",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": true,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 18,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": "17",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Khôi",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 19,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Lệ",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      },
+      {
+        "row": 20,
+        "cells": [
+          {
+            "col": 1,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Calibri",
+              "size": 11.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": null,
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 2,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 3,
+            "val": "Thảo",
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "left",
+              "v": null,
+              "wrap": null
+            }
+          },
+          {
+            "col": 4,
+            "val": null,
+            "fill": "00000000",
+            "font": {
+              "name": "Times New Roman",
+              "size": 14.0,
+              "bold": false,
+              "color": "Values must be of type <class 'str'>"
+            },
+            "align": {
+              "h": "center",
+              "v": null,
+              "wrap": null
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

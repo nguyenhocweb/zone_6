@@ -1,0 +1,19 @@
+R 1 col1='Lịch làm Zone Six 214 LNH (5/10 -11/10)' fill=solid:4:theme        | col2=None                 fill=None
+R 2 col1='Vị Trí'             fill=None                 | col2='Thứ 2'              fill=None
+R 3 col1=None                 fill=None                 | col2=datetime.datetime(2026, 10, 5, 0, 0) fill=None
+R 4 col1='Pha chế '           fill=solid:0:theme        | col2='Hưng'               fill=solid:0:theme
+R 5 col1='Giữ xe'             fill=solid:0:theme        | col2='Đạt'                fill=solid:0:theme
+R 6 col1=None                 fill=solid:0:theme        | col2=None                 fill=None
+R 7 col1='Pha chế '           fill=solid:0:theme        | col2='khánh ngọc'         fill=solid:0:theme
+R 8 col1='Giữ xe'             fill=solid:0:theme        | col2='bảo ngọc '          fill=solid:0:theme
+R 9 col1=None                 fill=solid:0:theme        | col2=None                 fill=None
+R10 col1='Pha chế '           fill=solid:0:theme        | col2='Luy'                fill=solid:0:theme
+R11 col1='Giữ xe'             fill=solid:0:theme        | col2='Thảo'               fill=None
+R12 col1=None                 fill=solid:0:theme        | col2=None                 fill=None
+R13 col1='All'                fill=solid:0:theme        | col2='Đạt'                fill=None
+R14 col1=None                 fill=None                 | col2=None                 fill=None
+R15 col1='1. Bạn nào Pass ca, xoay ca dùng bút xóa ghi tên mình vào, cuối ca tô vàng để chấm công' fill=None                 | col2=None                 fill=None
+R16 col1='2. Phạt: Đi muộn 1p= 1k, bỏ ca 140k, số tiền này sẽ được chia đều cho các bạn trong ca' fill=None                 | col2=None                 fill=None
+R17 col1='3. Lịch làm tuần tiếp theo sẽ được cập nhật vào tối chủ nhật hàng tuần' fill=None                 | col2=None                 fill=None
+R18 col1=None                 fill=None                 | col2=None                 fill=None
+R19 col1='Quản lí Thảo: 0985 648 421' fill=None                 | col2=None                 fill=None

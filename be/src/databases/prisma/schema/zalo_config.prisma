@@ -1,0 +1,12 @@
+model ZaloConfig {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  threadType     String   @default("group") @map("thread_type")
+  targetId       String   @default("") @map("target_id")
+  targetName     String?  @map("target_name")
+  imageUrl       String?  @map("image_url")
+  defaultMessage String?  @map("default_message")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("zalo_configs")
+}

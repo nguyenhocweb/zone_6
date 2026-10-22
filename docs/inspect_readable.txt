@@ -1,0 +1,284 @@
+MERGED RANGES:
+  F15:F16
+  A12:H12
+  A9:H9
+  A18:H18
+  F19:H19
+  A16:E16
+  A15:E15
+  G15:H16
+  A19:E19
+  A14:H14
+  A2:A3
+  A1:H1
+  A17:E17
+  G17:H17
+  A6:H6
+
+ROWS:
+--- ROW 1 ---
+C1: 'Lịch làm Zone Six 214 LNH (5/10 -11/10)' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=16.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Tên' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 'Số ca' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 2 ---
+C1: 'Vị Trí' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'Thứ 2' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C3: 'Thứ 3' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C4: 'Thứ 4' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'Thứ 5' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'Thứ 6 ' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C7: 'Thứ 7' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C8: 'Chủ nhật' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C9: 1 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Nguyên' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 3 ---
+C1: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C2: datetime.datetime(2026, 10, 5, 0, 0) (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C3: '=B3+1' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C4: '=C3+1' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C5: '=D3+1' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C6: '=E3+1' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C7: '=F3+1' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C8: '=G3+1' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C9: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Lộc' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 4 ---
+C1: 'Pha chế ' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'Hưng' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C3: 'Nhi' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C4: 'dịu' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'hiền ' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'Hưng' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C7: 'hiền ' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C8: 'Dịu' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C9: 3 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Trâm ' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 5 ---
+C1: 'Giữ xe' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'Đạt' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C3: 'Đạt' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C4: 'Hưng' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'Dịu' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'nhi' (fill=Values must be of type <class 'str'>, bold=False, color=None, sz=14.0)
+C7: 'vũ ' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C8: 'Hiền' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C9: 4 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Ngọc' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 6 ---
+C1: None (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: 5 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Hải' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 7 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 7 ---
+C1: 'Pha chế ' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'khánh ngọc' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C3: 'khánh ngọc' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C4: 'khánh ngọc' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'khánh ngọc' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'Dịu' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C7: 'Nguyên' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C8: 'Lệ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C9: 6 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Tương' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 8 ---
+C1: 'Giữ xe' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'bảo ngọc ' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C3: 'Lệ' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C4: 'bảo ngọc ' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'bảo ngọc ' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'Khôi' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C7: 'Dịu' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C8: 'Khôi' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C9: 7 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Hiền' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 9 ---
+C1: None (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: 8 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Diệu' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 10 ---
+C1: 'Pha chế ' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'Luy' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C3: 'Lệ' (fill=Values must be of type <class 'str'>, bold=False, color=None, sz=14.0)
+C4: 'Luy' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'Luy' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'Khôi' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C7: 'Nguyên' (fill=FFFFFFFF, bold=False, color=FF000000, sz=14.0)
+C8: 'Khôi' (fill=00000000, bold=False, color=FF000000, sz=14.0)
+C9: 9 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Quỳnh ' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 11 ---
+C1: 'Giữ xe' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'Thảo' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C3: 'Thảo' (fill=Values must be of type <class 'str'>, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C4: 'Khôi' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'Khôi' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'Nguyên' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C7: 'bảo ngọc ' (fill=FFFFFFFF, bold=False, color=FF000000, sz=14.0)
+C8: 'Nguyên' (fill=00000000, bold=False, color=FF000000, sz=14.0)
+C9: 10 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Kiên' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 12 ---
+C1: None (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: 11 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Quân' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: 'đủ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 13 ---
+C1: 'All' (fill=Values must be of type <class 'str'>, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: 'Đạt' (fill=00000000, bold=False, color=None, sz=14.0)
+C3: 'Đạt' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C4: 'Đạt' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C5: 'Đạt' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C6: 'Đạt' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C8: 'Đạt' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C9: 12 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Luy' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 14 ---
+C1: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: 13 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Vũ' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C11: 2 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 15 ---
+C1: '1. Bạn nào Pass ca, xoay ca dùng bút xóa ghi tên mình vào, cuối ca tô vàng để chấm công' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: 'Trưởng ca' (fill=FFFFFF00, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C7: None (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: 14 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Đạt' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C11: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 16 ---
+C1: '2. Phạt: Đi muộn 1p= 1k, bỏ ca 140k, số tiền này sẽ được chia đều cho các bạn trong ca' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: 15 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Mai' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C11: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 17 ---
+C1: '3. Lịch làm tuần tiếp theo sẽ được cập nhật vào tối chủ nhật hàng tuần' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: 'Ca trống' (fill=FFFF0000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: 16 (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: 'Bích hiền' (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C11: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 18 ---
+C1: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C11: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+
+--- ROW 19 ---
+C1: 'Quản lí Thảo: 0985 648 421' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C2: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C3: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C4: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C5: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C6: 'Các bạn thắc mắc hay góp ý liên hệ mình!' (fill=00000000, bold=True, color=Values must be of type <class 'str'>, sz=14.0)
+C7: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C8: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=11.0)
+C9: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C10: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C11: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+C12: None (fill=00000000, bold=False, color=Values must be of type <class 'str'>, sz=14.0)
+

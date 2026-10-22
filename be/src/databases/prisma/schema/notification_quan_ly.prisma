@@ -1,0 +1,29 @@
+model NotificationQuanLy {
+  id              String               @id @default(auto()) @map("_id") @db.ObjectId
+  code            String               @unique
+  type            NotificationType
+  severity        NotificationSeverity @default(MEDIUM)
+  title           String
+  message         String
+  weekStartDate   String               @map("week_start_date")
+  day             String
+  shift           String
+  roleInSlot      String               @default("All") @map("role_in_slot")
+  staffName       String?              @map("staff_name")
+  userCode        String?              @map("user_code")
+  userId          String?              @map("user_id")
+  shiftStartTime  DateTime?            @map("shift_start_time")
+  shiftEndTime    DateTime?            @map("shift_end_time")
+  hoursUntilShift Float?               @map("hours_until_shift")
+  targetRole      String               @default("quan_ly") @map("target_role")
+  isRead          Boolean              @default(false) @map("is_read")
+  isDismissed     Boolean              @default(false) @map("is_dismissed")
+  isResolved      Boolean              @default(false) @map("is_resolved")
+  readBy          String[]             @default([]) @map("read_by")
+  createdAt       DateTime             @default(now()) @map("created_at")
+  updatedAt       DateTime             @updatedAt @map("updated_at")
+
+  @@index([severity, isResolved, isDismissed])
+  @@index([weekStartDate, day, shift])
+  @@map("notifications_quan_ly")
+}

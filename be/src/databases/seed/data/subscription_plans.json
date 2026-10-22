@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Gói Cơ Bản (Free)",
+    "description": "Dành cho cá nhân dùng thử nghiệm tính năng xếp ca và bot.",
+    "price": 0,
+    "durationDays": 30,
+    "maxProjects": 1,
+    "isActive": true
+  },
+  {
+    "name": "Gói Chuyên Nghiệp (Pro)",
+    "description": "Tối ưu xếp ca tự động, không giới hạn nhân sự, gửi tin Zalo theo lịch.",
+    "price": 199000,
+    "durationDays": 30,
+    "maxProjects": 5,
+    "isActive": true
+  },
+  {
+    "name": "Gói Doanh Nghiệp (Enterprise)",
+    "description": "Đầy đủ giải pháp phân ca AI, đa chi nhánh và bot thông báo chuyên sâu.",
+    "price": 499000,
+    "durationDays": 365,
+    "maxProjects": 20,
+    "isActive": true
+  }
+]

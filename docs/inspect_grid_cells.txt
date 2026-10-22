@@ -1,0 +1,56 @@
+R4C1: val='Pha chế ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R4C2: val='Hưng' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R4C3: val='Nhi' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R4C4: val='dịu' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R4C5: val='hiền ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R4C6: val='Hưng' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R4C7: val='hiền ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R4C8: val='Dịu' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R5C1: val='Giữ xe' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R5C2: val='Đạt' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R5C3: val='Đạt' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R5C4: val='Hưng' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R5C5: val='Dịu' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R5C6: val='nhi' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=None font_theme=None
+R5C7: val='vũ ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R5C8: val='Hiền' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R7C1: val='Pha chế ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R7C2: val='khánh ngọc' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R7C3: val='khánh ngọc' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R7C4: val='khánh ngọc' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R7C5: val='khánh ngọc' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R7C6: val='Dịu' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R7C7: val='Nguyên' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R7C8: val='Lệ' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R8C1: val='Giữ xe' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R8C2: val='bảo ngọc ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R8C3: val='Lệ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R8C4: val='bảo ngọc ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R8C5: val='bảo ngọc ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R8C6: val='Khôi' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R8C7: val='Dịu' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R8C8: val='Khôi' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R10C1: val='Pha chế ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R10C2: val='Luy' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R10C3: val='Lệ' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=None font_theme=None
+R10C4: val='Luy' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R10C5: val='Luy' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R10C6: val='Khôi' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R10C7: val='Nguyên' fill_rgb=FFFFFFFF fill_theme=Values must be of type <class 'int'> font_color=FF000000 font_theme=Values must be of type <class 'int'>
+R10C8: val='Khôi' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=FF000000 font_theme=Values must be of type <class 'int'>
+R11C1: val='Giữ xe' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R11C2: val='Thảo' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R11C3: val='Thảo' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R11C4: val='Khôi' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R11C5: val='Khôi' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R11C6: val='Nguyên' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R11C7: val='bảo ngọc ' fill_rgb=FFFFFFFF fill_theme=Values must be of type <class 'int'> font_color=FF000000 font_theme=Values must be of type <class 'int'>
+R11C8: val='Nguyên' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=FF000000 font_theme=Values must be of type <class 'int'>
+R13C1: val='All' fill_rgb=Values must be of type <class 'str'> fill_theme=0 font_color=Values must be of type <class 'str'> font_theme=1
+R13C2: val='Đạt' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=None font_theme=None
+R13C3: val='Đạt' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R13C4: val='Đạt' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R13C5: val='Đạt' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R13C6: val='Đạt' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R13C7: val=None fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1
+R13C8: val='Đạt' fill_rgb=00000000 fill_theme=Values must be of type <class 'int'> font_color=Values must be of type <class 'str'> font_theme=1

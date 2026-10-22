@@ -1,0 +1,28 @@
+model Attendance {
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String                       @map("user_id") @db.ObjectId
+  assignmentId        String?                      @map("assignment_id") @db.ObjectId
+  workDate            DateTime                     @map("work_date")
+  checkInTime         DateTime                     @map("check_in_time")
+  checkOutTime        DateTime?                    @map("check_out_time")
+  photoUrl            String                       @map("photo_url")
+  latitude            Float
+  longitude           Float
+  accuracy            Float                        @default(0)
+  distanceMeters      Float                        @map("distance_meters")
+  isGeofenceValid     Boolean                      @map("is_geofence_valid")
+  isShiftValid        Boolean                      @map("is_shift_valid")
+  lateMinutes         Int                          @default(0) @map("late_minutes")
+  earlyLeaveMinutes   Int                          @default(0) @map("early_leave_minutes")
+  actualHours         Float                        @default(0) @map("actual_hours")
+  hourlyRateSnapshot  Float                        @map("hourly_rate_snapshot")
+  earnedAmount        Float                        @default(0) @map("earned_amount")
+  verificationStatus  AttendanceVerificationStatus @default(VALID) @map("verification_status")
+  createdAt           DateTime                     @default(now()) @map("created_at")
+  updatedAt           DateTime                     @updatedAt @map("updated_at")
+
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment ShiftAssignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
+
+  @@map("attendances")
+}

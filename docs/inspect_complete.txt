@@ -1,0 +1,1609 @@
+[1,1] val='Lịch làm Zone Six 214 LNH (5/10 -11/10)' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=4, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=16.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=None,bot=thin,l=thin,r=None
+[1,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[1,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[1,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[1,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[1,6] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[1,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[1,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[1,9] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[1,10] val='Tên' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=4, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[1,11] val='Số ca' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=4, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[1,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[2,1] val='Vị Trí' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,2] val='Thứ 2' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,3] val='Thứ 3' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,4] val='Thứ 4' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,5] val='Thứ 5' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,6] val='Thứ 6 ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,7] val='Thứ 7' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,8] val='Chủ nhật' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=None
+[2,9] val=1 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,10] val='Nguyên' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,11] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[2,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[3,1] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=thin,r=thin
+[3,2] val=datetime.datetime(2026, 10, 5, 0, 0) | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,3] val='=B3+1' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,4] val='=C3+1' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,5] val='=D3+1' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,6] val='=E3+1' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,7] val='=F3+1' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,8] val='=G3+1' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,9] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,10] val='Lộc' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,11] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[3,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[4,1] val='Pha chế ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,2] val='Hưng' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,3] val='Nhi' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,4] val='dịu' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,5] val='hiền ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,6] val='Hưng' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,7] val='hiền ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,8] val='Dịu' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,9] val=3 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[4,10] val='Trâm ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[4,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[5,1] val='Giữ xe' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,2] val='Đạt' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,3] val='Đạt' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,4] val='Hưng' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,5] val='Dịu' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,6] val='nhi' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=None | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,7] val='vũ ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,8] val='Hiền' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,9] val=4 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[5,10] val='Ngọc' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[5,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[6,1] val=None | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[6,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[6,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[6,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[6,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[6,6] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[6,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[6,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[6,9] val=5 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[6,10] val='Hải' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[6,11] val=7 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[6,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[7,1] val='Pha chế ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,2] val='khánh ngọc' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,3] val='khánh ngọc' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,4] val='khánh ngọc' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,5] val='khánh ngọc' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,6] val='Dịu' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,7] val='Nguyên' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,8] val='Lệ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,9] val=6 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[7,10] val='Tương' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[7,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[8,1] val='Giữ xe' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,2] val='bảo ngọc ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,3] val='Lệ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,4] val='bảo ngọc ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,5] val='bảo ngọc ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,6] val='Khôi' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,7] val='Dịu' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,8] val='Khôi' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,9] val=7 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[8,10] val='Hiền' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[8,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[9,1] val=None | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[9,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[9,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[9,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[9,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[9,6] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[9,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[9,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[9,9] val=8 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[9,10] val='Diệu' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[9,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[9,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[10,1] val='Pha chế ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,2] val='Luy' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,3] val='Lệ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=None | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,4] val='Luy' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,5] val='Luy' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,6] val='Khôi' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,7] val='Nguyên' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FFFFFFFF', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FF000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FF000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,8] val='Khôi' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FF000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,9] val=9 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[10,10] val='Quỳnh ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[10,12] val='đủ ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[11,1] val='Giữ xe' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,2] val='Thảo' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,3] val='Thảo' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,4] val='Khôi' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,5] val='Khôi' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,6] val='Nguyên' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,7] val='bảo ngọc ' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FFFFFFFF', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FF000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FF000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | h=center,v=None,wrap=None | top=None,bot=thin,l=thin,r=thin
+[11,8] val='Nguyên' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FF000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | h=center,v=None,wrap=None | top=None,bot=thin,l=thin,r=thin
+[11,9] val=10 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[11,10] val='Kiên' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[11,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[12,1] val=None | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[12,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[12,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[12,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[12,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[12,6] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[12,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[12,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[12,9] val=11 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[12,10] val='Quân' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[12,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[12,12] val='đủ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[13,1] val='All' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=0, tint=0.0, type='theme',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,2] val='Đạt' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=None | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,3] val='Đạt' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,4] val='Đạt' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,5] val='Đạt' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,6] val='Đạt' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,8] val='Đạt' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,9] val=12 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[13,10] val='Luy' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[13,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[14,1] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[14,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[14,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[14,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[14,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[14,6] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[14,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[14,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[14,9] val=13 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[14,10] val='Vũ' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[14,11] val=2 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[14,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[15,1] val='1. Bạn nào Pass ca, xoay ca dùng bút xóa ghi tên mình vào, cuối ca tô vàng để chấm công' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[15,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[15,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[15,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[15,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[15,6] val='Trưởng ca' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FFFFFF00', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[15,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[15,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=None,l=None,r=thin
+[15,9] val=14 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[15,10] val='Đạt' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[15,11] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[15,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[16,1] val='2. Phạt: Đi muộn 1p= 1k, bỏ ca 140k, số tiền này sẽ được chia đều cho các bạn trong ca' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[16,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[16,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[16,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[16,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[16,6] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=thin,r=thin
+[16,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=thin,r=None
+[16,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=thin
+[16,9] val=15 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[16,10] val='Mai' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[16,11] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[16,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[17,1] val='3. Lịch làm tuần tiếp theo sẽ được cập nhật vào tối chủ nhật hàng tuần' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[17,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[17,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[17,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[17,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[17,6] val='Ca trống' | type=solid,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='FFFF0000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=64, auto=None, theme=None, tint=0.0, type='indexed' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[17,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[17,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[17,9] val=16 | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[17,10] val='Bích hiền' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[17,11] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[17,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[18,1] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[18,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[18,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[18,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[18,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[18,6] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[18,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[18,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[18,9] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[18,10] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[18,11] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[18,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------
+[19,1] val='Quản lí Thảo: 0985 648 421' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=None,bot=thin,l=thin,r=None
+[19,2] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[19,3] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[19,4] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[19,5] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=None,bot=thin,l=None,r=None
+[19,6] val='Các bạn thắc mắc hay góp ý liên hệ mình!' | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=True,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=center,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[19,7] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=None
+[19,8] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Calibri,sz=11.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=None,r=thin
+[19,9] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[19,10] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=left,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[19,11] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=center,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+[19,12] val=None | type=None,fg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb',bg=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb='00000000', indexed=None, auto=None, theme=None, tint=0.0, type='rgb' | font=Times New Roman,sz=14.0,bold=False,clr=<openpyxl.styles.colors.Color object>
+Parameters:
+rgb=None, indexed=None, auto=None, theme=1, tint=0.0, type='theme' | h=None,v=None,wrap=None | top=thin,bot=thin,l=thin,r=thin
+--------------------------------------------------

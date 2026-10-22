@@ -1,0 +1,11 @@
+{
+  "storeName": "Zone Six Cafe & Lounge",
+  "address": "214 Lê Ninh, Phường Quán Bàu, TP Vinh",
+  "latitude": 18.679584,
+  "longitude": 105.681329,
+  "geofenceRadiusMeters": 100,
+  "allowedCheckinBeforeMinutes": 30,
+  "allowedCheckinAfterMinutes": 30,
+  "isGeofenceRequired": true,
+  "isTimeWindowStrict": true
+}

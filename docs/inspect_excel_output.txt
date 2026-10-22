@@ -1,0 +1,50 @@
+Sheet names: ['Sheet1', 'Sheet2']
+
+=== Sheet: Sheet1 (max_row=19, max_column=12) ===
+Merged ranges: ['F15:F16', 'A12:H12', 'A9:H9', 'A18:H18', 'F19:H19', 'A16:E16', 'A15:E15', 'G15:H16', 'A19:E19', 'A14:H14', 'A2:A3', 'A1:H1', 'A17:E17', 'G17:H17', 'A6:H6']
+Row  1: Lịch làm Zone Six 214 LNH (5/10 -11/10) |  |  |  |  |  |  |  |  | Tên | Số ca | 
+Row  2: Vị Trí | Thứ 2 | Thứ 3 | Thứ 4 | Thứ 5 | Thứ 6  | Thứ 7 | Chủ nhật | 1 | Nguyên |  | đủ
+Row  3:  | 2026-10-05 00:00:00 | 2026-10-06 00:00:00 | 2026-10-07 00:00:00 | 2026-10-08 00:00:00 | 2026-10-09 00:00:00 | 2026-10-10 00:00:00 | 2026-10-11 00:00:00 | 2 | Lộc |  | 
+Row  4: Pha chế  | Hưng | Nhi | dịu | hiền  | Hưng | hiền  | Dịu | 3 | Trâm  | 2 | 
+Row  5: Giữ xe | Đạt | Đạt | Hưng | Dịu | nhi | vũ  | Hiền | 4 | Ngọc | 2 | đủ
+Row  6:  |  |  |  |  |  |  |  | 5 | Hải | 7 | đủ
+Row  7: Pha chế  | khánh ngọc | khánh ngọc | khánh ngọc | khánh ngọc | Dịu | Nguyên | Lệ | 6 | Tương | 2 | đủ
+Row  8: Giữ xe | bảo ngọc  | Lệ | bảo ngọc  | bảo ngọc  | Khôi | Dịu | Khôi | 7 | Hiền | 2 | đủ
+Row  9:  |  |  |  |  |  |  |  | 8 | Diệu | 2 | đủ
+Row 10: Pha chế  | Luy | Lệ | Luy | Luy | Khôi | Nguyên | Khôi | 9 | Quỳnh  | 2 | đủ 
+Row 11: Giữ xe | Thảo | Thảo | Khôi | Khôi | Nguyên | bảo ngọc  | Nguyên | 10 | Kiên | 2 | đủ
+Row 12:  |  |  |  |  |  |  |  | 11 | Quân | 2 | đủ
+Row 13: All | Đạt | Đạt | Đạt | Đạt | Đạt |  | Đạt | 12 | Luy | 2 | 
+Row 14:  |  |  |  |  |  |  |  | 13 | Vũ | 2 | 
+Row 15: 1. Bạn nào Pass ca, xoay ca dùng bút xóa ghi tên mình vào, cuối ca tô vàng để chấm công |  |  |  |  | Trưởng ca |  |  | 14 | Đạt |  | 
+Row 16: 2. Phạt: Đi muộn 1p= 1k, bỏ ca 140k, số tiền này sẽ được chia đều cho các bạn trong ca |  |  |  |  |  |  |  | 15 | Mai |  | 
+Row 17: 3. Lịch làm tuần tiếp theo sẽ được cập nhật vào tối chủ nhật hàng tuần |  |  |  |  | Ca trống |  |  | 16 | Bích hiền |  | 
+Row 19: Quản lí Thảo: 0985 648 421 |  |  |  |  | Các bạn thắc mắc hay góp ý liên hệ mình! |  |  |  |  |  | 
+
+==================================================
+
+=== Sheet: Sheet2 (max_row=20, max_column=4) ===
+Merged ranges: []
+Row  1:  |  | Tên | Số ca
+Row  2:  | 1 | Nguyên | 
+Row  3:  | 2 | Lộc | 
+Row  4:  | 3 | Trâm  | 2
+Row  5:  | 4 | Ngọc | 2
+Row  6:  | 5 | Hải | 7
+Row  7:  | 6 | Tương | 2
+Row  8:  | 7 | Hiền | 2
+Row  9:  | 8 | Diệu | 2
+Row 10:  | 9 | Quỳnh  | 2
+Row 11:  | 10 | Kiên | 2
+Row 12:  | 11 | Quân | 2
+Row 13:  | 12 | Luy | 2
+Row 14:  | 13 | Vũ | 2
+Row 15:  | 14 | Đạt | 
+Row 16:  | 15 | Mai | 
+Row 17:  | 16 | Bích hiền | 
+Row 18:  | 17 | Khôi | 
+Row 19:  |  | Lệ | 
+Row 20:  |  | Thảo | 
+
+==================================================
+

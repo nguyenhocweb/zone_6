@@ -1,0 +1,40 @@
+{
+  "project_name": "Zone Six Fullstack (Node.js TypeScript + Next.js App Router)",
+  "current_phase": "production_ready",
+  "tech_stack": {
+    "backend": "Node.js (TypeScript + Express + Mongoose + MongoDB Atlas + zca-js + ExcelJS)",
+    "frontend": "Next.js App Router (TypeScript + React Query v5 + Zod + TailwindCSS)",
+    "database": "MongoDB Atlas (Cluster: nguyenhocweb.pqyjucr.mongodb.net, Database: zone_6)"
+  },
+  "completed_tasks": [
+    "Khảo sát và phân tích toàn diện kho tri thức và kiến trúc Zalo cá nhân / zca-js",
+    "Chuyển đổi 100% backend từ Python FastAPI sang Node.js TypeScript trong thư mục be/ chạy cổng 8000",
+    "Xóa bỏ hoàn toàn mã nguồn Python và các file cache liên quan",
+    "Kết nối thành công tới MongoDB Atlas với database zone_6 và kiểm tra trực tiếp (read/write/seed test passed)",
+    "Porting toàn bộ thuật toán Xếp Lịch Làm Việc Tự Động Zone Six (AutoSchedulerEngine) và ExcelService sang Node.js",
+    "Tích hợp Zalo Personal Bot qua zca-js với trình quản lý phiên mã hóa AES-256-GCM, quét mã QR và gửi tin nhắn/ảnh",
+    "Cập nhật kịch bản khởi chạy run-backend.bat và run.bat cho Node.js be/",
+    "Xây dựng cơ chế đăng nhập không mã hóa mật khẩu, lưu refresh token trên MongoDB Atlas và access token trên Cookie",
+    "Phân chia 6 vai trò: admin_he_thong, quan_ly, truong_ca, nhan_vien, pho_ca_vat_lieu, pho_ca_lam_lich",
+    "Triển khai Quy tắc 1: Bất cứ ai (mọi vai trò) đều có thể đăng ký lịch làm việc tuần qua tab Đăng Ký Ca Làm",
+    "Triển khai Quy tắc 2: Phân quyền xếp lịch chặt chẽ - Nhân viên & Phó ca vật liệu chỉ xem (Read-only, ẩn upload & vô hiệu hóa click ô), chỉ Quản lý, Trưởng ca, Phó ca làm lịch và Admin mới có quyền auto xếp lịch và chỉnh sửa",
+    "Triển khai Quy tắc 3: Bảng lương tháng chỉ hiển thị với Quản lý, Trưởng ca và Admin. Thông tin hiển thị tuân thủ nghiêm ngặt: chỉ gồm Tên, Vị trí và Mức lương; ẩn tuyệt đối mật khẩu, mã QR và số điện thoại cá nhân",
+    "Triển khai tính năng Tích Điểm Danh (Check-in) ca làm việc: Quản lý (quan_ly), Trưởng ca (truong_ca) và Admin (admin_he_thong) có quyền tích trực tiếp vào ô ca trên bảng lịch để điểm danh (check-in) hoặc bỏ check-in cho nhân viên, tự động lưu và đồng bộ tức thời vào MongoDB Atlas (weekly_schedules.slots.is_checked_in); tuân thủ nghiêm ngặt quy tắc Phó ca làm lịch không hiển thị dấu tích",
+    "Triển khai Hệ thống 6 Table / Collection Thông báo riêng biệt cho từng Role trong MongoDB Atlas (notifications_truong_ca, notifications_quan_ly, notifications_admin, notifications_pho_ca_lam_lich, notifications_pho_ca_vat_lieu, notifications_nhan_vien) với 4 mức độ cảnh báo (urgent, high, medium, low) và 2 chế độ hiển thị linh hoạt (Bảng Table và Thẻ Cards) tại NotificationCenterModal",
+    "Đồng bộ chuẩn hóa 100% Prisma Multi-File Schema tại be/src/databases/prisma/schema/ theo Hiến pháp Kỹ thuật: khởi tạo đầy đủ 6 file model tương ứng cho từng Role (notification_truong_ca.prisma, notification_quan_ly.prisma, notification_admin.prisma, notification_pho_ca_lam_lich.prisma, notification_pho_ca_vat_lieu.prisma, notification_nhan_vien.prisma) cùng schedule_notification.prisma và enum.prisma",
+    "Tối ưu hóa UI/UX NotificationCenterModal: đưa modal ra giữa màn hình chính xác tuyệt đối (Dead-center) bằng React Portal trực tiếp vào document.body, thiết lập z-[99999], khóa cuộn nền (body scroll-lock), hỗ trợ đóng bằng phím Escape và click ngoài overlay",
+    "Triển khai Trang Hồ Sơ Thông Tin Cá Nhân Riêng Biệt (Dedicated Profile Page): Thay thế hoàn toàn modal popup bằng Trang Riêng (Dedicated Page) với route Next.js độc lập /profile và tab 'Hồ Sơ Cá Nhân' trong menu chính; giao diện chia 2 cột gồm Thẻ Nhân Viên Số (Zone 6 Digital Staff ID Card với chip 3D, QR code, lương giờ) và Biểu Mẫu Cập Nhật Thông Tin (Họ tên, SĐT, Vị trí, Mật khẩu); đồng bộ tức thời với Backend API PUT /api/v1/auth/me và MongoDB Atlas",
+    "Tinh chỉnh giao diện Sidebar Zone 6 Signature: Bỏ toàn bộ chữ mô tả phụ dưới các nút chức năng, xóa dòng phân cách 'CHỨC NĂNG HỆ THỐNG | ZONE 6', cố định Thẻ người dùng ở trên và Nút Đăng xuất ở dưới; chỉ cho phép cuộn riêng danh sách chức năng ở giữa khi màn hình quá ngắn với thanh cuộn đồng bộ màu Obsidian Gold (color-scheme dark)",
+    "Xóa bỏ hoàn toàn thanh tab điều hướng phụ trùng lặp ('Lịch Đã Xếp (All Nhân Viên)' và 'Đăng Ký Ca Cá Nhân') ở đầu trang Xếp Lịch (/schedule) và Đăng Ký (/schedule/register) để giao diện thoáng, tinh gọn, chuyển hướng 100% qua Sidebar",
+    "Triển khai Phân hệ Quản Lý Nhân Sự & Phân Cấp Zone 6: Hiển thị phân cấp quyền nghiêm ngặt (Quản lý xem toàn bộ nhân viên & Trưởng ca; Trưởng ca chỉ xem nhân sự cấp dưới gồm Phó ca và Nhân viên) với đầy đủ thông tin Tên, SĐT, Mức lương giờ, Ảnh QR, Vai trò, Vị trí; Hỗ trợ tạo tài khoản nhân viên mới tuân thủ nguyên tắc 'không gán đồng cấp or lớn hơn', hệ thống tự động sinh mật khẩu ngẫu nhiên bảo mật gửi trực tiếp qua email mà người tạo không biết",
+    "Hoàn thiện Quản Lý Nhân Sự: Áp dụng phân trang linh hoạt (5/10/20/50 dòng, điều hướng <<, <, trang, >, >>, tổng số nhân sự); Bổ sung tính năng Sửa Lương & Vai Trò (EditStaffModal) tuân thủ nghiêm ngặt nguyên tắc 'không gán đồng cấp or lớn hơn'; Xóa bỏ hoàn toàn mã định danh khỏi bảng danh sách và biểu mẫu thêm nhân viên",
+    "Triển khai Phân hệ Cấu Hình Check-in & Định Vị Quán Zone 6 cho Admin / Quản Lý: Cho phép thiết lập tọa độ GPS quán (kèm nút tự động lấy GPS hiện tại), bán kính quét khoảng cách cho phép check-in (30m, 50m, 100m, 200m, 500m...), tiện ích test khoảng cách thực tế ngay trên thiết bị; Cấu hình khung thời gian cho phép check-in trước giờ vào ca (10p, 15p, 30p, 45p, 60p, 90p) và sau giờ vào ca (15p, 30p, 60p, 120p, 180p) kèm thanh mô phỏng trực quan Timeline ca làm việc; Tích hợp ràng buộc kiểm tra vào logic check-in hệ thống",
+    "Triển khai Toàn Diện Tính Năng Check-in Điểm Danh Ca Làm Việc cho TẤT CẢ CÁC VAI TRÒ (admin_he_thong, quan_ly, truong_ca, pho_ca_lam_lich, pho_ca_vat_lieu, nhan_vien): Tuyệt đối CHỈ CHO PHÉP CHỤP ẢNH TRỰC TIẾP từ Camera thiết bị (loại bỏ hoàn toàn tính năng chọn file từ máy), đóng dấu chìm vĩnh viễn (Burn-in Canvas Watermark) gắn liền trực tiếp lên pixel ảnh gồm: 1) Địa chỉ đường phố thực tế từ định vị GPS trực tiếp, 2) Thời gian chụp thực tế chính xác đến từng giây, 3) Tọa độ GPS & khoảng cách tới quán Zone 6, 4) Thông tin ca làm & con dấu xác thực 'XÁC THỰC CAMERA & GPS'; Lưu trữ toàn bộ thông tin và ảnh vào MongoDB Atlas (attendances collection); Cung cấp AttendanceDetailModal hiển thị bằng chứng ảnh và địa chỉ chi tiết",
+    "Phân quyền bảo mật Cấu Hình Zalo Bot nghiêm ngặt: Chỉ duy nhất Admin Hệ Thống (admin_he_thong) mới được phép cấu hình, kết nối QR và gửi tin Zalo Bot; Ẩn hoàn toàn menu Zalo Bot trên Sidebar đối với tất cả vai trò khác (Quản lý, Trưởng ca, Phó ca, Nhân viên); Chặn truy cập trực tiếp URL /zalo bằng màn hình Access Denied; Bảo vệ toàn diện 100% API backend (/api/v1/zalo/*) với authenticate và requireRoles('admin_he_thong')",
+    "Triển khai tính năng Lưu Trữ Cấu Hình Kênh Nhận Tin Zalo (Loại hội thoại, Group ID, Image URL, Mẫu tin nhắn) trực tiếp vào Database MongoDB Atlas (collection: zalo_configs, model: ZaloConfig): Bổ sung API GET & PUT /api/v1/zalo/config, Mongoose Model & Prisma Schema; Giao diện ZaloManager tự động nạp cấu hình đã lưu khi tải trang, cung cấp nút 'Lưu Vào Database' và 'Lưu Cấu Hình' cùng thanh trạng thái đồng bộ real-time, đồng thời tự động lưu lại cấu hình kênh sau mỗi lần gửi tin thành công.",
+    "Hoàn thiện ẩn và xóa bỏ hoàn toàn tính năng Zalo Bot đối với tất cả các vai trò khác (Quản lý, Trưởng ca, Phó ca, Nhân viên) ngoại trừ Admin Hệ Thống (admin_he_thong): Loại bỏ nút Zalo Bot trên Sidebar và HomeTabs, thay thế màn hình cảnh báo bằng cơ chế tự động chuyển hướng (instant redirect) về /schedule và trả về null, đảm bảo các vai trò khác không còn thấy bất kỳ dấu vết nào của Zalo Bot."
+  ],
+  "in_progress_tasks": [],
+  "pending_tasks": [],
+  "last_updated": "2026-10-20T02:04:00Z"
+}

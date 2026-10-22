@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0c10;
+  --foreground: #f4f5f8;
+  
+  /* Zone 6 Luxury Gold Palette */
+  --gold-50: #fdfcf7;
+  --gold-100: #fbf5e2;
+  --gold-200: #f5e7c0;
+  --gold-300: #ebd292;
+  --gold-400: #ddb85b;
+  --gold-500: #d4af37; /* Primary Metallic Gold */
+  --gold-600: #b58d22;
+  --gold-700: #906b18;
+  --gold-800: #6d4e11;
+  --gold-900: #422e08;
+
+  /* Zone 6 Carbon Black & Obsidian Palette */
+  --black-950: #0b0c10; /* Deep Void Black */
+  --black-900: #12141a; /* Carbon Surface */
+  --black-850: #181b24; /* Elevated Card */
+  --black-800: #212532; /* Border & Subtle Division */
+  --black-700: #2c3242; /* Hover Surface */
+  --black-600: #444b60; /* Muted Elements */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-gold-50: var(--gold-50);
+  --color-gold-100: var(--gold-100);
+  --color-gold-200: var(--gold-200);
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+  --color-gold-700: var(--gold-700);
+  --color-gold-800: var(--gold-800);
+  --color-gold-900: var(--gold-900);
+
+  --color-black-950: var(--black-950);
+  --color-black-900: var(--black-900);
+  --color-black-850: var(--black-850);
+  --color-black-800: var(--black-800);
+  --color-black-700: var(--black-700);
+  --color-black-600: var(--black-600);
+}
+
+/* Zone 6 Custom Metallic & Shimmer Utilities */
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #f7d77b 0%, #d4af37 50%, #a67c1e 100%);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fae29c 0%, #d4af37 45%, #b98e25 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-glow {
+  box-shadow: 0 0 25px -4px rgba(212, 175, 55, 0.35);
+}
+
+.gold-glow-sm {
+  box-shadow: 0 0 14px -2px rgba(212, 175, 55, 0.25);
+}
+
+.gold-border-glow {
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 16px -2px rgba(212, 175, 55, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* =========================================================================
+ * Zone 6 Obsidian & Gold Scrollbars
+ * ========================================================================= */
+html, :root {
+  color-scheme: dark;
+}
+
+/* Chrome, Edge, Safari WebKit */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0c10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #212532;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* Firefox & Standard W3C */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #212532 #0b0c10;
+}
+
+/* Container-specific custom scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #212532 #12141a;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #12141a;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #212532;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+

@@ -1,0 +1,61 @@
+enum SystemRoleType {
+  ADMIN
+  MANAGER
+  STAFF
+  CUSTOMER
+}
+
+enum StaffPosition {
+  BARISTA
+  SERVICE
+  CASHIER
+  SECURITY
+}
+
+enum ScheduleStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ShiftType {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+enum ShiftAssignmentStatus {
+  ASSIGNED
+  CONFIRMED
+  CANCELLED
+  SWAPPED
+}
+
+enum AttendanceVerificationStatus {
+  VALID
+  WRONG_SHIFT
+  OUT_OF_RANGE
+  LATE
+  MANUAL_APPROVED
+}
+
+enum NotificationSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum NotificationType {
+  UNCHECKED_EXPIRED_SHIFT
+  EMPTY_SLOT_1_DAY
+  EMPTY_SLOT_2_DAYS
+  EMPTY_SLOT_UPCOMING
+  OVERLOAD_ALERT
+  SCHEDULE_DEADLINE
+  MATERIAL_CHECK_REMINDER
+  SHIFT_PERSONAL_REMINDER
+  REGISTRATION_WINDOW_ALERT
+  GENERAL_INFO
+}
+

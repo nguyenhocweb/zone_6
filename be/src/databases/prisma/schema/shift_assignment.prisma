@@ -1,0 +1,20 @@
+model ShiftAssignment {
+  id           String                @id @default(auto()) @map("_id") @db.ObjectId
+  scheduleId   String                @map("schedule_id") @db.ObjectId
+  userId       String                @map("user_id") @db.ObjectId
+  workDate     DateTime              @map("work_date")
+  shiftType    ShiftType             @map("shift_type")
+  startTime    String                @map("start_time")
+  endTime      String                @map("end_time")
+  plannedHours Float                 @default(5) @map("planned_hours")
+  status       ShiftAssignmentStatus @default(ASSIGNED)
+  createdAt    DateTime              @default(now()) @map("created_at")
+  updatedAt    DateTime              @updatedAt @map("updated_at")
+
+  schedule    WeeklySchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attendances Attendance[]
+
+  @@unique([userId, workDate, shiftType])
+  @@map("shift_assignments")
+}

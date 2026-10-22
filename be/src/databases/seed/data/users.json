@@ -1,0 +1,46 @@
+[
+  {
+    "userCode": "Z6-001",
+    "name": "Quản Lý Zone Six",
+    "email": "manager@zonesix.vn",
+    "phone": "0988000001",
+    "qrCode": "QR-Z6-MGR-001",
+    "hourlyRate": 25000,
+    "role": "MANAGER",
+    "position": "BARISTA",
+    "isActive": true
+  },
+  {
+    "userCode": "Z6-002",
+    "name": "Nguyễn Văn Tuấn",
+    "email": "tuan.nguyen@zonesix.vn",
+    "phone": "0988000002",
+    "qrCode": "QR-Z6-STF-002",
+    "hourlyRate": 18000,
+    "role": "STAFF",
+    "position": "SERVICE",
+    "isActive": true
+  },
+  {
+    "userCode": "Z6-003",
+    "name": "Trần Thị Mai",
+    "email": "mai.tran@zonesix.vn",
+    "phone": "0988000003",
+    "qrCode": "QR-Z6-STF-003",
+    "hourlyRate": 18000,
+    "role": "STAFF",
+    "position": "CASHIER",
+    "isActive": true
+  },
+  {
+    "userCode": "Z6-004",
+    "name": "Lê Hoàng Long",
+    "email": "long.le@zonesix.vn",
+    "phone": "0988000004",
+    "qrCode": "QR-Z6-STF-004",
+    "hourlyRate": 18000,
+    "role": "STAFF",
+    "position": "BARISTA",
+    "isActive": true
+  }
+]

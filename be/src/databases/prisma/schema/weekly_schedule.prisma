@@ -1,0 +1,17 @@
+model WeeklySchedule {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  weekNumber       Int            @map("week_number")
+  year             Int
+  startDate        DateTime       @map("start_date")
+  endDate          DateTime       @map("end_date")
+  status           ScheduleStatus @default(DRAFT)
+  eveningShiftMode Int            @default(2) @map("evening_shift_mode")
+  notes            String?
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  shiftAssignments ShiftAssignment[]
+
+  @@unique([weekNumber, year])
+  @@map("weekly_schedules")
+}
