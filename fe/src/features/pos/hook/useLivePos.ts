@@ -27,8 +27,11 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
   useEffect(() => {
     if (!shiftData || !user) return;
 
-    // Xác định URL Socket.io (cùng host hoặc cổng backend)
-    const socketUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    // Xác định URL Socket.io (Ưu tiên biến môi trường Backend VPS, fallback về window.location.origin)
+    const socketUrl =
+      process.env.NEXT_PUBLIC_SOCKET_URL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      (typeof window !== 'undefined' ? window.location.origin : '');
     const socket = io(`${socketUrl}/pos`, {
       path: '/socket.io',
       transports: ['websocket', 'polling'],
@@ -295,3 +298,4 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
     syncCartToServer,
   };
 }
+

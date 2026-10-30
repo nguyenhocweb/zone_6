@@ -63,3 +63,4 @@
 - `cart:lock`: Tạm khóa đơn để thanh toán.
 - `cart:unlock`: Mở khóa đơn nếu khách muốn gọi thêm.
 - `cart:clear`: Làm sạch giỏ hàng khi hoàn tất đơn.
+

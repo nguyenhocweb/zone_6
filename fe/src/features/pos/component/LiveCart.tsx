@@ -250,3 +250,4 @@ export const LiveCart: React.FC<LiveCartProps> = ({
     </div>
   );
 };
+

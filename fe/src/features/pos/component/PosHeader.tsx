@@ -89,3 +89,4 @@ export const PosHeader: React.FC<PosHeaderProps> = ({
     </header>
   );
 };
+

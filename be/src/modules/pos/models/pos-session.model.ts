@@ -56,3 +56,4 @@ PosSessionSchema.index({ store_id: 1, shift_id: 1 });
 
 export const PosSessionModel =
   mongoose.models.PosSession || mongoose.model<IPosSession>('PosSession', PosSessionSchema);
+

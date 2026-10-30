@@ -12,3 +12,4 @@ export class OrderHistoryService {
     return this.repo.getOrdersByStore(storeId, limit);
   }
 }
+

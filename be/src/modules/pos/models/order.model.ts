@@ -92,3 +92,4 @@ const OrderSchema = new Schema<IOrder>(
 OrderSchema.index({ store_id: 1, created_at: -1 });
 
 export const OrderModel = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);
+

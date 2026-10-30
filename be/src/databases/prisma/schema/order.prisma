@@ -26,3 +26,4 @@ model Order {
   @@index([storeId, createdAt])
   @@map("orders")
 }
+

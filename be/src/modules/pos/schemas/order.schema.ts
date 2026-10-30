@@ -16,3 +16,4 @@ export const CheckoutOrderSchema = z.object({
 export const VerifyShiftQuerySchema = z.object({
   storeId: z.string().optional(),
 });
+

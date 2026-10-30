@@ -58,3 +58,4 @@ export const posService = {
     return res.data.data || [];
   },
 };
+

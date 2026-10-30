@@ -17,3 +17,4 @@ model PosSession {
   @@unique([storeId, shiftId, sessionCode])
   @@map("pos_sessions")
 }
+
