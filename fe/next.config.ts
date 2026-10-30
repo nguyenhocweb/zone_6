@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
     const backendUrl =
       process.env.BACKEND_INTERNAL_URL ||
       process.env.NEXT_PUBLIC_API_URL ||
-      "http://160.191.243.53:8000";
+      "http://160.191.243.53";
     return [
       {
         source: "/api/:path*",
