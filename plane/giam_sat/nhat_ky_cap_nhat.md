@@ -4,6 +4,18 @@
 
 ---
 
+### [2026-10-30 20:21] - Tích Hợp Bộ Kỹ Năng Thiết Kế Giao Diện Đỉnh Cao (Impeccable Design Skill)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Clone skill `pbakaus/impeccable` từ GitHub và bổ sung vào thư mục `.agents/` theo chuẩn format của tác giả.
+- **Nội dung hoàn thành:**
+  - Clone và trích xuất trọn vẹn bộ kỹ năng `impeccable` (v4.8.0) vào [.agents/skills/impeccable/](file:///d:/DuAnCaNhan/zone_6/.agents/skills/impeccable/).
+  - Bổ sung 42 cẩm nang hướng dẫn chuyên sâu (`reference/`) bao gồm: `shape`, `polish`, `critique`, `audit`, `craft-floor`, `bolder`, `quieter`, `distill`, `harden`, `onboard`, `animate`, `colorize`, `typeset`, `layout`, `delight`, `clarify`, `adapt`, `optimize`, v.v.
+  - Bổ sung bộ script thực thi `scripts/` và cấu hình agent `agents/`.
+  - Khởi tạo [DESIGN.md](file:///d:/DuAnCaNhan/zone_6/DESIGN.md) tại thư mục gốc dự án theo chuẩn Impeccable Design Tokens (đặc tả toàn diện bảng màu Luxury Gold, Obsidian Carbon, độ tương phản WCAG và quy tắc chế tác giao diện Zone 6).
+  - Cập nhật [.agents/GEMINI.md](file:///d:/DuAnCaNhan/zone_6/.agents/GEMINI.md) đăng ký bộ kỹ năng mới.
+
+---
+
 ### [2026-10-30 20:12] - Cấu Hình PostCSS Tailwind CSS v4 Khắc Phục Lỗi Mất Giao Diện Trên Vercel
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Vấn đề phát hiện qua ảnh màn hình:** Giao diện Vercel bị vỡ CSS (chỉ hiển thị HTML thuần với nền tối và viền text, mất toàn bộ flexbox/grid/centering/padding/buttons).

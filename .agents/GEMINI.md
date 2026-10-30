@@ -18,5 +18,7 @@ Refer to:
 - Database Schema: [.agents/DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md)
 - Prisma & Seed Rules: [.agents/rules/prisma_mongo_database_rules.md](./rules/prisma_mongo_database_rules.md)
 - React Query Registry: [.agents/REACT_QUERY_REGISTRY.md](./REACT_QUERY_REGISTRY.md)
+- Design System: [DESIGN.md](../DESIGN.md)
 - Skills: [.agents/skills/](./skills/)
+  - Impeccable Design Suite: [.agents/skills/impeccable/SKILL.md](./skills/impeccable/SKILL.md)
 
