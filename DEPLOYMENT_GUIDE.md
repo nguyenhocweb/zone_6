@@ -56,30 +56,57 @@ docker compose version
 
 ---
 
-### BƯỚC 3: TẢI MÃ NGUỒN VÀ KHỞI CHẠY HỆ THỐNG
+### BƯỚC 3: TẢI MÃ NGUỒN, TẠO FILE .ENV VÀ KHỞI CHẠY HỆ THỐNG
 
-1. Clone mã nguồn dự án về VPS:
+1. **Clone mã nguồn dự án về VPS:**
    ```bash
    sudo mkdir -p /var/www/zone6
    cd /var/www/zone6
-   git clone <URL_REPO_GITHUB_CUA_BAN> .
+   git clone https://github.com/nguyenhocweb/zone_6.git .
    ```
 
-2. **Chỉ cần 1 lệnh duy nhất để Build và Chạy toàn bộ hệ thống:**
+2. **Tạo file cấu hình môi trường `.env` cho Backend:**
+   > ⚠️ **Lưu ý quan trọng:** Vì lý do bảo mật, file `.env` chứa mật khẩu Database không bao giờ được đưa lên GitHub. Do đó khi clone code về VPS, bạn cần chạy lệnh sau (chỉ 1 cú dán Enter) để tạo file `be/.env`:
+
+   ```bash
+   cat << 'EOF' > be/.env
+   # Cấu hình Cổng Service
+   PORT=8000
+   NODE_ENV=production
+
+   # Kết nối CSDL MongoDB Atlas (Database: zone_6)
+   DATABASE_URL="mongodb+srv://My_Restaurant:Matkhau2k3.@nguyenhocweb.pqyjucr.mongodb.net/zone_6?retryWrites=true&w=majority&appName=nguyenhocweb"
+
+   # Khóa bí mật mã hóa Session (AES-256-GCM)
+   ZALO_SESSION_KEY=AES-256-GCM
+
+   # Thư mục lưu trữ phiên đăng nhập mã hóa Zalo Bot (bên trong Docker container)
+   ZALO_SESSION_DIR=/app/.sessions
+
+   # Giới hạn thời gian sống của QR (mili-giây, mặc định 120s)
+   ZALO_QR_TTL_MS=120000
+
+   # Tùy chọn Anti-Spam: Độ trễ tối thiểu giữa 2 lần gửi tin (mili-giây)
+   ZALO_SEND_DELAY_MS=3000
+   EOF
+   ```
+
+3. **Chỉ cần 1 lệnh duy nhất để Build và Chạy toàn bộ hệ thống bằng Docker Compose:**
    ```bash
    docker compose up -d --build
    ```
 
-3. Kiểm tra trạng thái các container:
+4. **Kiểm tra trạng thái các container:**
    ```bash
    docker compose ps
    ```
-   *Bạn sẽ thấy cả 2 container `zone6-backend` và `zone6-nginx` đều ở trạng thái `running`.*
+   *Bạn sẽ thấy cả 2 container `zone6-backend` và `zone6-nginx` đều ở trạng thái `running` (hoặc `Up`).*
 
-4. Xem log hoạt động thời gian thực:
+5. **Xem log Backend hoạt động thời gian thực (đảm bảo Prisma và Server kết nối DB thành công):**
    ```bash
    docker compose logs -f backend
    ```
+   *(Nhấn `Ctrl + C` để thoát màn hình xem log).*
 
 ---
 
