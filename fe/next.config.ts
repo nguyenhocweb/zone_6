@@ -7,14 +7,6 @@ const nextConfig: NextConfig = {
   experimental: {
     agentUpgrade: "security",
   } as any,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
   // Proxy ngược về Backend VPS để tránh lỗi Mixed Content (HTTPS -> HTTP) khi deploy trên Vercel
   async rewrites() {
     const backendUrl =
