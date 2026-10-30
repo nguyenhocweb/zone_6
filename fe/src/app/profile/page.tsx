@@ -1,5 +1,5 @@
 import React from "react";
-import { UserProfileView } from "@/features/auth/component/UserProfileView";
+import { UserProfileView } from "@/features/shared/auth/component/UserProfileView";
 
 export const instant = false;
 

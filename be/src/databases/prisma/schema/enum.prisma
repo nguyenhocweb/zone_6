@@ -59,3 +59,10 @@ enum NotificationType {
   GENERAL_INFO
 }
 
+enum ZaloChannelType {
+  CHECKIN
+  MATERIAL
+  SCHEDULE
+  GENERAL
+}
+

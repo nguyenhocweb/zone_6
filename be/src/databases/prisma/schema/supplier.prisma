@@ -1,0 +1,17 @@
+model Supplier {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  code            String   @unique @map("code")
+  name            String   @map("name")
+  phone           String?  @map("phone")
+  email           String?  @map("email")
+  address         String?  @map("address")
+  contactPerson   String?  @map("contact_person")
+  notes           String?  @map("notes")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([name])
+  @@index([isActive])
+  @@map("suppliers")
+}

@@ -31,6 +31,14 @@ Tất cả QueryKey BẮT BUỘC là **mảng phân cấp**:
 | `system_admin` | `checkinConfig` | `['checkinConfig', 'current']` | `useCheckinConfig` | Khi cập nhật tọa độ quán, bán kính GPS hoặc thời gian trước/sau ca (`useUpdateCheckinConfig`) |
 | `scheduling` | `attendance` | `['scheduling', 'attendance', 'slot', slotParams]` | `useSlotAttendance` | Khi check-in ca làm có ảnh (`useCheckInShift`) hoặc hủy điểm danh |
 | `scheduling` | `attendance_week` | `['scheduling', 'attendance', 'week', weekStartDate]` | `useWeekAttendances` | Tự động đồng bộ toàn bộ ảnh & lịch sử check-in của tuần |
+| `pho_ca_vat_lieu` | `materials` | `['pho_ca_vat_lieu', 'materials', filters]` | `useGetMaterials` | Khi thêm/sửa/xóa vật liệu hoặc điều chỉnh tồn kho (`useAdjustStock`) |
+| `pho_ca_vat_lieu` | `recipe_categories` | `['pho_ca_vat_lieu', 'recipes', 'categories']` | `useGetRecipeCategories` | Khi tạo danh mục món mới (`useCreateRecipeCategory`) hoặc tạo món kèm danh mục mới |
+| `pho_ca_vat_lieu` | `sellable_toppings` | `['pho_ca_vat_lieu', 'sellable_toppings', filters]` | `useGetSellableToppings` | Khi cập nhật cách bán hoặc giá bán lẻ topping (`useUpdateSellableTopping`), đồng bộ tự động từ kho |
+| `pho_ca_vat_lieu` | `inventoryAudits` | `['inventoryAudits', 'list', filters]` | `useGetInventoryAudits`, `useGetInventoryAuditDetail` | Khi nộp phiếu kiểm kho (`useCreateInventoryAudit`), chỉnh sửa phiếu hoặc đồng bộ tồn kho (`useUpdateInventoryAudit`) |
+| `admin_he_thong` | `suppliers` | `['suppliers', 'list', filters]` | `useGetSuppliers`, `useGetSupplierDetail` | Khi thêm/sửa/xóa nhà cung cấp đối tác (`useCreateSupplier`, `useUpdateSupplier`, `useDeleteSupplier`) |
+| `pho_ca_lam_lich` | `shiftConfigs` | `['shiftConfigs', 'list', storeId]` | `useGetShiftConfigs` | Khi thêm, sửa, xóa ca làm hoặc khôi phục 4 ca mặc định (`useCreateShiftConfig`, `useUpdateShiftConfig`, `useDeleteShiftConfig`, `useResetShiftConfigs`) |
+| `pho_ca_vat_lieu` | `purchase_requisitions` | `['purchase_requisitions', 'list', params]` | `useGetRequisitions`, `useGetRequisitionSuggestions` | Khi tạo phiếu yêu cầu nhập kho (`useCreateRequisition`) hoặc duyệt phiếu (`useUpdateRequisitionStatus`) |
+| `quan_ly` | `purchase_orders` | `['purchase_orders', 'list', params]` | `useGetPurchaseOrders`, `useGetPurchaseOrderById` | Khi tạo đơn thu mua PO (`useCreatePoFromRequisitions`) hoặc xác nhận nhập kho (`useReceivePo`) |
 
 ---
 

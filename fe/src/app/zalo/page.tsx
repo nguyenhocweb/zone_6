@@ -1,5 +1,5 @@
 import React from "react";
-import { ZaloManager } from "@/features/zalo/component/ZaloManager";
+import { ZaloManager } from "@/features/admin_he_thong/zalo/component/ZaloManager";
 
 export const instant = false;
 

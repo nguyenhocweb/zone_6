@@ -1,7 +1,9 @@
 model StoreConfig {
   id                          String   @id @default(auto()) @map("_id") @db.ObjectId
   storeName                   String   @unique @map("store_name")
+  storeCode                   String?  @unique @map("store_code")
   address                     String
+  phone                       String?  @map("phone")
   latitude                    Float
   longitude                   Float
   geofenceRadiusMeters        Float    @default(100) @map("geofence_radius_meters")
@@ -9,6 +11,7 @@ model StoreConfig {
   allowedCheckinAfterMinutes  Int      @default(30) @map("allowed_checkin_after_minutes")
   isGeofenceRequired          Boolean  @default(true) @map("is_geofence_required")
   isTimeWindowStrict          Boolean  @default(true) @map("is_time_window_strict")
+  isActive                    Boolean  @default(true) @map("is_active")
   createdAt                   DateTime @default(now()) @map("created_at")
   updatedAt                   DateTime @updatedAt @map("updated_at")
 

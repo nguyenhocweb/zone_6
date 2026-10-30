@@ -1,0 +1,22 @@
+model InventoryAudit {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  auditCode         String   @unique @map("audit_code")
+  storeId           String   @map("store_id") @db.ObjectId
+  createdById       String   @map("created_by_id") @db.ObjectId
+  createdByName     String   @map("created_by_name")
+  createdByRole     String   @map("created_by_role")
+  auditShift        String?  @map("audit_shift") // Ca kiểm kho (Ca sáng, Ca chiều, Ca tối...)
+  totalItemsChecked Int      @default(0) @map("total_items_checked")
+  discrepancyCount  Int      @default(0) @map("discrepancy_count")
+  status            String   @default("pending_review") @map("status") // pending_review, adjusted, confirmed
+  reviewedById      String?  @map("reviewed_by_id") @db.ObjectId
+  reviewedByName    String?  @map("reviewed_by_name")
+  reviewedAt        DateTime? @map("reviewed_at")
+  adjustmentNotes   String?  @map("adjustment_notes")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([storeId])
+  @@index([status])
+  @@map("inventory_audits")
+}

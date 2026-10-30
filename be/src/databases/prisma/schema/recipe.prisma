@@ -1,0 +1,46 @@
+type RecipeIngredient {
+  materialId   String?  @map("material_id") @db.ObjectId
+  materialName String   @map("material_name")
+  quantity     Float    @map("quantity")
+  unit         String   @map("unit")
+  cost         Float?   @default(0) @map("cost")
+  notes        String?  @map("notes")
+}
+
+type RecipeStep {
+  stepNumber      Int     @map("step_number")
+  title           String  @map("title")
+  instruction     String  @map("instruction")
+  durationSeconds Int?    @map("duration_seconds")
+  tips            String? @map("tips")
+}
+
+model Recipe {
+  id              String             @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String?            @map("store_id") @db.ObjectId
+  name            String             @map("name")
+  code            String             @unique @map("code")
+  type            String             @map("type") // "internal_prep" (nước đường, cốt trà... chỉ nhân viên thấy) | "customer_product" (trà dâu, cà phê... khách thấy món nhưng công thức chỉ nhân viên thấy)
+  categoryId      String?            @map("category_id") @db.ObjectId
+  category        String             @map("category") // "Cốt trà & Syrup sơ chế", "Trà trái cây", "Cà phê", "Trà sữa", "Đá xay"
+  price           Float              @default(0) @map("price")
+  estimatedCost   Float              @default(0) @map("estimated_cost")
+  description     String?            @map("description")
+  imageUrl        String?            @map("image_url")
+  servingSize     String?            @default("1 ly") @map("serving_size")
+  servingMode     String?            @default("cold") @map("serving_mode") // "cold" (lạnh) | "hot" (nóng) | "both" (cả lạnh và nóng)
+  coldCupId       String?            @map("cold_cup_id") @db.ObjectId
+  coldCupName     String?            @map("cold_cup_name")
+  hotCupId        String?            @map("hot_cup_id") @db.ObjectId
+  hotCupName      String?            @map("hot_cup_name")
+  prepTimeMinutes Int                @default(5) @map("prep_time_minutes")
+  shelfLife       String?            @map("shelf_life")
+  storageMethod   String?            @map("storage_method")
+  ingredients     RecipeIngredient[]
+  steps           RecipeStep[]
+  isActive        Boolean            @default(true) @map("is_active")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+
+  @@map("recipes")
+}

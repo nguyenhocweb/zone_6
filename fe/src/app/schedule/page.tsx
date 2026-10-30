@@ -1,5 +1,5 @@
 import React from "react";
-import { SchedulingDashboard } from "@/features/scheduling/component/SchedulingDashboard";
+import { SchedulingDashboard } from "@/features/pho_ca_lam_lich/scheduling/component/SchedulingDashboard";
 
 export const instant = false;
 

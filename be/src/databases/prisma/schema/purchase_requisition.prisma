@@ -1,0 +1,20 @@
+model PurchaseRequisition {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  code                  String    @unique @map("code")
+  storeId               String    @map("store_id") @db.ObjectId
+  creatorId             String    @map("creator_id") @db.ObjectId
+  creatorRole           String    @map("creator_role")
+  status                String    @default("PENDING") @map("status")
+  priority              String    @default("NORMAL") @map("priority")
+  expectedDeliveryDate  DateTime? @map("expected_delivery_date")
+  notes                 String?   @map("notes")
+  rejectionReason       String?   @map("rejection_reason")
+  items                 Json      @map("items") // Array of PurchaseRequisitionItem
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@index([storeId, status])
+  @@index([createdAt])
+  @@map("purchase_requisitions")
+}
+

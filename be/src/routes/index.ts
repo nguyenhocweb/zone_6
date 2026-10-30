@@ -1,13 +1,21 @@
 import { Router } from 'express';
-import { ZaloService } from '../modules/zalo/services/zalo.service.js';
+import { ZaloService } from '../modules/admin_he_thong/zalo/services/zalo.service.js';
 import { createZaloRouter } from './zalo.routes.js';
-import { createSubscriptionRouter } from '../modules/subscription/routes/subscription.routes.js';
-import { createSchedulingRouter } from '../modules/scheduling/routes/scheduling.routes.js';
-import { createAuthRouter } from '../modules/user/routes/auth.routes.js';
-import { createUserRouter } from '../modules/user/routes/user.routes.js';
+import { createSubscriptionRouter } from '../modules/admin_he_thong/subscription/routes/subscription.routes.js';
+import { createSchedulingRouter } from '../modules/pho_ca_lam_lich/scheduling/routes/scheduling.routes.js';
+import { createAuthRouter } from '../modules/shared/auth/routes/auth.routes.js';
+import { createUserRouter } from '../modules/quan_ly/staff/routes/user.routes.js';
 
-import { createStoreConfigRouter } from '../modules/scheduling/routes/store-config.routes.js';
-import { createAttendanceRouter } from '../modules/attendance/routes/attendance.routes.js';
+import { createStoreConfigRouter } from '../modules/admin_he_thong/store-config/routes/store-config.routes.js';
+import { createStoreRouter } from '../modules/admin_he_thong/store/routes/store.routes.js';
+import { createAttendanceRouter } from '../modules/nhan_vien/attendance/routes/attendance.routes.js';
+import { createMaterialRouter } from '../modules/pho_ca_vat_lieu/material/routes/material.routes.js';
+import { createSellableToppingRouter } from '../modules/pho_ca_vat_lieu/material/routes/sellable-topping.routes.js';
+import { createRecipeRouter } from '../modules/pho_ca_vat_lieu/material/routes/recipe.routes.js';
+import { createInventoryAuditRouter } from '../modules/pho_ca_vat_lieu/material/routes/inventory-audit.routes.js';
+import { createSupplierRouter } from '../modules/admin_he_thong/supplier/routes/supplier.routes.js';
+import { createPurchaseRequisitionRouter } from '../modules/pho_ca_vat_lieu/purchase_requisition/routes/purchase-requisition.routes.js';
+import { createPurchaseOrderRouter } from '../modules/quan_ly/purchase_order/routes/purchase-order.routes.js';
 
 export function createApiRouter(zaloService: ZaloService): Router {
   const router = Router();
@@ -17,7 +25,7 @@ export function createApiRouter(zaloService: ZaloService): Router {
     res.status(200).json({
       status: 'online',
       project: 'Zone 6 Signature - Fullstack Node.js Backend',
-      modules: ['auth', 'users', 'scheduling', 'zalo', 'store-config'],
+      modules: ['auth', 'users', 'scheduling', 'zalo', 'store-config', 'materials', 'inventory-audits', 'suppliers'],
       timestamp: new Date().toISOString(),
     });
   });
@@ -42,11 +50,43 @@ export function createApiRouter(zaloService: ZaloService): Router {
   router.use('/v1/store-config', createStoreConfigRouter());
   router.use('/store-config', createStoreConfigRouter());
 
+  // 4b. Phân hệ Quản Trị Chi Nhánh (Stores Management - Thêm mới & Đóng/Mở cửa)
+  router.use('/v1/stores', createStoreRouter());
+  router.use('/stores', createStoreRouter());
+
   // 5. Phân hệ Điểm Danh Check-in Ca Làm & Chụp Ảnh (Attendance)
   router.use('/v1/attendance', createAttendanceRouter(zaloService));
   router.use('/attendance', createAttendanceRouter(zaloService));
 
-  // 6. Phân hệ Zalo Integration (Cả v1 lẫn root zalo)
+  // 6. Phân hệ Quản Lý Nguyên Vật Liệu & Kho Hàng (CN11 - Materials)
+  router.use('/v1/materials', createMaterialRouter());
+  router.use('/materials', createMaterialRouter());
+
+  // 6b. Bảng CSDL Riêng Cho Topping Bán Ra (Sellable Toppings)
+  router.use('/v1/sellable-toppings', createSellableToppingRouter());
+  router.use('/sellable-toppings', createSellableToppingRouter());
+
+  // 6c. Kiểm Kho (Inventory Audits - Nhân viên kiểm đếm, Phó ca trở lên xem & điều chỉnh)
+  router.use('/v1/inventory-audits', createInventoryAuditRouter());
+  router.use('/inventory-audits', createInventoryAuditRouter());
+
+  // 6d. Quản Lý Nhà Cung Cấp (Suppliers - Độc quyền Quản Lý & Admin Hệ Thống)
+  router.use('/v1/suppliers', createSupplierRouter());
+  router.use('/suppliers', createSupplierRouter());
+
+  // 6e. Phiếu Yêu Cầu Nhập Kho Chi Nhánh (CN11b - Purchase Requisitions)
+  router.use('/v1/purchase-requisitions', createPurchaseRequisitionRouter());
+  router.use('/purchase-requisitions', createPurchaseRequisitionRouter());
+
+  // 6f. Trung Tâm Thu Mua & Đơn Đặt Hàng Gộp Đa Chi Nhánh (CN11b - Purchase Orders)
+  router.use('/v1/purchase-orders', createPurchaseOrderRouter());
+  router.use('/purchase-orders', createPurchaseOrderRouter());
+
+  // 7. Phân hệ Quản Lý Công Thức Pha Chế & Món (Recipes & Menu Items)
+  router.use('/v1/recipes', createRecipeRouter());
+  router.use('/recipes', createRecipeRouter());
+
+  // 8. Phân hệ Zalo Integration (Cả v1 lẫn root zalo)
   const zaloRouter = createZaloRouter(zaloService);
   router.use('/v1/zalo', zaloRouter);
   router.use('/zalo', zaloRouter);

@@ -3,10 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/features/auth/hook/useAuth";
-import { LoginForm } from "@/features/auth/component/LoginForm";
-import { UserHeaderBadge } from "@/features/auth/component/UserHeaderBadge";
-import { ROLE_BADGE_MAP } from "@/features/auth/type/auth.type";
+import { useAuth } from "@/features/shared/auth/hook/useAuth";
+import { LoginForm } from "@/features/shared/auth/component/LoginForm";
+import { UserHeaderBadge } from "@/features/shared/auth/component/UserHeaderBadge";
+import { ROLE_BADGE_MAP } from "@/features/shared/auth/type/auth.type";
 import {
   FaCalendarAlt,
   FaFileInvoiceDollar,
@@ -22,8 +22,13 @@ import {
   FaCheckDouble,
   FaMapMarkerAlt,
   FaCamera,
+  FaStore,
+  FaBoxes,
+  FaBookOpen,
+  FaClipboardCheck,
+  FaClock,
 } from "react-icons/fa";
-import { useScheduleNotifications } from "@/features/scheduling/hook/useScheduleNotifications";
+import { useScheduleNotifications } from "@/features/shared/notifications/hook/useScheduleNotifications";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -102,12 +107,23 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   // Quyền cấu hình Zalo Bot (Chỉ duy nhất Admin Hệ Thống)
   const canConfigZalo = user.role === "admin_he_thong";
 
+  // Quyền quản lý chi nhánh chuỗi cửa hàng (Chỉ duy nhất Admin Hệ Thống)
+  const canManageStores = user.role === "admin_he_thong";
+
   // Xác định trạng thái active của từng link theo URL pathname
   const isScheduleActive = pathname === "/" || pathname === "/schedule";
   const isCheckinActive = pathname === "/checkin" || pathname.startsWith("/checkin");
   const isRegisterActive = pathname === "/schedule/register";
+  const isShiftsActive = pathname === "/shifts" || pathname.startsWith("/shifts");
   const isSalaryActive = pathname === "/salary" || pathname.startsWith("/salary");
   const isStaffActive = pathname === "/staff" || pathname.startsWith("/staff");
+  const isStoresActive = pathname === "/stores" || pathname.startsWith("/stores");
+  const isMaterialsActive =
+    pathname === "/materials" || pathname.startsWith("/materials");
+  const isRecipesActive =
+    pathname === "/recipes" || pathname.startsWith("/recipes");
+  const isInventoryAuditActive =
+    pathname === "/inventory-audit" || pathname.startsWith("/inventory-audit");
   const isCheckinConfigActive =
     pathname === "/checkin-config" || pathname.startsWith("/checkin-config");
   const isZaloActive = pathname === "/zalo" || pathname.startsWith("/zalo");
@@ -334,6 +350,106 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </div>
               </Link>
 
+              {/* 3b. Cấu Hình Ca Làm (Giờ làm & Định biên nhân sự tối thiểu) */}
+              <Link
+                href="/shifts"
+                id="tab-btn-shifts"
+                data-testid="tab-shifts"
+                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
+                  isShiftsActive
+                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                    isShiftsActive
+                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                  }`}
+                >
+                  <FaClock />
+                </div>
+                <div className="text-xs font-black truncate flex-1">
+                  Cấu Hình Ca Làm
+                </div>
+              </Link>
+
+              {/* 3.1 Quản Lý Kho & Vật Liệu (Dành cho nhân sự từ Nhân Viên trở lên) */}
+              <Link
+                href="/materials"
+                id="tab-btn-materials"
+                data-testid="tab-materials"
+                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
+                  isMaterialsActive
+                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                    isMaterialsActive
+                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                  }`}
+                >
+                  <FaBoxes />
+                </div>
+                <div className="text-xs font-black truncate flex-1">
+                  Kho &amp; Vật Liệu
+                </div>
+              </Link>
+
+              {/* 3.2 Món & Sổ Tay Công Thức (Dành cho nhân sự từ Nhân Viên trở lên) */}
+              <Link
+                href="/recipes"
+                id="tab-btn-recipes"
+                data-testid="tab-recipes"
+                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
+                  isRecipesActive
+                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                    isRecipesActive
+                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                  }`}
+                >
+                  <FaBookOpen />
+                </div>
+                <div className="text-xs font-black truncate flex-1">
+                  Món &amp; Sổ Tay Công Thức
+                </div>
+              </Link>
+
+              {/* 3.3 Kiểm Kê Kho & Đối Soát (Dành cho nhân sự từ Nhân Viên trở lên) */}
+              <Link
+                href="/inventory-audit"
+                id="tab-btn-inventory-audit"
+                data-testid="tab-inventory-audit"
+                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
+                  isInventoryAuditActive
+                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                    isInventoryAuditActive
+                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                  }`}
+                >
+                  <FaClipboardCheck />
+                </div>
+                <div className="text-xs font-black truncate flex-1">
+                  Kiểm Kê Kho
+                </div>
+              </Link>
+
               {/* 3. Bảng Lương Tháng */}
               {canViewSalary && (
                 <Link
@@ -415,7 +531,34 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </Link>
               )}
 
-              {/* 6. Zalo Bot (zca-js) - Chỉ Admin Hệ Thống */}
+              {/* 6. Quản Lý Chi Nhánh - Chỉ Admin Hệ Thống */}
+              {canManageStores && (
+                <Link
+                  href="/stores"
+                  id="tab-btn-stores"
+                  data-testid="tab-stores"
+                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
+                    isStoresActive
+                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
+                  }`}
+                >
+                  <div
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                      isStoresActive
+                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                    }`}
+                  >
+                    <FaStore />
+                  </div>
+                  <div className="text-xs font-black truncate flex-1">
+                    Quản Lý Chi Nhánh
+                  </div>
+                </Link>
+              )}
+
+              {/* 7. Zalo Bot (zca-js) - Chỉ Admin Hệ Thống */}
               {canConfigZalo && (
                 <Link
                   href="/zalo"

@@ -31,6 +31,16 @@ Tài liệu này lưu vết toàn bộ cơ sở dữ liệu MongoDB Atlas (Datab
 | `notifications_nhan_vien` | `NhanVienNotificationModel` | `be/src/modules/scheduling/models/notification.model.ts` | `code (unique)`, `severity`, `is_resolved` | Table thông báo Nhân viên (Nhắc ca làm cá nhân trong ngày, nhắc check-in, đợt đăng ký mới) |
 | `schedule_notifications` | `ScheduleNotificationModel` | `be/src/modules/scheduling/models/notification.model.ts` | `code (unique)`, `severity`, `is_resolved` | Table thông báo tổng hợp (fallback & backwards-compatible) |
 | `zalo_configs` | `ZaloConfigModel` | `be/src/modules/zalo/models/zalo-config.model.ts` | `thread_type, target_id` | Cấu hình kênh nhận tin Zalo mặc định (Group/User), ảnh đính kèm & mẫu tin nhắn |
+| `toppings` | `ToppingModel` | `be/src/modules/pho_ca_vat_lieu/material/models/topping.model.ts` | `code (unique)`, `is_active` | Bảng topping & phụ gia trong kho (Trân châu trắng 3Q, trân châu hoàng kim, thạch củ năng, đào ngâm), chứa `portion_unit` (cách bán) và `selling_price` (giá bán lẻ) |
+| `sellable_toppings` | `SellableToppingModel` | `be/src/modules/pho_ca_vat_lieu/material/models/sellable-topping.model.ts` | `name`, `code`, `is_active` | Bảng riêng biệt quản lý thực đơn topping bán cho khách hàng kèm cách thức bán (1 vá, 1 miếng, 1 muỗng...), giá bán, tỷ lệ lãi gộp % và liên kết tồn kho thời gian thực |
+| `materials` | *(Legacy/Fallback)* | `be/src/modules/pho_ca_vat_lieu/material/models/material.model.ts` | `code (unique)`, `category`, `is_active` | Bảng vật liệu cũ (đã phân tách thành 3 bảng riêng biệt packagings, ingredients, toppings) |
+| `recipes` | `RecipeModel` | `be/src/modules/pho_ca_vat_lieu/material/models/recipe.model.ts` | `code (unique)`, `store_id`, `{ store_id, type }`, `{ store_id, category }` | Sổ tay công thức món phân lập theo từng chi nhánh (`store_id`), cấu hình ly phục vụ nóng/lạnh, liên kết `category_id` |
+| `recipe_categories` | `RecipeCategoryModel` | `be/src/modules/pho_ca_vat_lieu/material/models/recipe-category.model.ts` | `name (unique)`, `type`, `is_active` | Bảng quản lý danh mục món độc lập (Trà trái cây, Cà phê, Trà sữa, Đá xay, Bán thành phẩm nội bộ, Cốt trà & Syrup), cho phép chọn hoặc thêm mới tự động |
+| `packagings` | `PackagingModel` | `be/src/modules/pho_ca_vat_lieu/material/models/packaging.model.ts` | `code (unique)`, `temperature_mode`, `is_active` | Bảng quản lý bao bì, ly nhựa (PP, PET), ly giấy, túi, ống hút, có thuộc tính `cup_size` (Size S 350ml, Size M 500ml, Size L 700ml, 1000ml...) |
+| `inventory_audits` | `InventoryAuditModel` | `be/src/modules/pho_ca_vat_lieu/material/models/inventory-audit.model.ts` | `audit_code (unique)`, `store_id`, `status`, `audit_shift` | Bảng lưu lịch sử kiểm kê kho thực tế, ca kiểm kho (`audit_shift`), chế độ đếm đơn lẻ & đếm nhiều (Thùng/Lốc/Bao), chênh lệch và trạng thái duyệt (`pending_review`, `adjusted`, `confirmed`) |
+| `inventory_audit_configs` | `InventoryAuditConfigModel` | `be/src/modules/pho_ca_vat_lieu/material/models/inventory-audit-config.model.ts` | `store_id (unique)`, `is_active` | Bảng cấu hình quy trình kiểm kho theo chi nhánh: phân quyền vai trò tạo phiếu, phân quyền vai trò sửa/duyệt, danh sách ca kiểm kho bắt buộc trong ngày, chu kỳ tần suất (hàng ngày, 2-3 ngày/lần, hàng tuần) & giờ nhắc nhở |
+| `suppliers` | `SupplierModel` | `be/src/modules/admin_he_thong/supplier/models/supplier.model.ts` | `code (unique)`, `name`, `is_active` | Bảng quản lý nhà cung cấp & nguồn hàng vật tư, danh sách nguyên vật liệu liên kết và đơn giá nhập (Độc quyền Admin & Quản lý) |
+| `shift_configs` | `ShiftConfigModel` | `be/src/modules/pho_ca_lam_lich/scheduling/models/shift-config.model.ts` | `{ store_id, shift_code } (unique)`, `store_id`, `is_active` | Bảng cấu hình ca làm việc & định biên nhân sự theo chi nhánh: tên ca, mã ca, giờ bắt đầu/kết thúc, số giờ công, số nhân viên tối thiểu (`min_staff`), tối đa (`max_staff`), định biên tối thiểu Pha chế (`min_barista`), Phục vụ (`min_service`), màu nhận diện & các ngày áp dụng |
 
 ---
 
@@ -60,6 +70,8 @@ Tài liệu này lưu vết toàn bộ cơ sở dữ liệu MongoDB Atlas (Datab
   qr_code: { type: String, unique: true, sparse: true, index: true }, // Token quét QR
   hourly_rate: { type: Number, default: 18000, min: 0 }, // 18,000 VNĐ / giờ
   position: { type: String, default: 'service' },
+  assigned_store_id: { type: Schema.Types.ObjectId, ref: 'StoreConfig', default: null, index: true }, // Cơ sở làm việc cố định (cho trưởng ca, phó ca, nhân viên)
+  assigned_stores: [{ type: Schema.Types.ObjectId, ref: 'StoreConfig' }], // Danh sách cơ sở phụ trách (cho quản lý chuỗi)
   is_active: { type: Boolean, default: true, index: true },
   created_at: Date,
   updated_at: Date
@@ -190,4 +202,129 @@ Các Table: `notifications_truong_ca`, `notifications_quan_ly`, `notifications_a
   updated_at: Date
 }
 ```
+
+### 17. Bảng `recipe_categories` (Danh Mục Món & Bán Thành Phẩm Độc Lập)
+```typescript
+{
+  name: { type: String, required: true, unique: true, trim: true, index: true }, // "Trà trái cây", "Cà phê", "Trà sữa", "Đá xay", "Bán thành phẩm nội bộ", "Cốt trà & Syrup"...
+  type: { 
+    type: String, 
+    enum: ['customer_product', 'internal_prep', 'both'], 
+    default: 'customer_product', 
+    index: true 
+  },
+  description: { type: String, default: null },
+  sort_order: { type: Number, default: 0 },
+  is_active: { type: Boolean, default: true, index: true },
+  created_at: Date,
+  updated_at: Date
+}
+```
+
+### 18. Bảng `packagings`, `ingredients`, `toppings` & `sellable_toppings` (Multi-Store Isolated Collections)
+```typescript
+// Tất cả các bảng tồn kho và vật tư chi nhánh đều bắt buộc có store_id:
+{
+  store_id: { type: Schema.Types.ObjectId, ref: 'StoreConfig', required: true, index: true }, // Chi nhánh sở hữu tồn kho
+  code: { type: String, required: true, trim: true },
+  name: { type: String, required: true, trim: true },
+  category: { type: String, enum: ['packaging', 'ingredient', 'topping'], required: true },
+  unit: { type: String, required: true },
+  quantity_in_stock: { type: Number, default: 0 },
+  min_threshold: { type: Number, default: 0 },
+  cost_per_unit: { type: Number, default: 0 },
+  // Thuộc tính mở rộng theo loại:
+  cup_size?: string,             // Dành cho packagings (Size S 350ml, Size M 500ml, Size L 700ml...)
+  temperature_mode?: string,     // 'hot', 'cold', 'both'
+  applicable_to?: string,        // 'beverage', 'internal_prep', 'both' (nguyên liệu pha chế)
+  portion_unit?: string,         // Dành cho toppings & sellable_toppings (1 vá, 1 miếng, 1 viên...)
+  selling_price?: number,        // Giá bán lẻ cho khách của topping
+  gross_profit_margin?: number,  // Biên lãi gộp % tự động tính
+  is_active: { type: Boolean, default: true, index: true }
+}
+```
+
+### 19. Bảng `purchase_requisitions` (Phiếu Yêu Cầu Nhập Kho Chi Nhánh)
+```typescript
+{
+  code: { type: String, required: true, unique: true, index: true }, // "PR-20261029-CN01-001"
+  store_id: { type: Schema.Types.ObjectId, ref: 'stores', required: true, index: true },
+  store_name: { type: String, default: null },
+  creator_id: { type: Schema.Types.ObjectId, ref: 'users', required: true, index: true },
+  creator_name: { type: String, default: null },
+  creator_role: { type: String, required: true },
+  status: { 
+    type: String, 
+    enum: ['PENDING', 'APPROVED', 'PARTIALLY_CONVERTED', 'CONVERTED_TO_PO', 'REJECTED', 'CANCELLED'], 
+    default: 'PENDING',
+    index: true 
+  },
+  priority: { type: String, enum: ['NORMAL', 'URGENT'], default: 'NORMAL' },
+  expected_delivery_date: { type: Date, default: null },
+  notes: { type: String, default: null },
+  rejection_reason: { type: String, default: null },
+  items: [{
+    material_id: String,
+    material_code: String,
+    material_name: String,
+    category: String,
+    unit: String,
+    current_stock: Number,
+    min_threshold: Number,
+    requested_quantity: Number,
+    approved_quantity: Number,
+    suggested_supplier_id: String,
+    suggested_supplier_name: String,
+    status: { type: String, enum: ['PENDING', 'APPROVED', 'REJECTED', 'IN_PO'], default: 'PENDING' }
+  }],
+  created_at: Date,
+  updated_at: Date
+}
+```
+
+### 20. Bảng `purchase_orders` (Đơn Thu Mua Đa Chi Nhánh / Đơn Riêng Nhà Cung Cấp)
+```typescript
+{
+  po_number: { type: String, required: true, unique: true, index: true }, // "PO-20261029-001"
+  order_type: { type: String, enum: ['CONSOLIDATED', 'BRANCH_DIRECT'], required: true },
+  supplier_id: { type: Schema.Types.ObjectId, ref: 'suppliers', required: true, index: true },
+  supplier_name: { type: String, required: true },
+  created_by_id: { type: Schema.Types.ObjectId, ref: 'users', required: true },
+  created_by_name: { type: String, default: null },
+  status: { 
+    type: String, 
+    enum: ['PENDING', 'SENT', 'CONFIRMED', 'SHIPPING', 'PARTIALLY_RECEIVED', 'COMPLETED', 'CANCELLED'], 
+    default: 'PENDING',
+    index: true 
+  },
+  delivery_destination: { type: String, enum: ['CENTRAL_HUB', 'STORE_DIRECT'], required: true },
+  delivery_store_id: { type: Schema.Types.ObjectId, ref: 'stores', default: null, index: true },
+  delivery_address: { type: String, required: true },
+  contact_person: { type: String, default: null },
+  contact_phone: { type: String, default: null },
+  total_estimated_cost: { type: Number, default: 0 },
+  expected_arrival_date: { type: Date, default: null },
+  received_at: { type: Date, default: null },
+  received_by_id: { type: Schema.Types.ObjectId, ref: 'users', default: null },
+  received_by_name: { type: String, default: null },
+  notes: { type: String, default: null },
+  items: [{
+    requisition_id: String,
+    target_store_id: { type: Schema.Types.ObjectId, ref: 'stores', required: true },
+    target_store_name: String,
+    material_id: String,
+    material_code: String,
+    material_name: String,
+    category: String,
+    unit: String,
+    ordered_quantity: Number,
+    received_quantity: { type: Number, default: 0 },
+    unit_price: Number,
+    subtotal: Number
+  }],
+  created_at: Date,
+  updated_at: Date
+}
+```
+
 

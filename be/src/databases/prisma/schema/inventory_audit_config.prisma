@@ -1,0 +1,19 @@
+model InventoryAuditConfig {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  storeId               String?   @unique @map("store_id") @db.ObjectId
+  storeName             String?   @map("store_name")
+  allowedCreatorRoles   String[]  @map("allowed_creator_roles") // ["nhan_vien", "pho_ca_vat_lieu", "truong_ca", "quan_ly", "admin_he_thong"]
+  allowedReviewerRoles  String[]  @map("allowed_reviewer_roles") // ["pho_ca_vat_lieu", "truong_ca", "quan_ly", "admin_he_thong"]
+  frequencyType         String    @default("daily") @map("frequency_type") // daily, interval_days, weekly
+  intervalDays          Int       @default(1) @map("interval_days") // 1 (hàng ngày), 2 (2 ngày 1 lần), 3 (3 ngày 1 lần)
+  daysOfWeek            Int[]     @default([0, 1, 2, 3, 4, 5, 6]) @map("days_of_week")
+  reminderTime          String    @default("22:00") @map("reminder_time")
+  isActive              Boolean   @default(true) @map("is_active")
+  updatedById           String?   @map("updated_by_id") @db.ObjectId
+  updatedByName         String?   @map("updated_by_name")
+  updatedByRole         String?   @map("updated_by_role")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@map("inventory_audit_configs")
+}

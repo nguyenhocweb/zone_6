@@ -6,8 +6,10 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
-    "start": "tsx src/server.ts",
+    "postinstall": "prisma generate --schema=src/databases/prisma/schema",
+    "build": "prisma generate --schema=src/databases/prisma/schema && tsc",
+    "start": "node dist/server.js",
+    "start:dev": "tsx src/server.ts",
     "db:push": "prisma db push --schema=src/databases/prisma/schema",
     "db:generate": "prisma generate --schema=src/databases/prisma/schema",
     "db:seed": "tsx src/databases/seed/index.ts"

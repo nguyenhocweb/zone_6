@@ -2,8 +2,8 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LoginForm } from "@/features/auth/component/LoginForm";
-import { useAuth } from "@/features/auth/hook/useAuth";
+import { LoginForm } from "@/features/shared/auth/component/LoginForm";
+import { useAuth } from "@/features/shared/auth/hook/useAuth";
 
 export default function LoginPage() {
   const { user, isLoading } = useAuth();

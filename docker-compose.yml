@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./be
+      dockerfile: Dockerfile
+    container_name: zone6-backend
+    restart: always
+    environment:
+      - PORT=8000
+      - NODE_ENV=production
+      - DATABASE_URL=mongodb+srv://My_Restaurant:Matkhau2k3.@nguyenhocweb.pqyjucr.mongodb.net/zone_6?retryWrites=true&w=majority&appName=nguyenhocweb
+      - ZALO_SESSION_KEY=AES-256-GCM
+      - ZALO_SESSION_DIR=/app/.sessions
+      - ZALO_QR_TTL_MS=120000
+      - ZALO_SEND_DELAY_MS=3000
+    volumes:
+      # Giữ lại phiên đăng nhập Zalo Bot khi container khởi động lại
+      - zalo_sessions:/app/.sessions
+    networks:
+      - zone6-network
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: zone6-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    networks:
+      - zone6-network
+
+volumes:
+  zalo_sessions:
+
+networks:
+  zone6-network:
+    driver: bridge
+

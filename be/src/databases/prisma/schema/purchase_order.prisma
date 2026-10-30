@@ -1,0 +1,26 @@
+model PurchaseOrder {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  poNumber              String    @unique @map("po_number")
+  orderType             String    @map("order_type") // "CONSOLIDATED" | "BRANCH_DIRECT"
+  supplierId            String    @map("supplier_id") @db.ObjectId
+  supplierName          String    @map("supplier_name")
+  createdById           String    @map("created_by_id") @db.ObjectId
+  status                String    @default("PENDING") @map("status")
+  deliveryDestination   String    @map("delivery_destination") // "CENTRAL_HUB" | "STORE_DIRECT"
+  deliveryStoreId       String?   @map("delivery_store_id") @db.ObjectId
+  deliveryAddress       String    @map("delivery_address")
+  contactPerson         String?   @map("contact_person")
+  contactPhone          String?   @map("contact_phone")
+  totalEstimatedCost    Float     @default(0) @map("total_estimated_cost")
+  expectedArrivalDate   DateTime? @map("expected_arrival_date")
+  notes                 String?   @map("notes")
+  items                 Json      @map("items") // Array of PurchaseOrderItem
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@index([supplierId, status])
+  @@index([deliveryStoreId])
+  @@index([createdAt])
+  @@map("purchase_orders")
+}
+

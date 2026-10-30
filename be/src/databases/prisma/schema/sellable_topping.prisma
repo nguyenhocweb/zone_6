@@ -1,0 +1,16 @@
+model SellableTopping {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId      String?  @map("store_id") @db.ObjectId
+  toppingId    String?  @map("topping_id") @db.ObjectId
+  name         String   @map("name")
+  code         String   @unique @map("code")
+  portionUnit  String   @map("portion_unit") // "1 vá", "1 miếng", "1 muỗng", "1 viên", "1 phần"
+  sellingPrice Float    @default(0) @map("selling_price")
+  costEstimate Float?   @default(0) @map("cost_estimate")
+  description  String?  @map("description")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("sellable_toppings")
+}

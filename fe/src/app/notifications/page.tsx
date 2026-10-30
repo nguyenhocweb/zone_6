@@ -1,5 +1,5 @@
 import React from "react";
-import { NotificationCenterView } from "@/features/scheduling/component/NotificationCenterView";
+import { NotificationCenterView } from "@/features/shared/notifications/component/NotificationCenterView";
 
 export const instant = false;
 

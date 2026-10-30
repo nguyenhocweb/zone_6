@@ -145,3 +145,32 @@ html, :root {
   background: #d4af37;
 }
 
+/* Zone 6 Gold Horizontal Scrollbar */
+.gold-scrollbar-x {
+  scrollbar-width: thin;
+  scrollbar-color: #d4af37 #12141a;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gold-scrollbar-x::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.gold-scrollbar-x::-webkit-scrollbar-track {
+  background: #12141a;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gold-scrollbar-x::-webkit-scrollbar-thumb {
+  background: #8c7324;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.6);
+}
+
+.gold-scrollbar-x::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+}
+

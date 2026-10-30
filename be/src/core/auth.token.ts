@@ -10,6 +10,8 @@ export interface AuthTokenPayload {
   email?: string;
   role?: string;
   name?: string;
+  assigned_store_id?: string | null;
+  assigned_stores?: string[];
   tokenType?: 'access' | 'refresh';
   exp?: number;
 }
@@ -30,7 +32,14 @@ function base64UrlDecode(str: string): string {
   return Buffer.from(base64, 'base64').toString('utf8');
 }
 
-export function signAccessToken(payload: { userId: string; email: string; role: string; name: string }): string {
+export function signAccessToken(payload: {
+  userId: string;
+  email: string;
+  role: string;
+  name: string;
+  assigned_store_id?: string | null;
+  assigned_stores?: string[];
+}): string {
   const header = { alg: 'HS256', typ: 'JWT' };
   const exp = Date.now() + ACCESS_TOKEN_EXPIRY_MS;
   const fullPayload: AuthTokenPayload = { ...payload, tokenType: 'access', exp };

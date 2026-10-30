@@ -1,12 +1,18 @@
 model ZaloConfig {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  threadType     String   @default("group") @map("thread_type")
-  targetId       String   @default("") @map("target_id")
-  targetName     String?  @map("target_name")
-  imageUrl       String?  @map("image_url")
-  defaultMessage String?  @map("default_message")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  storeId        String?         @map("store_id") @db.ObjectId
+  channelType    ZaloChannelType @default(GENERAL) @map("channel_type")
+  threadType     String          @default("group") @map("thread_type")
+  targetId       String          @default("") @map("target_id")
+  targetName     String?         @map("target_name")
+  imageUrl       String?         @map("image_url")
+  defaultMessage String?         @map("default_message")
+  isActive       Boolean         @default(true) @map("is_active")
+  lastSentAt     DateTime?       @map("last_sent_at")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
 
+  @@unique([storeId, channelType])
   @@map("zalo_configs")
 }
+

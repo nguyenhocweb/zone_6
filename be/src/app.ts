@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import { logger } from './core/logger.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { createApiRouter } from './routes/index.js';
-import { ZaloService } from './modules/zalo/services/zalo.service.js';
+import { ZaloService } from './modules/admin_he_thong/zalo/services/zalo.service.js';
 
 export function createApp(zaloService: ZaloService): Application {
   const app = express();

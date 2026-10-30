@@ -2,9 +2,8 @@ import { createApp } from './app.js';
 import { ENV } from './config/env.config.js';
 import { connectDatabase, disconnectDatabase } from './core/database.js';
 import { logger } from './core/logger.js';
-import { ZaloService } from './modules/zalo/services/zalo.service.js';
-
-import { AuthService } from './modules/user/services/auth.service.js';
+import { ZaloService } from './modules/admin_he_thong/zalo/services/zalo.service.js';
+import { AuthService } from './modules/shared/auth/services/auth.service.js';
 
 async function bootstrap() {
   // 1. Kết nối MongoDB Atlas (Database: zone_6)

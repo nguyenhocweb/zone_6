@@ -1,0 +1,18 @@
+model Topping {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String?  @map("store_id") @db.ObjectId
+  name            String   @map("name")
+  code            String   @unique @map("code")
+  unit            String   @map("unit") // "Kg", "g", "Hộp", "Túi", "Gói", "Vá", "Hũ"
+  costPerUnit     Float    @default(0) @map("cost_per_unit")
+  quantityInStock Float    @default(0) @map("quantity_in_stock")
+  minThreshold    Float    @default(10) @map("min_threshold")
+  portionUnit     String?  @map("portion_unit") // "1 vá", "1 miếng", "1 muỗng", "1 viên", "1 phần"
+  sellingPrice    Float?   @default(0) @map("selling_price") // Giá bán ra cho khách (VNĐ)
+  description     String?  @map("description")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("toppings")
+}

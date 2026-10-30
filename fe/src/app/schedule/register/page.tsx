@@ -1,5 +1,5 @@
 import React from "react";
-import { ShiftRegistrationView } from "@/features/scheduling/component/ShiftRegistrationView";
+import { ShiftRegistrationView } from "@/features/nhan_vien/shift-registration/component/ShiftRegistrationView";
 
 export const instant = false;
 

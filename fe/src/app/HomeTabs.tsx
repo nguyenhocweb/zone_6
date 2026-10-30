@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { SchedulingDashboard } from "@/features/scheduling/component/SchedulingDashboard";
-import { ShiftRegistrationView } from "@/features/scheduling/component/ShiftRegistrationView";
-import { StaffSalaryTable } from "@/features/scheduling/component/StaffSalaryTable";
-import { ZaloManager } from "@/features/zalo/component/ZaloManager";
-import { LoginForm } from "@/features/auth/component/LoginForm";
-import { useAuth } from "@/features/auth/hook/useAuth";
-import { ROLE_BADGE_MAP } from "@/features/auth/type/auth.type";
+import { SchedulingDashboard } from "@/features/pho_ca_lam_lich/scheduling/component/SchedulingDashboard";
+import { ShiftRegistrationView } from "@/features/nhan_vien/shift-registration/component/ShiftRegistrationView";
+import { StaffSalaryTable } from "@/features/quan_ly/salary/component/StaffSalaryTable";
+import { ZaloManager } from "@/features/admin_he_thong/zalo/component/ZaloManager";
+import { LoginForm } from "@/features/shared/auth/component/LoginForm";
+import { useAuth } from "@/features/shared/auth/hook/useAuth";
+import { ROLE_BADGE_MAP } from "@/features/shared/auth/type/auth.type";
 import {
   FaCalendarAlt,
   FaCalendarCheck,
@@ -21,9 +21,9 @@ import {
   FaFire,
   FaIdCard,
 } from "react-icons/fa";
-import { useScheduleNotifications } from "@/features/scheduling/hook/useScheduleNotifications";
-import { NotificationCenterModal } from "@/features/scheduling/component/NotificationCenterModal";
-import { UserProfileView } from "@/features/auth/component/UserProfileView";
+import { useScheduleNotifications } from "@/features/shared/notifications/hook/useScheduleNotifications";
+import { NotificationCenterModal } from "@/features/shared/notifications/component/NotificationCenterModal";
+import { UserProfileView } from "@/features/shared/auth/component/UserProfileView";
 
 type MainTabKey = "scheduling" | "salary" | "zalo" | "profile";
 type ScheduleSubTabKey = "all_staff_schedule" | "register_shift";

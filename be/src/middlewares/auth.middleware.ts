@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { verifyAuthToken, type AuthTokenPayload } from '../core/auth.token.js';
 import { ForbiddenError, UnauthorizedError } from '../core/errors.js';
-import type { UserRole } from '../modules/user/schemas/user-roles.js';
+import type { UserRole } from '../modules/quan_ly/staff/schemas/user-roles.js';
 
 export interface AuthenticatedRequest extends Request {
   user?: AuthTokenPayload;
@@ -47,4 +47,23 @@ export function requireRoles(...allowedRoles: UserRole[]) {
 
     next();
   };
+}
+
+export function optionalAuthenticate(req: AuthenticatedRequest, _res: Response, next: NextFunction): void {
+  let token: string | undefined;
+
+  if (req.cookies?.zone6_access_token) {
+    token = req.cookies.zone6_access_token;
+  } else if (req.headers.authorization?.startsWith('Bearer ')) {
+    token = req.headers.authorization.substring(7).trim();
+  }
+
+  if (token) {
+    const payload = verifyAuthToken(token);
+    if (payload) {
+      req.user = payload;
+    }
+  }
+
+  next();
 }

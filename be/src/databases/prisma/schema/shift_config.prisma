@@ -1,0 +1,23 @@
+model ShiftConfig {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  shiftCode    String   @map("shift_code")
+  shiftName    String   @map("shift_name")
+  startTime    String   @map("start_time")
+  endTime      String   @map("end_time")
+  workHours    Float    @default(5.0) @map("work_hours")
+  minStaff     Int      @default(2) @map("min_staff")
+  maxStaff     Int      @default(4) @map("max_staff")
+  minBarista   Int      @default(1) @map("min_barista")
+  minService   Int      @default(1) @map("min_service")
+  color        String   @default("#D4AF37") @map("color")
+  applyDays    String[] @default(["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) @map("apply_days")
+  displayOrder Int      @default(1) @map("display_order")
+  storeId      String?  @map("store_id") @db.ObjectId
+  isActive     Boolean  @default(true) @map("is_active")
+  description  String?  @map("description")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([storeId, shiftCode])
+  @@map("shift_configs")
+}

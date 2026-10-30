@@ -1,0 +1,34 @@
+name: Auto Deploy to VPS (CI/CD)
+
+# Tự động kích hoạt mỗi khi có code mới được đẩy lên nhánh main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Backend to Ubuntu VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH vào VPS và Cập Nhật Docker Containers
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            echo "🚀 [1/3] Đang truy cập thư mục dự án trên VPS..."
+            cd /var/www/zone6
+
+            echo "📥 [2/3] Kéo mã nguồn mới nhất từ GitHub..."
+            git pull origin main
+
+            echo "🐳 [3/3] Docker tự động build lại và khởi động phiên bản mới..."
+            docker compose up -d --build
+
+            echo "🎉 Hoàn tất cập nhật Backend trên VPS thành công!"
+
