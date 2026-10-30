@@ -70,25 +70,37 @@ docker compose version
 
    ```bash
    cat << 'EOF' > be/.env
-   # Cấu hình Cổng Service
-   PORT=8000
-   NODE_ENV=production
+# Cấu hình Cổng Service
+PORT=8000
+NODE_ENV=production
 
-   # Kết nối CSDL MongoDB Atlas (Database: zone_6)
-   DATABASE_URL="mongodb+srv://My_Restaurant:Matkhau2k3.@nguyenhocweb.pqyjucr.mongodb.net/zone_6?retryWrites=true&w=majority&appName=nguyenhocweb"
+# Kết nối CSDL MongoDB Atlas (Database: zone_6)
+DATABASE_URL="mongodb+srv://My_Restaurant:Matkhau2k3.@nguyenhocweb.pqyjucr.mongodb.net/zone_6?retryWrites=true&w=majority&appName=nguyenhocweb"
 
-   # Khóa bí mật mã hóa Session (AES-256-GCM)
-   ZALO_SESSION_KEY=AES-256-GCM
+# Khóa bí mật mã hóa Session (AES-256-GCM)
+ZALO_SESSION_KEY=AES-256-GCM
 
-   # Thư mục lưu trữ phiên đăng nhập mã hóa Zalo Bot (bên trong Docker container)
-   ZALO_SESSION_DIR=/app/.sessions
+# Thư mục lưu trữ phiên đăng nhập mã hóa Zalo Bot (bên trong Docker container)
+ZALO_SESSION_DIR=/app/.sessions
 
-   # Giới hạn thời gian sống của QR (mili-giây, mặc định 120s)
-   ZALO_QR_TTL_MS=120000
+# Giới hạn thời gian sống của QR (mili-giây, mặc định 120s)
+ZALO_QR_TTL_MS=120000
 
-   # Tùy chọn Anti-Spam: Độ trễ tối thiểu giữa 2 lần gửi tin (mili-giây)
-   ZALO_SEND_DELAY_MS=3000
-   EOF
+# Tùy chọn Anti-Spam: Độ trễ tối thiểu giữa 2 lần gửi tin (mili-giây)
+ZALO_SEND_DELAY_MS=3000
+
+# Cấu hình Cloudinary (Lưu trữ ảnh chấm công, hóa đơn)
+CLOUDINARY_NAME=dwbzexuqd
+CLOUDINARY_API_KEY=437768759352932
+CLOUDINARY_API_SECRET=GYbnPtFn9mWFLteHIvQRWF0XIDU
+
+# Cấu hình Token Authentication (JWT)
+ACCESS_TOKEN_EXPIRES_IN=15m
+REFRESH_TOKEN_EXPIRES_IN=3d
+JWT_SECRET=Wtqh5wrHO5pkWJtPxkJ6oGMW8aSz26IdUtrGZlL3X9h2Aagqy52J61564MeyOduUqL2XkRh3bWEKebOzhIBalMibzs9FyEAgGpXBLFqIw47H6veIE5oeLmQVFTUbV2fLQWSC
+ACCESS_TOKEN_SECRET=Wtqh5wrHO5pkWJtPxkJ6oGMW8aSz26IdUtrGZlL3X9h2Aagqy52J61564MeyOduUqL2XkRh3bWEKebOzhIBalMibzs9FyEAgGpXBLFqIw47H6veIE5oeLmQVFTUbV2fLQWSC
+REFRESH_TOKEN_SECRET=bOG0ctzET1qF1T27i4l2xeHGCM0uVIK2vVQTD8LZriQP3izjxsPrQHUFg32YmEa9dyQDWkVblGXO25H2CX4sf2vIvYv49xwZCPHiWx0qzpxHWZsK18ZtSbrgEu8FT8KiGZzc
+EOF
    ```
 
 3. **Chỉ cần 1 lệnh duy nhất để Build và Chạy toàn bộ hệ thống bằng Docker Compose:**
@@ -234,6 +246,18 @@ ZALO_SESSION_DIR=.sessions
 # Thời gian sống QR Code & Anti-Spam
 ZALO_QR_TTL_MS=120000
 ZALO_SEND_DELAY_MS=3000
+
+# Cấu hình Cloudinary (Lưu trữ ảnh chấm công, hóa đơn)
+CLOUDINARY_NAME=dwbzexuqd
+CLOUDINARY_API_KEY=437768759352932
+CLOUDINARY_API_SECRET=GYbnPtFn9mWFLteHIvQRWF0XIDU
+
+# Cấu hình Token Authentication (JWT)
+ACCESS_TOKEN_EXPIRES_IN=15m
+REFRESH_TOKEN_EXPIRES_IN=3d
+JWT_SECRET=Wtqh5wrHO5pkWJtPxkJ6oGMW8aSz26IdUtrGZlL3X9h2Aagqy52J61564MeyOduUqL2XkRh3bWEKebOzhIBalMibzs9FyEAgGpXBLFqIw47H6veIE5oeLmQVFTUbV2fLQWSC
+ACCESS_TOKEN_SECRET=Wtqh5wrHO5pkWJtPxkJ6oGMW8aSz26IdUtrGZlL3X9h2Aagqy52J61564MeyOduUqL2XkRh3bWEKebOzhIBalMibzs9FyEAgGpXBLFqIw47H6veIE5oeLmQVFTUbV2fLQWSC
+REFRESH_TOKEN_SECRET=bOG0ctzET1qF1T27i4l2xeHGCM0uVIK2vVQTD8LZriQP3izjxsPrQHUFg32YmEa9dyQDWkVblGXO25H2CX4sf2vIvYv49xwZCPHiWx0qzpxHWZsK18ZtSbrgEu8FT8KiGZzc
 ```
 > Nhấn **`Ctrl + O`** $\rightarrow$ nhấn **`Enter`** để Lưu $\rightarrow$ nhấn **`Ctrl + X`** để Thoát.
 
