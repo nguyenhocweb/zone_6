@@ -4,6 +4,19 @@
 
 ---
 
+### [2026-10-30 20:12] - Cấu Hình PostCSS Tailwind CSS v4 Khắc Phục Lỗi Mất Giao Diện Trên Vercel
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Vấn đề phát hiện qua ảnh màn hình:** Giao diện Vercel bị vỡ CSS (chỉ hiển thị HTML thuần với nền tối và viền text, mất toàn bộ flexbox/grid/centering/padding/buttons).
+- **Nguyên nhân cốt lõi:** Dự án sử dụng Tailwind CSS v4 nhưng thiếu plugin `@tailwindcss/postcss` và file cấu hình `postcss.config.mjs`, dẫn đến việc bộ biên dịch Webpack bỏ qua `@import "tailwindcss";` và không sinh ra file CSS hoàn chỉnh.
+- **Nội dung hoàn thành:**
+  - Cài đặt `@tailwindcss/postcss` cho thư mục `fe/`.
+  - Khởi tạo [fe/postcss.config.mjs](file:///d:/DuAnCaNhan/zone_6/fe/postcss.config.mjs).
+  - Cập nhật [fe/next.config.ts](file:///d:/DuAnCaNhan/zone_6/fe/next.config.ts): Loại bỏ cấu hình loader turbopack không tương thích để PostCSS xử lý CSS chuẩn hóa.
+  - Kiểm thử build thành công, file CSS sinh ra tăng từ 2KB lên 147KB đầy đủ toàn bộ utility classes và bảng màu Luxury Gold / Dark Carbon.
+  - Push commit lên nhánh `main`.
+
+---
+
 ### [2026-10-30 19:54] - Khắc Phục Lỗi Xung Đột Dependency npm ERESOLVE và Cấu Hình Vercel Build Ổn Định
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Nguyên nhân:** Khi Vercel chạy `npm install` mặc định bị lỗi `npm error ERESOLVE could not resolve` do xung đột peer dependency giữa `@types/node@20` và `vitest@5.0.3` (yêu cầu node >=22).
