@@ -4,6 +4,16 @@
 
 ---
 
+### [2026-10-30 19:54] - Khắc Phục Lỗi Xung Đột Dependency npm ERESOLVE và Cấu Hình Vercel Build Ổn Định
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Nguyên nhân:** Khi Vercel chạy `npm install` mặc định bị lỗi `npm error ERESOLVE could not resolve` do xung đột peer dependency giữa `@types/node@20` và `vitest@5.0.3` (yêu cầu node >=22).
+- **Nội dung hoàn thành:**
+  - Khởi tạo file `.npmrc` và `fe/.npmrc` chứa cấu hình `legacy-peer-deps=true` để npm tự động giải quyết peer dependencies linh hoạt khi cài đặt.
+  - Cập nhật [fe/package.json](file:///d:/DuAnCaNhan/zone_6/fe/package.json): Nâng cấp `@types/node` lên `^22` và đặt lệnh build sang `next build --webpack` đảm bảo tính tương thích và ổn định tuyệt đối trên môi trường máy chủ Vercel.
+  - Cập nhật [fe/next.config.ts](file:///d:/DuAnCaNhan/zone_6/fe/next.config.ts) và [fe/src/core/api/axios-instance.ts](file:///d:/DuAnCaNhan/zone_6/fe/src/core/api/axios-instance.ts): Trỏ proxy về cổng 80 chuẩn của Nginx VPS (`http://160.191.243.53`).
+
+---
+
 ### [2026-10-30 18:58] - Tự Động Hóa 100% CI/CD Bằng GitHub Actions Cho VPS
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** *"cấu hình đi"* (Tự động hóa cập nhật VPS khi push GitHub).
