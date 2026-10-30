@@ -4,6 +4,16 @@
 
 ---
 
+### [2026-10-30 20:25] - Chuyển Bộ Kỹ Năng Impeccable Sang Trạng Thái Nội Bộ (Untrack & Ignore Khỏi GitHub)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** *"bô skill này đừng đưa lên github"*
+- **Nội dung hoàn thành:**
+  - Thêm cấu hình `.agents/skills/impeccable/` vào file [.gitignore](file:///d:/DuAnCaNhan/zone_6/.gitignore).
+  - Sử dụng lệnh `git rm -r --cached` để loại bỏ toàn bộ 64 tệp tin của bộ kỹ năng khỏi Git tracking trên GitHub nhưng **vẫn giữ nguyên 100% tệp trên máy tính cục bộ**.
+  - Commit và push cập nhật lên GitHub `main` (commit `918b4e6`).
+
+---
+
 ### [2026-10-30 20:21] - Tích Hợp Bộ Kỹ Năng Thiết Kế Giao Diện Đỉnh Cao (Impeccable Design Skill)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Clone skill `pbakaus/impeccable` từ GitHub và bổ sung vào thư mục `.agents/` theo chuẩn format của tác giả.

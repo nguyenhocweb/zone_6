@@ -75,3 +75,4 @@ Thư mục `.agents/skills/impeccable/` cung cấp 25+ lệnh chuyên biệt:
 - `animate [target]`: Thêm chuyển động tinh tế, purposeful motion.
 - `clarify [target]`: Chuẩn hóa câu chữ UX copy, thông báo lỗi và nhãn nút.
 - `harden [target]`: Bổ sung edge cases (mạng yếu, text quá dài, lỗi server).
+
