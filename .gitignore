@@ -49,3 +49,6 @@ Thumbs.db
 *.pem
 .vercel
 *.tsbuildinfo
+
+# Impeccable Design Skill Suite (Local only)
+.agents/skills/impeccable/
