@@ -1,0 +1,19 @@
+model PosSession {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  storeId        String           @map("store_id") @db.ObjectId
+  shiftId        String           @map("shift_id") @db.ObjectId
+  sessionCode    String           @unique @map("session_code")
+  
+  status         PosSessionStatus @default(ACTIVE)
+  
+  // Live Cart hiện tại trong ca: { items: [], totalAmount: 0, lockedBy: null, lockedByName: null }
+  currentCart    Json             @map("current_cart")
+  
+  activeStaffIds String[]         @map("active_staff_ids")
+  
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  @@unique([storeId, shiftId, sessionCode])
+  @@map("pos_sessions")
+}

@@ -16,6 +16,7 @@ import { createInventoryAuditRouter } from '../modules/pho_ca_vat_lieu/material/
 import { createSupplierRouter } from '../modules/admin_he_thong/supplier/routes/supplier.routes.js';
 import { createPurchaseRequisitionRouter } from '../modules/pho_ca_vat_lieu/purchase_requisition/routes/purchase-requisition.routes.js';
 import { createPurchaseOrderRouter } from '../modules/quan_ly/purchase_order/routes/purchase-order.routes.js';
+import { createPosRouter } from '../modules/pos/routes/pos.routes.js';
 
 export function createApiRouter(zaloService: ZaloService): Router {
   const router = Router();
@@ -86,7 +87,11 @@ export function createApiRouter(zaloService: ZaloService): Router {
   router.use('/v1/recipes', createRecipeRouter());
   router.use('/recipes', createRecipeRouter());
 
-  // 8. Phân hệ Zalo Integration (Cả v1 lẫn root zalo)
+  // 8. Phân hệ POS Live Order Đồng Bộ Thời Gian Thực (CN12)
+  router.use('/v1/pos', createPosRouter());
+  router.use('/pos', createPosRouter());
+
+  // 9. Phân hệ Zalo Integration (Cả v1 lẫn root zalo)
   const zaloRouter = createZaloRouter(zaloService);
   router.use('/v1/zalo', zaloRouter);
   router.use('/zalo', zaloRouter);

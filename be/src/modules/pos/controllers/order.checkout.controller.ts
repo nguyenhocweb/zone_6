@@ -1,0 +1,51 @@
+import { Response } from 'express';
+import { asyncHandler } from '../../../core/utils/asyncHandler.js';
+import { AuthenticatedRequest } from '../../../middlewares/auth.middleware.js';
+import { OrderCheckoutService } from '../services/order.checkout.service.js';
+
+export class OrderCheckoutController {
+  private service: OrderCheckoutService;
+
+  constructor() {
+    this.service = new OrderCheckoutService();
+  }
+
+  handle = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const user = req.user!;
+    const {
+      storeId,
+      shiftId,
+      sessionCode,
+      tableNumber,
+      customerName,
+      items,
+      totalAmount,
+      discountAmount,
+      finalAmount,
+      paymentMethod,
+    } = req.body;
+
+    const newOrder = await this.service.execute({
+      storeId,
+      shiftId,
+      sessionCode,
+      tableNumber,
+      customerName,
+      items,
+      totalAmount,
+      discountAmount,
+      finalAmount,
+      paymentMethod: paymentMethod || 'VIETQR',
+      user: {
+        userId: user.userId,
+        name: user.name || user.email || 'Nhân viên',
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Thanh toán đơn hàng thành công.',
+      data: newOrder,
+    });
+  });
+}

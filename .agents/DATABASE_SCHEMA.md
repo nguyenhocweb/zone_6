@@ -41,6 +41,8 @@ Tài liệu này lưu vết toàn bộ cơ sở dữ liệu MongoDB Atlas (Datab
 | `inventory_audit_configs` | `InventoryAuditConfigModel` | `be/src/modules/pho_ca_vat_lieu/material/models/inventory-audit-config.model.ts` | `store_id (unique)`, `is_active` | Bảng cấu hình quy trình kiểm kho theo chi nhánh: phân quyền vai trò tạo phiếu, phân quyền vai trò sửa/duyệt, danh sách ca kiểm kho bắt buộc trong ngày, chu kỳ tần suất (hàng ngày, 2-3 ngày/lần, hàng tuần) & giờ nhắc nhở |
 | `suppliers` | `SupplierModel` | `be/src/modules/admin_he_thong/supplier/models/supplier.model.ts` | `code (unique)`, `name`, `is_active` | Bảng quản lý nhà cung cấp & nguồn hàng vật tư, danh sách nguyên vật liệu liên kết và đơn giá nhập (Độc quyền Admin & Quản lý) |
 | `shift_configs` | `ShiftConfigModel` | `be/src/modules/pho_ca_lam_lich/scheduling/models/shift-config.model.ts` | `{ store_id, shift_code } (unique)`, `store_id`, `is_active` | Bảng cấu hình ca làm việc & định biên nhân sự theo chi nhánh: tên ca, mã ca, giờ bắt đầu/kết thúc, số giờ công, số nhân viên tối thiểu (`min_staff`), tối đa (`max_staff`), định biên tối thiểu Pha chế (`min_barista`), Phục vụ (`min_service`), màu nhận diện & các ngày áp dụng |
+| `orders` | `OrderModel` | `be/src/modules/pos/models/order.model.ts` | `order_code (unique)`, `{ store_id, created_at }` | Bảng lưu trữ hóa đơn bán hàng vĩnh viễn sau thanh toán, chi tiết món, topping, số tiền, phương thức (VietQR/Tiền mặt), người tạo, người thu |
+| `pos_sessions` | `PosSessionModel` | `be/src/modules/pos/models/pos-session.model.ts` | `session_code (unique)`, `{ store_id, shift_id }` | Bảng phiên làm việc giỏ hàng trực tiếp (Live Cart) theo ca trực tại chi nhánh, hỗ trợ đồng bộ đa thiết bị qua WebSocket |
 
 ---
 

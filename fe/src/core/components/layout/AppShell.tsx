@@ -27,6 +27,7 @@ import {
   FaBookOpen,
   FaClipboardCheck,
   FaClock,
+  FaCashRegister,
 } from "react-icons/fa";
 import { useScheduleNotifications } from "@/features/shared/notifications/hook/useScheduleNotifications";
 
@@ -112,6 +113,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
 
   // Xác định trạng thái active của từng link theo URL pathname
   const isScheduleActive = pathname === "/" || pathname === "/schedule";
+  const isPosActive = pathname === "/pos" || pathname.startsWith("/pos");
   const isCheckinActive = pathname === "/checkin" || pathname.startsWith("/checkin");
   const isRegisterActive = pathname === "/schedule/register";
   const isShiftsActive = pathname === "/shifts" || pathname.startsWith("/shifts");
@@ -323,6 +325,34 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 <div className="text-xs font-black truncate flex-1">
                   Điểm Danh Ca Làm
                 </div>
+              </Link>
+
+              {/* 2b. Bán Hàng POS (Live Order & VietQR) */}
+              <Link
+                href="/pos"
+                id="tab-btn-pos"
+                data-testid="tab-pos"
+                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
+                  isPosActive
+                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                    isPosActive
+                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                  }`}
+                >
+                  <FaCashRegister />
+                </div>
+                <div className="text-xs font-black truncate flex-1">
+                  Bán Hàng POS
+                </div>
+                <span className="text-[9px] px-1.5 py-0.5 rounded font-extrabold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  LIVE
+                </span>
               </Link>
 
               {/* 3. Đăng Ký Ca Làm */}

@@ -4,6 +4,35 @@
 
 ---
 
+### [2026-10-30 21:40] - Triển Khai Hoàn Tất CN12: POS Live Order Đồng Bộ Thời Gian Thực Đa Thiết Bị & Cấu Hình Quét Source Tailwind v4
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Xây dựng hệ thống bán hàng POS real-time cho 3 nhân viên trong cùng ca và cùng chi nhánh (khi 1 người thêm món hoặc thao tác thì cả ca đồng bộ tức thì, cùng bấm thanh toán sinh mã VietQR động; nhân viên ngoài ca hoặc chưa điểm danh GPS/Camera bị từ chối vào). Khắc phục triệt để hiện tượng vỡ giao diện trên Vercel do thiếu source quét CSS.
+- **Nội dung hoàn thành:**
+  - **Prisma & Cơ sở dữ liệu:**
+    - Cập nhật enum `PaymentMethod`, `PaymentStatus`, `PosSessionStatus` tại [enum.prisma](file:///d:/DuAnCaNhan/zone_6/be/src/databases/prisma/schema/enum.prisma).
+    - Tạo model `PosSession` ([pos_session.prisma](file:///d:/DuAnCaNhan/zone_6/be/src/databases/prisma/schema/pos_session.prisma)) và `Order` ([order.prisma](file:///d:/DuAnCaNhan/zone_6/be/src/databases/prisma/schema/order.prisma)).
+    - Đăng ký bảng mới vào [.agents/DATABASE_SCHEMA.md](file:///d:/DuAnCaNhan/zone_6/.agents/DATABASE_SCHEMA.md).
+  - **Backend Granular Node.js (`be/src/modules/pos/`):**
+    - Mongoose Models: `models/pos-session.model.ts`, `models/order.model.ts`.
+    - Repositories: `repositories/pos-session.repository.ts`, `repositories/order.repository.ts`.
+    - Granular Services & Controllers:
+      - `pos.verify-shift`: Kiểm tra điểm danh GPS/Camera & ca làm việc hiện tại của nhân viên (Shift Gatekeeper).
+      - `pos-session.get`: Lấy giỏ hàng đang hoạt động của ca trực tại chi nhánh.
+      - `pos-cart.update`: Cập nhật giỏ hàng theo thời gian thực, khóa đơn khi đang thao tác.
+      - `order.checkout`: Tạo đơn hàng chính thức, mã đơn `Z6-<STORE_CODE>-<DATE>-<SEQ>`, xóa giỏ phiên.
+      - `order.history`: Lịch sử hóa đơn chi nhánh.
+    - WebSockets: `socket/pos.socket.ts` (Namespace `/pos`) đồng bộ tức thì các sự kiện `pos:join`, `pos:cart_update`, `pos:cart_lock`, `pos:order_completed`. Tích hợp Socket.io vào HTTP server tại [be/src/server.ts](file:///d:/DuAnCaNhan/zone_6/be/src/server.ts).
+  - **Frontend Feature-Sliced Next.js (`fe/src/features/pos/` & `fe/src/app/pos/`):**
+    - Hook `useLivePos.ts`: Kết nối Socket.io `/pos`, quản lý room theo `store_id + shift_config_id`, phát/nhận sự kiện live.
+    - Giao diện POS đẳng cấp: `PosHeader.tsx`, `MenuCatalog.tsx`, `LiveCart.tsx`, `VietQrModal.tsx`, `OrderHistoryModal.tsx`.
+    - Rào chắn bảo vệ `fe/src/app/pos/page.tsx`: Tự động kiểm tra quyền ca trực qua API, nếu chưa điểm danh sẽ thông báo và chuyển hướng sang `/checkin`.
+    - Menu điều hướng: Bổ sung "Bán Hàng POS" với huy hiệu "LIVE" vào [AppShell.tsx](file:///d:/DuAnCaNhan/zone_6/fe/src/core/components/layout/AppShell.tsx).
+  - **Tối Ưu Hóa Tailwind CSS v4 & Khắc Phục Vỡ Giao Diện Vercel:**
+    - Bổ sung chỉ thị `@source "../**/*.{ts,tsx}";` tại [fe/src/app/globals.css](file:///d:/DuAnCaNhan/zone_6/fe/src/app/globals.css) để Tailwind v4 quét sâu toàn bộ thư mục `features/` và `core/`.
+    - Build thành công cả BE và FE với exit code 0.
+
+---
+
 ### [2026-10-30 20:25] - Chuyển Bộ Kỹ Năng Impeccable Sang Trạng Thái Nội Bộ (Untrack & Ignore Khỏi GitHub)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** *"bô skill này đừng đưa lên github"*

@@ -66,3 +66,21 @@ enum ZaloChannelType {
   GENERAL
 }
 
+enum PaymentMethod {
+  VIETQR
+  CASH
+  CARD
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum PosSessionStatus {
+  ACTIVE
+  CLOSED
+}
+
+
