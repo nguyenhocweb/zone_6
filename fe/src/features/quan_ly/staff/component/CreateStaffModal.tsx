@@ -13,6 +13,9 @@ import {
   FaSpinner,
   FaLock,
   FaStore,
+  FaCheckCircle,
+  FaCopy,
+  FaCheck,
 } from "react-icons/fa";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import type { UserRole } from "@/features/shared/auth/type/auth.type";
@@ -29,6 +32,15 @@ interface CreateStaffModalProps {
 
 export const CreateStaffModal: React.FC<CreateStaffModalProps> = ({ isOpen, onClose }) => {
   const [mounted, setMounted] = useState(false);
+  const [createdSuccessData, setCreatedSuccessData] = useState<{
+    name: string;
+    user_code: string;
+    email: string;
+    password?: string;
+    email_sent?: boolean;
+    role_label?: string;
+  } | null>(null);
+  const [hasCopiedPassword, setHasCopiedPassword] = useState(false);
   const { user: currentUser } = useAuth();
   const createStaffMutation = useCreateStaff();
 
@@ -210,15 +222,27 @@ export const CreateStaffModal: React.FC<CreateStaffModalProps> = ({ isOpen, onCl
         ...parseResult.data,
       },
       {
-        onSuccess: () => {
-          onClose();
+        onSuccess: (res: any) => {
+          const staff = res?.staff;
+          if (staff?.temp_password) {
+            setCreatedSuccessData({
+              name: staff.name,
+              user_code: staff.user_code,
+              email: staff.email,
+              password: staff.temp_password,
+              email_sent: staff.email_sent,
+              role_label: staff.role_label,
+            });
+          } else {
+            onClose();
+          }
           // Reset form
           setFormData({
             name: "",
             email: "",
             phone: "",
             role: allowedRoleOptions[0]?.value || "nhan_vien",
-            position: "Pha chế",
+            position: "Nhân viên",
             hourly_rate: 18000,
           });
         },
@@ -226,16 +250,98 @@ export const CreateStaffModal: React.FC<CreateStaffModalProps> = ({ isOpen, onCl
     );
   };
 
+  const handleCloseModal = () => {
+    setCreatedSuccessData(null);
+    setHasCopiedPassword(false);
+    onClose();
+  };
+
   return createPortal(
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 overflow-y-auto">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-[#0B0C10]/80 backdrop-blur-md transition-opacity"
-        onClick={onClose}
+        onClick={handleCloseModal}
       />
 
-      {/* Modal Dialog */}
-      <div className="relative w-full max-w-xl rounded-3xl bg-[#12141A] border border-[#212532] shadow-2xl p-6 sm:p-7 space-y-6 animate-fadeIn z-10 my-8">
+      {createdSuccessData ? (
+        /* Pop-up Thông Báo Khởi Tạo Thành Công Kèm Mật Khẩu */
+        <div className="relative w-full max-w-md rounded-3xl bg-[#12141A] border border-[#D4AF37]/50 shadow-2xl p-6 sm:p-7 space-y-6 animate-fadeIn z-10 my-8">
+          <div className="flex flex-col items-center text-center space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl shadow-lg shadow-emerald-500/10">
+              <FaCheckCircle />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-[#F4F5F8]">Khởi Tạo Nhân Viên Thành Công!</h3>
+              <p className="text-xs text-[#8E95A5] mt-1">
+                Tài khoản cho nhân sự <strong className="text-[#D4AF37]">{createdSuccessData.name}</strong> đã sẵn sàng.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-3 text-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-[#212532]">
+              <span className="text-[#8E95A5]">Mã nhân viên:</span>
+              <span className="font-mono font-black text-[#D4AF37]">{createdSuccessData.user_code}</span>
+            </div>
+            <div className="flex items-center justify-between pb-2 border-b border-[#212532]">
+              <span className="text-[#8E95A5]">Email đăng nhập:</span>
+              <span className="font-semibold text-[#F4F5F8]">{createdSuccessData.email}</span>
+            </div>
+            <div className="space-y-1.5 pt-1">
+              <div className="flex items-center justify-between text-[#8E95A5]">
+                <span>Mật khẩu khởi tạo:</span>
+                <span className="text-[10px] text-amber-400 font-semibold">Bảo mật tự động</span>
+              </div>
+              <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-[#181B24] border border-[#D4AF37]/40">
+                <span className="font-mono text-base font-black tracking-widest text-[#D4AF37]">
+                  {createdSuccessData.password}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (createdSuccessData.password) {
+                      navigator.clipboard.writeText(createdSuccessData.password);
+                      setHasCopiedPassword(true);
+                      toast.success("Đã sao chép mật khẩu vào bộ nhớ tạm!");
+                      setTimeout(() => setHasCopiedPassword(false), 3000);
+                    }
+                  }}
+                  className="flex items-center gap-1.5 py-1.5 px-3 rounded-lg gold-gradient-bg text-[#0B0C10] font-black text-xs transition hover:brightness-110 cursor-pointer shrink-0 shadow"
+                >
+                  {hasCopiedPassword ? <FaCheck /> : <FaCopy />}
+                  <span>{hasCopiedPassword ? "Đã chép" : "Sao chép"}</span>
+                </button>
+              </div>
+            </div>
+            <div className="pt-2">
+              {createdSuccessData.email_sent ? (
+                <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] flex items-center gap-2">
+                  <FaCheckCircle className="shrink-0" />
+                  <span>Mật khẩu đã được gửi tự động tới email của nhân viên.</span>
+                </div>
+              ) : (
+                <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[11px] flex items-center gap-2">
+                  <FaShieldAlt className="shrink-0" />
+                  <span>Mẹo: Bạn có thể sao chép mật khẩu để gửi trực tiếp cho nhân viên qua Zalo.</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={handleCloseModal}
+              className="w-full py-3 px-5 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs shadow-lg transition hover:brightness-110 cursor-pointer text-center"
+            >
+              Hoàn Tất &amp; Đóng
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* Modal Dialog Form */
+        <div className="relative w-full max-w-xl rounded-3xl bg-[#12141A] border border-[#212532] shadow-2xl p-6 sm:p-7 space-y-6 animate-fadeIn z-10 my-8">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-[#212532]">
           <div className="flex items-center gap-3">
@@ -522,6 +628,7 @@ export const CreateStaffModal: React.FC<CreateStaffModalProps> = ({ isOpen, onCl
           </div>
         </form>
       </div>
+      )}
     </div>,
     document.body
   );

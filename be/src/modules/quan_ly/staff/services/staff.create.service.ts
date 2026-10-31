@@ -74,7 +74,7 @@ export class StaffCreateService {
       assigned_stores?: string[];
     },
     dto: StaffCreateDto
-  ): Promise<{ staff: StaffItemResponse; message: string }> {
+  ): Promise<{ staff: StaffItemResponse; temp_password?: string; email_sent?: boolean; message: string }> {
     const actorLevel = USER_ROLE_LEVEL[actor.role] ?? 5;
     const targetLevel = USER_ROLE_LEVEL[dto.role] ?? 5;
 
@@ -154,16 +154,26 @@ export class StaffCreateService {
     const staffResponse = this.repo.toResponse(newDoc);
 
     // 6. Gửi email thông báo tài khoản kèm mật khẩu ngẫu nhiên cho nhân viên
-    await emailService.sendStaffCredentials({
-      toEmail: dto.email,
-      staffName: dto.name,
-      userCode: userCode,
-      roleLabel: USER_ROLE_LABELS[dto.role] || dto.role,
-      position: dto.position || 'Nhân viên',
-      generatedPassword: randomPassword,
-      creatorName: actor.name || 'Quản lý',
-      creatorRoleLabel: USER_ROLE_LABELS[actor.role] || actor.role,
-    });
+    let emailSent = false;
+    try {
+      emailSent = await emailService.sendStaffCredentials({
+        toEmail: dto.email,
+        staffName: dto.name,
+        userCode: userCode,
+        roleLabel: USER_ROLE_LABELS[dto.role] || dto.role,
+        position: dto.position || 'Nhân viên',
+        generatedPassword: randomPassword,
+        creatorName: actor.name || 'Quản lý',
+        creatorRoleLabel: USER_ROLE_LABELS[actor.role] || actor.role,
+      });
+    } catch (mailErr) {
+      console.error('[StaffCreate] Lỗi gửi email credentials:', mailErr);
+      emailSent = false;
+    }
+
+    const emailStatusText = emailSent
+      ? `Mật khẩu ngẫu nhiên đã được gửi trực tiếp đến email ${dto.email}.`
+      : `Email chưa thể gửi tự động. Vui lòng gửi mật khẩu khởi tạo cho nhân sự.`;
 
     return {
       staff: {
@@ -182,8 +192,12 @@ export class StaffCreateService {
         assigned_stores: staffResponse.assigned_stores || [],
         is_active: staffResponse.is_active,
         created_at: staffResponse.created_at,
-      },
-      message: `Tài khoản cho nhân sự ${dto.name} (${userCode}) đã được khởi tạo thành công! Mật khẩu ngẫu nhiên đã được bảo mật gửi trực tiếp đến email ${dto.email}.`,
+        temp_password: randomPassword,
+        email_sent: emailSent,
+      } as any,
+      temp_password: randomPassword,
+      email_sent: emailSent,
+      message: `Tài khoản cho nhân sự ${dto.name} (${userCode}) đã được khởi tạo thành công! ${emailStatusText}`,
     };
   }
 }

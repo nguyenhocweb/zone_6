@@ -4,6 +4,23 @@
 
 ---
 
+### [2026-10-31 19:25] - Tích Hợp Gửi Email Mật Khẩu Thật (Gmail SMTP) & Pop-up Hiển Thị Sao Chép Mật Khẩu Khi Tạo Nhân Viên
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Kiểm tra kỹ cơ chế gửi mật khẩu khi tạo nhân viên, cấu hình Gmail SMTP và cập nhật toàn bộ lên GitHub.
+- **Nội dung hoàn thành:**
+  - **Cấu hình SMTP Gmail:**
+    - Bổ sung cấu hình `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` (mật khẩu ứng dụng 16 ký tự Google) vào `be/.env` và kịch bản triển khai tự động `.github/workflows/deploy.yml`.
+  - **Backend (Staff & Email Service):**
+    - `staff.create.service.ts`: Bắt ngoại lệ gửi email an toàn, trả về trạng thái `email_sent` và `temp_password` trong phản hồi API.
+    - Cập nhật interface `StaffItemResponse` trong `staff.schema.ts`.
+  - **Frontend (UX/UI):**
+    - `CreateStaffModal.tsx`: Thêm Pop-up hiển thị mã nhân viên, email, mật khẩu sinh ngẫu nhiên kèm nút **[Sao Chép Mật Khẩu]** và trạng thái email để Quản lý có thể gửi trực tiếp qua Zalo cho nhân sự.
+    - Chuẩn hóa vị trí mặc định thành `"Nhân viên"`.
+  - **CI/CD Deployment:**
+    - Cải tiến `.github/workflows/deploy.yml` tự động chuẩn bị thư mục `/var/www/zone6`, đồng bộ mã nguồn qua Git và nạp đầy đủ biến môi trường production.
+
+---
+
 ### [2026-10-31 18:45] - Tinh Gọn & Gộp Các Vị Trí Phân Mảnh Thành "Nhân Viên" Chuẩn Hóa
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** *"gộp lại thành 1 nhân viên thui"* (kèm ảnh chụp dropdown vị trí: Pha chế, Phục vụ, Thu ngân, Giữ xe).

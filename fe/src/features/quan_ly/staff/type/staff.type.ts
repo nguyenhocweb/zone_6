@@ -17,6 +17,8 @@ export interface StaffItem {
   assigned_stores?: string[];
   is_active: boolean;
   created_at: string;
+  temp_password?: string;
+  email_sent?: boolean;
 }
 
 export interface CreateStaffPayload {

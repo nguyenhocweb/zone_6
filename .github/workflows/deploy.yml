@@ -21,13 +21,47 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
           script: |
-            echo "🚀 [1/3] Đang truy cập thư mục dự án trên VPS..."
+            set -e
+            echo "🚀 [1/4] Chuẩn bị môi trường và thư mục dự án trên VPS..."
+            sudo mkdir -p /var/www/zone6
+            sudo chown -R $USER:$USER /var/www/zone6
             cd /var/www/zone6
 
-            echo "📥 [2/3] Kéo mã nguồn mới nhất từ GitHub..."
-            git pull origin main
+            echo "📥 [2/4] Đồng bộ mã nguồn mới nhất từ GitHub..."
+            if [ -d ".git" ]; then
+              git fetch origin main
+              git reset --hard origin/main
+            else
+              git clone https://github.com/nguyenhocweb/zone_6.git .
+            fi
 
-            echo "🐳 [3/3] Docker tự động build lại và khởi động phiên bản mới..."
+            echo "⚙️ [3/4] Kiểm tra cấu hình môi trường be/.env..."
+            if [ ! -f "be/.env" ]; then
+              cat << 'EOF' > be/.env
+            PORT=8000
+            NODE_ENV=production
+            DATABASE_URL="mongodb+srv://My_Restaurant:Matkhau2k3.@nguyenhocweb.pqyjucr.mongodb.net/zone_6?retryWrites=true&w=majority&appName=nguyenhocweb"
+            ZALO_SESSION_KEY=AES-256-GCM
+            ZALO_SESSION_DIR=/app/.sessions
+            ZALO_QR_TTL_MS=120000
+            ZALO_SEND_DELAY_MS=3000
+            CLOUDINARY_NAME=dwbzexuqd
+            CLOUDINARY_API_KEY=437768759352932
+            CLOUDINARY_API_SECRET=GYbnPtFn9mWFLteHIvQRWF0XIDU
+            ACCESS_TOKEN_EXPIRES_IN=15m
+            REFRESH_TOKEN_EXPIRES_IN=3d
+            JWT_SECRET=Wtqh5wrHO5pkWJtPxkJ6oGMW8aSz26IdUtrGZlL3X9h2Aagqy52J61564MeyOduUqL2XkRh3bWEKebOzhIBalMibzs9FyEAgGpXBLFqIw47H6veIE5oeLmQVFTUbV2fLQWSC
+            ACCESS_TOKEN_SECRET=Wtqh5wrHO5pkWJtPxkJ6oGMW8aSz26IdUtrGZlL3X9h2Aagqy52J61564MeyOduUqL2XkRh3bWEKebOzhIBalMibzs9FyEAgGpXBLFqIw47H6veIE5oeLmQVFTUbV2fLQWSC
+            REFRESH_TOKEN_SECRET=bOG0ctzET1qF1T27i4l2xeHGCM0uVIK2vVQTD8LZriQP3izjxsPrQHUFg32YmEa9dyQDWkVblGXO25H2CX4sf2vIvYv49xwZCPHiWx0qzpxHWZsK18ZtSbrgEu8FT8KiGZzc
+            SMTP_HOST=smtp.gmail.com
+            SMTP_PORT=465
+            SMTP_USER=nvnremix@gmail.com
+            SMTP_PASS=lororsoatrirleyr
+            APP_URL=http://160.191.243.53:8000
+            EOF
+            fi
+
+            echo "🐳 [4/4] Khởi động Docker Containers..."
             docker compose up -d --build
 
             echo "🎉 Hoàn tất cập nhật Backend trên VPS thành công!"
