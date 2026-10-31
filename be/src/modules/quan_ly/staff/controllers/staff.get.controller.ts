@@ -10,6 +10,7 @@ export class StaffGetController {
   handle = asyncHandler(async (req: AuthenticatedRequest, res: Response, _next: NextFunction): Promise<void> => {
     const actor = {
       userId: req.user?.userId || '',
+      email: req.user?.email || '',
       role: (req.user?.role || 'nhan_vien') as UserRole,
       assigned_store_id: req.user?.assigned_store_id,
       assigned_stores: (req.user as any)?.assigned_stores,

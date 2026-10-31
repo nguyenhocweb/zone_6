@@ -5,6 +5,7 @@ import { StoreConfigModel } from '../../../admin_he_thong/store-config/models/st
 
 export interface StaffGetActor {
   userId: string;
+  email?: string;
   role: UserRole;
   assigned_store_id?: string | null;
   assigned_stores?: string[];
@@ -33,26 +34,30 @@ export class StaffGetService {
       storeMap.set(sc._id.toString(), sc.store_name);
     }
 
-    // 1. Phân cấp quyền hiển thị nhân viên theo CN02:
-    // - Quản lý (Level 2): Thấy tất cả cấp dưới gồm Trưởng ca (Level 3), Phó ca (Level 4), Nhân viên (Level 5)
-    // - Trưởng ca (Level 3): Chỉ thấy nhân viên cấp dưới gồm Phó ca (Level 4), Nhân viên (Level 5)
-    // - Admin (Level 1): Thấy toàn bộ nhân sự (Level >= 2)
+    // 1. Phân cấp quyền hiển thị nhân viên theo nguyên tắc:
+    // - BẮT BUỘC KHÔNG HIỂN THỊ CHÍNH TÀI KHOẢN MÌNH LÊN
+    // - BẮT BUỘC KHÔNG HIỂN THỊ TÀI KHOẢN CÙNG CẤP HOẶC CAO HƠN (targetLevel <= actorLevel)
     const levelFiltered = allUsers.filter((u) => {
+      // 1.1 Loại trừ tuyệt đối chính tài khoản của mình
+      if (actor.userId && u.id === actor.userId) {
+        return false;
+      }
+      if (actor.email && u.email.toLowerCase().trim() === actor.email.toLowerCase().trim()) {
+        return false;
+      }
+
+      // 1.2 So sánh cấp bậc (Level số càng nhỏ thì quyền càng lớn: Admin=1, QL=2, TC=3, PC=4, NV=5)
       const targetLevel = USER_ROLE_LEVEL[u.role] ?? 5;
 
-      if (actorRole === 'admin_he_thong') {
-        return true;
+      // Không hiển thị tài khoản cùng cấp hoặc cao hơn
+      // Admin (1) chỉ thấy Level > 1 (QL, TC, PC, NV). Tuyệt đối không thấy Admin khác.
+      // Quản lý (2) chỉ thấy Level > 2 (TC, PC, NV). Tuyệt đối không thấy Quản lý khác hoặc Admin.
+      // Trưởng ca (3) chỉ thấy Level > 3 (PC, NV). Tuyệt đối không thấy Trưởng ca khác.
+      if (targetLevel <= actorLevel) {
+        return false;
       }
 
-      if (actorRole === 'quan_ly') {
-        return targetLevel > 2;
-      }
-
-      if (actorRole === 'truong_ca') {
-        return targetLevel > 3;
-      }
-
-      return false;
+      return true;
     });
 
     // 2. Phân lập dữ liệu theo phạm vi cơ sở (Store Scope - CN02 §3.1):

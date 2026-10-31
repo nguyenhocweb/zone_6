@@ -1,5 +1,14 @@
 import { UserRole } from "@/features/shared/auth/type/auth.type";
 
+export const USER_ROLE_LEVEL: Record<string, number> = {
+  admin_he_thong: 1,
+  quan_ly: 2,
+  truong_ca: 3,
+  pho_ca_lam_lich: 4,
+  pho_ca_vat_lieu: 4,
+  nhan_vien: 5,
+};
+
 export interface StaffItem {
   id: string;
   user_code: string;

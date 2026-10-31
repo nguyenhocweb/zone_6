@@ -23,7 +23,7 @@ import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useGetStaff } from "../hook/useGetStaff";
 import { useGetStores } from "@/features/admin_he_thong/store/hook/useGetStores";
 import type { Store } from "@/features/admin_he_thong/store/type/store.type";
-import type { StaffItem } from "../type/staff.type";
+import { type StaffItem, USER_ROLE_LEVEL } from "../type/staff.type";
 import { CreateStaffModal } from "./CreateStaffModal";
 import { EditStaffModal } from "./EditStaffModal";
 import { StaffQrModal } from "./StaffQrModal";
@@ -127,9 +127,30 @@ export const StaffManagementView: React.FC = () => {
   const isManagerOrAdmin =
     currentUser?.role === "quan_ly" || currentUser?.role === "admin_he_thong";
 
+  // Lọc chỉ giữ lại nhân sự cấp dưới (BẮT BUỘC KHÔNG THẤY CHÍNH MÌNH VÀ TÀI KHOẢN CÙNG CẤP)
+  const subordinateStaffList = useMemo(() => {
+    const actorLevel = currentUser?.role ? USER_ROLE_LEVEL[currentUser.role] ?? 5 : 5;
+    return staffList.filter((item) => {
+      // 1. Tuyệt đối không hiển thị chính tài khoản đang đăng nhập
+      if (currentUser?.id && item.id === currentUser.id) return false;
+      if (
+        currentUser?.email &&
+        item.email.toLowerCase().trim() === currentUser.email.toLowerCase().trim()
+      ) {
+        return false;
+      }
+
+      // 2. Tuyệt đối không hiển thị tài khoản cùng cấp hoặc cao hơn (targetLevel <= actorLevel)
+      const targetLevel = item.role ? USER_ROLE_LEVEL[item.role] ?? 5 : 5;
+      if (targetLevel <= actorLevel) return false;
+
+      return true;
+    });
+  }, [staffList, currentUser]);
+
   // Lọc dữ liệu client-side theo từ khóa và vai trò
   const filteredStaff = useMemo(() => {
-    return staffList.filter((item) => {
+    return subordinateStaffList.filter((item) => {
       // 1. Lọc theo role
       if (roleFilter !== "all" && item.role !== roleFilter) {
         return false;
@@ -148,7 +169,7 @@ export const StaffManagementView: React.FC = () => {
 
       return true;
     });
-  }, [staffList, roleFilter, searchTerm]);
+  }, [subordinateStaffList, roleFilter, searchTerm]);
 
   // Reset trang về 1 khi đổi bộ lọc hoặc tìm kiếm
   useEffect(() => {
@@ -162,16 +183,16 @@ export const StaffManagementView: React.FC = () => {
     return filteredStaff.slice(startIndex, startIndex + pageSize);
   }, [filteredStaff, currentPage, pageSize]);
 
-  // Thống kê nhanh
+  // Thống kê nhanh theo đúng danh sách nhân sự cấp dưới
   const stats = useMemo(() => {
-    const total = staffList.length;
-    const managers = staffList.filter((s) => s.role === "truong_ca").length;
-    const deputies = staffList.filter(
+    const total = subordinateStaffList.length;
+    const managers = subordinateStaffList.filter((s) => s.role === "truong_ca").length;
+    const deputies = subordinateStaffList.filter(
       (s) => s.role === "pho_ca_lam_lich" || s.role === "pho_ca_vat_lieu"
     ).length;
-    const members = staffList.filter((s) => s.role === "nhan_vien").length;
+    const members = subordinateStaffList.filter((s) => s.role === "nhan_vien").length;
     return { total, managers, deputies, members };
-  }, [staffList]);
+  }, [subordinateStaffList]);
 
   const startIndex = filteredStaff.length === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const endIndex = Math.min(currentPage * pageSize, filteredStaff.length);
