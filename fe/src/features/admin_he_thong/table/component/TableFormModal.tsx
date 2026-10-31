@@ -1,0 +1,203 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { FaTimes, FaPlus, FaSave } from 'react-icons/fa';
+import { TableItem, CreateTableDto, UpdateTableDto } from '../type/table.type';
+
+interface TableFormModalProps {
+  isOpen: boolean;
+  table: TableItem | null;
+  onClose: () => void;
+  onSubmitCreate: (data: CreateTableDto) => void;
+  onSubmitUpdate: (id: string, data: UpdateTableDto) => void;
+  isSubmitting: boolean;
+}
+
+const COMMON_ZONES = ['Tầng 1', 'Tầng 2', 'Sân Vườn', 'Ban Công', 'Phòng VIP', 'Quầy Bar'];
+
+export const TableFormModal: React.FC<TableFormModalProps> = ({
+  isOpen,
+  table,
+  onClose,
+  onSubmitCreate,
+  onSubmitUpdate,
+  isSubmitting,
+}) => {
+  const [tableNumber, setTableNumber] = useState('');
+  const [zoneName, setZoneName] = useState('Tầng 1');
+  const [customZone, setCustomZone] = useState('');
+  const [capacity, setCapacity] = useState(4);
+  const [status, setStatus] = useState<'AVAILABLE' | 'OCCUPIED' | 'RESERVED'>('AVAILABLE');
+
+  useEffect(() => {
+    if (table) {
+      setTableNumber(table.table_number);
+      if (COMMON_ZONES.includes(table.zone_name)) {
+        setZoneName(table.zone_name);
+        setCustomZone('');
+      } else {
+        setZoneName('Khác');
+        setCustomZone(table.zone_name);
+      }
+      setCapacity(table.capacity || 4);
+      setStatus(table.status || 'AVAILABLE');
+    } else {
+      setTableNumber('');
+      setZoneName('Tầng 1');
+      setCustomZone('');
+      setCapacity(4);
+      setStatus('AVAILABLE');
+    }
+  }, [table, isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!tableNumber.trim()) return;
+
+    const finalZone = zoneName === 'Khác' ? (customZone.trim() || 'Sảnh Chính') : zoneName;
+
+    if (table) {
+      onSubmitUpdate(table.id, {
+        table_number: tableNumber.trim(),
+        zone_name: finalZone,
+        capacity: Number(capacity),
+        status,
+      });
+    } else {
+      onSubmitCreate({
+        table_number: tableNumber.trim(),
+        zone_name: finalZone,
+        capacity: Number(capacity),
+      });
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-[#12141a] border border-[#212532] rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col animate-in fade-in zoom-in-95 duration-200">
+        {/* Header */}
+        <div className="p-4 border-b border-[#212532] flex items-center justify-between bg-[#181b24]/50">
+          <h3 className="text-sm font-extrabold text-white">
+            {table ? `Chỉnh Sửa Bàn ${table.table_number}` : 'Thêm Bàn Mới'}
+          </h3>
+          <button
+            onClick={onClose}
+            className="w-7 h-7 rounded-full bg-[#181b24] text-[#a0a5b5] hover:text-white flex items-center justify-center text-xs"
+          >
+            <FaTimes />
+          </button>
+        </div>
+
+        {/* Form Body */}
+        <form onSubmit={handleSubmit} className="p-5 space-y-4">
+          {/* Table Number */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#f4f5f8] uppercase tracking-wider">
+              Số Bàn / Mã Bàn <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="VD: 01, 02, VIP 1..."
+              value={tableNumber}
+              onChange={(e) => setTableNumber(e.target.value)}
+              required
+              className="w-full bg-[#181b24] border border-[#212532] rounded-xl px-3 py-2.5 text-xs text-white placeholder-[#6c7280] focus:border-[#d4af37] outline-none"
+            />
+          </div>
+
+          {/* Zone Selection */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#f4f5f8] uppercase tracking-wider">
+              Khu Vực (Zone)
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {[...COMMON_ZONES, 'Khác'].map((z) => (
+                <button
+                  key={z}
+                  type="button"
+                  onClick={() => setZoneName(z)}
+                  className={`py-2 px-2.5 rounded-xl border text-xs font-bold transition text-center ${
+                    zoneName === z
+                      ? 'border-[#d4af37] bg-[#d4af37]/15 text-[#f4f5f8]'
+                      : 'border-[#212532] bg-[#181b24] text-[#a0a5b5]'
+                  }`}
+                >
+                  {z}
+                </button>
+              ))}
+            </div>
+
+            {zoneName === 'Khác' && (
+              <input
+                type="text"
+                placeholder="Nhập tên khu vực mới..."
+                value={customZone}
+                onChange={(e) => setCustomZone(e.target.value)}
+                className="w-full mt-2 bg-[#181b24] border border-[#212532] rounded-xl px-3 py-2 text-xs text-white placeholder-[#6c7280] focus:border-[#d4af37] outline-none"
+              />
+            )}
+          </div>
+
+          {/* Capacity */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#f4f5f8] uppercase tracking-wider">
+              Sức Chứa (Số Ghế)
+            </label>
+            <input
+              type="number"
+              min="1"
+              max="50"
+              value={capacity}
+              onChange={(e) => setCapacity(Number(e.target.value))}
+              className="w-full bg-[#181b24] border border-[#212532] rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-[#d4af37] outline-none"
+            />
+          </div>
+
+          {/* Status (if editing) */}
+          {table && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-[#f4f5f8] uppercase tracking-wider">
+                Trạng Thái Bàn
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { key: 'AVAILABLE', label: 'Trống', color: 'text-emerald-400' },
+                  { key: 'OCCUPIED', label: 'Có Khách', color: 'text-amber-400' },
+                  { key: 'RESERVED', label: 'Đã Đặt', color: 'text-blue-400' },
+                ].map((s) => (
+                  <button
+                    key={s.key}
+                    type="button"
+                    onClick={() => setStatus(s.key as any)}
+                    className={`py-2 rounded-xl border text-xs font-bold transition text-center ${
+                      status === s.key
+                        ? 'border-[#d4af37] bg-[#d4af37]/15 text-[#f4f5f8]'
+                        : 'border-[#212532] bg-[#181b24] text-[#a0a5b5]'
+                    }`}
+                  >
+                    <span className={s.color}>{s.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Submit */}
+          <div className="pt-3">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#f7d77b] text-black font-extrabold text-xs shadow-lg hover:brightness-110 active:scale-95 transition cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {table ? <FaSave /> : <FaPlus />}
+              <span>{isSubmitting ? 'Đang lưu...' : table ? 'Cập Nhật Bàn' : 'Tạo Bàn & Mã QR'}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+

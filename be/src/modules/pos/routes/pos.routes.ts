@@ -5,6 +5,10 @@ import { PosSessionGetController } from '../controllers/pos-session.get.controll
 import { PosCartUpdateController } from '../controllers/pos-cart.update.controller.js';
 import { OrderCheckoutController } from '../controllers/order.checkout.controller.js';
 import { OrderHistoryController } from '../controllers/order.history.controller.js';
+import { verifyTableOrderController } from '../controllers/table-order.verify.controller.js';
+import { createTableOrderController } from '../controllers/table-order.create.controller.js';
+import { voidOrderController } from '../controllers/order.void.controller.js';
+import { listAllOrdersController } from '../controllers/order.list-all.controller.js';
 
 export function createPosRouter(): Router {
   const router = Router();
@@ -14,6 +18,10 @@ export function createPosRouter(): Router {
   const cartUpdateController = new PosCartUpdateController();
   const checkoutController = new OrderCheckoutController();
   const historyController = new OrderHistoryController();
+
+  // 0. Public Table QR Self-Ordering (Khách quét QR tại bàn)
+  router.get('/table-order/verify', verifyTableOrderController);
+  router.post('/table-order/submit', createTableOrderController);
 
   // 1. Xác thực điều kiện ca trực & điểm danh GPS/Camera
   router.get('/verify-shift', authenticate, verifyShiftController.handle);
@@ -30,6 +38,8 @@ export function createPosRouter(): Router {
 
   // 5. Lịch sử hóa đơn đã thanh toán theo chi nhánh
   router.get('/orders', authenticate, historyController.handle);
+  router.get('/orders/all', authenticate, listAllOrdersController);
+  router.post('/orders/:id/void', authenticate, voidOrderController);
 
   return router;
 }

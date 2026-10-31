@@ -4,6 +4,39 @@
 
 ---
 
+### [2026-10-31 18:25] - Triển Khai Hoàn Tất CN13 (Sơ Đồ Bàn, Khách Quét QR Gọi Món & Geofence GPS Chống Troll) và CN14 (Quản Lý Danh Sách Hóa Đơn & In Bill K80)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Hủy bỏ chức năng "Tự Động Trừ Tồn Kho Theo Công Thức Món".
+  2. Bổ sung chức năng xem danh sách hóa đơn bill (lọc theo ngày/ca/bàn/PTTT/trạng thái, xem chi tiết, in lại hóa đơn nhiệt K80, hủy bill có lưu vết lý do).
+  3. Bổ sung chức năng tạo QR từng bàn để khách quét mã, bắt buộc lấy vị trí GPS xung quanh quán mới hiện giao diện gọi món và thanh toán tại bàn (chống troll mở QR tại nhà).
+  4. Admin cấu hình chế độ gọi món (tại quầy POS, tại bàn QR hoặc cả hai) và cấu hình bán kính định vị geofence bàn.
+- **Nội dung hoàn thành:**
+  - **Prisma & Cơ sở dữ liệu:**
+    - Cập nhật enum `TableStatus`, `OrderingMode`, `OrderSource` trong `be/src/databases/prisma/schema/enum.prisma`.
+    - Tạo model `Table` (`be/src/databases/prisma/schema/table.prisma`).
+    - Bổ sung cấu hình bàn vào `StoreConfig` (`orderingMode`, `tableGeofenceRadiusMeters`, `isTableGeofenceStrict`).
+    - Bổ sung trường bàn và GPS vào `Order` (`tableId`, `orderSource`, `customerLat`, `customerLng`, `distanceMeters`, `voidReason`, `voidedByName`, `voidedAt`).
+    - Sinh mã Prisma Client thành công (`npm --prefix be run db:generate`).
+  - **Backend Granular Node.js:**
+    - Phân hệ Table: Mongoose model, repository, services (`table.create`, `table.get`, `table.update`, `table.delete` với HMAC `qr_token`), controllers và routes tại `be/src/modules/admin_he_thong/table/`.
+    - Phân hệ Khách Gọi Món QR: `table-order.verify.service.ts` (kiểm tra GPS Haversine và chính sách quán), `table-order.create.service.ts` (tạo đơn tại bàn, cập nhật bàn `OCCUPIED`, broadcast WebSocket `pos:new_table_order`).
+    - Phân hệ Quản Lý Hóa Đơn: `order.list-all.service.ts` (phân trang, lọc đa điều kiện, tổng kết doanh thu), `order.void.service.ts` (hủy đơn có lưu vết lý do).
+    - Cập nhật POS socket và mount routes trong `be/src/routes/index.ts`.
+  - **Frontend Next.js 14 App Router:**
+    - Phân hệ Khách Gọi Món Tại Bàn (`fe/src/features/table-order/` & `fe/src/app/order/page.tsx`): `GeofenceGuard.tsx` (khóa màn hình chống troll nếu ở xa hoặc từ chối GPS), `CustomerMenu.tsx` (thực đơn điện tử), `ItemCustomizerModal.tsx` (tùy chọn đường/đá/size/topping), `CustomerCartDrawer.tsx` (giỏ hàng nổi & thanh toán), `TableVietQrModal.tsx` (VietQR động tại bàn).
+    - Phân hệ Sơ Đồ Bàn & QR (`fe/src/features/admin_he_thong/table/` & `fe/src/app/tables/page.tsx`): `TableManagementView.tsx`, `TableQrPrintModal.tsx` (in Standee mica decal, tải ảnh PNG, sao chép link, tạo lại token), `TableFormModal.tsx`.
+    - Phân hệ Quản Lý Hóa Đơn (`fe/src/features/pos/` & `fe/src/app/orders/page.tsx`): `OrderManagementView.tsx` (bảng hóa đơn, bộ lọc thời gian & kênh bán, KPI cards), `OrderDetailModal.tsx` (in hóa đơn nhiệt K80), `VoidOrderModal.tsx`.
+    - Cấu hình Admin: Tích hợp chế độ gọi món và thanh trượt bán kính GPS Geofence bàn vào `fe/src/features/admin_he_thong/checkin-config/component/CheckinConfigView.tsx`.
+    - Menu Sidebar: Thêm 2 mục "Sơ Đồ Bàn & QR" và "Quản Lý Hóa Đơn" vào `fe/src/core/components/layout/AppShell.tsx`.
+  - **Đồng Bộ Tài Liệu Chuẩn:**
+    - Tạo `plane/chuc_nang/CN13_ban_va_khach_goi_mon_qr_gps.md`.
+    - Tạo `plane/chuc_nang/CN14_quan_ly_hoa_don_va_bill.md`.
+    - Cập nhật bảng `plane/giam_sat/tien_do_chuc_nang.md`.
+    - Cập nhật `.agents/DATABASE_SCHEMA.md` và `.agents/REACT_QUERY_REGISTRY.md`.
+
+---
+
 ### [2026-10-31 17:32] - Khởi Tạo Bảng Đặc Tả Toàn Diện Từng Chức Năng Hệ Thống (DANH_SACH_CHUC_NANG_HE_THONG.md)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** *"viết file md liệt kê chi tiết từng chức năng 1 của hệ thống hiện có"*

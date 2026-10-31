@@ -3,11 +3,20 @@ import { logger } from '../../../core/logger.js';
 import { PosSessionRepository } from '../repositories/pos-session.repository.js';
 import { PosCartUpdateService } from '../services/pos-cart.update.service.js';
 
+let posNamespaceInstance: any = null;
+
+export function emitPosEvent(storeId: string, event: string, data: any) {
+  if (posNamespaceInstance) {
+    posNamespaceInstance.emit(event, { ...data, storeId });
+  }
+}
+
 export function setupPosSocket(io: Server) {
   const sessionRepo = new PosSessionRepository();
   const cartUpdateService = new PosCartUpdateService();
 
   const posNamespace = io.of('/pos');
+  posNamespaceInstance = posNamespace;
 
   posNamespace.on('connection', (socket: Socket) => {
     logger.info(`[POS Socket] Client kết nối: ${socket.id}`);

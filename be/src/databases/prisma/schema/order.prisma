@@ -3,8 +3,14 @@ model Order {
   storeId        String        @map("store_id") @db.ObjectId
   shiftId        String?       @map("shift_id") @db.ObjectId
   orderCode      String        @unique @map("order_code")
+  tableId        String?       @map("table_id") @db.ObjectId
   tableNumber    String?       @map("table_number")
   customerName   String?       @map("customer_name")
+  orderSource    OrderSource   @default(STAFF_POS) @map("order_source")
+  
+  customerLat    Float?        @map("customer_lat")
+  customerLng    Float?        @map("customer_lng")
+  distanceMeters Float?        @map("distance_meters")
   
   items          Json          // Mảng các món: [{ recipeId, name, quantity, unitPrice, subtotal, toppings: [], notes, addedByName }]
   totalAmount    Float         @map("total_amount")
@@ -14,10 +20,15 @@ model Order {
   paymentMethod  PaymentMethod @default(VIETQR) @map("payment_method")
   paymentStatus  PaymentStatus @default(COMPLETED) @map("payment_status")
   
-  createdById    String        @map("created_by_id") @db.ObjectId
+  createdById    String?       @map("created_by_id") @db.ObjectId
   createdByName  String        @map("created_by_name")
   paidById       String?       @map("paid_by_id") @db.ObjectId
   paidByName     String?       @map("paid_by_name")
+  
+  voidReason     String?       @map("void_reason")
+  voidedById     String?       @map("voided_by_id") @db.ObjectId
+  voidedByName   String?       @map("voided_by_name")
+  voidedAt       DateTime?     @map("voided_at")
   
   paidAt         DateTime?     @map("paid_at")
   createdAt      DateTime      @default(now()) @map("created_at")

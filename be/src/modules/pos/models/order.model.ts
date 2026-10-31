@@ -19,18 +19,27 @@ export interface IOrder extends Document {
   store_id: mongoose.Types.ObjectId;
   shift_id?: mongoose.Types.ObjectId;
   order_code: string;
+  table_id?: mongoose.Types.ObjectId;
   table_number?: string;
   customer_name?: string;
+  order_source: 'STAFF_POS' | 'CUSTOMER_TABLE_QR';
+  customer_lat?: number;
+  customer_lng?: number;
+  distance_meters?: number;
   items: IOrderItem[];
   total_amount: number;
   discount_amount: number;
   final_amount: number;
   payment_method: 'VIETQR' | 'CASH' | 'CARD';
   payment_status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
-  created_by_id: mongoose.Types.ObjectId;
+  created_by_id?: mongoose.Types.ObjectId;
   created_by_name: string;
   paid_by_id?: mongoose.Types.ObjectId;
   paid_by_name?: string;
+  void_reason?: string;
+  voided_by_id?: mongoose.Types.ObjectId;
+  voided_by_name?: string;
+  voided_at?: Date;
   paid_at?: Date;
   created_at: Date;
   updated_at: Date;
@@ -61,8 +70,18 @@ const OrderSchema = new Schema<IOrder>(
     store_id: { type: Schema.Types.ObjectId, ref: 'stores', required: true, index: true },
     shift_id: { type: Schema.Types.ObjectId, ref: 'shift_configs' },
     order_code: { type: String, required: true, unique: true },
+    table_id: { type: Schema.Types.ObjectId, ref: 'tables', default: null },
     table_number: { type: String, default: '' },
     customer_name: { type: String, default: 'Khách lẻ' },
+    order_source: {
+      type: String,
+      enum: ['STAFF_POS', 'CUSTOMER_TABLE_QR'],
+      default: 'STAFF_POS',
+      index: true,
+    },
+    customer_lat: { type: Number, default: null },
+    customer_lng: { type: Number, default: null },
+    distance_meters: { type: Number, default: null },
     items: { type: [OrderItemSchema], default: [] },
     total_amount: { type: Number, required: true, min: 0 },
     discount_amount: { type: Number, default: 0, min: 0 },
@@ -76,11 +95,16 @@ const OrderSchema = new Schema<IOrder>(
       type: String,
       enum: ['PENDING', 'COMPLETED', 'CANCELLED'],
       default: 'COMPLETED',
+      index: true,
     },
-    created_by_id: { type: Schema.Types.ObjectId, ref: 'users', required: true },
+    created_by_id: { type: Schema.Types.ObjectId, ref: 'users', default: null },
     created_by_name: { type: String, required: true },
     paid_by_id: { type: Schema.Types.ObjectId, ref: 'users' },
     paid_by_name: { type: String },
+    void_reason: { type: String, default: null },
+    voided_by_id: { type: Schema.Types.ObjectId, ref: 'users', default: null },
+    voided_by_name: { type: String, default: null },
+    voided_at: { type: Date, default: null },
     paid_at: { type: Date, default: Date.now },
   },
   {

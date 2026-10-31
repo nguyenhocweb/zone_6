@@ -12,6 +12,9 @@ export interface IStoreConfigDoc extends Document {
   allowed_checkin_after_minutes: number;
   is_geofence_required: boolean;
   is_time_window_strict: boolean;
+  ordering_mode: 'STAFF_ONLY' | 'CUSTOMER_SELF_ORDER' | 'HYBRID';
+  table_geofence_radius_meters: number;
+  is_table_geofence_strict: boolean;
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
@@ -74,6 +77,19 @@ const StoreConfigSchema = new Schema<IStoreConfigDoc>(
       default: true,
     },
     is_time_window_strict: {
+      type: Boolean,
+      default: true,
+    },
+    ordering_mode: {
+      type: String,
+      enum: ['STAFF_ONLY', 'CUSTOMER_SELF_ORDER', 'HYBRID'],
+      default: 'HYBRID',
+    },
+    table_geofence_radius_meters: {
+      type: Number,
+      default: 30,
+    },
+    is_table_geofence_strict: {
       type: Boolean,
       default: true,
     },

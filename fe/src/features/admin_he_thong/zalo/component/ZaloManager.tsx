@@ -13,6 +13,7 @@ import {
   useUpdateStoreZaloChannels,
 } from '../hook/useZalo';
 import { useCheckinConfig } from '@/features/admin_he_thong/checkin-config/hook/useCheckinConfig';
+import { useGetStores } from '@/features/admin_he_thong/store/hook/useGetStores';
 import type { ZaloChannelConfig, ZaloChannelType } from '../type/zalo.type';
 import {
   FaQrcode,
@@ -121,47 +122,52 @@ export const ZaloManager: React.FC = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
   const isAdmin = user?.role === 'admin_he_thong';
 
-  // Lấy cấu hình cơ sở từ backend (nếu có)
+  // Lấy cấu hình cơ sở từ backend MongoDB Atlas
   const { data: storeConfigData } = useCheckinConfig();
+  const { data: storesResponse } = useGetStores({ is_active: true });
 
-  // Danh sách các cơ sở của Zone Six
+  // Danh sách các cơ sở thực tế từ CSDL MongoDB Atlas (Mặc định 2 cơ sở)
   const storeList: StoreOption[] = useMemo(() => {
-    const defaultStoreId = storeConfigData?.id || 'cs01_vinh';
-    const defaultStoreName = storeConfigData?.store_name || 'Zone Six - 214 Lê Ninh (Cơ sở 1)';
-    const defaultAddress = storeConfigData?.address || '214 Lê Ninh, P.Quán Bàu, TP Vinh';
+    if (storesResponse?.stores && storesResponse.stores.length > 0) {
+      return storesResponse.stores.map((s) => ({
+        id: s.id || s._id || '',
+        code: s.store_code,
+        shortCode: s.store_name.replace('Zone Six - ', ''),
+        name: s.store_name,
+        address: s.address,
+      }));
+    }
 
-    return [
-      {
-        id: defaultStoreId,
-        code: 'Z6-CS01',
-        shortCode: 'CS01 Vinh',
-        name: defaultStoreName,
-        address: defaultAddress,
-      },
-      {
-        id: 'cs02_danang',
-        code: 'Z6-CS02',
-        shortCode: 'CS02 Đà Nẵng',
-        name: 'Zone Six - Bàu Tràm (Cơ sở 2)',
-        address: '1 Bàu Tràm 3, P.Khuê Trung, Q.Cẩm Lệ, TP Đà Nẵng',
-      },
-      {
-        id: 'cs03_hcm',
-        code: 'Z6-CS03',
-        shortCode: 'CS03 Q1',
-        name: 'Zone Six - Nguyễn Huệ (Cơ sở 3)',
-        address: '68 Nguyễn Huệ, P.Bến Nghé, Quận 1, TP Hồ Chí Minh',
-      },
-    ];
-  }, [storeConfigData]);
+    if (storeConfigData) {
+      return [
+        {
+          id: storeConfigData.id || '',
+          code: 'Z6-CS01',
+          shortCode: storeConfigData.store_name || 'Cơ sở 1',
+          name: storeConfigData.store_name || 'Zone Six Cơ Sở 1',
+          address: storeConfigData.address || '',
+        },
+      ];
+    }
+
+    return [];
+  }, [storesResponse, storeConfigData]);
 
   // Cơ sở đang chọn
-  const [selectedStore, setSelectedStore] = useState<StoreOption>(storeList[0]);
+  const [selectedStore, setSelectedStore] = useState<StoreOption>({
+    id: '',
+    code: 'Z6-CS01',
+    shortCode: 'CS01',
+    name: 'Đang tải chi nhánh...',
+    address: '',
+  });
 
-  // Cập nhật selectedStore khi storeList có dữ liệu mới
+  // Cập nhật selectedStore khi storeList có dữ liệu từ Database
   useEffect(() => {
-    if (storeList.length > 0 && selectedStore.id === 'cs01_vinh' && storeList[0].id !== 'cs01_vinh') {
-      setSelectedStore(storeList[0]);
+    if (storeList.length > 0) {
+      if (!selectedStore.id || !storeList.some((s) => s.id === selectedStore.id)) {
+        setSelectedStore(storeList[0]);
+      }
     }
   }, [storeList, selectedStore.id]);
 

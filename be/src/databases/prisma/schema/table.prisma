@@ -1,0 +1,17 @@
+model Table {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  storeId      String      @map("store_id") @db.ObjectId
+  tableNumber  String      @map("table_number")
+  zoneName     String      @default("Sảnh Chính") @map("zone_name")
+  capacity     Int         @default(4)
+  qrToken      String      @unique @map("qr_token")
+  status       TableStatus @default(AVAILABLE)
+  isActive     Boolean     @default(true) @map("is_active")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+
+  @@unique([storeId, tableNumber])
+  @@index([storeId, status])
+  @@map("tables")
+}
+

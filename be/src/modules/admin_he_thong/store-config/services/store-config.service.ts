@@ -63,6 +63,9 @@ export class StoreConfigService {
       config.allowed_checkin_after_minutes = dto.allowed_checkin_after_minutes;
       config.is_geofence_required = dto.is_geofence_required;
       config.is_time_window_strict = dto.is_time_window_strict;
+      if (dto.ordering_mode) config.ordering_mode = dto.ordering_mode;
+      if (dto.table_geofence_radius_meters !== undefined) config.table_geofence_radius_meters = dto.table_geofence_radius_meters;
+      if (dto.is_table_geofence_strict !== undefined) config.is_table_geofence_strict = dto.is_table_geofence_strict;
     }
 
     await config.save();
@@ -217,6 +220,9 @@ export class StoreConfigService {
       allowed_checkin_after_minutes: doc.allowed_checkin_after_minutes ?? 30,
       is_geofence_required: doc.is_geofence_required ?? true,
       is_time_window_strict: doc.is_time_window_strict ?? true,
+      ordering_mode: doc.ordering_mode ?? 'HYBRID',
+      table_geofence_radius_meters: doc.table_geofence_radius_meters ?? 30,
+      is_table_geofence_strict: doc.is_table_geofence_strict ?? true,
       updated_at: doc.updated_at,
     };
   }

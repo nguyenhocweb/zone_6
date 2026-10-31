@@ -330,3 +330,89 @@ Các Table: `notifications_truong_ca`, `notifications_quan_ly`, `notifications_a
 ```
 
 
+
+
+### 21. Bảng `pos_sessions` (Phiên Giỏ Hàng Bán Hàng Trực Tiếp Theo Ca)
+```typescript
+{
+  store_id: { type: Schema.Types.ObjectId, ref: 'store_configs', required: true, index: true },
+  shift_id: { type: Schema.Types.ObjectId, ref: 'shift_configs', required: true, index: true },
+  session_code: { type: String, required: true, unique: true },
+  items: [{
+    recipeId: String,
+    name: String,
+    quantity: Number,
+    unitPrice: Number,
+    subtotal: Number,
+    toppings: [{ name: String, price: Number }],
+    notes: String,
+    addedById: String,
+    addedByName: String
+  }],
+  table_number: { type: String, default: null },
+  customer_name: { type: String, default: 'Khách lẻ' },
+  subtotal: { type: Number, default: 0 },
+  discount: { type: Number, default: 0 },
+  final_total: { type: Number, default: 0 },
+  locked_by: { type: Schema.Types.ObjectId, ref: 'users', default: null },
+  locked_by_name: { type: String, default: null },
+  locked_at: { type: Date, default: null },
+  status: { type: String, enum: ['ACTIVE', 'CLOSED'], default: 'ACTIVE' }
+}
+```
+
+### 22. Bảng `orders` (Hóa Đơn Bán Hàng Vĩnh Viễn)
+```typescript
+{
+  store_id: { type: Schema.Types.ObjectId, ref: 'store_configs', required: true, index: true },
+  shift_id: { type: Schema.Types.ObjectId, ref: 'shift_configs', default: null },
+  order_code: { type: String, required: true, unique: true },
+  table_id: { type: Schema.Types.ObjectId, ref: 'tables', default: null },
+  table_number: { type: String, default: null },
+  customer_name: { type: String, default: 'Khách lẻ' },
+  order_source: { type: String, enum: ['STAFF_POS', 'CUSTOMER_TABLE_QR'], default: 'STAFF_POS' },
+  customer_lat: { type: Number, default: null },
+  customer_lng: { type: Number, default: null },
+  distance_meters: { type: Number, default: null },
+  items: [{
+    recipeId: String,
+    name: String,
+    quantity: Number,
+    unitPrice: Number,
+    subtotal: Number,
+    toppings: [{ name: String, price: Number }],
+    notes: String,
+    addedById: String,
+    addedByName: String
+  }],
+  total_amount: Number,
+  discount_amount: { type: Number, default: 0 },
+  final_amount: Number,
+  payment_method: { type: String, enum: ['VIETQR', 'CASH', 'CARD'], default: 'VIETQR' },
+  payment_status: { type: String, enum: ['PENDING', 'COMPLETED', 'CANCELLED'], default: 'COMPLETED' },
+  created_by_id: { type: Schema.Types.ObjectId, ref: 'users', default: null },
+  created_by_name: String,
+  paid_by_id: { type: Schema.Types.ObjectId, ref: 'users', default: null },
+  paid_by_name: { type: String, default: null },
+  void_reason: { type: String, default: null },
+  voided_by_id: { type: Schema.Types.ObjectId, ref: 'users', default: null },
+  voided_by_name: { type: String, default: null },
+  voided_at: { type: Date, default: null },
+  paid_at: { type: Date, default: null },
+  created_at: Date,
+  updated_at: Date
+}
+```
+
+### 23. Bảng `tables` (Quản Lý Bàn & Mã QR Gọi Món)
+```typescript
+{
+  store_id: { type: Schema.Types.ObjectId, ref: 'store_configs', required: true, index: true },
+  table_number: { type: String, required: true },
+  zone_name: { type: String, default: 'Sảnh Chính' },
+  capacity: { type: Number, default: 4 },
+  qr_token: { type: String, required: true, unique: true },
+  status: { type: String, enum: ['AVAILABLE', 'OCCUPIED', 'RESERVED'], default: 'AVAILABLE' },
+  is_active: { type: Boolean, default: true }
+}
+```

@@ -83,4 +83,21 @@ enum PosSessionStatus {
   CLOSED
 }
 
+enum TableStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+}
+
+enum OrderingMode {
+  STAFF_ONLY
+  CUSTOMER_SELF_ORDER
+  HYBRID
+}
+
+enum OrderSource {
+  STAFF_POS
+  CUSTOMER_TABLE_QR
+}
+
 

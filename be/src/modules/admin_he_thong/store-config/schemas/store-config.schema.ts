@@ -19,6 +19,9 @@ export const StoreConfigUpdateSchema = z.object({
     .max(480, 'Số phút tối đa 480 phút (8 giờ)'),
   is_geofence_required: z.boolean().default(true),
   is_time_window_strict: z.boolean().default(true),
+  ordering_mode: z.enum(['STAFF_ONLY', 'CUSTOMER_SELF_ORDER', 'HYBRID']).default('HYBRID').optional(),
+  table_geofence_radius_meters: z.number().min(5).max(500).default(30).optional(),
+  is_table_geofence_strict: z.boolean().default(true).optional(),
 });
 
 export type StoreConfigUpdateDto = z.infer<typeof StoreConfigUpdateSchema>;
@@ -41,5 +44,8 @@ export interface StoreConfigResponse {
   allowed_checkin_after_minutes: number;
   is_geofence_required: boolean;
   is_time_window_strict: boolean;
+  ordering_mode?: 'STAFF_ONLY' | 'CUSTOMER_SELF_ORDER' | 'HYBRID';
+  table_geofence_radius_meters?: number;
+  is_table_geofence_strict?: boolean;
   updated_at?: string | Date;
 }

@@ -39,6 +39,8 @@ Tất cả QueryKey BẮT BUỘC là **mảng phân cấp**:
 | `pho_ca_lam_lich` | `shiftConfigs` | `['shiftConfigs', 'list', storeId]` | `useGetShiftConfigs` | Khi thêm, sửa, xóa ca làm hoặc khôi phục 4 ca mặc định (`useCreateShiftConfig`, `useUpdateShiftConfig`, `useDeleteShiftConfig`, `useResetShiftConfigs`) |
 | `pho_ca_vat_lieu` | `purchase_requisitions` | `['purchase_requisitions', 'list', params]` | `useGetRequisitions`, `useGetRequisitionSuggestions` | Khi tạo phiếu yêu cầu nhập kho (`useCreateRequisition`) hoặc duyệt phiếu (`useUpdateRequisitionStatus`) |
 | `quan_ly` | `purchase_orders` | `['purchase_orders', 'list', params]` | `useGetPurchaseOrders`, `useGetPurchaseOrderById` | Khi tạo đơn thu mua PO (`useCreatePoFromRequisitions`) hoặc xác nhận nhập kho (`useReceivePo`) |
+| `admin_he_thong` | `tables` | `['admin_he_thong', 'tables', params]` | `useTables` | Khi tạo, sửa, xóa bàn hoặc đổi mã token QR (`useCreateTable`, `useUpdateTable`, `useDeleteTable`, `useRegenerateTableToken`) |
+| `pos` | `orders` | `['pos', 'orders', 'all', params]` | `useOrderManagement` | Khi tạo đơn mới, thanh toán hoặc hủy hóa đơn (`useVoidOrder`) |
 
 ---
 

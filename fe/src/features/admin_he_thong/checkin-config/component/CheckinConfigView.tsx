@@ -14,6 +14,8 @@ import {
   FaSpinner,
   FaSlidersH,
   FaCompass,
+  FaQrcode,
+  FaMobileAlt,
 } from "react-icons/fa";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useCheckinConfig } from "../hook/useCheckinConfig";
@@ -39,6 +41,9 @@ export const CheckinConfigView: React.FC = () => {
   const [allowedAfterMinutes, setAllowedAfterMinutes] = useState<number>(30);
   const [isGeofenceRequired, setIsGeofenceRequired] = useState<boolean>(true);
   const [isTimeWindowStrict, setIsTimeWindowStrict] = useState<boolean>(true);
+  const [orderingMode, setOrderingMode] = useState<"STAFF_ONLY" | "CUSTOMER_SELF_ORDER" | "HYBRID">("HYBRID");
+  const [tableGeofenceRadius, setTableGeofenceRadius] = useState<number>(30);
+  const [isTableGeofenceStrict, setIsTableGeofenceStrict] = useState<boolean>(true);
 
   // Vị trí GPS hiện tại của thiết bị Admin (dùng để test & lấy tọa độ)
   const [isLocating, setIsLocating] = useState(false);
@@ -66,6 +71,9 @@ export const CheckinConfigView: React.FC = () => {
       setAllowedAfterMinutes(config.allowed_checkin_after_minutes ?? 30);
       setIsGeofenceRequired(config.is_geofence_required ?? true);
       setIsTimeWindowStrict(config.is_time_window_strict ?? true);
+      setOrderingMode(config.ordering_mode ?? "HYBRID");
+      setTableGeofenceRadius(config.table_geofence_radius_meters ?? 30);
+      setIsTableGeofenceStrict(config.is_table_geofence_strict ?? true);
     }
   }, [config]);
 
@@ -181,6 +189,9 @@ export const CheckinConfigView: React.FC = () => {
     setAllowedAfterMinutes(30);
     setIsGeofenceRequired(true);
     setIsTimeWindowStrict(true);
+    setOrderingMode("HYBRID");
+    setTableGeofenceRadius(30);
+    setIsTableGeofenceStrict(true);
     toast.info("Đã khôi phục các giá trị mặc định của Zone 6");
   };
 
@@ -203,6 +214,9 @@ export const CheckinConfigView: React.FC = () => {
       allowed_checkin_after_minutes: Number(allowedAfterMinutes),
       is_geofence_required: isGeofenceRequired,
       is_time_window_strict: isTimeWindowStrict,
+      ordering_mode: orderingMode,
+      table_geofence_radius_meters: Number(tableGeofenceRadius),
+      is_table_geofence_strict: isTableGeofenceStrict,
     });
   };
 
@@ -694,6 +708,154 @@ export const CheckinConfigView: React.FC = () => {
                     <strong className="text-emerald-400 font-mono">{earliestCheckinTime}</strong> đến{" "}
                     <strong className="text-amber-400 font-mono">{latestCheckinTime}</strong>.
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* =========================================================================
+             * THẺ 3: CẤU HÌNH GỌI MÓN TẠI BÀN & ĐỊNH VỊ GPS CHỐNG TROLL (TABLE QR & ANTI-TROLL)
+             * ========================================================================= */}
+            <div className="lg:col-span-2 p-6 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-6">
+              <div className="flex items-center justify-between pb-3 border-b border-[#212532]">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] text-sm">
+                    <FaQrcode />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-[#F4F5F8]">
+                      Cấu Hình Gọi Món Tại Bàn & Geofence GPS Chống Troll Từ Xa
+                    </h3>
+                    <p className="text-[11px] text-[#8E95A5]">
+                      Kiểm soát luồng gọi món (Tại quầy vs Tại bàn) và giới hạn khách phải ngồi thực tế tại quán mới mở được menu
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-[#8E95A5]">Chống Troll GPS:</span>
+                  <button
+                    type="button"
+                    onClick={() => setIsTableGeofenceStrict(!isTableGeofenceStrict)}
+                    className={`w-11 h-6 rounded-full transition-colors relative p-0.5 cursor-pointer ${
+                      isTableGeofenceStrict ? "bg-[#D4AF37]" : "bg-[#212532]"
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-full bg-[#0B0C10] shadow-md transition-transform ${
+                        isTableGeofenceStrict ? "translate-x-5" : "translate-x-0"
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Lựa chọn Chế độ Gọi Món */}
+              <div className="space-y-3">
+                <label className="text-xs font-bold text-[#F4F5F8] block">
+                  Chế Độ Vận Hành Gọi Món (Ordering Mode)
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {/* HYBRID */}
+                  <div
+                    onClick={() => setOrderingMode("HYBRID")}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+                      orderingMode === "HYBRID"
+                        ? "border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg shadow-[#D4AF37]/5"
+                        : "border-[#212532] bg-[#0B0C10] hover:border-[#353B4F]"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-black text-[#F4F5F8]">⚡ Song Hành (Hybrid)</span>
+                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "HYBRID" ? "bg-[#D4AF37] border-[#D4AF37]" : "border-[#4A5164]"}`} />
+                    </div>
+                    <p className="text-[11px] text-[#8E95A5] leading-relaxed">
+                      Cả nhân viên thu ngân gọi tại quầy POS và khách tự quét QR gọi tại bàn đều hoạt động song song.
+                    </p>
+                    <span className="text-[10px] text-[#D4AF37] font-semibold mt-2 inline-block">Khuyên dùng cho Zone 6</span>
+                  </div>
+
+                  {/* STAFF_ONLY */}
+                  <div
+                    onClick={() => setOrderingMode("STAFF_ONLY")}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+                      orderingMode === "STAFF_ONLY"
+                        ? "border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg shadow-[#D4AF37]/5"
+                        : "border-[#212532] bg-[#0B0C10] hover:border-[#353B4F]"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-black text-[#F4F5F8]">🏢 Chỉ Quầy Thu Ngân (Staff Only)</span>
+                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "STAFF_ONLY" ? "bg-[#D4AF37] border-[#D4AF37]" : "border-[#4A5164]"}`} />
+                    </div>
+                    <p className="text-[11px] text-[#8E95A5] leading-relaxed">
+                      Chỉ cho phép nhân viên thu ngân tạo đơn tại POS. Khi khách quét mã QR sẽ nhận được thông báo vui lòng tới quầy.
+                    </p>
+                    <span className="text-[10px] text-[#8E95A5] font-semibold mt-2 inline-block">Dùng cho khung giờ cao điểm</span>
+                  </div>
+
+                  {/* CUSTOMER_SELF_ORDER */}
+                  <div
+                    onClick={() => setOrderingMode("CUSTOMER_SELF_ORDER")}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+                      orderingMode === "CUSTOMER_SELF_ORDER"
+                        ? "border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg shadow-[#D4AF37]/5"
+                        : "border-[#212532] bg-[#0B0C10] hover:border-[#353B4F]"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-black text-[#F4F5F8]">📱 Tự Phục Vụ Tại Bàn (Self Order)</span>
+                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "CUSTOMER_SELF_ORDER" ? "bg-[#D4AF37] border-[#D4AF37]" : "border-[#4A5164]"}`} />
+                    </div>
+                    <p className="text-[11px] text-[#8E95A5] leading-relaxed">
+                      Khuyến khích khách quét QR tại bàn để tự xem menu và thanh toán VietQR động, giảm tải nhân sự phục vụ.
+                    </p>
+                    <span className="text-[10px] text-[#8E95A5] font-semibold mt-2 inline-block">Mô hình Smart Cafe</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bán Kính Định Vị Chống Troll */}
+              <div className="p-4 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <span className="text-xs font-bold text-[#F4F5F8]">Bán Kính Geofence Quét QR Bàn:</span>
+                    <p className="text-[11px] text-[#8E95A5]">
+                      Khoảng cách tối đa từ điện thoại khách đến tâm quán Zone Six để mở được giao diện gọi món
+                    </p>
+                  </div>
+                  <div className="flex items-baseline gap-1 text-[#D4AF37]">
+                    <span className="text-xl font-mono font-black">{tableGeofenceRadius}</span>
+                    <span className="text-xs font-sans">mét</span>
+                  </div>
+                </div>
+
+                <input
+                  type="range"
+                  min="5"
+                  max="100"
+                  step="5"
+                  value={tableGeofenceRadius}
+                  onChange={(e) => setTableGeofenceRadius(Number(e.target.value))}
+                  className="w-full h-1.5 bg-[#181B24] rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
+                />
+
+                <div className="flex items-center gap-2 pt-1">
+                  {[15, 25, 30, 50, 75].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setTableGeofenceRadius(preset)}
+                      className={`px-3 py-1 rounded-lg border text-xs font-mono font-bold transition cursor-pointer ${
+                        tableGeofenceRadius === preset
+                          ? "border-[#D4AF37] bg-[#D4AF37]/20 text-[#D4AF37]"
+                          : "border-[#212532] bg-[#12141A] text-[#8E95A5] hover:text-[#F4F5F8]"
+                      }`}
+                    >
+                      {preset}m
+                    </button>
+                  ))}
+                  <span className="text-[11px] text-[#6D7588] italic ml-auto">
+                    {isTableGeofenceStrict ? "🛡️ Bắt buộc bật GPS & trong bán kính" : "⚠️ Cảnh báo nếu ở ngoài"}
+                  </span>
                 </div>
               </div>
             </div>
