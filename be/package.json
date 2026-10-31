@@ -12,7 +12,9 @@
     "start:dev": "tsx src/server.ts",
     "db:push": "prisma db push --schema=src/databases/prisma/schema",
     "db:generate": "prisma generate --schema=src/databases/prisma/schema",
-    "db:seed": "tsx src/databases/seed/index.ts"
+    "db:seed": "tsx src/databases/seed/index.ts",
+    "db:clean": "node scripts/reset_database_keep_admin.mjs",
+    "db:clean:keep-stores": "node scripts/reset_database_keep_admin.mjs --keep-stores"
   },
   "dependencies": {
     "@prisma/client": "^6.4.1",

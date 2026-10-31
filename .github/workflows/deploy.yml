@@ -63,7 +63,7 @@ jobs:
             SMTP_PORT=465
             SMTP_USER=nvnremix@gmail.com
             SMTP_PASS=lororsoatrirleyr
-            APP_URL=http://160.191.243.53:8000
+            APP_URL=https://zone-six.vercel.app/login
             EOF
             fi
 
