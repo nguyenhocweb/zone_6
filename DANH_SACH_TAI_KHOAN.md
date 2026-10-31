@@ -26,27 +26,27 @@ Tất cả nhân sự trong danh sách này đã được đồng bộ trực ti
 
 | STT | Mã NV | Tên Nhân Viên | Vị Trí | Email Đăng Nhập | Mật Khẩu Riêng | Mật Khẩu Chung | Vai Trò Hệ Thống |
 | :---: | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | `Z6-STF01` | **Nguyên** | Service / Barista | `nv.nguyen1@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 2 | `Z6-STF02` | **Lộc** | Service / Barista | `nv.loc2@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 3 | `Z6-STF03` | **Trâm** | Service / Barista | `nv.tram3@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 4 | `Z6-STF04` | **Ngọc** | Service / Barista | `nv.ngoc4@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 5 | `Z6-STF05` | **Hải** | Service / Barista | `nv.hai5@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 6 | `Z6-STF06` | **Tương** | Service / Barista | `nv.tuong6@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 7 | `Z6-STF07` | **Hiền** | Service / Barista | `nv.hien7@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 8 | `Z6-STF08` | **Diệu** | Service / Barista | `nv.dieu8@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 9 | `Z6-STF09` | **Quỳnh** | Service / Barista | `nv.quynh9@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 10 | `Z6-STF10` | **Kiên** | Service / Barista | `nv.kien10@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 11 | `Z6-STF11` | **Quân** | Service / Barista | `nv.quan11@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 12 | `Z6-STF12` | **Luy** | Service / Barista | `nv.luy12@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 13 | `Z6-STF13` | **Vũ** | Service / Barista | `nv.vu13@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 14 | `Z6-STF14` | **Đạt** | Service / Barista | `nv.at14@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 15 | `Z6-STF15` | **Mai** | Service / Barista | `nv.mai15@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 16 | `Z6-STF16` | **Bích Hiền** | Service / Barista | `nv.bichhien16@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 17 | `Z6-STF17` | **Khôi** | Service / Barista | `nv.khoi17@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 18 | `Z6-STF18` | **Lệ** | Service / Barista | `nv.le18@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 19 | `Z6-STF19` | **Khánh Ngọc** | Service / Barista | `nv.khanhngoc19@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 20 | `Z6-STF20` | **Bảo Ngọc** | Service / Barista | `nv.baongoc20@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 21 | `Z6-STF21` | **An** | Service / Barista | `nv.an21@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 1 | `Z6-STF01` | **Nguyên** | Nhân viên | `nv.nguyen1@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 2 | `Z6-STF02` | **Lộc** | Nhân viên | `nv.loc2@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 3 | `Z6-STF03` | **Trâm** | Nhân viên | `nv.tram3@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 4 | `Z6-STF04` | **Ngọc** | Nhân viên | `nv.ngoc4@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 5 | `Z6-STF05` | **Hải** | Nhân viên | `nv.hai5@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 6 | `Z6-STF06` | **Tương** | Nhân viên | `nv.tuong6@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 7 | `Z6-STF07` | **Hiền** | Nhân viên | `nv.hien7@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 8 | `Z6-STF08` | **Diệu** | Nhân viên | `nv.dieu8@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 9 | `Z6-STF09` | **Quỳnh** | Nhân viên | `nv.quynh9@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 10 | `Z6-STF10` | **Kiên** | Nhân viên | `nv.kien10@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 11 | `Z6-STF11` | **Quân** | Nhân viên | `nv.quan11@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 12 | `Z6-STF12` | **Luy** | Nhân viên | `nv.luy12@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 13 | `Z6-STF13` | **Vũ** | Nhân viên | `nv.vu13@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 14 | `Z6-STF14` | **Đạt** | Nhân viên | `nv.at14@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 15 | `Z6-STF15` | **Mai** | Nhân viên | `nv.mai15@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 16 | `Z6-STF16` | **Bích Hiền** | Nhân viên | `nv.bichhien16@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 17 | `Z6-STF17` | **Khôi** | Nhân viên | `nv.khoi17@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 18 | `Z6-STF18` | **Lệ** | Nhân viên | `nv.le18@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 19 | `Z6-STF19` | **Khánh Ngọc** | Nhân viên | `nv.khanhngoc19@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 20 | `Z6-STF20` | **Bảo Ngọc** | Nhân viên | `nv.baongoc20@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+| 21 | `Z6-STF21` | **An** | Nhân viên | `nv.an21@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
 
 ---
 

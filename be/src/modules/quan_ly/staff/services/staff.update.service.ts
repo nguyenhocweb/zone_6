@@ -77,7 +77,7 @@ export class StaffUpdateService {
         role: updated.role,
         role_label: updated.role_label,
         role_level: updated.role_level,
-        position: updated.position || 'service',
+        position: updated.position || 'Nhân viên',
         assigned_store_id: updated.assigned_store_id ?? null,
         assigned_stores: updated.assigned_stores || [],
         is_active: updated.is_active,

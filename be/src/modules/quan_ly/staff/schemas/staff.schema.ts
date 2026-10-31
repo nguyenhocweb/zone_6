@@ -19,7 +19,7 @@ export const StaffCreateSchema = z.object({
   role: z.enum(USER_ROLES, {
     errorMap: () => ({ message: 'Vai trò nhân viên không hợp lệ' }),
   }),
-  position: z.string().optional().default('service'),
+  position: z.string().optional().default('Nhân viên'),
   hourly_rate: z
     .number({ invalid_type_error: 'Mức lương cơ sở phải là số' })
     .min(0, 'Mức lương không được âm')

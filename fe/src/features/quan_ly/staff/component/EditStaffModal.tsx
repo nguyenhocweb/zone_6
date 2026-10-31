@@ -148,7 +148,7 @@ export const EditStaffModal: React.FC<EditStaffModalProps> = ({ staff, isOpen, o
   // Form State
   const [hourlyRate, setHourlyRate] = useState<number>(18000);
   const [role, setRole] = useState<UserRole>("nhan_vien");
-  const [position, setPosition] = useState<string>("Pha chế");
+  const [position, setPosition] = useState<string>("Nhân viên");
   const [phone, setPhone] = useState<string>("");
   const [assignedStoreId, setAssignedStoreId] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
@@ -167,7 +167,15 @@ export const EditStaffModal: React.FC<EditStaffModalProps> = ({ staff, isOpen, o
     if (staff) {
       setHourlyRate(staff.hourly_rate ?? 18000);
       setRole(staff.role);
-      setPosition(staff.position || "Pha chế");
+
+      // Gộp các vị trí cũ (Pha chế, Phục vụ, Thu ngân, Giữ xe...) thành 'Nhân viên'
+      const pos = staff.position || "";
+      if (['Pha chế', 'Phục vụ', 'Thu ngân', 'Giữ xe', 'BARISTA', 'CASHIER', 'SERVICE', 'service', 'Pha chế & Phục vụ'].includes(pos)) {
+        setPosition("Nhân viên");
+      } else {
+        setPosition(pos || "Nhân viên");
+      }
+
       setPhone(staff.phone || "");
       setAssignedStoreId(staff.assigned_store_id || null);
       setIsActive(staff.is_active ?? true);
@@ -335,12 +343,11 @@ export const EditStaffModal: React.FC<EditStaffModalProps> = ({ staff, isOpen, o
                 onChange={(e) => setPosition(e.target.value)}
                 className="w-full py-2.5 px-3 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] focus:outline-none focus:border-[#D4AF37] transition cursor-pointer"
               >
-                <option value="Pha chế">Pha chế</option>
-                <option value="Phục vụ">Phục vụ</option>
-                <option value="Thu ngân">Thu ngân</option>
-                <option value="Giữ xe">Giữ xe</option>
-                <option value="Quản lý kho">Quản lý kho</option>
+                <option value="Nhân viên">Nhân viên</option>
                 <option value="Trưởng ca trực">Trưởng ca trực</option>
+                <option value="Phó ca chuyên vật liệu">Phó ca chuyên vật liệu</option>
+                <option value="Phó ca chuyên xếp lịch">Phó ca chuyên xếp lịch</option>
+                <option value="Quản lý cửa hàng">Quản lý cửa hàng</option>
                 <option value="Giám sát dịch vụ">Giám sát dịch vụ</option>
               </select>
             </div>

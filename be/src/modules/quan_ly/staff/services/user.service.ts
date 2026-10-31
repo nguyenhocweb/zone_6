@@ -40,7 +40,7 @@ export class UserService {
       return {
         id: u.id,
         name: u.name,
-        position: u.position || 'service',
+        position: u.position || 'Nhân viên',
         hourly_rate: hourlyRate,
         target_shifts_per_week: targetShifts,
         weekly_hours: weeklyHours,

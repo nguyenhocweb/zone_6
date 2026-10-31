@@ -18,7 +18,7 @@ export class UserRepository {
       phone: doc.phone ?? null,
       qr_code: doc.qr_code,
       hourly_rate: doc.hourly_rate ?? 18000,
-      position: doc.position ?? 'service',
+      position: doc.position ?? 'Nhân viên',
       assigned_store_id: doc.assigned_store_id ? doc.assigned_store_id.toString() : null,
       assigned_stores: Array.isArray(doc.assigned_stores)
         ? doc.assigned_stores.map((s: any) => s.toString())
@@ -102,7 +102,7 @@ export class UserRepository {
       role: dto.role,
       phone: dto.phone ?? null,
       hourly_rate: dto.hourly_rate ?? 18000,
-      position: dto.position ?? 'service',
+      position: dto.position ?? 'Nhân viên',
       assigned_store_id: dto.assigned_store_id || null,
       assigned_stores: dto.assigned_stores || [],
       is_active: dto.is_active ?? true,
@@ -137,7 +137,7 @@ export class UserRepository {
           phone: data.phone || null,
           qr_code: data.qr_code || `QR-${data.user_code}`,
           hourly_rate: data.hourly_rate || 18000,
-          position: data.position || 'service',
+          position: data.position || 'Nhân viên',
           is_active: true,
         },
       },

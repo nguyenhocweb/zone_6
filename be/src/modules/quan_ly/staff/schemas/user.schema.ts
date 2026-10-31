@@ -25,7 +25,7 @@ export const UserCreateSchema = z.object({
   }),
   phone: z.string().optional().nullable(),
   hourly_rate: z.number().min(0).optional().default(18000),
-  position: z.string().optional().default('service'),
+  position: z.string().optional().default('Nhân viên'),
   assigned_store_id: z.string().optional().nullable(),
   assigned_stores: z.array(z.string()).optional().default([]),
   is_active: z.boolean().optional().default(true),

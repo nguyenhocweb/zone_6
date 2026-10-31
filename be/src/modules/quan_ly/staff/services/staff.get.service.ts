@@ -109,7 +109,7 @@ export class StaffGetService {
         role: u.role,
         role_label: u.role_label,
         role_level: u.role_level,
-        position: u.position || 'service',
+        position: u.position || 'Nhân viên',
         assigned_store_id: u.assigned_store_id || null,
         assigned_store_name: storeName,
         assigned_stores: u.assigned_stores || [],

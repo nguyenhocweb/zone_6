@@ -484,7 +484,11 @@ export const StaffManagementView: React.FC = () => {
                           </span>
                           <div className="text-[11px] text-[#8E95A5] flex items-center gap-1">
                             <FaBriefcase className="text-[9px] text-[#6D7588]" />
-                            <span>{staff.position || "Phục vụ"}</span>
+                            <span>
+                              {['Pha chế', 'Phục vụ', 'Thu ngân', 'Giữ xe', 'BARISTA', 'CASHIER', 'SERVICE', 'service', 'Pha chế & Phục vụ'].includes(staff.position || '')
+                                ? 'Nhân viên'
+                                : (staff.position || 'Nhân viên')}
+                            </span>
                           </div>
                         </div>
                       </td>

@@ -4,6 +4,23 @@
 
 ---
 
+### [2026-10-31 18:45] - Tinh Gọn & Gộp Các Vị Trí Phân Mảnh Thành "Nhân Viên" Chuẩn Hóa
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** *"gộp lại thành 1 nhân viên thui"* (kèm ảnh chụp dropdown vị trí: Pha chế, Phục vụ, Thu ngân, Giữ xe).
+- **Nội dung hoàn thành:**
+  - **Frontend:**
+    - Gộp toàn bộ các vị trí nhỏ lẻ `Pha chế`, `Phục vụ`, `Thu ngân`, `Giữ xe` trong biểu mẫu thêm nhân viên ([`CreateStaffModal.tsx`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/quan_ly/staff/component/CreateStaffModal.tsx)) và sửa nhân viên ([`EditStaffModal.tsx`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/quan_ly/staff/component/EditStaffModal.tsx)) thành lựa chọn chuẩn duy nhất: **"Nhân viên"**.
+    - Thiết lập giá trị mặc định khi tạo mới nhân viên là `"Nhân viên"`.
+    - Tự động chuẩn hóa hiển thị trên bảng danh sách nhân sự ([`StaffManagementView.tsx`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/quan_ly/staff/component/StaffManagementView.tsx)).
+  - **Database Migration:**
+    - Chạy script di trú `be/scripts/migrate_staff_positions.mjs` trên MongoDB Atlas, cập nhật thành công 27 bản ghi nhân viên cũ có vị trí phân mảnh sang chuẩn **"Nhân viên"**.
+  - **Backend Models & Schemas:**
+    - Cập nhật giá trị mặc định vị trí thành `'Nhân viên'` trong `staff.schema.ts`, `user.schema.ts`, `user.repository.ts`, `staff.create.service.ts`, `staff.get.service.ts`, `staff.update.service.ts`, `auth.service.ts`.
+  - **Tài Liệu:**
+    - Chuẩn hóa vị trí thành "Nhân viên" trong bảng 21 nhân sự tại [`DANH_SACH_TAI_KHOAN.md`](file:///d:/DuAnCaNhan/zone_6/DANH_SACH_TAI_KHOAN.md).
+
+---
+
 ### [2026-10-31 18:25] - Triển Khai Hoàn Tất CN13 (Sơ Đồ Bàn, Khách Quét QR Gọi Món & Geofence GPS Chống Troll) và CN14 (Quản Lý Danh Sách Hóa Đơn & In Bill K80)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**

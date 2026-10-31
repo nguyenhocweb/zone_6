@@ -55,7 +55,7 @@ export const DEFAULT_SEED_USERS: Array<{
     role: 'nhan_vien',
     phone: '0988000003',
     qr_code: 'QR-Z6-NV01-003',
-    position: 'Pha chế & Phục vụ',
+    position: 'Nhân viên',
   },
   {
     user_code: 'Z6-PCVL01',
