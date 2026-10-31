@@ -4,6 +4,17 @@
 
 ---
 
+### [2026-10-31 17:32] - Khởi Tạo Bảng Đặc Tả Toàn Diện Từng Chức Năng Hệ Thống (DANH_SACH_CHUC_NANG_HE_THONG.md)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** *"viết file md liệt kê chi tiết từng chức năng 1 của hệ thống hiện có"*
+- **Nội dung hoàn thành:**
+  - Khởi tạo tài liệu [DANH_SACH_CHUC_NANG_HE_THONG.md](file:///d:/DuAnCaNhan/zone_6/DANH_SACH_CHUC_NANG_HE_THONG.md) tại thư mục gốc dự án.
+  - Liệt kê chi tiết và toàn diện 16 phân hệ chức năng hiện có (từ CN01 đến CN12, kèm các phân hệ mở rộng CN04b, CN11b, CN11c, CN11d).
+  - Đối với mỗi chức năng: Nêu rõ mục đích nghiệp vụ, ma trận phân quyền 6 vai trò, nguyên tắc phân lập cơ sở (Store Scoping), các tính năng chi tiết, cơ chế bảo mật / ràng buộc và danh sách các file mã nguồn liên quan (Backend & Frontend).
+  - Tổng hợp ma trận công nghệ và hạ tầng Docker/Nginx/Vercel của dự án.
+
+---
+
 ### [2026-10-30 21:40] - Triển Khai Hoàn Tất CN12: POS Live Order Đồng Bộ Thời Gian Thực Đa Thiết Bị & Cấu Hình Quét Source Tailwind v4
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Xây dựng hệ thống bán hàng POS real-time cho 3 nhân viên trong cùng ca và cùng chi nhánh (khi 1 người thêm món hoặc thao tác thì cả ca đồng bộ tức thì, cùng bấm thanh toán sinh mã VietQR động; nhân viên ngoài ca hoặc chưa điểm danh GPS/Camera bị từ chối vào). Khắc phục triệt để hiện tượng vỡ giao diện trên Vercel do thiếu source quét CSS.
