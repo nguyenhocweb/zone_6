@@ -1,79 +1,62 @@
-# 📋 DANH SÁCH TÀI KHOẢN ĐĂNG NHẬP HỆ THỐNG ZONE SIX (214 LNH)
+# 📋 DANH SÁCH TÀI KHOẢN ĐĂNG NHẬP HỆ THỐNG ZONE SIX (PRODUCTION RESET)
 
-> **Cập nhật:** Ngày 19/10/2026  
+> **Trạng thái Database:** Đã dọn dẹp sạch toàn bộ dữ liệu mẫu (Reset ngày 01/11/2026).  
 > **Cơ sở dữ liệu:** MongoDB Atlas (Database: `zone_6`)  
-> **Hệ thống hỗ trợ:** Chấp nhận cả 2 định dạng tên miền email `@zonesix.vn` và `@zone6.vn`.  
-> **Mật khẩu dùng chung linh hoạt:** Mọi tài khoản đều có thể sử dụng mật khẩu riêng hoặc mật khẩu hệ thống `zone6@2026`.
+> **Tài khoản đang hoạt động:** Hiện tại duy nhất **01 TÀI KHOẢN ADMIN TỐI CAO** tồn tại trên Database để đưa vào vận hành thực tế.
 
 ---
 
-## 👑 1. SÁU (06) TÀI KHOẢN ĐIỀU HÀNH & PHÂN QUYỀN CỐT LÕI
+## 👑 1. TÀI KHOẢN QUẢN TRỊ DUY NHẤT ĐANG HOẠT ĐỘNG (ACTIVE)
 
-| STT | Mã NV | Họ và Tên | Vai Trò (Role) | Email Đăng Nhập | Mật Khẩu Riêng | Mật Khẩu Chung | Quyền Tích Check-in | Quyền Xếp Lịch | Quyền Xem Bảng Lương |
-| :---: | :--- | :--- | :--- | :--- | :--- | :--- | :---: | :---: | :---: |
-| **1** | `Z6-ADMIN` | **Admin Hệ Thống** | `admin_he_thong` | `admin@zonesix.vn`<br>`admin@zone6.vn` | `admin123` | `zone6@2026` | ✅ **Có** | ✅ **Có** | ✅ **Có** |
-| **2** | `Z6-QL01` | **Nguyễn Quản Lý** | `quan_ly` | `quanly@zonesix.vn`<br>`quanly@zone6.vn` | `quanly123` | `zone6@2026` | ✅ **Có** | ✅ **Có** | ✅ **Có** |
-| **3** | `Z6-TC01` | **Trần Trưởng Ca** | `truong_ca` | `truongca@zonesix.vn`<br>`truongca@zone6.vn` | `truongca123` | `zone6@2026` | ✅ **Có** | ✅ **Có** | ✅ **Có** |
-| **4** | `Z6-PCL01` | **Hoàng Làm Lịch (Phó Ca)** | `pho_ca_lam_lich` | `lamlich@zonesix.vn`<br>`lamlich@zone6.vn` | `lamlich123` | `zone6@2026` | ❌ **Không** | ✅ **Có** | ❌ **Ẩn** |
-| **5** | `Z6-PCVL01` | **Phạm Vật Liệu (Phó Ca)** | `pho_ca_vat_lieu` | `vatlieu@zonesix.vn`<br>`vatlieu@zone6.vn` | `vatlieu123` | `zone6@2026` | ❌ **Không** | ❌ **Chỉ xem** | ❌ **Ẩn** |
-| **6** | `Z6-NV01` | **Lê Nhân Viên** | `nhan_vien` | `nhanvien@zonesix.vn`<br>`nhanvien@zone6.vn` | `nhanvien123` | `zone6@2026` | ❌ **Không** | ❌ **Chỉ xem** | ❌ **Ẩn** |
+| STT | Mã NV | Họ và Tên | Vai Trò (Role) | Email Đăng Nhập | Mật Khẩu | Quyền Hạn |
+| :---: | :--- | :--- | :--- | :--- | :--- | :---: |
+| **1** | `Z6-ADMIN` | **Admin Hệ Thống** | `admin_he_thong` | `admin@zonesix.vn`<br>`admin@zone6.vn` | `admin123` | 👑 **Toàn quyền tối cao** (Quản trị chi nhánh, phân quyền nhân sự, cài đặt Zalo Bot, cấu hình GPS) |
 
 ---
 
-## 👥 2. DANH SÁCH 21 NHÂN VIÊN THỰC TẾ TRÊN HỆ THỐNG XẾP LỊCH
+## 🚀 2. HƯỚNG DẪN KHỞI TẠO DỮ LIỆU THỰC TẾ CHO QUÁN
 
-Tất cả nhân sự trong danh sách này đã được đồng bộ trực tiếp với dữ liệu xếp ca của quán Zone Six:
+Vì hệ thống đã xóa sạch toàn bộ dữ liệu nhân sự và lịch mẫu thử nghiệm, Admin sẽ khởi tạo dữ liệu thực tế theo trình tự 3 bước sau:
 
-| STT | Mã NV | Tên Nhân Viên | Vị Trí | Email Đăng Nhập | Mật Khẩu Riêng | Mật Khẩu Chung | Vai Trò Hệ Thống |
-| :---: | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | `Z6-STF01` | **Nguyên** | Nhân viên | `nv.nguyen1@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 2 | `Z6-STF02` | **Lộc** | Nhân viên | `nv.loc2@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 3 | `Z6-STF03` | **Trâm** | Nhân viên | `nv.tram3@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 4 | `Z6-STF04` | **Ngọc** | Nhân viên | `nv.ngoc4@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 5 | `Z6-STF05` | **Hải** | Nhân viên | `nv.hai5@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 6 | `Z6-STF06` | **Tương** | Nhân viên | `nv.tuong6@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 7 | `Z6-STF07` | **Hiền** | Nhân viên | `nv.hien7@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 8 | `Z6-STF08` | **Diệu** | Nhân viên | `nv.dieu8@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 9 | `Z6-STF09` | **Quỳnh** | Nhân viên | `nv.quynh9@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 10 | `Z6-STF10` | **Kiên** | Nhân viên | `nv.kien10@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 11 | `Z6-STF11` | **Quân** | Nhân viên | `nv.quan11@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 12 | `Z6-STF12` | **Luy** | Nhân viên | `nv.luy12@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 13 | `Z6-STF13` | **Vũ** | Nhân viên | `nv.vu13@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 14 | `Z6-STF14` | **Đạt** | Nhân viên | `nv.at14@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 15 | `Z6-STF15` | **Mai** | Nhân viên | `nv.mai15@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 16 | `Z6-STF16` | **Bích Hiền** | Nhân viên | `nv.bichhien16@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 17 | `Z6-STF17` | **Khôi** | Nhân viên | `nv.khoi17@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 18 | `Z6-STF18` | **Lệ** | Nhân viên | `nv.le18@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 19 | `Z6-STF19` | **Khánh Ngọc** | Nhân viên | `nv.khanhngoc19@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 20 | `Z6-STF20` | **Bảo Ngọc** | Nhân viên | `nv.baongoc20@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
-| 21 | `Z6-STF21` | **An** | Nhân viên | `nv.an21@zonesix.vn` | `password123` | `zone6@2026` | `nhan_vien` |
+### Bước 1: Đăng nhập hệ thống
+* Mở trình duyệt truy cập: **https://zone-six.vercel.app/login** (hoặc `http://localhost:3000/login`)
+* **Email:** `admin@zonesix.vn`
+* **Mật khẩu:** `admin123`
+
+### Bước 2: Tạo Chi Nhánh Quán
+* Vào menu **Quản Lý Chi Nhánh** (`/stores`) $\rightarrow$ Bấm **+ Thêm Chi Nhánh Mới**.
+* Nhập Tên quán, Mã cơ sở (ví dụ: `Z6-CS01`), Địa chỉ và bấm nút **"Lấy GPS hiện tại"** để hệ thống lưu tọa độ chính xác của quán.
+
+### Bước 3: Tạo Tài Khoản Cho Nhân Sự Quán
+* Vào menu **Quản Lý Nhân Sự** (`/staff`) $\rightarrow$ Bấm **+ Thêm Nhân Viên Mới**.
+* Nhập Họ tên, Email, Số điện thoại và chọn vai trò:
+  - **Quản lý (`quan_ly`):** Phụ trách cơ sở.
+  - **Trưởng ca (`truong_ca`):** Giám sát ca trực tại đúng cơ sở đó.
+  - **Phó ca làm lịch (`pho_ca_lam_lich`):** Chuyên trách xếp lịch làm việc.
+  - **Phó ca vật liệu (`pho_ca_vat_lieu`):** Chuyên trách quản lý kho bãi & kiểm kê.
+  - **Nhân viên (`nhan_vien`):** Nhân viên pha chế, phục vụ, thu ngân.
+* Hệ thống sẽ **tự động sinh mật khẩu ngẫu nhiên**, gửi email thật đến nhân viên đó, và hiển thị Pop-up để Admin sao chép gửi nhanh qua Zalo.
 
 ---
 
-## 🛡️ 3. BẢNG PHÂN QUYỀN VAI TRÒ CHI TIẾT (ZONE SIX SPECIFICATION)
+## 🛡️ 3. BẢNG TRA CỨU PHÂN QUYỀN 6 VAI TRÒ CHUẨN ZONE SIX
 
 | Tính Năng / Nghiệp Vụ | Admin (`admin_he_thong`) | Quản Lý (`quan_ly`) | Trưởng Ca (`truong_ca`) | Phó Ca Làm Lịch (`pho_ca_lam_lich`) | Phó Ca Vật Liệu (`pho_ca_vat_lieu`) | Nhân Viên (`nhan_vien`) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Đăng ký ca làm tuần (Tab Đăng ký)** | ✅ Mọi vai trò | ✅ Mọi vai trò | ✅ Mọi vai trò | ✅ Mọi vai trò | ✅ Mọi vai trò | ✅ Mọi vai trò |
 | **Tự động xếp lịch (Auto-scheduler)** | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ❌ Bị chặn | ❌ Bị chặn |
 | **Chỉnh sửa / Đổi nhân sự trong ô ca** | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ❌ Chỉ xem | ❌ Chỉ xem |
-| **Tích Điểm Danh (Check-in) ca làm** | ✅ **Được tích** | ✅ **Được tích** | ✅ **Được tích** | ❌ **Ẩn dấu tích** | ❌ Chỉ xem | ❌ Chỉ xem |
+| **Tích Điểm Danh (Check-in) trực tiếp** | ✅ **Được tích** | ✅ **Được tích** | ✅ **Được tích** | ❌ **Ẩn dấu tích** | ❌ Chỉ xem | ❌ Chỉ xem |
 | **Xem Bảng Lương Tháng** | ✅ **Hiển thị** | ✅ **Hiển thị** | ✅ **Hiển thị** | ❌ **Ẩn hoàn toàn** | ❌ **Ẩn hoàn toàn** | ❌ **Ẩn hoàn toàn** |
-| **Mở/Khóa đợt đăng ký ca** | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ❌ Không có | ❌ Không có |
-| **Xuất file Excel lịch làm** | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Toàn quyền | ❌ Không có | ❌ Không có |
-| **Cấu hình Zalo Bot (`/zalo`)** | ✅ **Toàn quyền** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** |
+| **Bán hàng POS Quầy Live Order** | ✅ Xem & Giám sát | ✅ Xem & Giám sát | ✅ Khi có ca | ❌ Không có ca | ❌ Không có ca | ✅ Khi có ca |
+| **Kiểm kê kho thực tế (/inventory-audit)** | ✅ Toàn quyền | ✅ Toàn quyền | ✅ Duyệt/Sửa tồn | ❌ Không có | ✅ Lập & Duyệt | ✅ Kiểm đếm |
+| **Lập Yêu Cầu Nhập Kho (PR)** | ✅ Toàn quyền | ✅ Duyệt & Gộp PO | ✅ Lập PR cơ sở | ❌ Không có | ✅ Lập PR cơ sở | ❌ Không có |
+| **Quản lý Chi Nhánh (`/stores`)** | ✅ **Độc quyền** | ❌ Chỉ xem CS mình | ❌ Không có | ❌ Không có | ❌ Không có | ❌ Không có |
+| **Cấu hình Zalo Bot (`/zalo`)** | ✅ **Độc quyền** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** | ❌ **Ẩn & Chặn** |
 
 ---
 
-## 💡 4. HƯỚNG DẪN ĐĂNG NHẬP NHANH
-
-1. Mở trình duyệt và truy cập: [http://localhost:3001](http://localhost:3001)
-2. Nhập Email:
-   * Có thể gõ: `truongca@zonesix.vn` hoặc `truongca@zone6.vn`
-   * Có thể gõ: `quanly@zonesix.vn` hoặc `quanly@zone6.vn`
-   * Có thể gõ: `admin@zonesix.vn` hoặc `admin@zone6.vn`
-3. Nhập Mật khẩu:
-   * Mật khẩu theo vai trò: `truongca123`, `quanly123`, `admin123`
-   * Hoặc mật khẩu dùng chung: `zone6@2026`
-4. Bấm **"Đăng Nhập Vào Hệ Thống"**.
-id groups zalo: 8974711845327448590
+> 💡 **Ghi chú:** Nếu muốn nạp lại bộ dữ liệu 21 nhân viên và lịch mẫu để demo kiểm thử, bạn có thể chạy lệnh:
+> ```bash
+> npm --prefix be run db:seed
+> ```
