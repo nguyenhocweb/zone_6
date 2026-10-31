@@ -262,12 +262,14 @@ export class AuthService {
 
   async ensureSeedUsers(): Promise<void> {
     try {
-      for (const u of DEFAULT_SEED_USERS) {
-        await this.userRepo.upsertSeedUser(u);
+      // Chỉ đảm bảo duy nhất 1 tài khoản Admin Hệ Thống luôn tồn tại để quản trị
+      const adminSeed = DEFAULT_SEED_USERS.find((u) => u.role === 'admin_he_thong');
+      if (adminSeed) {
+        await this.userRepo.upsertSeedUser(adminSeed);
       }
-      logger.info('✅ Đã khởi tạo / đồng bộ 6 tài khoản mẫu tương ứng 6 vai trò người dùng Zone 6');
+      logger.info('✅ Đã bảo đảm tài khoản Admin Hệ Thống duy nhất tồn tại trên CSDL');
     } catch (error) {
-      logger.error('Lỗi khi seed tài khoản người dùng', error);
+      logger.error('Lỗi khi seed tài khoản Admin', error);
     }
   }
 }
