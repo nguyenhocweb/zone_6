@@ -18,16 +18,15 @@ export class TableZoneRepository {
       .sort({ order: 1, created_at: 1 })
       .exec();
 
-    // 2. Nếu cơ sở chưa có tầng nào, tự động khởi tạo mặc định Tầng 1 & Tầng 2
-    if (zones.length === 0) {
-      const defaultZones = ['Tầng 1', 'Tầng 2'];
-      for (let i = 0; i < defaultZones.length; i++) {
-        await TableZoneModel.findOneAndUpdate(
-          { store_id: sId, name: defaultZones[i] },
-          { $set: { store_id: sId, name: defaultZones[i], order: i + 1, is_active: true } },
-          { upsert: true, new: true }
-        );
-      }
+    // 2. Nếu cơ sở hoàn toàn mới (chưa từng tạo tầng nào), tự động khởi tạo mặc định 1 tầng: 'Tầng 1'
+    const hasAnyZonesEver = await TableZoneModel.exists({ store_id: sId });
+    if (!hasAnyZonesEver && zones.length === 0) {
+      await TableZoneModel.create({
+        store_id: sId,
+        name: 'Tầng 1',
+        order: 1,
+        is_active: true,
+      });
       zones = await TableZoneModel.find({ store_id: sId, is_active: true })
         .sort({ order: 1, created_at: 1 })
         .exec();

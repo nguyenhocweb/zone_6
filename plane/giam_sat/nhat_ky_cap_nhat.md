@@ -4,6 +4,34 @@
 
 ---
 
+### [2026-11-04 17:38] - Tích Hợp Bộ Chọn Cơ Sở Tại Top Banner, Tách Biệt Độc Lập Cấu Trúc Bàn/Tầng Từng Chi Nhánh, Bỏ Nút Thêm Bàn Phụ & Bỏ Khu Vực Khác
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. **Ảnh 1:** Bỏ nút `+ Thêm Bàn` ở sub-header (thanh lọc trạng thái).
+  2. **Ảnh 2:** Bỏ tùy chọn khu vực `Khác` trong modal Thêm/Sửa Bàn (chỉ chọn từ danh sách tầng có thật của cơ sở).
+  3. **Ảnh 3:** Bỏ nút `+ Thêm Bàn Mới` trên Top Banner, thay thế trực tiếp bằng Bộ Chọn Cơ Sở (Store Switcher). Tách biệt triệt để cấu trúc tầng và bàn theo từng cơ sở (mỗi cơ sở có sơ đồ tầng & bàn độc lập).
+- **Nội dung hoàn thành:**
+  - **Frontend Top Banner & Store Selection (`TableManagementView.tsx`):**
+    - Loại bỏ nút `+ Thêm Bàn Mới` ở góc phải banner.
+    - Tích hợp trực tiếp Bộ Chọn Cơ Sở vào góc phải Top Banner (với icon tòa nhà `FaBuilding`, nhãn `Cơ Sở Đang Quản Lý:` và dropdown chọn cơ sở cho Admin/Quản lý hoặc tên cơ sở cố định cho Trưởng ca/Nhân viên).
+    - Xóa bỏ khối `StoreInventorySelector` chiếm diện tích thừa bên dưới banner.
+    - Khi chuyển cơ sở: Reset `selectedZone` về `'ALL'` và nạp dữ liệu sạch độc lập của chi nhánh được chọn.
+  - **Frontend Sub-Header Filter Bar (`TableManagementView.tsx`):**
+    - Loại bỏ hoàn toàn nút `+ Thêm Bàn` cạnh các nút lọc trạng thái. Thanh công cụ sub-header trở nên gọn gàng, chỉ tập trung vào 5 nút lọc: Tất Cả, Trống, Có Khách, Đã Đặt, Bảo Trì.
+    - Trong chế độ xem riêng 1 tầng (`selectedZone !== 'ALL'`), bổ sung Floor Header đồng bộ với icon, tên tầng, số bàn và nút `+ Thêm Bàn` chuyên biệt cho tầng đó.
+  - **Frontend Table Form Modal (`TableFormModal.tsx`):**
+    - Xóa bỏ hoàn toàn nút `'Khác'` và trường input nhập tên tầng tùy do.
+    - Lựa chọn tầng chỉ hiển thị các tầng hiện có của cơ sở (`zones.map(z => z.name)`). Việc tạo tầng được quản lý tập trung ở Cột Các Tầng bên trái.
+  - **Backend Scoping & Zone Repository (`table-zone.repository.ts`, `useTables.ts`):**
+    - Bỏ việc tự động khởi tạo cứng cả Tầng 1 và Tầng 2 trên mọi cơ sở. Chỉ khởi tạo mặc định 1 tầng 'Tầng 1' duy nhất nếu cơ sở chưa từng có bất kỳ tầng nào.
+    - Đồng bộ `useTables` ràng buộc điều kiện `enabled: !!params?.store_id` để ngăn chặn việc lấy nhầm dữ liệu cơ sở mặc định.
+    - Cập nhật các mutations tạo/sửa/xóa bàn để tự động invalidate cả cache bàn lẫn cache tầng.
+  - **Verification:**
+    - TypeScript Frontend (`fe/tsconfig.json`): Exit code 0, 0 lỗi.
+    - TypeScript Backend (`be/tsconfig.json`): Exit code 0, 0 lỗi.
+
+---
+
 ### [2026-11-04 17:25] - Tinh Giản Thẻ Bàn (Chỉ Tên Bàn & Sức Chứa) & Phân Quyền Nhân Viên Chỉ Được Xem và Đổi Trạng Thái Bàn
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**

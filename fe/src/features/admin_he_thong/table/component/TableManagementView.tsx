@@ -30,7 +30,7 @@ import { TableItem, TableZoneItem } from '../type/table.type';
 import { TableQrPrintModal } from './TableQrPrintModal';
 import { TableFormModal } from './TableFormModal';
 import { TableDetailModal, formatTableDisplayName } from './TableDetailModal';
-import { StoreInventorySelector } from '@/features/pho_ca_vat_lieu/material/component/StoreInventorySelector';
+import { useGetStores } from '@/features/admin_he_thong/store/hook/useGetStores';
 import { useAuth } from '@/features/shared/auth/hook/useAuth';
 import { toast } from 'sonner';
 
@@ -42,6 +42,47 @@ export const TableManagementView: React.FC = () => {
 
   // 1. Quản lý Cơ sở đang chọn
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
+
+  // Lấy danh sách các cơ sở đang hoạt động
+  const { data: storesData, isLoading: isStoresLoading } = useGetStores({ is_active: true });
+  const stores = useMemo(() => storesData?.stores || [], [storesData]);
+
+  const canSwitchStore = ['admin_he_thong', 'quan_ly'].includes(user?.role || '');
+
+  // Danh sách cơ sở user được phép xem/chọn
+  const allowedStores = useMemo(() => {
+    if (!user) return stores;
+    if (user.role === 'admin_he_thong') return stores;
+    if (user.role === 'quan_ly' && user.assigned_stores && user.assigned_stores.length > 0) {
+      return stores.filter((s) => user.assigned_stores?.includes(s.id));
+    }
+    if (user.assigned_store_id) {
+      return stores.filter((s) => s.id === user.assigned_store_id);
+    }
+    return stores;
+  }, [user, stores]);
+
+  // Tự động khởi tạo và đồng bộ selectedStoreId theo cơ sở hợp lệ
+  useEffect(() => {
+    if (stores.length === 0) return;
+
+    if (!selectedStoreId) {
+      if (user?.assigned_store_id && allowedStores.some((s) => s.id === user.assigned_store_id)) {
+        setSelectedStoreId(user.assigned_store_id);
+      } else if (allowedStores.length > 0) {
+        setSelectedStoreId(allowedStores[0].id);
+      }
+    } else {
+      const exists = allowedStores.some((s) => s.id === selectedStoreId);
+      if (!exists && allowedStores.length > 0) {
+        setSelectedStoreId(allowedStores[0].id);
+      }
+    }
+  }, [stores, user, selectedStoreId, allowedStores]);
+
+  const currentStore = useMemo(() => {
+    return stores.find((s) => s.id === selectedStoreId) || allowedStores[0] || null;
+  }, [stores, selectedStoreId, allowedStores]);
 
   // 2. Lấy dữ liệu Bàn và Tầng theo cơ sở
   const { data: tables = [], isLoading: isTablesLoading } = useTables(
@@ -265,8 +306,8 @@ export const TableManagementView: React.FC = () => {
 
   return (
     <div className="space-y-6 animate-fadeIn pb-20">
-      {/* 1. Top Banner / Header */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#171926] via-[#121522] to-[#0D0F17] border border-[#262C3F] shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* 1. Top Banner / Header & Bộ Chọn Cơ Sở */}
+      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#171926] via-[#121522] to-[#0D0F17] border border-[#262C3F] shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-2xl shadow-md shrink-0">
             <FaChair />
@@ -281,42 +322,43 @@ export const TableManagementView: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-[#8E95A5] mt-1">
-              Phân chia sơ đồ bàn theo từng tầng/khu vực, xuất mã QR Standee mica định vị GPS để khách tự gọi món
+              Phân chia sơ đồ bàn theo từng tầng/khu vực riêng của từng cơ sở, xuất mã QR Standee mica tự gọi món
             </p>
           </div>
         </div>
 
-        {canManageStructure && (
-          <button
-            onClick={() => {
-              setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
-              setEditingTable(null);
-              setIsFormOpen(true);
-            }}
-            disabled={!selectedStoreId}
-            className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl gold-gradient-bg text-[#0B0C10] font-black text-xs shadow-lg hover:brightness-110 active:scale-95 transition cursor-pointer shrink-0 disabled:opacity-50"
-          >
-            <FaPlus />
-            <span>Thêm Bàn Mới</span>
-          </button>
-        )}
-      </div>
-
-      {/* 2. Bộ Chọn Cơ Sở / Chi Nhánh (Store Selector) */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-extrabold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1.5">
-            <FaBuilding className="text-xs" />
-            <span>Chọn Cơ Sở Quản Lý Sơ Đồ Bàn:</span>
-          </label>
+        {/* Thay thế nút Thêm Bàn Mới bằng Bộ Chọn Cơ Sở (Ảnh 3) */}
+        <div className="flex items-center gap-3 bg-[#12141A] border border-[#D4AF37]/50 rounded-2xl p-2.5 px-4 shadow-xl shrink-0 w-full md:w-auto">
+          <div className="w-9 h-9 rounded-xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-sm shadow-sm shrink-0">
+            <FaBuilding />
+          </div>
+          <div className="flex flex-col min-w-[200px]">
+            <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-wider">
+              Cơ Sở Đang Quản Lý:
+            </span>
+            {canSwitchStore && allowedStores.length > 1 ? (
+              <select
+                value={selectedStoreId || ''}
+                onChange={(e) => {
+                  setSelectedStoreId(e.target.value);
+                  setSelectedZone('ALL');
+                }}
+                className="bg-transparent text-xs font-black text-[#F4F5F8] focus:outline-none cursor-pointer pr-3 py-0.5 hover:text-[#D4AF37] transition"
+              >
+                {allowedStores.map((s) => (
+                  <option key={s.id} value={s.id} className="bg-[#12141A] text-[#F4F5F8] py-1.5 font-bold">
+                    {s.store_name} ({s.store_code})
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span className="text-xs font-black text-[#F4F5F8] truncate">
+                {currentStore?.store_name || 'Đang tải cơ sở...'}
+                {currentStore?.store_code ? ` (${currentStore.store_code})` : ''}
+              </span>
+            )}
+          </div>
         </div>
-        <StoreInventorySelector
-          selectedStoreId={selectedStoreId}
-          onSelectStore={(storeId) => {
-            setSelectedStoreId(storeId);
-            setSelectedZone('ALL');
-          }}
-        />
       </div>
 
       {/* 3. KPI Stats Cards */}
@@ -554,44 +596,27 @@ export const TableManagementView: React.FC = () => {
               </p>
             </div>
 
-            {/* Bộ Lọc Trạng Thái & Nút Thêm Bàn Nhanh Cho Tầng Này */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center gap-1 bg-[#181B24] p-1 rounded-xl border border-[#212532]">
-                {[
-                  { key: 'ALL', label: 'Tất Cả' },
-                  { key: 'AVAILABLE', label: 'Trống' },
-                  { key: 'OCCUPIED', label: 'Có Khách' },
-                  { key: 'RESERVED', label: 'Đã Đặt' },
-                  { key: 'MAINTENANCE', label: 'Bảo Trì' },
-                ].map((s) => (
-                  <button
-                    key={s.key}
-                    onClick={() => setSelectedStatusFilter(s.key)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
-                      selectedStatusFilter === s.key
-                        ? 'bg-[#D4AF37] text-black shadow-sm'
-                        : 'text-[#8E95A5] hover:text-white'
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-              </div>
-
-              {canManageStructure && (
+            {/* Bộ Lọc Trạng Thái (Đã bỏ nút thêm bàn theo Ảnh 1) */}
+            <div className="flex items-center gap-1 bg-[#181B24] p-1 rounded-xl border border-[#212532]">
+              {[
+                { key: 'ALL', label: 'Tất Cả' },
+                { key: 'AVAILABLE', label: 'Trống' },
+                { key: 'OCCUPIED', label: 'Có Khách' },
+                { key: 'RESERVED', label: 'Đã Đặt' },
+                { key: 'MAINTENANCE', label: 'Bảo Trì' },
+              ].map((s) => (
                 <button
-                  onClick={() => {
-                    setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
-                    setEditingTable(null);
-                    setIsFormOpen(true);
-                  }}
-                  disabled={!selectedStoreId}
-                  className="py-1.5 px-3 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 active:scale-95 transition flex items-center gap-1 cursor-pointer shadow-md disabled:opacity-50"
+                  key={s.key}
+                  onClick={() => setSelectedStatusFilter(s.key)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    selectedStatusFilter === s.key
+                      ? 'bg-[#D4AF37] text-black shadow-sm'
+                      : 'text-[#8E95A5] hover:text-white'
+                  }`}
                 >
-                  <FaPlus className="text-[10px]" />
-                  <span>Thêm Bàn</span>
+                  {s.label}
                 </button>
-              )}
+              ))}
             </div>
           </div>
 
@@ -723,9 +748,47 @@ export const TableManagementView: React.FC = () => {
              * KHI CHỌN 1 TẦNG CỤ THỂ: HIỂN THỊ CÁC BÀN CỦA RIÊNG TẦNG ĐÓ
              * ========================================================================= */
             <div className="p-5 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-4">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
-                {filteredTables.map(renderTableCard)}
+              {/* Header Tầng */}
+              <div className="flex items-center justify-between pb-3 border-b border-[#212532] gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#181B24] border border-[#D4AF37]/40 text-[#D4AF37] flex items-center justify-center text-sm shadow-sm">
+                    <FaLayerGroup />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                      {selectedZone}
+                    </h3>
+                    <div className="text-[11px] text-[#8E95A5]">
+                      {filteredTables.length} bàn trong khu vực này
+                    </div>
+                  </div>
+                </div>
+
+                {canManageStructure && (
+                  <button
+                    onClick={() => {
+                      setInitialFormZone(selectedZone);
+                      setEditingTable(null);
+                      setIsFormOpen(true);
+                    }}
+                    disabled={!selectedStoreId}
+                    className="py-1.5 px-3 rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#FAECB8] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-50"
+                  >
+                    <FaPlus className="text-[9px]" />
+                    <span>Thêm Bàn</span>
+                  </button>
+                )}
               </div>
+
+              {filteredTables.length === 0 ? (
+                <div className="p-8 text-center text-xs text-[#8E95A5] border border-dashed border-[#212532] rounded-2xl">
+                  Chưa có bàn nào tại {selectedZone}.
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
+                  {filteredTables.map(renderTableCard)}
+                </div>
+              )}
             </div>
           )}
         </section>

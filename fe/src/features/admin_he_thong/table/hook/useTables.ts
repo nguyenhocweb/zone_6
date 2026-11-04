@@ -12,6 +12,7 @@ export function useTables(params?: { store_id?: string; zone_name?: string; stat
   return useQuery({
     queryKey: [...TABLE_QUERY_KEY, params],
     queryFn: () => tableService.getAll(params),
+    enabled: params ? !!params.store_id : true,
     staleTime: 30 * 1000,
   });
 }
@@ -64,6 +65,7 @@ export function useCreateTable() {
     onSuccess: (newTable) => {
       toast.success(`Đã thêm bàn ${newTable.table_number} (${newTable.zone_name}) thành công!`);
       queryClient.invalidateQueries({ queryKey: TABLE_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: TABLE_ZONES_QUERY_KEY });
     },
     onError: (err: any) => {
       toast.error(err.response?.data?.message || err.message || 'Lỗi khi tạo bàn');
@@ -80,6 +82,7 @@ export function useUpdateTable() {
     onSuccess: (updated) => {
       toast.success(`Đã cập nhật bàn ${updated.table_number} thành công!`);
       queryClient.invalidateQueries({ queryKey: TABLE_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: TABLE_ZONES_QUERY_KEY });
     },
     onError: (err: any) => {
       toast.error(err.response?.data?.message || err.message || 'Lỗi cập nhật bàn');
@@ -95,6 +98,7 @@ export function useDeleteTable() {
     onSuccess: () => {
       toast.success('Đã xóa bàn thành công!');
       queryClient.invalidateQueries({ queryKey: TABLE_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: TABLE_ZONES_QUERY_KEY });
     },
     onError: (err: any) => {
       toast.error(err.response?.data?.message || err.message || 'Lỗi khi xóa bàn');
