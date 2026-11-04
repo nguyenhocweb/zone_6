@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FiX, FiCheckCircle, FiCopy, FiAlertCircle } from 'react-icons/fi';
 import { toast } from 'sonner';
+import { useGetDefaultPayOSConfig } from '@/features/admin_he_thong/payos/hook/useGetDefaultPayOSConfig';
 
 interface VietQrModalProps {
   isOpen: boolean;
@@ -25,10 +26,12 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  // Cấu hình tài khoản VietQR thụ hưởng Zone Six (MBBank ví dụ chuẩn chuỗi)
-  const bankId = 'MB';
-  const accountNo = '0353489999';
-  const accountName = 'ZONE SIX COFFEE & LOUNGE';
+  const { data: defaultPayOS } = useGetDefaultPayOSConfig();
+
+  // Cấu hình tài khoản VietQR thụ hưởng Zone Six (ưu tiên tài khoản PayOS chính từ Database)
+  const bankId = defaultPayOS?.bank_name || 'MB';
+  const accountNo = defaultPayOS?.account_number || '0353489999';
+  const accountName = defaultPayOS?.account_holder_name || 'ZONE SIX COFFEE & LOUNGE';
 
   const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(
     orderCode

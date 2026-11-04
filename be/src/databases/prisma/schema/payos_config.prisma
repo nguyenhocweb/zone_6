@@ -1,0 +1,18 @@
+model PayOSConfig {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  name              String   @map("name")
+  clientId          String   @map("client_id")
+  apiKey            String   @map("api_key")
+  checksumKey       String   @map("checksum_key")
+  bankName          String   @map("bank_name")
+  accountNumber     String   @map("account_number")
+  accountHolderName String   @map("account_holder_name")
+  isDefault         Boolean  @default(false) @map("is_default")
+  isActive          Boolean  @default(true) @map("is_active")
+  notes             String?  @map("notes")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("payos_configs")
+}
+

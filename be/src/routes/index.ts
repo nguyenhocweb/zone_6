@@ -18,6 +18,7 @@ import { createPurchaseRequisitionRouter } from '../modules/pho_ca_vat_lieu/purc
 import { createPurchaseOrderRouter } from '../modules/quan_ly/purchase_order/routes/purchase-order.routes.js';
 import { createPosRouter } from '../modules/pos/routes/pos.routes.js';
 import { createTableRouter } from '../modules/admin_he_thong/table/routes/table.routes.js';
+import { createPayOSRouter } from '../modules/admin_he_thong/payos/routes/payos.routes.js';
 
 export function createApiRouter(zaloService: ZaloService): Router {
   const router = Router();
@@ -95,6 +96,10 @@ export function createApiRouter(zaloService: ZaloService): Router {
   // 8b. Phân hệ Quản Lý Bàn & Khách Quét QR Gọi Món (CN13)
   router.use('/v1/tables', createTableRouter());
   router.use('/tables', createTableRouter());
+
+  // 8c. Phân hệ Cấu Hình Cổng Thanh Toán PayOS (Admin Hệ Thống & POS/QR)
+  router.use('/v1/payos', createPayOSRouter());
+  router.use('/payos', createPayOSRouter());
 
   // 9. Phân hệ Zalo Integration (Cả v1 lẫn root zalo)
   const zaloRouter = createZaloRouter(zaloService);

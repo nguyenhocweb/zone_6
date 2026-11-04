@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FaCheckCircle, FaCopy, FaTimes, FaQrcode, FaCheck } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { useGetDefaultPayOSConfig } from '@/features/admin_he_thong/payos/hook/useGetDefaultPayOSConfig';
 import { TableOrderResult } from '../type/table-order.type';
 
 interface TableVietQrModalProps {
@@ -20,11 +21,14 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
   const [copiedContent, setCopiedContent] = useState(false);
   const [isDone, setIsDone] = useState(false);
 
+  const { data: defaultPayOS } = useGetDefaultPayOSConfig();
+
   if (!order) return null;
 
-  const bankId = 'MB';
-  const accountNo = '0353489999';
-  const accountName = 'ZONE SIX COFFEE & LOUNGE';
+  // Cấu hình tài khoản VietQR thụ hưởng Zone Six (ưu tiên tài khoản PayOS chính từ Database)
+  const bankId = defaultPayOS?.bank_name || 'MB';
+  const accountNo = defaultPayOS?.account_number || '0353489999';
+  const accountName = defaultPayOS?.account_holder_name || 'ZONE SIX COFFEE & LOUNGE';
 
   const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${order.finalAmount}&addInfo=${encodeURIComponent(
     order.orderCode

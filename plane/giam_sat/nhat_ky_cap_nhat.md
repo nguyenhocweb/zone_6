@@ -4,6 +4,54 @@
 
 ---
 
+### [2026-11-04 19:55] - Triển Khai Hoàn Chỉnh Phân Hệ Cấu Hình PayOS Cho Admin & Đồng Bộ VietQR Động Vào POS / Gọi Món Tại Bàn (CN15)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "bổ sung thêm admin cấu hình payos để thanh toán và cấu hình đó lưu trên datavase và có thể tạo nhiều tài khoản và chỉ đc chọn 1 tài khoản đc thanh toán chính"
+- **Kiến trúc & Ràng buộc cốt lõi:**
+  1. Toàn bộ cấu hình tài khoản PayOS lưu trữ trên MongoDB Atlas (Collection `payos_configs`, Model `PayOSConfigModel`, Schema Prisma `payos_config.prisma`).
+  2. Hỗ trợ tạo nhiều tài khoản PayOS (CRUD: Thêm mới, xem danh sách, cập nhật, xóa).
+  3. **Ràng buộc duy nhất 1 tài khoản chính:** Chỉ duy nhất 1 tài khoản có `is_default: true` tại một thời điểm. Khi chọn 1 tài khoản làm chính, toàn bộ các tài khoản khác tự động chuyển về `is_default: false`. Nếu xóa tài khoản chính hiện tại, hệ thống tự động thăng hạng tài khoản khả dụng tiếp theo làm chính.
+  4. **Bảo mật phân tầng:** API quản trị PayOS (`/api/v1/payos`) chỉ dành riêng cho Admin Hệ Thống (`admin_he_thong`). Các API công khai cho POS & Table Order (`/api/v1/payos/default`) chỉ trả về thông tin thụ hưởng công khai (Tên, Ngân hàng, Số tài khoản, Chủ tài khoản), tuyệt đối không để lộ Client ID, API Key hay Checksum Key.
+  5. **Tích hợp VietQR động:** Các modal thanh toán tại POS (`VietQrModal.tsx`) và gọi món tại bàn (`TableVietQrModal.tsx`) tự động dùng tài khoản PayOS chính từ Database để sinh mã VietQR.
+- **Nội dung hoàn thành:**
+  - **Backend Node.js (Granular Feature-Sliced SRP):**
+    - Prisma Schema: `be/src/databases/prisma/schema/payos_config.prisma`
+    - Mongoose Model: `be/src/modules/admin_he_thong/payos/models/payos-config.model.ts`
+    - Zod Validation: `be/src/modules/admin_he_thong/payos/schemas/payos-config.schema.ts`
+    - Repository: `be/src/modules/admin_he_thong/payos/repositories/payos-config.repository.ts` (`findAll`, `findById`, `findDefault`, `create`, `update`, `delete`, `ensureSingleDefault`, `promoteNextAvailableDefault`)
+    - Granular Services:
+      - `payos-config.create.service.ts`
+      - `payos-config.get.service.ts`
+      - `payos-config.update.service.ts`
+      - `payos-config.delete.service.ts`
+      - `payos-config.set-default.service.ts`
+      - `payos-config.test.service.ts` (Kiểm tra kết nối trực tiếp với PayOS qua API `https://api-merchant.payos.vn/v2/payment-requests/0`)
+    - Granular Controllers:
+      - `payos-config.create.controller.ts`
+      - `payos-config.get.controller.ts`
+      - `payos-config.update.controller.ts`
+      - `payos-config.delete.controller.ts`
+      - `payos-config.set-default.controller.ts`
+      - `payos-config.test.controller.ts`
+    - Express Router: `be/src/modules/admin_he_thong/payos/routes/payos.routes.ts`
+    - Đăng ký Route: `be/src/routes/index.ts` (`/v1/payos` & `/payos`)
+  - **Frontend Next.js (App Router & React Query v5):**
+    - TypeScript Types & Schema: `fe/src/features/admin_he_thong/payos/type/payos.type.ts`, `schema/payos.schema.ts`
+    - Granular HTTP Services: `payos.get.service.ts`, `payos.create.service.ts`, `payos.update.service.ts`, `payos.delete.service.ts`, `payos.set-default.service.ts`, `payos.test.service.ts`
+    - React Query Hooks: `useGetPayOSConfigs.ts`, `useGetDefaultPayOSConfig.ts`, `useCreatePayOSConfig.ts`, `useUpdatePayOSConfig.ts`, `useDeletePayOSConfig.ts`, `useSetDefaultPayOSConfig.ts`, `useTestPayOSConfig.ts`
+    - UI Components:
+      - `PayOSManagementView.tsx`: Thống kê tổng quan, trạng thái tài khoản chính, thẻ bảo mật, danh sách tài khoản
+      - `PayOSAccountCard.tsx`: Thẻ hiển thị tài khoản PayOS, huy hiệu Vàng `★ Tài Khoản Thanh Toán Chính Duy Nhất`, nút test kết nối, nút đặt làm chính, sao chép STK, ẩn/hiện mã bí mật, sửa/xóa
+      - `PayOSAccountModal.tsx`: Form thêm/sửa tài khoản đầy đủ (Tên định danh, chọn Ngân hàng, STK, Chủ TK, Client ID, API Key, Checksum Key, nút test kết nối ngay trước khi lưu)
+    - Next.js Page: `fe/src/app/payos/page.tsx`
+    - Sidebar Navigation: Cập nhật `AppShell.tsx` bổ sung menu "Cấu Hình PayOS" (`/payos`) chỉ hiển thị cho Admin Hệ Thống
+    - Tích hợp động: Cập nhật `VietQrModal.tsx` và `TableVietQrModal.tsx` lấy tự động tài khoản PayOS chính từ `useGetDefaultPayOSConfig()`
+- **Verification:**
+  - Backend Build (`npm --prefix be run build`): Thành công 100%, 0 lỗi.
+  - Frontend TypeScript Check (`tsc -p fe/tsconfig.json --noEmit`): Thành công 100%, 0 lỗi.
+  - Cập nhật Registry: `.agents/DATABASE_SCHEMA.md` & `.agents/REACT_QUERY_REGISTRY.md`.
+
+
 ### [2026-11-04 19:25] - Khắc Phục Tình Trạng Mất Kết Nối Socket Trên POS & Đồng Bộ Danh Mục Món Cho Cơ Sở
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Giải thích và xử lý "Sao lại mất kết nối socket" và hiển thị đầy đủ món trên màn hình POS (`/pos`).

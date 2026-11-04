@@ -45,6 +45,7 @@ Tài liệu này lưu vết toàn bộ cơ sở dữ liệu MongoDB Atlas (Datab
 | `pos_sessions` | `PosSessionModel` | `be/src/modules/pos/models/pos-session.model.ts` | `session_code (unique)`, `{ store_id, shift_id }` | Bảng phiên làm việc giỏ hàng trực tiếp (Live Cart) theo ca trực tại chi nhánh, hỗ trợ đồng bộ đa thiết bị qua WebSocket |
 | `tables` | `TableModel` | `be/src/modules/admin_he_thong/table/models/table.model.ts` | `{ store_id, table_number } (unique)`, `qr_token (unique)`, `{ store_id, status }` | Bảng quản lý sơ đồ bàn phân theo chi nhánh và tầng/khu vực (`zone_name`), token HMAC định vị phục vụ gọi món tại bàn |
 | `table_zones` | `TableZoneModel` | `be/src/modules/admin_he_thong/table/models/table-zone.model.ts` | `{ store_id, name } (unique)`, `store_id`, `is_active` | Bảng quản lý các tầng / khu vực phân theo chi nhánh (Tầng 1, Tầng 2, Sân Vườn, VIP...), hỗ trợ thêm/xóa tầng động |
+| `payos_configs` | `PayOSConfigModel` | `be/src/modules/admin_he_thong/payos/models/payos-config.model.ts` | `is_default`, `is_active` | Bảng quản lý các tài khoản thanh toán PayOS (Client ID, API Key, Checksum Key, Ngân hàng, Số tài khoản). Chỉ duy nhất 1 tài khoản được đặt làm thanh toán chính (`is_default: true`) |
 
 ---
 

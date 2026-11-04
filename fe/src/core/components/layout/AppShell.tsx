@@ -30,6 +30,7 @@ import {
   FaCashRegister,
   FaChair,
   FaReceipt,
+  FaCreditCard,
 } from "react-icons/fa";
 import { useScheduleNotifications } from "@/features/shared/notifications/hook/useScheduleNotifications";
 
@@ -115,8 +116,11 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
     "pho_ca_lam_lich",
   ].includes(user.role);
 
-  // Quyền cấu hình Zalo Bot (Chỉ duy nhất Admin Hệ Thống)
+  // Qấu hình Zalo Bot (Chỉ duy nhất Admin Hệ Thống)
   const canConfigZalo = user.role === "admin_he_thong";
+
+  // Quyền cấu hình cổng thanh toán PayOS (Chỉ duy nhất Admin Hệ Thống)
+  const canConfigPayOS = user.role === "admin_he_thong";
 
   // Quyền quản lý chi nhánh chuỗi cửa hàng (Chỉ duy nhất Admin Hệ Thống)
   const canManageStores = user.role === "admin_he_thong";
@@ -141,6 +145,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const isCheckinConfigActive =
     pathname === "/checkin-config" || pathname.startsWith("/checkin-config");
   const isZaloActive = pathname === "/zalo" || pathname.startsWith("/zalo");
+  const isPayOSActive = pathname === "/payos" || pathname.startsWith("/payos");
   const isProfileActive = pathname === "/profile" || pathname.startsWith("/profile");
   const isNotificationsActive =
     pathname === "/notifications" || pathname.startsWith("/notifications");
@@ -675,6 +680,33 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   </div>
                   <div className="text-xs font-black truncate flex-1">
                     Zalo Bot (zca-js)
+                  </div>
+                </Link>
+              )}
+
+              {/* 8. Cấu Hình Cổng Thanh Toán PayOS - Chỉ Admin Hệ Thống */}
+              {canConfigPayOS && (
+                <Link
+                  href="/payos"
+                  id="tab-btn-payos"
+                  data-testid="tab-payos"
+                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
+                    isPayOSActive
+                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
+                  }`}
+                >
+                  <div
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                      isPayOSActive
+                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                    }`}
+                  >
+                    <FaCreditCard />
+                  </div>
+                  <div className="text-xs font-black truncate flex-1">
+                    Cấu Hình PayOS
                   </div>
                 </Link>
               )}

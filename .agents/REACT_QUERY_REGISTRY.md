@@ -42,6 +42,8 @@ Tất cả QueryKey BẮT BUỘC là **mảng phân cấp**:
 | `admin_he_thong` | `tables` | `['admin_he_thong', 'tables', params]` | `useTables` | Khi tạo, sửa, xóa bàn, đổi trạng thái qua Socket thời gian thực (`table:updated`), hoặc đổi mã token QR |
 | `admin_he_thong` | `table_zones` | `['admin_he_thong', 'table_zones', storeId]` | `useTableZones` | Khi tạo hoặc xóa tầng/khu vực (`useCreateTableZone`, `useDeleteTableZone`) |
 | `admin_he_thong` | `table_shift_status` | `['admin_he_thong', 'table_shift_status', storeId]` | `useTableShiftStatus` | Kiểm tra quyền nhân viên trong ca trước khi cho phép bấm nút đổi trạng thái bàn |
+| `admin_he_thong` | `payos_configs` | `['admin_he_thong', 'payos_configs']` | `usePayOS` | Khi thêm/sửa/xóa hoặc đổi tài khoản chính PayOS (`useCreatePayOSConfig`, `useUpdatePayOSConfig`, `useDeletePayOSConfig`, `useSetDefaultPayOSConfig`) |
+| `pos` / `shared` | `payos_default` | `['payos', 'default']` | `useGetDefaultPayOSConfig` | Tự động đồng bộ tài khoản ngân hàng thụ hưởng cho POS và QR tại bàn khi có thay đổi |
 | `pos` | `orders` | `['pos', 'orders', 'all', params]` | `useOrderManagement` | Khi tạo đơn mới, thanh toán hoặc hủy hóa đơn (`useVoidOrder`) |
 
 ---
