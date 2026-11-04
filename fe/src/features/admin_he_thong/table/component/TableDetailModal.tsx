@@ -329,3 +329,4 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
     </div>
   );
 };
+
