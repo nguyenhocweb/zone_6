@@ -2,22 +2,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { FaTimes, FaPlus, FaSave } from 'react-icons/fa';
-import { TableItem, CreateTableDto, UpdateTableDto } from '../type/table.type';
+import { TableItem, TableZoneItem, CreateTableDto, UpdateTableDto } from '../type/table.type';
 
 interface TableFormModalProps {
   isOpen: boolean;
   table: TableItem | null;
+  storeId: string;
+  zones: TableZoneItem[];
+  initialZone?: string;
   onClose: () => void;
   onSubmitCreate: (data: CreateTableDto) => void;
   onSubmitUpdate: (id: string, data: UpdateTableDto) => void;
   isSubmitting: boolean;
 }
 
-const COMMON_ZONES = ['Tầng 1', 'Tầng 2', 'Sân Vườn', 'Ban Công', 'Phòng VIP', 'Quầy Bar'];
-
 export const TableFormModal: React.FC<TableFormModalProps> = ({
   isOpen,
   table,
+  storeId,
+  zones,
+  initialZone,
   onClose,
   onSubmitCreate,
   onSubmitUpdate,
@@ -29,10 +33,12 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
   const [capacity, setCapacity] = useState(4);
   const [status, setStatus] = useState<'AVAILABLE' | 'OCCUPIED' | 'RESERVED'>('AVAILABLE');
 
+  const zoneNames = zones.map((z) => z.name);
+
   useEffect(() => {
     if (table) {
       setTableNumber(table.table_number);
-      if (COMMON_ZONES.includes(table.zone_name)) {
+      if (zoneNames.includes(table.zone_name)) {
         setZoneName(table.zone_name);
         setCustomZone('');
       } else {
@@ -43,12 +49,16 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
       setStatus(table.status || 'AVAILABLE');
     } else {
       setTableNumber('');
-      setZoneName('Tầng 1');
+      const defaultZone =
+        initialZone && initialZone !== 'ALL'
+          ? initialZone
+          : zoneNames[0] || 'Tầng 1';
+      setZoneName(defaultZone);
       setCustomZone('');
       setCapacity(4);
       setStatus('AVAILABLE');
     }
-  }, [table, isOpen]);
+  }, [table, isOpen, initialZone, zones]);
 
   if (!isOpen) return null;
 
@@ -56,7 +66,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
     e.preventDefault();
     if (!tableNumber.trim()) return;
 
-    const finalZone = zoneName === 'Khác' ? (customZone.trim() || 'Sảnh Chính') : zoneName;
+    const finalZone = zoneName === 'Khác' ? (customZone.trim() || 'Tầng 1') : zoneName;
 
     if (table) {
       onSubmitUpdate(table.id, {
@@ -67,6 +77,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
       });
     } else {
       onSubmitCreate({
+        store_id: storeId,
         table_number: tableNumber.trim(),
         zone_name: finalZone,
         capacity: Number(capacity),
@@ -84,7 +95,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
           </h3>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-[#181b24] text-[#a0a5b5] hover:text-white flex items-center justify-center text-xs"
+            className="w-7 h-7 rounded-full bg-[#181b24] text-[#a0a5b5] hover:text-white flex items-center justify-center text-xs cursor-pointer"
           >
             <FaTimes />
           </button>
@@ -99,7 +110,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
             </label>
             <input
               type="text"
-              placeholder="VD: 01, 02, VIP 1..."
+              placeholder="VD: Bàn 01, Bàn 02, VIP 1..."
               value={tableNumber}
               onChange={(e) => setTableNumber(e.target.value)}
               required
@@ -110,18 +121,18 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
           {/* Zone Selection */}
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-[#f4f5f8] uppercase tracking-wider">
-              Khu Vực (Zone)
+              Chọn Tầng / Khu Vực
             </label>
             <div className="grid grid-cols-3 gap-2">
-              {[...COMMON_ZONES, 'Khác'].map((z) => (
+              {[...zoneNames, 'Khác'].map((z) => (
                 <button
                   key={z}
                   type="button"
                   onClick={() => setZoneName(z)}
-                  className={`py-2 px-2.5 rounded-xl border text-xs font-bold transition text-center ${
+                  className={`py-2 px-2.5 rounded-xl border text-xs font-bold transition text-center cursor-pointer ${
                     zoneName === z
-                      ? 'border-[#d4af37] bg-[#d4af37]/15 text-[#f4f5f8]'
-                      : 'border-[#212532] bg-[#181b24] text-[#a0a5b5]'
+                      ? 'border-[#d4af37] bg-[#d4af37]/20 text-[#fae29c] shadow-sm'
+                      : 'border-[#212532] bg-[#181b24] text-[#a0a5b5] hover:border-[#384055]'
                   }`}
                 >
                   {z}
@@ -132,7 +143,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
             {zoneName === 'Khác' && (
               <input
                 type="text"
-                placeholder="Nhập tên khu vực mới..."
+                placeholder="Nhập tên tầng/khu vực mới..."
                 value={customZone}
                 onChange={(e) => setCustomZone(e.target.value)}
                 className="w-full mt-2 bg-[#181b24] border border-[#212532] rounded-xl px-3 py-2 text-xs text-white placeholder-[#6c7280] focus:border-[#d4af37] outline-none"
@@ -171,7 +182,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
                     key={s.key}
                     type="button"
                     onClick={() => setStatus(s.key as any)}
-                    className={`py-2 rounded-xl border text-xs font-bold transition text-center ${
+                    className={`py-2 rounded-xl border text-xs font-bold transition text-center cursor-pointer ${
                       status === s.key
                         ? 'border-[#d4af37] bg-[#d4af37]/15 text-[#f4f5f8]'
                         : 'border-[#212532] bg-[#181b24] text-[#a0a5b5]'
@@ -200,4 +211,3 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
     </div>
   );
 };
-

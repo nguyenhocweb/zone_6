@@ -22,6 +22,9 @@ export class TableRepository {
   }
 
   async listByStore(storeId: string): Promise<ITableDoc[]> {
+    if (!storeId || !mongoose.Types.ObjectId.isValid(storeId)) {
+      return [];
+    }
     return TableModel.find({
       store_id: new mongoose.Types.ObjectId(storeId),
       is_active: true,

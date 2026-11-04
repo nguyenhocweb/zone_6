@@ -40,6 +40,7 @@ Tất cả QueryKey BẮT BUỘC là **mảng phân cấp**:
 | `pho_ca_vat_lieu` | `purchase_requisitions` | `['purchase_requisitions', 'list', params]` | `useGetRequisitions`, `useGetRequisitionSuggestions` | Khi tạo phiếu yêu cầu nhập kho (`useCreateRequisition`) hoặc duyệt phiếu (`useUpdateRequisitionStatus`) |
 | `quan_ly` | `purchase_orders` | `['purchase_orders', 'list', params]` | `useGetPurchaseOrders`, `useGetPurchaseOrderById` | Khi tạo đơn thu mua PO (`useCreatePoFromRequisitions`) hoặc xác nhận nhập kho (`useReceivePo`) |
 | `admin_he_thong` | `tables` | `['admin_he_thong', 'tables', params]` | `useTables` | Khi tạo, sửa, xóa bàn hoặc đổi mã token QR (`useCreateTable`, `useUpdateTable`, `useDeleteTable`, `useRegenerateTableToken`) |
+| `admin_he_thong` | `table_zones` | `['admin_he_thong', 'table_zones', storeId]` | `useTableZones` | Khi tạo hoặc xóa tầng/khu vực (`useCreateTableZone`, `useDeleteTableZone`) |
 | `pos` | `orders` | `['pos', 'orders', 'all', params]` | `useOrderManagement` | Khi tạo đơn mới, thanh toán hoặc hủy hóa đơn (`useVoidOrder`) |
 
 ---

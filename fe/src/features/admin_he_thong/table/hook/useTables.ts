@@ -6,12 +6,53 @@ import { CreateTableDto, UpdateTableDto } from '../type/table.type';
 import { toast } from 'sonner';
 
 export const TABLE_QUERY_KEY = ['admin_he_thong', 'tables'] as const;
+export const TABLE_ZONES_QUERY_KEY = ['admin_he_thong', 'table_zones'] as const;
 
 export function useTables(params?: { store_id?: string; zone_name?: string; status?: string }) {
   return useQuery({
     queryKey: [...TABLE_QUERY_KEY, params],
     queryFn: () => tableService.getAll(params),
     staleTime: 30 * 1000,
+  });
+}
+
+export function useTableZones(storeId?: string | null) {
+  return useQuery({
+    queryKey: [...TABLE_ZONES_QUERY_KEY, storeId],
+    queryFn: () => tableService.getZones(storeId || undefined),
+    enabled: !!storeId,
+    staleTime: 60 * 1000,
+  });
+}
+
+export function useCreateTableZone() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: { store_id: string; name: string }) => tableService.createZone(data),
+    onSuccess: (newZone) => {
+      toast.success(`Đã tạo tầng "${newZone.name}" thành công!`);
+      queryClient.invalidateQueries({ queryKey: TABLE_ZONES_QUERY_KEY });
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || err.message || 'Lỗi khi tạo tầng');
+    },
+  });
+}
+
+export function useDeleteTableZone() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => tableService.deleteZone(id),
+    onSuccess: () => {
+      toast.success('Đã xóa tầng thành công!');
+      queryClient.invalidateQueries({ queryKey: TABLE_ZONES_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: TABLE_QUERY_KEY });
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || err.message || 'Lỗi khi xóa tầng');
+    },
   });
 }
 

@@ -4,6 +4,30 @@
 
 ---
 
+### [2026-11-04 16:45] - Bổ Sung Bộ Chọn Chi Nhánh (Store Selector) & Tái Cấu Trúc Giao Diện 2 Cột Quản Lý Tầng / Bàn (/tables)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Trang `/tables` thiếu cơ chế chọn cơ sở.
+  2. Bên trái thể hiện các tầng và có thể tạo thêm tầng, chọn tầng; bên phải hiển thị danh sách bàn tương ứng.
+- **Nội dung hoàn thành:**
+  - **Backend (Prisma Schema, Model, Repos, Granular Services & Controllers):**
+    - Tạo `be/src/databases/prisma/schema/table_zone.prisma` và collection `table_zones`.
+    - Tạo Mongoose model `TableZoneModel` liên kết `store_id`.
+    - `table-zone.repository.ts`: Tự động khởi tạo mặc định "Tầng 1", "Tầng 2" cho cơ sở nếu chưa có tầng nào, tự động quét và hợp nhất các `zone_name` từ bàn cũ.
+    - Xây dựng 3 services và 3 controllers granular SRP:
+      - `table-zone.get.service.ts` & `table-zone.get.controller.ts` (`GET /api/v1/tables/zones`)
+      - `table-zone.create.service.ts` & `table-zone.create.controller.ts` (`POST /api/v1/tables/zones`)
+      - `table-zone.delete.service.ts` & `table-zone.delete.controller.ts` (`DELETE /api/v1/tables/zones/:id`)
+    - Cập nhật `table.get.service.ts` & `table.repository.ts` với cơ chế fallback cơ sở an toàn.
+  - **Frontend (Store Selector & 2-Column Floor/Table Layout):**
+    - Tích hợp `StoreInventorySelector` phong cách Obsidian Gold ở đầu trang `/tables` cho phép Admin và Quản lý chuyển đổi giữa các cơ sở.
+    - Cột Trái (`aside w-72`): Danh sách các tầng ("Tất Cả Tầng", "Tầng 1", "Tầng 2"...), badge số bàn của từng tầng, form tạo tầng mới linh hoạt, nút xóa tầng khi không có bàn.
+    - Cột Phải (`section flex-1`): Header tầng đang chọn, bộ lọc trạng thái nhanh (Trống, Có Khách, Đã Đặt), nút "+ Thêm Bàn Vào Tầng Này", Grid thẻ bàn phong cách Obsidian Gold với 3 nút chuyển nhanh trạng thái bàn 1-chạm, xem/in mã QR Standee mica, sửa và xóa bàn.
+    - `TableFormModal.tsx`: Tự động nhận `storeId`, tự động lấy danh sách tầng từ CSDL và pre-fill tầng đang chọn.
+  - **Build Verification:**
+    - Backend TypeScript compile: 100% thành công.
+    - Frontend Next.js build: 100% thành công (24/24 static routes, 0 lỗi).
+
 ### [2026-11-04 16:30] - Sửa Lỗi Trắng Trang (This page couldn't load) Khi Mở Màn Hình POS (/pos) Trên Vercel
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Báo lỗi màn hình trắng *"This page couldn't load"* tại `https://zone-6.vercel.app/pos`.

@@ -43,6 +43,8 @@ Tài liệu này lưu vết toàn bộ cơ sở dữ liệu MongoDB Atlas (Datab
 | `shift_configs` | `ShiftConfigModel` | `be/src/modules/pho_ca_lam_lich/scheduling/models/shift-config.model.ts` | `{ store_id, shift_code } (unique)`, `store_id`, `is_active` | Bảng cấu hình ca làm việc & định biên nhân sự theo chi nhánh: tên ca, mã ca, giờ bắt đầu/kết thúc, số giờ công, số nhân viên tối thiểu (`min_staff`), tối đa (`max_staff`), định biên tối thiểu Pha chế (`min_barista`), Phục vụ (`min_service`), màu nhận diện & các ngày áp dụng |
 | `orders` | `OrderModel` | `be/src/modules/pos/models/order.model.ts` | `order_code (unique)`, `{ store_id, created_at }` | Bảng lưu trữ hóa đơn bán hàng vĩnh viễn sau thanh toán, chi tiết món, topping, số tiền, phương thức (VietQR/Tiền mặt), người tạo, người thu |
 | `pos_sessions` | `PosSessionModel` | `be/src/modules/pos/models/pos-session.model.ts` | `session_code (unique)`, `{ store_id, shift_id }` | Bảng phiên làm việc giỏ hàng trực tiếp (Live Cart) theo ca trực tại chi nhánh, hỗ trợ đồng bộ đa thiết bị qua WebSocket |
+| `tables` | `TableModel` | `be/src/modules/admin_he_thong/table/models/table.model.ts` | `{ store_id, table_number } (unique)`, `qr_token (unique)`, `{ store_id, status }` | Bảng quản lý sơ đồ bàn phân theo chi nhánh và tầng/khu vực (`zone_name`), token HMAC định vị phục vụ gọi món tại bàn |
+| `table_zones` | `TableZoneModel` | `be/src/modules/admin_he_thong/table/models/table-zone.model.ts` | `{ store_id, name } (unique)`, `store_id`, `is_active` | Bảng quản lý các tầng / khu vực phân theo chi nhánh (Tầng 1, Tầng 2, Sân Vườn, VIP...), hỗ trợ thêm/xóa tầng động |
 
 ---
 
