@@ -28,7 +28,10 @@ export const tableOrderService = {
   async getMenu(storeId?: string): Promise<any[]> {
     const params = storeId ? { store_id: storeId } : {};
     const res = await axiosClient.get('/api/v1/recipes', { params });
-    return res.data.data || [];
+    const data = res.data?.data;
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.recipes)) return data.recipes;
+    return [];
   },
 
   async submitOrder(payload: CreateTableOrderDto): Promise<TableOrderResult> {

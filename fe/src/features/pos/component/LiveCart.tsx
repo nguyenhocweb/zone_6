@@ -33,9 +33,10 @@ export const LiveCart: React.FC<LiveCartProps> = ({
   onCustomerNameChange,
 }) => {
   const isLockedByOther =
-    cart.lockedBy && cart.lockedBy !== currentUserId;
+    cart?.lockedBy && cart.lockedBy !== currentUserId;
 
-  const totalItemsCount = cart.items.reduce((sum, it) => sum + it.quantity, 0);
+  const cartItems = Array.isArray(cart?.items) ? cart.items : [];
+  const totalItemsCount = cartItems.reduce((sum, it) => sum + (it?.quantity || 0), 0);
 
   return (
     <div className="flex flex-col h-full bg-[#12141a] border-l border-[#212532]">
@@ -56,7 +57,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
             </div>
           </div>
 
-          {cart.items.length > 0 && !isLockedByOther && (
+          {cartItems.length > 0 && !isLockedByOther && (
             <button
               onClick={onClearCart}
               className="text-xs text-red-400 hover:text-red-300 transition-colors flex items-center gap-1 cursor-pointer"
@@ -76,7 +77,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
             <input
               type="text"
               disabled={!!isLockedByOther}
-              value={cart.tableNumber || ''}
+              value={cart?.tableNumber || ''}
               onChange={(e) => onTableChange(e.target.value)}
               placeholder="VD: Bàn 04"
               className="w-full bg-[#12141a] border border-[#212532] rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-[#6c7280] focus:outline-none focus:border-[#d4af37]"
@@ -89,7 +90,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
             <input
               type="text"
               disabled={!!isLockedByOther}
-              value={cart.customerName || ''}
+              value={cart?.customerName || ''}
               onChange={(e) => onCustomerNameChange(e.target.value)}
               placeholder="Khách lẻ"
               className="w-full bg-[#12141a] border border-[#212532] rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-[#6c7280] focus:outline-none focus:border-[#d4af37]"
@@ -103,14 +104,14 @@ export const LiveCart: React.FC<LiveCartProps> = ({
         <div className="p-3 bg-amber-500/15 border-b border-amber-500/30 text-amber-300 text-xs flex items-center gap-2 animate-pulse">
           <FiLock className="w-4 h-4 shrink-0 text-amber-400" />
           <span>
-            Đơn hàng đang được <strong>{cart.lockedByName || 'Đồng nghiệp'}</strong> tiến hành thanh toán...
+            Đơn hàng đang được <strong>{cart?.lockedByName || 'Đồng nghiệp'}</strong> tiến hành thanh toán...
           </span>
         </div>
       )}
 
       {/* Danh Sách Món Đang Chọn */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {cart.items.length === 0 ? (
+        {cartItems.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 text-[#a0a5b5]">
             <FiShoppingBag className="w-12 h-12 text-[#212532] mb-3" />
             <p className="text-sm font-medium">Chưa có món nào trong giỏ</p>
@@ -119,7 +120,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
             </p>
           </div>
         ) : (
-          cart.items.map((item, idx) => (
+          cartItems.map((item, idx) => (
             <div
               key={`${item.recipeId}-${idx}`}
               className="bg-[#181b24] border border-[#212532] rounded-xl p-3 flex flex-col gap-2 transition-all hover:border-[#2c3242]"
@@ -201,19 +202,19 @@ export const LiveCart: React.FC<LiveCartProps> = ({
           <div className="flex justify-between">
             <span>Tạm tính</span>
             <span className="font-semibold text-white">
-              {cart.subtotal.toLocaleString()}đ
+              {(cart?.subtotal || 0).toLocaleString()}đ
             </span>
           </div>
-          {cart.discount > 0 && (
+          {(cart?.discount || 0) > 0 && (
             <div className="flex justify-between text-emerald-400">
               <span>Giảm giá</span>
-              <span>-{cart.discount.toLocaleString()}đ</span>
+              <span>-{(cart.discount || 0).toLocaleString()}đ</span>
             </div>
           )}
           <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-[#212532]">
             <span>Tổng cộng</span>
             <span className="text-lg text-[#d4af37]">
-              {cart.finalTotal.toLocaleString()}đ
+              {(cart?.finalTotal || 0).toLocaleString()}đ
             </span>
           </div>
         </div>
@@ -221,10 +222,10 @@ export const LiveCart: React.FC<LiveCartProps> = ({
         {/* Nút Thanh Toán VietQR & Tiền Mặt */}
         <div className="grid grid-cols-2 gap-2.5 pt-1">
           <button
-            disabled={cart.items.length === 0 || !!isLockedByOther}
+            disabled={cartItems.length === 0 || !!isLockedByOther}
             onClick={() => onOpenCheckout('CASH')}
             className={`py-3 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-[#212532] ${
-              cart.items.length > 0 && !isLockedByOther
+              cartItems.length > 0 && !isLockedByOther
                 ? 'bg-[#212532] hover:bg-[#2c3242] text-white active:scale-98 cursor-pointer shadow-md'
                 : 'bg-[#181b24] text-[#6c7280] cursor-not-allowed opacity-50'
             }`}
@@ -234,10 +235,10 @@ export const LiveCart: React.FC<LiveCartProps> = ({
           </button>
 
           <button
-            disabled={cart.items.length === 0 || !!isLockedByOther}
+            disabled={cartItems.length === 0 || !!isLockedByOther}
             onClick={() => onOpenCheckout('VIETQR')}
             className={`py-3 px-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 shadow-lg ${
-              cart.items.length > 0 && !isLockedByOther
+              cartItems.length > 0 && !isLockedByOther
                 ? 'bg-gradient-to-r from-[#d4af37] via-[#f7d77b] to-[#b58d22] text-[#0b0c10] hover:shadow-[#d4af37]/25 active:scale-98 cursor-pointer'
                 : 'bg-[#212532] text-[#6c7280] cursor-not-allowed opacity-50'
             }`}

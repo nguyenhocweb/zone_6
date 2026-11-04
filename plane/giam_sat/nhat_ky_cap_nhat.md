@@ -4,6 +4,28 @@
 
 ---
 
+### [2026-11-04 16:30] - Sửa Lỗi Trắng Trang (This page couldn't load) Khi Mở Màn Hình POS (/pos) Trên Vercel
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Báo lỗi màn hình trắng *"This page couldn't load"* tại `https://zone-6.vercel.app/pos`.
+- **Nguyên nhân gốc rễ được tìm thấy qua CDP (Chrome DevTools Protocol):**
+  - Khi mở `/pos`, sau khi xác thực ca thành công, hệ thống gọi API `/api/v1/recipes`.
+  - Backend trả về payload dạng object `{ success: true, data: { recipes: [...], total: ... } }`.
+  - Service POS (`pos.service.ts`) và Table Order (`table-order.service.ts`) lấy trực tiếp `res.data.data` (là Object, không phải Array).
+  - Component `MenuCatalog.tsx` gọi `recipes.forEach(...)` dẫn đến lỗi runtime nghiêm trọng: `TypeError: e.forEach is not a function`.
+  - React 19 / Next.js 16 không có `error.tsx` tùy chỉnh nên kích hoạt màn hình trắng mặc định của Next.js: *"This page couldn't load"*.
+- **Giải pháp & Nội dung hoàn thành:**
+  - **`pos.service.ts` & `table-order.service.ts`:**
+    - Chuẩn hóa hàm `getRecipes()` và `getMenu()` để tự động bóc tách đúng mảng `recipes` từ `data.recipes` hoặc `data` nếu là Array, fallback về `[]`.
+  - **`MenuCatalog.tsx` & `CustomerMenu.tsx`:**
+    - Bọc `useMemo` an toàn `recipeList` / `safeRecipes`, kiểm tra `Array.isArray()` trước khi duyệt, loại bỏ nguy cơ crash nếu API trả về cấu trúc khác.
+  - **`LiveCart.tsx` & `fe/src/app/pos/page.tsx`:**
+    - Bổ sung kiểm tra null an toàn cho `cart?.items`, `cart?.finalTotal`, `cart?.subtotal`.
+    - Tránh hydration mismatch với `orderCodePreview` bằng cách tạo state động khi mở modal.
+  - **`fe/src/app/error.tsx`:**
+    - Tạo mới Error Boundary toàn cục Next.js chuẩn thiết kế Obsidian Gold cao cấp, hiển thị nút tải lại trang và về màn hình chính khi có lỗi phát sinh thay vì màn hình trắng của framework.
+- **Build Verification:**
+  - Next.js build thành công 100% (24/24 static routes, 0 lỗi TypeScript).
+
 ### [2026-11-04 16:15] - Tinh Gọn Thanh Tabs Vật Liệu & Công Thức: Loại Bỏ Toàn Bộ Icon, Thu Gọn Padding & Phông Chữ Chuẩn Obsidian Gold
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** *"feed sao cho gọn lại và ko cần icon đâu"* (kèm ảnh chụp thanh tabs Kho & Vật Liệu).

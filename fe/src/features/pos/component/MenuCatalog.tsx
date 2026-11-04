@@ -19,18 +19,26 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
 
+  // Chuẩn hóa danh sách món an toàn
+  const recipeList: any[] = useMemo(() => {
+    if (Array.isArray(recipes)) return recipes;
+    if (recipes && Array.isArray((recipes as any).recipes)) return (recipes as any).recipes;
+    return [];
+  }, [recipes]);
+
   // Danh mục duy nhất
   const categories = useMemo(() => {
     const set = new Set<string>();
-    recipes.forEach((r) => {
-      if (r.category) set.add(r.category);
+    recipeList.forEach((r: any) => {
+      if (r?.category) set.add(r.category);
     });
     return ['ALL', ...Array.from(set)];
-  }, [recipes]);
+  }, [recipeList]);
 
   // Lọc món theo search và category
   const filteredRecipes = useMemo(() => {
-    return recipes.filter((r) => {
+    return recipeList.filter((r: any) => {
+      if (!r) return false;
       // Chỉ hiển thị món thương phẩm bán cho khách (customer_product)
       if (r.type && r.type !== 'customer_product') return false;
 
@@ -42,7 +50,7 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
 
       return matchCat && matchSearch;
     });
-  }, [recipes, selectedCategory, search]);
+  }, [recipeList, selectedCategory, search]);
 
   return (
     <div className="flex flex-col h-full bg-[#0b0c10]">
@@ -99,7 +107,7 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
-            {filteredRecipes.map((recipe) => {
+            {filteredRecipes.map((recipe: any) => {
               const price = recipe.selling_price || 0;
               return (
                 <div

@@ -17,8 +17,15 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  const safeRecipes: any[] = useMemo(() => {
+    if (Array.isArray(recipes)) return recipes;
+    if (recipes && Array.isArray((recipes as any).recipes)) return (recipes as any).recipes;
+    return [];
+  }, [recipes]);
+
   const filteredRecipes = useMemo(() => {
-    return recipes.filter((item) => {
+    return safeRecipes.filter((item: any) => {
+      if (!item) return false;
       // Chỉ hiện món phục vụ khách
       if (item.product_type && item.product_type !== 'customer_product') {
         return false;
@@ -39,7 +46,7 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
       }
       return true;
     });
-  }, [recipes, selectedCategory, searchQuery]);
+  }, [safeRecipes, selectedCategory, searchQuery]);
 
   return (
     <div className="pb-32 px-4 pt-4 max-w-xl mx-auto w-full space-y-4">
@@ -103,7 +110,7 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
             <p className="text-xs text-[#a0a5b5]">Không tìm thấy món nước nào phù hợp.</p>
           </div>
         ) : (
-          filteredRecipes.map((item) => {
+          filteredRecipes.map((item: any) => {
             const price = Number(item.price || item.selling_price || 35000);
             const isBestSeller = item.is_featured || item.is_best_seller;
 

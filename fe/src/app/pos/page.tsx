@@ -30,6 +30,7 @@ export default function PosPage() {
 
   // Modal VietQR
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+  const [orderCodePreview, setOrderCodePreview] = useState('');
   const [pendingPaymentMethod, setPendingPaymentMethod] = useState<'VIETQR' | 'CASH'>('VIETQR');
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
@@ -78,27 +79,40 @@ export default function PosPage() {
       setIsRecipesLoading(true);
       posService
         .getRecipes(shiftData.storeId)
-        .then((data) => setRecipes(data))
-        .catch(() => toast.error('Không thể tải thực đơn món'))
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setRecipes(data);
+          } else if (data && Array.isArray((data as any).recipes)) {
+            setRecipes((data as any).recipes);
+          } else {
+            setRecipes([]);
+          }
+        })
+        .catch(() => {
+          toast.error('Không thể tải thực đơn món');
+          setRecipes([]);
+        })
         .finally(() => setIsRecipesLoading(false));
     }
   }, [shiftData?.storeId]);
 
   // 3. Mở thanh toán (Tiền mặt hoặc VietQR)
   const handleOpenCheckout = (method: 'VIETQR' | 'CASH') => {
-    if (cart.items.length === 0) {
+    const items = cart?.items || [];
+    if (items.length === 0) {
       toast.error('Vui lòng chọn ít nhất 1 món để thanh toán.');
       return;
     }
 
     setPendingPaymentMethod(method);
     setLockForPayment(true);
+    setOrderCodePreview(`Z6-POS-${Date.now().toString().slice(-6)}`);
 
     if (method === 'VIETQR') {
       setIsQrModalOpen(true);
     } else {
       // Xác nhận tiền mặt trực tiếp
-      if (confirm(`Xác nhận khách thanh toán ${cart.finalTotal.toLocaleString()}đ bằng TIỀN MẶT?`)) {
+      if (confirm(`Xác nhận khách thanh toán ${(cart?.finalTotal || 0).toLocaleString()}đ bằng TIỀN MẶT?`)) {
         handleConfirmPayment('CASH');
       } else {
         setLockForPayment(false);
@@ -211,9 +225,9 @@ export default function PosPage() {
     );
   }
 
-  // Mã đơn dự kiến cho VietQR
+  // Thông tin user hiện tại
   const currentUserId = user?.id || (user as any)?._id || '';
-  const orderCodePreview = `Z6-POS-${Date.now().toString().slice(-6)}`;
+  const effectiveOrderCode = orderCodePreview || 'Z6-POS-ORDER';
 
   return (
     <div className="flex flex-col h-[calc(100vh-65px)] overflow-hidden bg-[#0b0c10]">
@@ -261,9 +275,9 @@ export default function PosPage() {
           setIsQrModalOpen(false);
           setLockForPayment(false);
         }}
-        totalAmount={cart.finalTotal}
-        orderCode={orderCodePreview}
-        tableNumber={cart.tableNumber}
+        totalAmount={cart?.finalTotal || 0}
+        orderCode={effectiveOrderCode}
+        tableNumber={cart?.tableNumber}
         onConfirmSuccess={() => handleConfirmPayment('VIETQR')}
         isSubmitting={isCheckingOut}
       />
