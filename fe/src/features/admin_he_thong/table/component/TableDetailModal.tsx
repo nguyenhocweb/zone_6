@@ -30,17 +30,17 @@ interface TableDetailModalProps {
     table: TableItem,
     newStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE'
   ) => void;
+  canEditOrDelete?: boolean;
 }
 
 // Chuẩn hóa tên bàn hiển thị tránh trùng lặp
 export function formatTableDisplayName(rawName: string): string {
   if (!rawName) return 'Bàn';
-  const trimmed = rawName.trim();
-  if (trimmed.toLowerCase().startsWith('bàn')) {
-    // Viết hoa chữ đầu
-    return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+  let clean = rawName.trim();
+  while (clean.toLowerCase().startsWith('bàn')) {
+    clean = clean.slice(3).trim();
   }
-  return `Bàn ${trimmed}`;
+  return clean ? `Bàn ${clean}` : 'Bàn';
 }
 
 export const TableDetailModal: React.FC<TableDetailModalProps> = ({
@@ -51,6 +51,7 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
   onDelete,
   onOpenQrPrint,
   onStatusChange,
+  canEditOrDelete = true,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -289,41 +290,58 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
           </div>
         </div>
 
-        {/* Footer Actions (Sửa & Xóa) */}
+        {/* Footer Actions */}
         <div className="p-4 border-t border-[#212532] bg-[#0E1015] flex items-center justify-between gap-3">
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              onDelete(table);
-            }}
-            className="py-2.5 px-4 rounded-xl bg-red-950/20 text-red-400 border border-red-500/30 hover:bg-red-950/40 hover:border-red-500/60 transition text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-          >
-            <FaTrash className="text-xs" />
-            <span>Xóa Bàn Này</span>
-          </button>
+          {canEditOrDelete ? (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onDelete(table);
+                }}
+                className="py-2.5 px-4 rounded-xl bg-red-950/20 text-red-400 border border-red-500/30 hover:bg-red-950/40 hover:border-red-500/60 transition text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              >
+                <FaTrash className="text-xs" />
+                <span>Xóa Bàn Này</span>
+              </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                onEdit(table);
-              }}
-              className="py-2.5 px-4 rounded-xl bg-[#181B24] text-white border border-[#212532] hover:border-[#D4AF37]/50 transition text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-            >
-              <FaEdit className="text-xs text-[#D4AF37]" />
-              <span>Chỉnh Sửa</span>
-            </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onEdit(table);
+                  }}
+                  className="py-2.5 px-4 rounded-xl bg-[#181B24] text-white border border-[#212532] hover:border-[#D4AF37]/50 transition text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                >
+                  <FaEdit className="text-xs text-[#D4AF37]" />
+                  <span>Chỉnh Sửa</span>
+                </button>
 
-            <button
-              type="button"
-              onClick={onClose}
-              className="py-2.5 px-5 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 transition cursor-pointer shadow-md"
-            >
-              Hoàn Tất
-            </button>
-          </div>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="py-2.5 px-5 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 transition cursor-pointer shadow-md"
+                >
+                  Hoàn Tất
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="text-[11px] text-[#8E95A5]">
+                Nhân viên có quyền cập nhật trạng thái bàn phục vụ khách.
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="py-2.5 px-6 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 transition cursor-pointer shadow-md"
+              >
+                Đóng
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

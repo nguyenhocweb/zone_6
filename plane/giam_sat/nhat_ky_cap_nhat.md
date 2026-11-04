@@ -4,6 +4,35 @@
 
 ---
 
+### [2026-11-04 17:25] - Tinh Giản Thẻ Bàn (Chỉ Tên Bàn & Sức Chứa) & Phân Quyền Nhân Viên Chỉ Được Xem và Đổi Trạng Thái Bàn
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Thẻ bàn chỉ để **Tên bàn** và **Số lượng chỗ ngồi** (khắc phục triệt để lỗi chật chội làm tên bàn bị cắt thành `BÀ...`), loại bỏ nhãn chữ thừa và chữ `Chi tiết →`.
+  2. Màu nền (background) và viền (border) thể hiện trạng thái (Trống: emerald, Có khách: amber, Đã đặt: blue, Bảo trì: rose).
+  3. Phía nhân viên (`nhan_vien`): Chỉ được xem sơ đồ bàn và cập nhật trạng thái bàn, không được thêm/sửa/xóa bàn hoặc tầng.
+- **Nội dung hoàn thành:**
+  - **Frontend Table Card Simplification (`fe/src/features/admin_he_thong/table/component/TableManagementView.tsx`):**
+    - Thẻ bàn hiển thị gọn gàng 2 dòng:
+      - Dòng 1: Tên bàn (`formatTableDisplayName`) to bản, in hoa, không bị cắt chữ, kèm chấm trạng thái tròn tinh tế `styles.dot` góc trên.
+      - Dòng 2: Icon ghế `FaChair` + `{capacity} chỗ`.
+    - Màu nền và viền phản ánh trực quan 4 trạng thái theo chuẩn nhận diện màu của Zone Six.
+  - **Frontend Granular Role-Based Access Control (RBAC):**
+    - Khởi tạo biến quyền `canManageStructure = ['admin_he_thong', 'quan_ly', 'truong_ca'].includes(user?.role || '');`.
+    - Ẩn hoàn toàn nút "+ Thêm Bàn Mới" ở Top Banner đối với `nhan_vien`.
+    - Ẩn nút "+ Thêm Tầng", form tạo tầng nhanh và icon xóa tầng ở Sidebar cột trái đối với `nhan_vien`.
+    - Ẩn nút "+ Thêm Bàn" ở Sub-Header và ở từng Header Tầng (chế độ xem Tất Cả Tầng) đối với `nhan_vien`.
+    - Ẩn nút "Thêm Bàn Đầu Tiên" ở Empty State đối với `nhan_vien`.
+    - Trong `TableDetailModal.tsx`:
+      - Truyền prop `canEditOrDelete={canManageStructure}`.
+      - Nếu là `nhan_vien` (`!canEditOrDelete`), ẩn hoàn toàn 2 nút "Chỉnh Sửa Bàn" và "Xóa Bàn Này".
+      - Nhân viên vẫn có toàn quyền xem chi tiết, xem mã QR Standee Mica, sao chép link gọi món và **bấm 4 nút lớn chuyển đổi trạng thái bàn ngay lập tức (Trống $\leftrightarrow$ Có Khách $\leftrightarrow$ Đã Đặt $\leftrightarrow$ Bảo Trì)** để phục vụ khách tại chỗ.
+  - **Tài liệu đặc tả:**
+    - Cập nhật mục Sơ Đồ Bàn trong `DAC_TA_CHUC_NANG_THEO_VAI_TRO.md`.
+  - **Verification:**
+    - TypeScript compiler (`tsc --noEmit -p fe/tsconfig.json`): Exit code 0, không có bất kỳ lỗi cú pháp hay kiểu dữ liệu nào.
+
+---
+
 ### [2026-11-04 17:05] - Nhóm Bàn Theo Tầng Khi Xem Tất Cả Tầng, Tinh Giản Thẻ Bàn & Bổ Sung Modal Chi Tiết Bàn
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**

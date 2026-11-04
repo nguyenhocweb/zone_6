@@ -31,9 +31,15 @@ import { TableQrPrintModal } from './TableQrPrintModal';
 import { TableFormModal } from './TableFormModal';
 import { TableDetailModal, formatTableDisplayName } from './TableDetailModal';
 import { StoreInventorySelector } from '@/features/pho_ca_vat_lieu/material/component/StoreInventorySelector';
+import { useAuth } from '@/features/shared/auth/hook/useAuth';
 import { toast } from 'sonner';
 
 export const TableManagementView: React.FC = () => {
+  const { user } = useAuth();
+  // Quyền cấu hình bàn và tầng: Chỉ Admin, Quản Lý, Trưởng Ca
+  // Nhân viên (nhan_vien) chỉ được xem và cập nhật trạng thái bàn
+  const canManageStructure = ['admin_he_thong', 'quan_ly', 'truong_ca'].includes(user?.role || '');
+
   // 1. Quản lý Cơ sở đang chọn
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
 
@@ -237,29 +243,21 @@ export const TableManagementView: React.FC = () => {
       <div
         key={table.id}
         onClick={() => setSelectedDetailTable(table)}
-        className={`p-3.5 rounded-2xl border transition-all duration-150 cursor-pointer hover:-translate-y-0.5 active:scale-95 flex flex-col justify-between min-h-[96px] ${styles.card}`}
-        title="Bấm để xem chi tiết và thao tác bàn"
+        className={`p-3 rounded-2xl border transition-all duration-150 cursor-pointer hover:-translate-y-0.5 active:scale-95 flex flex-col justify-between min-h-[76px] shadow-sm ${styles.card}`}
+        title="Bấm để xem chi tiết và cập nhật trạng thái bàn"
       >
-        {/* Dòng 1: Tên bàn và badge trạng thái */}
+        {/* Dòng 1: Tên bàn to, rõ ràng, không bị ép chữ */}
         <div className="flex items-start justify-between gap-1.5">
-          <span className="text-sm font-black text-white uppercase tracking-tight truncate">
+          <span className="text-sm font-black text-white uppercase tracking-tight leading-tight">
             {displayName}
           </span>
-          <span className={`flex items-center gap-1 shrink-0 ${styles.badge}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
-            <span>{styles.label}</span>
-          </span>
+          <span className={`w-2 h-2 rounded-full shrink-0 mt-1 ${styles.dot}`} />
         </div>
 
-        {/* Dòng 2: Số chỗ ngồi */}
-        <div className="flex items-center justify-between text-xs text-[#8E95A5] pt-2 border-t border-white/5">
-          <span className="flex items-center gap-1.5">
-            <FaChair className="text-[11px] opacity-70" />
-            <span>{table.capacity || 4} chỗ</span>
-          </span>
-          <span className="text-[10px] text-white/40 hover:text-[#D4AF37] transition font-bold">
-            Chi tiết →
-          </span>
+        {/* Dòng 2: Số lượng chỗ */}
+        <div className="flex items-center gap-1.5 text-xs text-[#8E95A5] pt-1">
+          <FaChair className="text-[11px] opacity-70" />
+          <span>{table.capacity || 4} chỗ</span>
         </div>
       </div>
     );
@@ -288,18 +286,20 @@ export const TableManagementView: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={() => {
-            setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
-            setEditingTable(null);
-            setIsFormOpen(true);
-          }}
-          disabled={!selectedStoreId}
-          className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl gold-gradient-bg text-[#0B0C10] font-black text-xs shadow-lg hover:brightness-110 active:scale-95 transition cursor-pointer shrink-0 disabled:opacity-50"
-        >
-          <FaPlus />
-          <span>Thêm Bàn Mới</span>
-        </button>
+        {canManageStructure && (
+          <button
+            onClick={() => {
+              setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
+              setEditingTable(null);
+              setIsFormOpen(true);
+            }}
+            disabled={!selectedStoreId}
+            className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl gold-gradient-bg text-[#0B0C10] font-black text-xs shadow-lg hover:brightness-110 active:scale-95 transition cursor-pointer shrink-0 disabled:opacity-50"
+          >
+            <FaPlus />
+            <span>Thêm Bàn Mới</span>
+          </button>
+        )}
       </div>
 
       {/* 2. Bộ Chọn Cơ Sở / Chi Nhánh (Store Selector) */}
@@ -381,18 +381,20 @@ export const TableManagementView: React.FC = () => {
               </span>
             </div>
 
-            <button
-              onClick={() => setIsAddingZone(!isAddingZone)}
-              className="text-[11px] font-bold py-1 px-2.5 rounded-lg gold-gradient-bg text-black hover:brightness-110 transition flex items-center gap-1 cursor-pointer shadow-sm"
-              title="Tạo thêm tầng mới"
-            >
-              <FaPlus className="text-[9px]" />
-              <span>Thêm Tầng</span>
-            </button>
+            {canManageStructure && (
+              <button
+                onClick={() => setIsAddingZone(!isAddingZone)}
+                className="text-[11px] font-bold py-1 px-2.5 rounded-lg gold-gradient-bg text-black hover:brightness-110 transition flex items-center gap-1 cursor-pointer shadow-sm"
+                title="Tạo thêm tầng mới"
+              >
+                <FaPlus className="text-[9px]" />
+                <span>Thêm Tầng</span>
+              </button>
+            )}
           </div>
 
           {/* Form Thêm Tầng Nhanh */}
-          {isAddingZone && (
+          {canManageStructure && isAddingZone && (
             <form
               onSubmit={handleCreateZone}
               className="p-3 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 space-y-2 animate-in fade-in zoom-in-95 duration-150 shadow-md"
@@ -509,8 +511,8 @@ export const TableManagementView: React.FC = () => {
                       {countInZone} bàn
                     </span>
 
-                    {/* Nút Xóa Tầng (chỉ cho phép xóa khi không có bàn) */}
-                    {countInZone === 0 && (
+                    {/* Nút Xóa Tầng (chỉ cho phép xóa khi không có bàn và có quyền cấu trúc) */}
+                    {canManageStructure && countInZone === 0 && (
                       <button
                         type="button"
                         onClick={(e) => {
@@ -576,18 +578,20 @@ export const TableManagementView: React.FC = () => {
                 ))}
               </div>
 
-              <button
-                onClick={() => {
-                  setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
-                  setEditingTable(null);
-                  setIsFormOpen(true);
-                }}
-                disabled={!selectedStoreId}
-                className="py-1.5 px-3 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 active:scale-95 transition flex items-center gap-1 cursor-pointer shadow-md disabled:opacity-50"
-              >
-                <FaPlus className="text-[10px]" />
-                <span>Thêm Bàn</span>
-              </button>
+              {canManageStructure && (
+                <button
+                  onClick={() => {
+                    setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
+                    setEditingTable(null);
+                    setIsFormOpen(true);
+                  }}
+                  disabled={!selectedStoreId}
+                  className="py-1.5 px-3 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 active:scale-95 transition flex items-center gap-1 cursor-pointer shadow-md disabled:opacity-50"
+                >
+                  <FaPlus className="text-[10px]" />
+                  <span>Thêm Bàn</span>
+                </button>
+              )}
             </div>
           </div>
 
@@ -607,24 +611,28 @@ export const TableManagementView: React.FC = () => {
                   : `Chưa có bàn nào tại ${selectedZone}.`}
               </p>
               <p className="text-xs text-[#8E95A5] max-w-sm mx-auto">
-                Bấm nút bên dưới để khởi tạo bàn mới và xuất mã QR tự gọi món Standee mica cho khách
+                {canManageStructure
+                  ? 'Bấm nút bên dưới để khởi tạo bàn mới và xuất mã QR tự gọi món Standee mica cho khách'
+                  : 'Hiện tại chưa có bàn nào được cấu hình cho khu vực này.'}
               </p>
-              <button
-                onClick={() => {
-                  setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
-                  setEditingTable(null);
-                  setIsFormOpen(true);
-                }}
-                disabled={!selectedStoreId}
-                className="py-2.5 px-5 rounded-xl border border-[#D4AF37]/50 bg-[#D4AF37]/15 text-[#FAECB8] font-bold text-xs hover:bg-[#D4AF37]/25 transition cursor-pointer shadow-sm inline-flex items-center gap-1.5"
-              >
-                <FaPlus className="text-[10px]" />
-                <span>
-                  {selectedZone === 'ALL'
-                    ? 'Thêm Bàn Đầu Tiên'
-                    : `Thêm Bàn Đầu Tiên Cho ${selectedZone}`}
-                </span>
-              </button>
+              {canManageStructure && (
+                <button
+                  onClick={() => {
+                    setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
+                    setEditingTable(null);
+                    setIsFormOpen(true);
+                  }}
+                  disabled={!selectedStoreId}
+                  className="py-2.5 px-5 rounded-xl border border-[#D4AF37]/50 bg-[#D4AF37]/15 text-[#FAECB8] font-bold text-xs hover:bg-[#D4AF37]/25 transition cursor-pointer shadow-sm inline-flex items-center gap-1.5"
+                >
+                  <FaPlus className="text-[10px]" />
+                  <span>
+                    {selectedZone === 'ALL'
+                      ? 'Thêm Bàn Đầu Tiên'
+                      : `Thêm Bàn Đầu Tiên Cho ${selectedZone}`}
+                  </span>
+                </button>
+              )}
             </div>
           ) : selectedZone === 'ALL' ? (
             /* =========================================================================
@@ -680,18 +688,20 @@ export const TableManagementView: React.FC = () => {
                         </div>
                       </div>
 
-                      <button
-                        onClick={() => {
-                          setInitialFormZone(zone.name);
-                          setEditingTable(null);
-                          setIsFormOpen(true);
-                        }}
-                        disabled={!selectedStoreId}
-                        className="py-1.5 px-3 rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#FAECB8] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-50"
-                      >
-                        <FaPlus className="text-[9px]" />
-                        <span>Thêm Bàn</span>
-                      </button>
+                      {canManageStructure && (
+                        <button
+                          onClick={() => {
+                            setInitialFormZone(zone.name);
+                            setEditingTable(null);
+                            setIsFormOpen(true);
+                          }}
+                          disabled={!selectedStoreId}
+                          className="py-1.5 px-3 rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#FAECB8] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-50"
+                        >
+                          <FaPlus className="text-[9px]" />
+                          <span>Thêm Bàn</span>
+                        </button>
+                      )}
                     </div>
 
                     {/* Grid Các Bàn Của Tầng Này */}
@@ -725,6 +735,7 @@ export const TableManagementView: React.FC = () => {
       <TableDetailModal
         isOpen={!!selectedDetailTable}
         table={selectedDetailTable}
+        canEditOrDelete={canManageStructure}
         onClose={() => setSelectedDetailTable(null)}
         onEdit={(table) => {
           setSelectedDetailTable(null);

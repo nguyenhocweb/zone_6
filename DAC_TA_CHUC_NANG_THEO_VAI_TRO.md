@@ -459,3 +459,4 @@
    - Bắt buộc chụp ảnh trực tiếp từ Camera thiết bị (loại bỏ chọn ảnh từ bộ sưu tập).
    - Đóng dấu chìm vĩnh viễn (Canvas Watermark) tọa độ GPS, khoảng cách mét tới quán, địa chỉ đường phố thực tế và thời gian thực chính xác đến từng giây.
    - Bắt buộc vị trí thiết bị nằm trong bán kính Geofence của đúng cơ sở có ca trực.
+
