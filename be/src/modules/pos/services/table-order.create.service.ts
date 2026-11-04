@@ -11,6 +11,9 @@ export interface CreateTableOrderPayload {
   customerLat: number;
   customerLng: number;
   customerName?: string;
+  customerPhone?: string;
+  deviceId?: string;
+  deviceName?: string;
   items: Array<{
     recipeId: string;
     name: string;
@@ -99,6 +102,9 @@ export class TableOrderCreateService {
       table_id: table._id,
       table_number: table.table_number,
       customer_name: dto.customerName || `Khách Bàn ${table.table_number}`,
+      customer_phone: dto.customerPhone || null,
+      device_id: dto.deviceId || null,
+      device_name: dto.deviceName || null,
       order_source: 'CUSTOMER_TABLE_QR',
       customer_lat: dto.customerLat,
       customer_lng: dto.customerLng,
@@ -127,6 +133,9 @@ export class TableOrderCreateService {
       orderCode: order.order_code,
       tableNumber: table.table_number,
       customerName: order.customer_name,
+      customerPhone: order.customer_phone,
+      deviceName: order.device_name,
+      distanceMeters,
       finalAmount: order.final_amount,
       itemsCount: order.items.length,
       createdAt: order.created_at,

@@ -22,6 +22,9 @@ export interface IOrder extends Document {
   table_id?: mongoose.Types.ObjectId;
   table_number?: string;
   customer_name?: string;
+  customer_phone?: string;
+  device_id?: string;
+  device_name?: string;
   order_source: 'STAFF_POS' | 'CUSTOMER_TABLE_QR';
   customer_lat?: number;
   customer_lng?: number;
@@ -73,6 +76,9 @@ const OrderSchema = new Schema<IOrder>(
     table_id: { type: Schema.Types.ObjectId, ref: 'tables', default: null },
     table_number: { type: String, default: '' },
     customer_name: { type: String, default: 'Khách lẻ' },
+    customer_phone: { type: String, default: null, index: true },
+    device_id: { type: String, default: null, index: true },
+    device_name: { type: String, default: null },
     order_source: {
       type: String,
       enum: ['STAFF_POS', 'CUSTOMER_TABLE_QR'],

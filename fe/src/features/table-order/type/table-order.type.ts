@@ -37,6 +37,9 @@ export interface CreateTableOrderDto {
   customerLat: number;
   customerLng: number;
   customerName?: string;
+  customerPhone?: string;
+  deviceId?: string;
+  deviceName?: string;
   items: Array<{
     recipeId: string;
     name: string;
@@ -56,6 +59,9 @@ export interface TableOrderResult {
   id: string;
   orderCode: string;
   tableNumber?: string;
+  customerName?: string;
+  customerPhone?: string;
+  deviceName?: string;
   totalAmount: number;
   discountAmount: number;
   finalAmount: number;
@@ -64,4 +70,3 @@ export interface TableOrderResult {
   orderStatus: 'PENDING' | 'PREPARING' | 'COMPLETED' | 'CANCELLED';
   createdAt: string;
 }
-

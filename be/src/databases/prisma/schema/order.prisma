@@ -6,6 +6,9 @@ model Order {
   tableId        String?       @map("table_id") @db.ObjectId
   tableNumber    String?       @map("table_number")
   customerName   String?       @map("customer_name")
+  customerPhone  String?       @map("customer_phone")
+  deviceId       String?       @map("device_id")
+  deviceName     String?       @map("device_name")
   orderSource    OrderSource   @default(STAFF_POS) @map("order_source")
   
   customerLat    Float?        @map("customer_lat")

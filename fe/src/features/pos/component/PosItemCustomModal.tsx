@@ -300,3 +300,4 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
     </div>
   );
 };
+

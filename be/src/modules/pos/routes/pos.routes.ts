@@ -7,6 +7,7 @@ import { OrderCheckoutController } from '../controllers/order.checkout.controlle
 import { OrderHistoryController } from '../controllers/order.history.controller.js';
 import { verifyTableOrderController } from '../controllers/table-order.verify.controller.js';
 import { createTableOrderController } from '../controllers/table-order.create.controller.js';
+import { getPublicStoresAndTablesController } from '../controllers/table-order.public-tables.controller.js';
 import { voidOrderController } from '../controllers/order.void.controller.js';
 import { listAllOrdersController } from '../controllers/order.list-all.controller.js';
 
@@ -19,7 +20,8 @@ export function createPosRouter(): Router {
   const checkoutController = new OrderCheckoutController();
   const historyController = new OrderHistoryController();
 
-  // 0. Public Table QR Self-Ordering (Khách quét QR tại bàn)
+  // 0. Public Table QR Self-Ordering (Khách quét QR tại bàn - Không cần login)
+  router.get('/table-order/public-tables', getPublicStoresAndTablesController);
   router.get('/table-order/verify', verifyTableOrderController);
   router.post('/table-order/submit', createTableOrderController);
 
@@ -43,4 +45,3 @@ export function createPosRouter(): Router {
 
   return router;
 }
-

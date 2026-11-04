@@ -45,6 +45,13 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   // Hook thông báo cho các cấp quản lý và trưởng ca
   const { stats } = useScheduleNotifications();
 
+  // Các trang công khai dành cho khách hàng (Landing Page & Khách quét QR gọi món tại bàn không cần login)
+  const isPublicPage = pathname === "/" || pathname === "/order" || pathname.startsWith("/order/");
+
+  if (isPublicPage) {
+    return <>{children}</>;
+  }
+
   // Trạng thái đang kiểm tra phiên làm việc
   if (isLoading) {
     return (

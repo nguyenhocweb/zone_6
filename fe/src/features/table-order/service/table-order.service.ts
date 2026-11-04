@@ -1,7 +1,30 @@
 import axiosClient from '@/core/api/axios-instance';
 import { TableVerifyResponse, CreateTableOrderDto, TableOrderResult } from '../type/table-order.type';
 
+export interface IPublicStoreTables {
+  id: string;
+  name: string;
+  code?: string;
+  address: string;
+  tables: Array<{
+    id: string;
+    tableNumber: string;
+    zoneName: string;
+    status: string;
+    qrToken: string;
+  }>;
+}
+
 export const tableOrderService = {
+  async getPublicStoresAndTables(): Promise<IPublicStoreTables[]> {
+    try {
+      const res = await axiosClient.get('/api/v1/pos/table-order/public-tables');
+      return res.data.data || [];
+    } catch {
+      return [];
+    }
+  },
+
   async verifyTable(
     token: string,
     lat?: number,
@@ -39,4 +62,3 @@ export const tableOrderService = {
     return res.data.data;
   },
 };
-

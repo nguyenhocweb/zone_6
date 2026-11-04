@@ -4,6 +4,33 @@
 
 ---
 
+### [2026-11-04 21:50] - Triển Khai Landing Page Trang Chủ Chuẩn Obsidian Gold & Hoàn Thiện Tự Gọi Món Tại Bàn Không Cần Login (Lưu Định Vị GPS, Mã Thiết Bị, Tên Thiết Bị, SĐT Tích Điểm)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "tôi muốn 1 trang landing page làm trang chủ và trang dành cho khi khách hàng quét mã mà đc cung cấp or dán ở bàn sẽ hiện các món để chọn thành toán mã qr ... mà ko cần login yêu cầu là phải xác định vị trí và lưu thông tin khách hàng mã định danh của htieets bị tên thiết bị .... sau này có thể bổ sung thêm tài khoản khách hàng thân thiết có thêm tên số ddienj thoại .... nhưng hiện h chưa bắt buộc lắm đâu làm đủ là đc"
+- **Nội dung hoàn thành:**
+  - **Landing Page Trang Chủ Độc Bản Obsidian Gold (`fe/src/app/page.tsx`):**
+    - Thiết kế giao diện sang trọng chuẩn nhận diện Zone Six Signature (Màu đen Void `#0b0c10` và Vàng Gold `#d4af37`).
+    - Navbar Glassmorphism hiển thị Logo Vương Miện Hoàng Gia, liên kết Trải Nghiệm, Thực Đơn, Gọi Món Tại Bàn, Chi Nhánh và Cổng Nhân Sự (`/login`).
+    - Hero Section hoành tráng với tiêu đề ấn tượng, nút kêu gọi hành động nổi bật: `📱 Quét Mã Bàn • Gọi Món Ngay` và `☕ Khám Phá Thực Đơn`.
+    - Trình diễn 4 giá trị cốt lõi: Cà phê rang mộc thượng hạng, Trà trái cây tươi 100%, Không gian Obsidian Gold & Âm nhạc tinh tuyển, Công nghệ tự gọi món VietQR 24/7.
+    - Trình diễn thực đơn Signature bán chạy: Cà Phê Muối Cố Đô (29.000đ), Trà Dâu Tây Tươi (35.000đ), Trà Đào Cam Sả Tươi (32.000đ).
+    - Khối quảng bá gọi món tại bàn không cần login và danh sách hệ thống chi nhánh (Đà Nẵng), giờ mở cửa, tiện ích Wifi 300Mbps, ổ cắm sạc từng bàn, bãi đỗ xe miễn phí.
+  - **Mở Khóa Public Route Trong AppShell (`fe/src/core/components/layout/AppShell.tsx`):**
+    - Bổ sung `isPublicPage` cho `/` và `/order`: Khách hàng truy cập Landing Page và Gọi món tại bàn **hoàn toàn không cần đăng nhập**, không bị chuyển hướng về màn hình `LoginForm` nội bộ.
+  - **Trang Tự Gọi Món Tại Bàn Không Cần Login (`fe/src/features/table-order/`):**
+    - Xây dựng tiện ích nhận diện thiết bị tự động (`fe/src/features/table-order/utils/device-info.ts`): Sinh và lưu mã định danh thiết bị độc nhất (`z6_device_id` trên `localStorage`), tự động nhận diện tên thiết bị và trình duyệt (`iPhone (Safari)`, `Samsung Galaxy (Chrome Mobile)`, `Windows PC (Chrome)`...).
+    - Xác định vị trí GPS Geofence: Bắt buộc định vị vị trí thực tế của khách hàng, tính khoảng cách mét tới cơ sở để chống đặt đơn từ xa.
+    - Cập nhật Ngăn giỏ hàng (`CustomerCartDrawer.tsx`): Bổ sung ô nhập Tên/Danh xưng tùy chọn, ô nhập Số điện thoại khách hàng thân thiết (để sau này tích điểm thành viên), hiển thị huy hiệu trạng thái GPS và tên thiết bị.
+    - Hỗ trợ chọn bàn thủ công linh hoạt nếu khách vào `/order` từ Landing page mà chưa quét mã mica: Backend cung cấp API công khai `GET /api/v1/pos/table-order/public-tables`, giao diện hiển thị các bàn thuộc từng tầng để khách chọn nhanh số bàn.
+  - **Lưu Thông Tin Vào Cơ Sở Dữ Liệu (`be/src/modules/pos/`):**
+    - Cập nhật Prisma Schema `order.prisma` và Mongoose Model `order.model.ts`: Bổ sung `customer_phone`, `device_id`, `device_name`.
+    - Cập nhật `TableOrderCreateService`: Lưu toàn bộ `customer_name`, `customer_phone`, `device_id`, `device_name`, `customer_lat`, `customer_lng`, `distance_meters` vào đơn hàng, đồng thời phát WebSocket `pos:new_table_order` thông báo tức thì đến quầy Bar / Thu ngân.
+- **Verification:**
+  - Frontend TypeScript (`tsc -p fe/tsconfig.json --noEmit`): 0 lỗi.
+  - Backend TypeScript (`tsc -p be/tsconfig.json --noEmit`): 0 lỗi.
+
+---
+
 ### [2026-11-04 21:15] - Khắc Phục Triệt Để 3 Vấn Đề: Hiển Thị Giá Món POS & Topping Thật Từ DB, Sửa Lỗi Ngắt Kết Nối Socket 308, Ngăn Chặn Lỗi ObjectId Undefined
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**
