@@ -22,6 +22,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   isAuthenticating: boolean;
+  authError: string | null;
   login: (payload: LoginPayload) => Promise<boolean>;
   logout: () => Promise<void>;
   checkSession: () => Promise<void>;
@@ -39,6 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   // Khôi phục phiên làm việc tự động qua Cookie & Database Refresh Token
   useEffect(() => {
@@ -72,6 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (payload: LoginPayload): Promise<boolean> => {
     setIsAuthenticating(true);
+    setAuthError(null);
     try {
       const data = await loginService(payload);
       setToken(data.token);
@@ -84,7 +87,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       );
       return true;
     } catch (error: any) {
-      const msg = error.response?.data?.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại!";
+      let msg = error.response?.data?.message;
+      if (!msg) {
+        if (error.response?.status === 504 || error.response?.status === 502 || error.response?.status === 503) {
+          msg = "Máy chủ đang cập nhật container trên VPS (504 Gateway Timeout). Vui lòng đợi 30 giây rồi bấm Đăng nhập lại!";
+        } else if (!error.response || error.code === 'ERR_NETWORK') {
+          msg = "Không thể kết nối đến máy chủ backend VPS. Vui lòng kiểm tra đường truyền!";
+        } else {
+          msg = "Email hoặc mật khẩu không chính xác.";
+        }
+      }
+      setAuthError(msg);
       toast.error(msg);
       return false;
     } finally {
@@ -152,6 +165,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         token,
         isLoading,
         isAuthenticating,
+        authError,
         login,
         logout,
         checkSession,

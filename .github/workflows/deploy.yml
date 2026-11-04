@@ -16,34 +16,34 @@ jobs:
     steps:
       - name: SSH vào VPS và Cập Nhật Docker Containers
         uses: appleboy/ssh-action@v1.0.3
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
-          envs: GH_TOKEN
+          command_timeout: 30m
           script: |
             set -e
+            export GIT_TERMINAL_PROMPT=0
             echo "🚀 [1/4] Chuẩn bị môi trường và thư mục dự án trên VPS..."
             sudo mkdir -p /var/www/zone6
             sudo chown -R $USER:$USER /var/www/zone6
             cd /var/www/zone6
+            git config --global --add safe.directory /var/www/zone6 || true
+            rm -f .git/index.lock
 
             echo "📥 [2/4] Đồng bộ mã nguồn mới nhất từ GitHub..."
             if [ -d ".git" ]; then
-              git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/nguyenhocweb/zone_6.git
-              git fetch origin main
+              git remote set-url origin https://github.com/nguyenhocweb/zone_6.git
+              git fetch origin main --depth=1
               git reset --hard origin/main
             else
-              git clone https://x-access-token:${GH_TOKEN}@github.com/nguyenhocweb/zone_6.git .
+              git clone --depth=1 https://github.com/nguyenhocweb/zone_6.git .
             fi
 
-            echo "⚙️ [3/4] Kiểm tra cấu hình môi trường be/.env..."
-            if [ ! -f "be/.env" ]; then
-              cat << 'EOF' > be/.env
+            echo "⚙️ [3/4] Cập nhật cấu hình môi trường be/.env..."
+            cat << 'EOF' > be/.env
             PORT=8000
             NODE_ENV=production
             DATABASE_URL="mongodb+srv://My_Restaurant:Matkhau2k3.@nguyenhocweb.pqyjucr.mongodb.net/zone_6?retryWrites=true&w=majority&appName=nguyenhocweb"
@@ -65,10 +65,10 @@ jobs:
             SMTP_PASS=lororsoatrirleyr
             APP_URL=https://zone-six.vercel.app/login
             EOF
-            fi
 
             echo "🐳 [4/4] Khởi động Docker Containers..."
-            docker compose up -d --build
+            docker compose down || true
+            docker compose up -d --build --remove-orphans
 
             echo "🎉 Hoàn tất cập nhật Backend trên VPS thành công!"
 

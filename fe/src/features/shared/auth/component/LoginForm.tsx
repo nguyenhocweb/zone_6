@@ -5,7 +5,7 @@ import { FaCrown, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaSignInAlt, FaShieldAl
 import { useAuth } from "../hook/useAuth";
 
 export const LoginForm: React.FC = () => {
-  const { login, isAuthenticating } = useAuth();
+  const { login, isAuthenticating, authError } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export const LoginForm: React.FC = () => {
 
     const success = await login({ email, password });
     if (!success) {
-      setErrorMsg("Email hoặc mật khẩu không chính xác.");
+      setErrorMsg(authError || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin hoặc thử lại sau.");
     }
   };
 

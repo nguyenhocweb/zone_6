@@ -5,7 +5,6 @@ import { ENV } from './config/env.config.js';
 import { connectDatabase, disconnectDatabase } from './core/database.js';
 import { logger } from './core/logger.js';
 import { ZaloService } from './modules/admin_he_thong/zalo/services/zalo.service.js';
-import { AuthService } from './modules/shared/auth/services/auth.service.js';
 import { setupPosSocket } from './modules/pos/socket/pos.socket.js';
 import { setupTableSocket } from './modules/admin_he_thong/table/socket/table.socket.js';
 
@@ -13,11 +12,7 @@ async function bootstrap() {
   // 1. Kết nối MongoDB Atlas (Database: zone_6)
   await connectDatabase();
 
-  // 2. Khởi tạo & đảm bảo 6 tài khoản mẫu theo vai trò
-  const authService = new AuthService();
-  await authService.ensureSeedUsers();
-
-  // 3. Khởi tạo Zalo Service & phục hồi phiên cũ nếu có
+  // 2. Khởi tạo Zalo Service & phục hồi phiên cũ nếu có
   const zaloService = new ZaloService();
   await zaloService.initialize();
 

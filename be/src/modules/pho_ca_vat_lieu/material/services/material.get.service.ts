@@ -39,9 +39,6 @@ export class MaterialGetService {
     is_active?: boolean;
     store_id?: string;
   }): Promise<MaterialListResponse> {
-    // Tự động kiểm tra và khởi tạo dữ liệu mẫu nếu DB trống
-    await this.repo.seedInitialMaterials();
-
     const [docs, total, packagingCount, ingredientCount, lowStockCount] = await Promise.all([
       this.repo.findAll(filters),
       this.repo.countTotal(filters?.store_id),

@@ -25,11 +25,6 @@ export class RecipeCategoryRepository {
       ];
     }
 
-    const count = await RecipeCategoryModel.countDocuments();
-    if (count === 0) {
-      await this.seedInitialCategories();
-    }
-
     return RecipeCategoryModel.find(query).sort({ type: 1, name: 1 }).exec();
   }
 

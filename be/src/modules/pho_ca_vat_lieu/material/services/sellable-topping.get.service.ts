@@ -6,7 +6,6 @@ export class SellableToppingGetService {
   constructor(private repo: SellableToppingRepository = new SellableToppingRepository()) {}
 
   async getAll(filters?: { store_id?: string; is_active?: boolean; search?: string }): Promise<SellableToppingListResponse> {
-    await this.repo.seedInitialSellableToppings();
     const items = await this.repo.findAll(filters);
     return {
       items,

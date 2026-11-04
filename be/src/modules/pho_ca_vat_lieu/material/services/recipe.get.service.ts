@@ -80,9 +80,6 @@ export class RecipeGetService {
     },
     userRole?: string | null
   ): Promise<RecipeListResponse> {
-    // Tự động kiểm tra và khởi tạo dữ liệu mẫu nếu DB trống
-    await this.repo.seedInitialRecipes();
-
     const hasAccess = userRole ? STAFF_AND_ABOVE_ROLES.includes(userRole) : false;
 
     // RÀNG BUỘC BẢO MẬT: NẾU LÀ KHÁCH HÀNG / CHƯA ĐĂNG NHẬP -> CHỈ ĐƯỢC XEM MÓN BÁN (customer_product)
