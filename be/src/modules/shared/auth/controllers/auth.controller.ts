@@ -1,6 +1,7 @@
 import type { Response, NextFunction } from 'express';
 import type { AuthenticatedRequest } from '../../../../middlewares/auth.middleware.js';
 import { AuthService } from '../services/auth.service.js';
+import { ACCESS_TOKEN_EXPIRY_MS, REFRESH_TOKEN_EXPIRY_MS } from '../../../../core/auth.token.js';
 import type { LoginDto } from '../../../quan_ly/staff/schemas/user.schema.js';
 import { USER_ROLES, USER_ROLE_LABELS, USER_ROLE_BADGES } from '../../../quan_ly/staff/schemas/user-roles.js';
 
@@ -24,15 +25,15 @@ export class AuthController {
 
       const result = await this.service.login(dto, { userAgent, ipAddress });
 
-      // Lưu Access Token và Refresh Token vào Cookie an toàn
+      // Lưu Access Token (chỉ tồn tại 15 phút) và Refresh Token (3 ngày) vào Cookie an toàn
       res.cookie('zone6_access_token', result.accessToken, {
         ...COOKIE_OPTIONS,
-        maxAge: 24 * 60 * 60 * 1000, // 24 giờ
+        maxAge: ACCESS_TOKEN_EXPIRY_MS, // 15 phút (theo ACCESS_TOKEN_EXPIRES_IN)
       });
 
       res.cookie('zone6_refresh_token', result.refreshToken, {
         ...COOKIE_OPTIONS,
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 ngày
+        maxAge: REFRESH_TOKEN_EXPIRY_MS, // 3 ngày (theo REFRESH_TOKEN_EXPIRES_IN)
       });
 
       res.status(200).json({
@@ -55,10 +56,10 @@ export class AuthController {
       const token = req.cookies?.zone6_refresh_token || req.body?.refreshToken;
       const result = await this.service.refreshToken(token);
 
-      // Cập nhật lại Access Token trong Cookie
+      // Cập nhật lại Access Token trong Cookie (15 phút)
       res.cookie('zone6_access_token', result.accessToken, {
         ...COOKIE_OPTIONS,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: ACCESS_TOKEN_EXPIRY_MS, // 15 phút
       });
 
       res.status(200).json({

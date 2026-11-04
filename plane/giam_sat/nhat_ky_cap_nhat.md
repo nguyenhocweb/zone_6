@@ -4,6 +4,38 @@
 
 ---
 
+### [2026-11-04 17:50] - Chuẩn Hóa Quá Trình Đăng Nhập: Access Token Lưu Cookie (15 Phút), Refresh Token Lưu Database (3 Ngày) & Cấu Hình ENV
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Quá trình login: Access Token lưu bằng cookie chỉ tồn tại 15 phút (`15m`).
+  2. Refresh Token lưu trên Database MongoDB Atlas chỉ tồn tại 3 ngày (`3d`).
+  3. Cấu hình biến môi trường ENV bắt buộc:
+     - `ACCESS_TOKEN_EXPIRES_IN=15m`
+     - `REFRESH_TOKEN_EXPIRES_IN=3d`
+     - `ACCESS_TOKEN_SECRET=Wtqh5wrHO5pkWJtPxkJ6oGMW8aSz26IdUtrGZlL3X9h2Aagqy52J61564MeyOduUqL2XkRh3bWEKebOzhIBalMibzs9FyEAgGpXBLFqIw47H6veIE5oeLmQVFTUbV2fLQWSC`
+     - `REFRESH_TOKEN_SECRET=bOG0ctzET1qF1T27i4l2xeHGCM0uVIK2vVQTD8LZriQP3izjxsPrQHUFg32YmEa9dyQDWkVblGXO25H2CX4sf2vIvYv49xwZCPHiWx0qzpxHWZsK18ZtSbrgEu8FT8KiGZzc`
+- **Nội dung hoàn thành:**
+  - **Môi trường (`be/.env` & `be/.env.example`):**
+    - Đã xác thực và đồng bộ 100% các biến môi trường cấu hình thời gian sống và khóa bí mật cực dài theo đúng chuẩn yêu cầu.
+  - **Cấu hình & Phân tích thời gian (`be/src/config/env.config.ts`, `be/src/core/auth.token.ts`):**
+    - Xây dựng hàm `parseDurationMs` chuyển đổi linh hoạt chuỗi thời gian (`15m` $\rightarrow$ 900,000 ms, `3d` $\rightarrow$ 259,200,000 ms).
+    - Áp dụng `ACCESS_TOKEN_SECRET` để ký và xác thực Access Token (có cơ chế fallback an toàn).
+    - Áp dụng `REFRESH_TOKEN_SECRET` để ký và xác thực Refresh Token.
+  - **Dịch vụ Xác thực (`be/src/modules/shared/auth/services/auth.service.ts`):**
+    - Khi đăng nhập thành công (`login`):
+      - Ký Access Token với thời hạn đúng 15 phút (`expiresIn: 900` giây).
+      - Sinh Refresh Token ngẫu nhiên bảo mật cao và lưu trực tiếp vào CSDL MongoDB Atlas (collection `refresh_tokens`) với `expires_at = Date.now() + 3 ngày` (kèm TTL index tự động dọn dẹp khi hết hạn).
+    - Khi làm mới token (`refreshToken`): Truy vấn trực tiếp database kiểm tra tính hợp lệ và thời hạn 3 ngày trước khi cấp mới Access Token 15 phút.
+  - **Bộ điều khiển HTTP & Cookie (`be/src/modules/shared/auth/controllers/auth.controller.ts`):**
+    - Thiết lập cookie `zone6_access_token` với `maxAge = ACCESS_TOKEN_EXPIRY_MS` (15 phút), cờ `httpOnly: true`, `sameSite`, `secure: isProduction`.
+    - Thiết lập cookie `zone6_refresh_token` với `maxAge = REFRESH_TOKEN_EXPIRY_MS` (3 ngày), cờ `httpOnly: true`.
+    - Khi gọi `/refresh`: Cấp mới và gia hạn cookie `zone6_access_token` thêm 15 phút.
+  - **Verification:**
+    - TypeScript Backend (`be/tsconfig.json`): Exit code 0, 0 lỗi.
+    - TypeScript Frontend (`fe/tsconfig.json`): Exit code 0, 0 lỗi.
+
+---
+
 ### [2026-11-04 17:38] - Tích Hợp Bộ Chọn Cơ Sở Tại Top Banner, Tách Biệt Độc Lập Cấu Trúc Bàn/Tầng Từng Chi Nhánh, Bỏ Nút Thêm Bàn Phụ & Bỏ Khu Vực Khác
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**

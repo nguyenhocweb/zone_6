@@ -1,5 +1,5 @@
 import { randomBytes } from 'node:crypto';
-import { signAccessToken } from '../../../../core/auth.token.js';
+import { signAccessToken, ACCESS_TOKEN_EXPIRY_MS, REFRESH_TOKEN_EXPIRY_MS } from '../../../../core/auth.token.js';
 import { UnauthorizedError, ValidationError } from '../../../../core/errors.js';
 import { logger } from '../../../../core/logger.js';
 import { RefreshTokenRepository } from '../repository/refresh-token.repository.js';
@@ -137,7 +137,7 @@ export class AuthService {
     const user = this.userRepo.toResponse(userDoc);
     const roleDetails = getRoleDetails(role);
 
-    // 3. Tạo Access Token (sống 24 giờ)
+    // 3. Tạo Access Token (sống 15 phút theo ACCESS_TOKEN_EXPIRES_IN)
     const accessToken = signAccessToken({
       userId: user.id,
       email: user.email,
@@ -147,9 +147,9 @@ export class AuthService {
       assigned_stores: user.assigned_stores || [],
     });
 
-    // 4. Tạo Refresh Token ngẫu nhiên (sống 30 ngày) và lưu trực tiếp trên Database MongoDB Atlas
+    // 4. Tạo Refresh Token ngẫu nhiên (sống 3 ngày theo REFRESH_TOKEN_EXPIRES_IN) và lưu trực tiếp trên Database MongoDB Atlas
     const refreshToken = randomBytes(40).toString('hex');
-    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 ngày
+    const expiresAt = new Date(Date.now() + REFRESH_TOKEN_EXPIRY_MS); // 3 ngày
 
     await this.refreshTokenRepo.create({
       userId: user.id,
@@ -160,14 +160,14 @@ export class AuthService {
     });
 
     logger.info(
-      `✅ [Login Success] User: ${user.name} | Role: ${user.role} (${roleDetails.label}) | Level: ${roleDetails.level} | RefreshToken saved to DB`
+      `✅ [Login Success] User: ${user.name} | Role: ${user.role} (${roleDetails.label}) | Level: ${roleDetails.level} | RefreshToken saved to DB (expires in 3 days)`
     );
 
     return {
       accessToken,
       refreshToken,
       user,
-      expiresIn: 24 * 60 * 60,
+      expiresIn: Math.round(ACCESS_TOKEN_EXPIRY_MS / 1000), // 15 phút (900s)
     };
   }
 

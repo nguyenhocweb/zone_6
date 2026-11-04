@@ -11,4 +11,8 @@ export const ENV = {
   ZALO_SESSION_DIR: path.resolve(process.env.ZALO_SESSION_DIR || '.sessions'),
   ZALO_QR_TTL_MS: Number(process.env.ZALO_QR_TTL_MS || 120000),
   ZALO_SEND_DELAY_MS: Number(process.env.ZALO_SEND_DELAY_MS || 3000),
+  ACCESS_TOKEN_EXPIRES_IN: process.env.ACCESS_TOKEN_EXPIRES_IN || '15m',
+  REFRESH_TOKEN_EXPIRES_IN: process.env.REFRESH_TOKEN_EXPIRES_IN || '3d',
+  ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || '',
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '',
 };
