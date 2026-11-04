@@ -55,31 +55,23 @@ export default function HomePage() {
             <a href="#menu" className="hover:text-[#fae29c] transition-colors">
               Thực Đơn
             </a>
-            <a href="#order" className="hover:text-[#fae29c] transition-colors">
-              Gọi Món Tại Bàn
+            <a href="#guide" className="hover:text-[#fae29c] transition-colors">
+              Hướng Dẫn Gọi Món
             </a>
             <a href="#stores" className="hover:text-[#fae29c] transition-colors">
               Chi Nhánh
             </a>
           </nav>
 
-          {/* Action CTAs */}
+          {/* Action CTAs: Bỏ nút Gọi Món Tại Bàn khỏi Navbar, chỉ để Cổng Nhân Sự */}
           <div className="flex items-center gap-3">
             <Link
-              href="/order"
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b58d22] text-[#0b0c10] font-black text-xs tracking-wider uppercase flex items-center gap-2 shadow-lg shadow-[#d4af37]/20 hover:brightness-110 active:scale-95 transition-all"
-            >
-              <FaQrcode className="text-sm" />
-              <span>Gọi Món Tại Bàn</span>
-            </Link>
-
-            <Link
               href="/login"
-              className="hidden sm:inline-flex px-3.5 py-2.5 rounded-xl bg-[#12141a] hover:bg-[#181b24] border border-[#212532] text-xs font-bold text-[#a0a5b5] hover:text-white transition-colors items-center gap-1.5"
+              className="px-4 py-2.5 rounded-xl bg-[#12141a] hover:bg-[#181b24] border border-[#212532] hover:border-[#d4af37]/50 text-xs font-bold text-white transition-all flex items-center gap-2 shadow-sm"
               title="Cổng Đăng Nhập Nhân Sự Nội Bộ"
             >
               <FiLock className="text-xs text-[#d4af37]" />
-              <span>Nhân Sự</span>
+              <span>Cổng Nhân Sự</span>
             </Link>
           </div>
         </div>
@@ -111,25 +103,29 @@ export default function HomePage() {
             trong không gian kiến trúc Obsidian Gold ấm cúng cùng trải nghiệm tự gọi món QR tại bàn tức thì.
           </p>
 
-          {/* Action Buttons */}
+          {/* Action Buttons: Không liên kết trực tiếp /order, hướng dẫn quét QR tại bàn */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <Link
-              href="/order"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-[#d4af37] via-[#fae29c] to-[#b58d22] text-[#0b0c10] font-black text-sm tracking-wide uppercase flex items-center justify-center gap-3 shadow-2xl shadow-[#d4af37]/25 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
-            >
-              <FaQrcode className="text-lg" />
-              <span>Quét Mã Bàn • Gọi Món Ngay</span>
-              <FiArrowRight className="text-lg" />
-            </Link>
-
             <a
               href="#menu"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-[#d4af37] via-[#fae29c] to-[#b58d22] text-[#0b0c10] font-black text-sm tracking-wide uppercase flex items-center justify-center gap-2 shadow-2xl shadow-[#d4af37]/25 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+            >
+              <FiCoffee className="text-base" />
+              <span>Khám Phá Menu Signature</span>
+              <FiArrowRight className="text-base" />
+            </a>
+
+            <a
+              href="#stores"
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#12141a] hover:bg-[#181b24] border border-[#212532] hover:border-[#d4af37]/50 text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
-              <FiCoffee className="text-[#d4af37] text-base" />
-              <span>Khám Phá Menu Signature</span>
+              <FiMapPin className="text-[#d4af37] text-base" />
+              <span>Hệ Thống Chi Nhánh</span>
             </a>
           </div>
+
+          <p className="text-[11px] text-[#6c7280]">
+            *Quý khách vui lòng quét mã QR Standee mica tại bàn khi ngồi tại quán để tự gọi món.
+          </p>
 
           {/* 4 Stats Chips */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-8 max-w-4xl mx-auto">
@@ -232,13 +228,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <Link
-              href="/order"
-              className="inline-flex items-center gap-2 text-xs font-bold text-[#d4af37] hover:text-[#fae29c] transition-colors"
-            >
-              <span>Xem toàn bộ thực đơn tại bàn</span>
-              <FiArrowRight />
-            </Link>
+            <span className="text-xs font-semibold text-[#a0a5b5]">
+              *Quý khách vui lòng quét mã QR tại bàn để xem chi tiết và gọi món
+            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -266,12 +258,9 @@ export default function HomePage() {
                   <span className="text-[10px] text-[#6c7280] block">GIÁ NIÊM YẾT</span>
                   <span className="text-xl font-black text-[#d4af37]">29.000đ</span>
                 </div>
-                <Link
-                  href="/order"
-                  className="px-4 py-2 rounded-xl bg-[#181b24] hover:bg-[#d4af37] text-white hover:text-black font-bold text-xs transition-colors"
-                >
-                  Gọi Món
-                </Link>
+                <span className="px-3.5 py-1.5 rounded-xl bg-[#181b24] border border-[#212532] text-[#fae29c] text-xs font-bold">
+                  Phục vụ tại bàn
+                </span>
               </div>
             </div>
 
@@ -303,12 +292,9 @@ export default function HomePage() {
                   <span className="text-[10px] text-[#6c7280] block">GIÁ NIÊM YẾT</span>
                   <span className="text-xl font-black text-[#d4af37]">35.000đ</span>
                 </div>
-                <Link
-                  href="/order"
-                  className="px-4 py-2 rounded-xl bg-[#d4af37] text-black font-extrabold text-xs shadow-md shadow-[#d4af37]/20 hover:brightness-110 transition"
-                >
-                  Gọi Món
-                </Link>
+                <span className="px-3.5 py-1.5 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/40 text-[#d4af37] text-xs font-bold">
+                  Phục vụ tại bàn
+                </span>
               </div>
             </div>
 
@@ -336,20 +322,17 @@ export default function HomePage() {
                   <span className="text-[10px] text-[#6c7280] block">GIÁ NIÊM YẾT</span>
                   <span className="text-xl font-black text-[#d4af37]">32.000đ</span>
                 </div>
-                <Link
-                  href="/order"
-                  className="px-4 py-2 rounded-xl bg-[#181b24] hover:bg-[#d4af37] text-white hover:text-black font-bold text-xs transition-colors"
-                >
-                  Gọi Món
-                </Link>
+                <span className="px-3.5 py-1.5 rounded-xl bg-[#181b24] border border-[#212532] text-[#fae29c] text-xs font-bold">
+                  Phục vụ tại bàn
+                </span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. Section: Banner Gọi Món Tại Bàn Không Cần Đăng Nhập */}
-      <section id="order" className="py-20 bg-gradient-to-b from-[#0e1015] to-[#0b0c10] border-t border-[#212532]">
+      {/* 5. Section: Hướng Dẫn Tự Gọi Món Tại Bàn Qua Mã QR */}
+      <section id="guide" className="py-20 bg-gradient-to-b from-[#0e1015] to-[#0b0c10] border-t border-[#212532]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-br from-[#181b24] to-[#12141a] border border-[#d4af37]/40 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
             {/* Background Icon */}
@@ -358,47 +341,62 @@ export default function HomePage() {
             <div className="relative z-10 max-w-2xl space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/30 text-[#d4af37] text-xs font-bold uppercase tracking-wider">
                 <FiSmartphone />
-                <span>Không Cần Đăng Nhập • Xác Thực Bằng Vị Trí GPS</span>
+                <span>Quy Trình Tự Phục Vụ • Không Cần Đăng Nhập</span>
               </div>
 
               <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-                Đang Ngồi Tại Quán? <br />
+                Hướng Dẫn Tự Gọi Món <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4af37] via-[#fae29c] to-[#906b18]">
-                  Gọi Món Trực Tiếp Tại Bàn Của Bạn
+                  Bằng Mã QR Trên Standee Tại Bàn
                 </span>
               </h2>
 
               <p className="text-xs sm:text-sm text-[#a0a5b5] leading-relaxed">
-                Hệ thống tự động định danh thiết bị của bạn, bảo vệ chống đặt đơn từ xa bằng Geofence GPS.
-                Chọn món, tùy chỉnh mức đá đường, thêm topping và thanh toán VietQR động trong tích tắc.
+                Để phục vụ quý khách nhanh nhất mà không cần phải chờ đợi nhân viên order hay xếp hàng tại quầy thu ngân,
+                Zone Six trang bị mã QR trên từng bàn với 3 bước đơn giản:
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div className="flex items-center gap-2 text-xs text-white">
-                  <FiCheckCircle className="text-[#d4af37] shrink-0" />
-                  <span>Không cần cài app</span>
+              <div className="space-y-3 pt-2">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-[#12141a] border border-[#212532]">
+                  <span className="w-6 h-6 rounded-full bg-[#d4af37] text-[#0b0c10] font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                    1
+                  </span>
+                  <div>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Quét Mã QR Tại Bàn</h4>
+                    <p className="text-[11px] text-[#a0a5b5] mt-0.5">
+                      Mở Camera hoặc Zalo trên điện thoại và hướng vào mã QR trên tấm Standee Mica đặt trên bàn bạn đang ngồi.
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-white">
-                  <FiCheckCircle className="text-[#d4af37] shrink-0" />
-                  <span>Không cần tạo tài khoản</span>
+
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-[#12141a] border border-[#212532]">
+                  <span className="w-6 h-6 rounded-full bg-[#d4af37] text-[#0b0c10] font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                    2
+                  </span>
+                  <div>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Chọn Món & Tùy Chỉnh Topping</h4>
+                    <p className="text-[11px] text-[#a0a5b5] mt-0.5">
+                      Hệ thống tự động nhận diện đúng số bàn của bạn. Bạn có thể thoải mái chọn mức đường, đá, thêm topping và ghi chú.
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-white">
-                  <FiCheckCircle className="text-[#d4af37] shrink-0" />
-                  <span>VietQR tức thì 24/7</span>
+
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-[#12141a] border border-[#212532]">
+                  <span className="w-6 h-6 rounded-full bg-[#d4af37] text-[#0b0c10] font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                    3
+                  </span>
+                  <div>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Thanh Toán VietQR & Nhận Món Tận Bàn</h4>
+                    <p className="text-[11px] text-[#a0a5b5] mt-0.5">
+                      Quét mã VietQR động trực tiếp để thanh toán. Barista nhận lệnh pha chế tức thì và nhân viên mang đồ uống đến tận bàn.
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
-                <Link
-                  href="/order"
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#b58d22] text-[#0b0c10] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#d4af37]/20 hover:brightness-110 transition active:scale-95 cursor-pointer"
-                >
-                  <FaQrcode className="text-base" />
-                  <span>Bắt Đầu Gọi Món Tại Bàn Ngay</span>
-                </Link>
-                <span className="text-xs text-[#6c7280]">
-                  *Quét mã Standee mica trên bàn hoặc chọn bàn trực tiếp
-                </span>
+              <div className="pt-2 flex items-center gap-2 text-xs text-[#fae29c]">
+                <FiCheckCircle className="text-[#d4af37]" />
+                <span>Bảo vệ chống đặt troll đơn từ xa bằng định vị GPS Geofence chuẩn xác</span>
               </div>
             </div>
           </div>
@@ -506,9 +504,9 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-6 text-xs text-[#a0a5b5]">
-            <Link href="/order" className="hover:text-[#fae29c] transition-colors">
-              Gọi Món Tại Bàn
-            </Link>
+            <a href="#guide" className="hover:text-[#fae29c] transition-colors">
+              Hướng Dẫn Gọi Món
+            </a>
             <a href="#menu" className="hover:text-[#fae29c] transition-colors">
               Thực Đơn
             </a>

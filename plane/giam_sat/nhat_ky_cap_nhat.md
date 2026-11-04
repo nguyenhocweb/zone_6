@@ -4,6 +4,26 @@
 
 ---
 
+### [2026-11-04 22:35] - Xóa Nút Gọi Món Tại Bàn Khỏi Landing Page & Khóa Chặt Truy Cập Chỉ Cho Phép Khi Quét Đúng Mã QR Standee Mica Tại Bàn
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "bỏ cái này đi và chỉ đc phép quét mã tại bàn mới hiện ra trang order ở khách hàng còn không thì ở trang ko đx liên kết đến" (kèm ảnh chụp nút [GỌI MÓN TẠI BÀN] trên navbar)
+- **Nội dung hoàn thành:**
+  - **Loại bỏ hoàn toàn nút và liên kết dẫn đến trang `/order` trên Landing Page (`fe/src/app/page.tsx`):**
+    - Gỡ bỏ nút bấm vàng `[ 🔲 GỌI MÓN TẠI BÀN ]` trên thanh điều hướng Navbar. Chỉ giữ lại nút `[ 🔒 Cổng Nhân Sự ]`.
+    - Thay thế nút kêu gọi hành động tại Hero Section: Không dẫn link sang `/order`, đổi thành nút `Khám Phá Menu Signature` và `Hệ Thống Chi Nhánh` kèm chú thích hướng dẫn quét mã tại bàn.
+    - Loại bỏ nút gọi món trên từng thẻ đồ uống trong thực đơn, thay thế bằng nhãn tinh gọn `Phục vụ tại bàn`.
+    - Chuyển đổi khối gọi món thành Section `#guide` ("Hướng Dẫn Tự Gọi Món Bằng Mã QR Trên Standee Tại Bàn") với 3 bước quy chuẩn.
+    - Xóa bỏ liên kết `/order` trong Footer.
+  - **Khóa màn hình `/order` - Bắt buộc quét đúng mã QR Standee mica tại bàn (`fe/src/features/table-order/component/TableOrderView.tsx`):**
+    - Xóa bỏ hoàn toàn cơ chế chọn bàn thủ công (Manual table picker).
+    - Khi người dùng truy cập trực tiếp URL `/order` mà không có mã xác thực `token` bàn (tức là không quét mã QR dán trên bàn): Hệ thống hiển thị Màn hình Khóa An Toàn phong cách Obsidian Gold yêu cầu quét mã QR mica trên bàn, giải thích quy trình 3 bước và cung cấp nút quay lại Trang chủ.
+    - Chỉ khi khách hàng quét đúng mã QR mica gắn trên bàn (URL kèm tham số `?token=...`), hệ thống mới xác định định vị GPS, kiểm tra Geofence và kích hoạt giao diện thực đơn điện tử.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 22:25] - Khắc Phục Lỗi "Không Tìm Thấy Phiên Làm Việc POS Tương Ứng" Khi Thêm Món / Topping Vào Giỏ Hàng
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Phản hồi ảnh chụp thông báo `🔴 Không tìm thấy phiên làm việc POS tương ứng.` và câu hỏi "là sao"

@@ -92,9 +92,10 @@
     "Khắc phục triệt để hiển thị giá món và tích hợp chọn Topping thật từ Database vào POS: Lấy đúng recipe.price từ collection recipes, lọc bỏ công thức sơ chế nội bộ internal_prep; xây dựng modal chọn topping thật PosItemCustomModal kết nối với collection sellable_toppings (/api/v1/sellable-toppings); sửa lỗi ngắt kết nối Socket do HTTP 308 Redirect bằng skipTrailingSlashRedirect trong next.config.ts; ngăn chặn lỗi ObjectId undefined trên sơ đồ bàn.",
     "Triển khai Landing Page Trang Chủ Chuẩn Obsidian Gold & Hoàn Thiện Tự Gọi Món Tại Bàn Không Cần Login (Lưu Định Vị GPS, Mã Thiết Bị, Tên Thiết Bị, SĐT Tích Điểm): fe/src/app/page.tsx landing page đẳng cấp; mở khóa public routes trong AppShell cho / và /order; tiện ích nhận diện thiết bị device-info.ts lưu z6_device_id và device_name; thu thập SĐT tích điểm; API public-tables chọn bàn thủ công nếu vào từ landing page; lưu đầy đủ vào CSDL order.model.ts.",
     "Khắc phục triệt để lỗi ngắt kết nối Socket POS (Reconnect Loop) & Hiển thị đầy đủ danh mục Topping toàn chuỗi trên POS Catalog: Sửa SellableToppingRepository.findAll chấp nhận topping store_id: null; hiển thị tab Topping và khối Topping Bán Lẻ & Thêm trên MenuCatalog; memoize liveUser tránh re-render đứt kết nối; chuẩn hóa dependencies useLivePos sang primitive string; cấu hình polling ổn định xuyên qua Vercel proxy.",
-    "Khắc phục lỗi 'Không tìm thấy phiên làm việc POS tương ứng' khi thêm món/topping vào giỏ hàng: Nới lỏng kiểu dữ liệu shift_id trong pos-session.model.ts sang Mixed và Prisma pos_session.prisma sang String; bổ sung tự động tạo phiên POS tại PosVerifyShiftService, pos:join socket event, và PosCartUpdateService fallback recovery."
+    "Khắc phục lỗi 'Không tìm thấy phiên làm việc POS tương ứng' khi thêm món/topping vào giỏ hàng: Nới lỏng kiểu dữ liệu shift_id trong pos-session.model.ts sang Mixed và Prisma pos_session.prisma sang String; bổ sung tự động tạo phiên POS tại PosVerifyShiftService, pos:join socket event, và PosCartUpdateService fallback recovery.",
+    "Xóa nút Gọi Món Tại Bàn khỏi Navbar & Khóa truy cập trang /order: Bỏ toàn bộ liên kết /order trên trang chủ; loại bỏ chọn bàn thủ công; bắt buộc chỉ khách hàng quét đúng mã QR mica dán tại bàn (kèm token) mới mở được màn hình gọi món."
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-04T22:25:00Z"
+  "last_updated": "2026-11-04T22:35:00Z"
 }
