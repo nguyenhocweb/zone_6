@@ -7,6 +7,16 @@ import { toast } from 'sonner';
 
 export const TABLE_QUERY_KEY = ['admin_he_thong', 'tables'] as const;
 export const TABLE_ZONES_QUERY_KEY = ['admin_he_thong', 'table_zones'] as const;
+export const TABLE_SHIFT_STATUS_QUERY_KEY = ['admin_he_thong', 'table_shift_status'] as const;
+
+export function useTableShiftStatus(storeId?: string | null) {
+  return useQuery({
+    queryKey: [...TABLE_SHIFT_STATUS_QUERY_KEY, storeId],
+    queryFn: () => tableService.getShiftStatus(storeId || undefined),
+    staleTime: 60 * 1000,
+    retry: 1,
+  });
+}
 
 export function useTables(params?: { store_id?: string; zone_name?: string; status?: string }) {
   return useQuery({

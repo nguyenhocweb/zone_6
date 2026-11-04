@@ -4,6 +4,7 @@ import { OrderModel, IOrder, IOrderItem } from '../models/order.model.js';
 import { calculateDistanceMeters } from '../../../core/utils/geofence.js';
 import { BadRequestError, ForbiddenError, NotFoundError } from '../../../core/errors.js';
 import { emitPosEvent } from '../socket/pos.socket.js';
+import { emitTableEvent } from '../../admin_he_thong/table/socket/table.socket.js';
 
 export interface CreateTableOrderPayload {
   token: string;
@@ -112,7 +113,13 @@ export class TableOrderCreateService {
     });
 
     // Cập nhật trạng thái bàn sang OCCUPIED
-    await this.tableRepo.update(table._id.toString(), { status: 'OCCUPIED' });
+    const updatedTable = await this.tableRepo.update(table._id.toString(), { status: 'OCCUPIED' });
+
+    // Phát sự kiện Socket.io cập nhật sơ đồ bàn thời gian thực
+    emitTableEvent(table.store_id.toString(), 'table:updated', {
+      table: updatedTable,
+      actionUser: { name: `Khách Bàn ${table.table_number} (Tự gọi món)` },
+    });
 
     // Phát sự kiện Socket.io báo động tới toàn bộ nhân viên ca trực
     emitPosEvent(table.store_id.toString(), 'pos:new_table_order', {

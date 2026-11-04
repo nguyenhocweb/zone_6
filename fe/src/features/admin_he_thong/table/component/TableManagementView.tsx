@@ -25,7 +25,9 @@ import {
   useTableZones,
   useCreateTableZone,
   useDeleteTableZone,
+  useTableShiftStatus,
 } from '../hook/useTables';
+import { useTableSocket } from '../hook/useTableSocket';
 import { TableItem, TableZoneItem } from '../type/table.type';
 import { TableQrPrintModal } from './TableQrPrintModal';
 import { TableFormModal } from './TableFormModal';
@@ -104,7 +106,17 @@ export const TableManagementView: React.FC = () => {
     return stores.find((s) => s.id === selectedStoreId) || allowedStores[0] || null;
   }, [stores, selectedStoreId, allowedStores]);
 
-  // 2. Lấy dữ liệu Bàn và Tầng theo cơ sở
+  // 2. Kích hoạt Socket.io Real-time cho Sơ Đồ Bàn
+  const { isConnected: isSocketLive } = useTableSocket(
+    selectedStoreId,
+    user ? { id: user.id, name: user.name } : undefined
+  );
+
+  // 3. Kiểm tra quyền nhân viên trong ca
+  const { data: shiftStatus } = useTableShiftStatus(selectedStoreId);
+  const isInShift = shiftStatus?.inShift ?? (canManageStructure ? true : false);
+
+  // 4. Lấy dữ liệu Bàn và Tầng theo cơ sở
   const { data: tables = [], isLoading: isTablesLoading } = useTables(
     selectedStoreId ? { store_id: selectedStoreId } : undefined
   );
@@ -131,6 +143,16 @@ export const TableManagementView: React.FC = () => {
   const [editingTable, setEditingTable] = useState<TableItem | null>(null);
   const [initialFormZone, setInitialFormZone] = useState<string>('Tầng 1');
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // Đồng bộ trạng thái live của modal chi tiết bàn khi có socket update
+  useEffect(() => {
+    if (selectedDetailTable) {
+      const live = tables.find((t) => t.id === selectedDetailTable.id);
+      if (live && live.status !== selectedDetailTable.status) {
+        setSelectedDetailTable((prev) => (prev ? { ...prev, status: live.status } : prev));
+      }
+    }
+  }, [tables, selectedDetailTable]);
 
   // Danh sách các Tầng hợp nhất (từ DB + từ các bàn đã có)
   const zones: TableZoneItem[] = useMemo(() => {
@@ -236,6 +258,16 @@ export const TableManagementView: React.FC = () => {
     newStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE'
   ) => {
     if (table.status === newStatus) return;
+
+    // Kiểm tra quyền nhân viên trong ca
+    if (!canManageStructure && !isInShift) {
+      toast.error(
+        shiftStatus?.reason ||
+          'Chỉ nhân viên đang trong ca trực (đã Điểm Danh Check-in) mới có quyền cập nhật trạng thái bàn.'
+      );
+      return;
+    }
+
     updateTableMutation.mutate(
       {
         id: table.id,
@@ -339,6 +371,25 @@ export const TableManagementView: React.FC = () => {
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border border-[#D4AF37]/40 bg-[#D4AF37]/10 text-[#D4AF37]">
                 GPS Geofence Protected
+              </span>
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border flex items-center gap-1.5 transition-all ${
+                  isSocketLive
+                    ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400'
+                    : 'border-[#212532] bg-[#181B24] text-[#8E95A5]'
+                }`}
+                title={
+                  isSocketLive
+                    ? 'Đang đồng bộ sơ đồ bàn thời gian thực (WebSocket Active)'
+                    : 'Đang kết nối socket...'
+                }
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    isSocketLive ? 'bg-emerald-400 animate-pulse' : 'bg-gray-500'
+                  }`}
+                />
+                <span>{isSocketLive ? 'Live Sync' : 'Offline'}</span>
               </span>
             </div>
             <p className="text-xs text-[#8E95A5] mt-1">
@@ -820,6 +871,8 @@ export const TableManagementView: React.FC = () => {
         isOpen={!!selectedDetailTable}
         table={selectedDetailTable}
         canEditOrDelete={canManageStructure}
+        isInShift={isInShift}
+        shiftReason={shiftStatus?.reason}
         onClose={() => setSelectedDetailTable(null)}
         onEdit={(table) => {
           setSelectedDetailTable(null);

@@ -39,8 +39,9 @@ Tất cả QueryKey BẮT BUỘC là **mảng phân cấp**:
 | `pho_ca_lam_lich` | `shiftConfigs` | `['shiftConfigs', 'list', storeId]` | `useGetShiftConfigs` | Khi thêm, sửa, xóa ca làm hoặc khôi phục 4 ca mặc định (`useCreateShiftConfig`, `useUpdateShiftConfig`, `useDeleteShiftConfig`, `useResetShiftConfigs`) |
 | `pho_ca_vat_lieu` | `purchase_requisitions` | `['purchase_requisitions', 'list', params]` | `useGetRequisitions`, `useGetRequisitionSuggestions` | Khi tạo phiếu yêu cầu nhập kho (`useCreateRequisition`) hoặc duyệt phiếu (`useUpdateRequisitionStatus`) |
 | `quan_ly` | `purchase_orders` | `['purchase_orders', 'list', params]` | `useGetPurchaseOrders`, `useGetPurchaseOrderById` | Khi tạo đơn thu mua PO (`useCreatePoFromRequisitions`) hoặc xác nhận nhập kho (`useReceivePo`) |
-| `admin_he_thong` | `tables` | `['admin_he_thong', 'tables', params]` | `useTables` | Khi tạo, sửa, xóa bàn hoặc đổi mã token QR (`useCreateTable`, `useUpdateTable`, `useDeleteTable`, `useRegenerateTableToken`) |
+| `admin_he_thong` | `tables` | `['admin_he_thong', 'tables', params]` | `useTables` | Khi tạo, sửa, xóa bàn, đổi trạng thái qua Socket thời gian thực (`table:updated`), hoặc đổi mã token QR |
 | `admin_he_thong` | `table_zones` | `['admin_he_thong', 'table_zones', storeId]` | `useTableZones` | Khi tạo hoặc xóa tầng/khu vực (`useCreateTableZone`, `useDeleteTableZone`) |
+| `admin_he_thong` | `table_shift_status` | `['admin_he_thong', 'table_shift_status', storeId]` | `useTableShiftStatus` | Kiểm tra quyền nhân viên trong ca trước khi cho phép bấm nút đổi trạng thái bàn |
 | `pos` | `orders` | `['pos', 'orders', 'all', params]` | `useOrderManagement` | Khi tạo đơn mới, thanh toán hoặc hủy hóa đơn (`useVoidOrder`) |
 
 ---

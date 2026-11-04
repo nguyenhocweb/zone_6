@@ -4,6 +4,41 @@
 
 ---
 
+### [2026-11-04 18:32] - Ràng Buộc Nhân Viên Trong Ca Mới Được Cập Nhật Trạng Thái Bàn & Đồng Bộ Sơ Đồ Bàn Socket.io Thời Gian Thực
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Trạng thái bàn này chỉ có nhân viên trong ca mới có thể cập nhật và các bàn này và sơ đồ bàn sẽ dùng socket để cập nhật theo thời gian thực.
+- **Nội dung hoàn thành:**
+  - **Ràng buộc nhân viên trong ca (In-Shift Gatekeeper):**
+    - Backend Service ([`table-shift.verify.service.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/services/table-shift.verify.service.ts)):
+      - Quản lý / Admin: Luôn được phép thao tác ở chế độ giám sát (`inShift: true`, mode `SUPERVISOR`).
+      - Cấp Nhân Viên, Phó Ca, Trưởng Ca: Bắt buộc phải có bản ghi Điểm danh Check-in Camera & GPS hợp lệ hôm nay (`Attendance` với `work_date >= startOfDay`, `verification_status: VALID/LATE/MANUAL_APPROVED`, `check_out_time: null`) và thuộc đúng cơ sở trực thuộc.
+      - Nếu chưa check-in hoặc đã check-out: Từ chối với lý do *"Chỉ nhân viên đang trong ca trực (đã Điểm Danh Check-in) mới có thể cập nhật trạng thái bàn."*
+    - Endpoint API ([`table-shift.get.controller.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/controllers/table-shift.get.controller.ts)):
+      - Cung cấp `GET /api/v1/tables/shift-status` trả về trạng thái ca trực hiện tại của nhân sự.
+    - Chặn cập nhật tại Backend ([`table.update.controller.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/controllers/table.update.controller.ts)):
+      - Cưỡng chế kiểm tra `verify(req.user)` trước khi cho phép lưu trạng thái bàn. Ném `ForbiddenError` (403) nếu không trong ca trực.
+    - Giao diện Frontend ([`TableDetailModal.tsx`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/component/TableDetailModal.tsx)):
+      - Nhận prop `isInShift` và `shiftReason`. Nếu không trong ca trực, hiển thị thanh cảnh báo trực quan: *"Bạn hiện không trong ca trực. Cần điểm danh Check-in Camera & GPS để cập nhật trạng thái bàn."*
+      - Cả 4 nút chọn trạng thái (*Trống, Có Khách, Đã Đặt Trước, Đang Bảo Trì*) bị vô hiệu hóa mờ đi (`opacity-60 cursor-not-allowed`), bấm vào sẽ hiển thị cảnh báo hướng dẫn check-in.
+  - **Hệ thống WebSocket Socket.io Thời Gian Thực (Real-Time Floor Map Synchronization):**
+    - Backend Namespace `/tables` ([`table.socket.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/socket/table.socket.ts)):
+      - Khởi tạo namespace `io.of('/tables')` trên HTTP server chung tại [`server.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/server.ts).
+      - Hỗ trợ client tham gia phòng cơ sở `store_${storeId}` qua sự kiện `table:join_store`.
+      - Hàm `emitTableEvent(storeId, 'table:updated', { table, actionUser })` phát sóng tức thời cho tất cả các thiết bị trong cùng cơ sở.
+    - Kích hoạt phát sóng khi:
+      1. Nhân viên đổi trạng thái bàn thủ công (*Trống $\leftrightarrow$ Có Khách $\leftrightarrow$ Đã Đặt $\leftrightarrow$ Bảo Trì*) tại `table.update.controller.ts`.
+      2. Khách hàng tự quét mã QR Standee mica tại bàn và gửi đơn đặt món thành công tại [`table-order.create.service.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/pos/services/table-order.create.service.ts) (bàn tự động đổi sang `OCCUPIED` và báo động ngay lập tức).
+    - Frontend Socket Hook ([`useTableSocket.ts`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/hook/useTableSocket.ts)):
+      - Kết nối tới `${socketUrl}/tables` qua proxy `/socket.io`.
+      - Khi nhận sự kiện `table:updated`: Cập nhật lập tức React Query cache `TABLE_QUERY_KEY` (Optimistic sync không cần reload), đồng bộ màu sắc thẻ bàn, đổi số liệu thống kê KPI và tự động đồng bộ trạng thái modal chi tiết bàn đang mở.
+      - Hiển thị thông báo Sonner Toast nhẹ: *"⚡ Bàn XX vừa chuyển sang 'Có Khách' bởi NV..."*
+      - Banner Top Header hiển thị huy hiệu `🟢 Live Sync` (Real-Time WebSocket Active).
+- **Verification:**
+  - TypeScript Backend (`be`): Exit code 0, 0 lỗi.
+  - TypeScript Frontend (`fe`): Exit code 0, 0 lỗi.
+
+---
+
 ### [2026-11-04 18:15] - Phân Quyền Sơ Đồ Bàn: Ẩn 100% Nút Thêm Cho Nhân Viên & Phó Ca; Khóa Cứng Cơ Sở Trực Thuộc; Cho Phép Cập Nhật Trạng Thái Bàn
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Ở cấp nhân viên và phó ca không có quyền thêm nên bỏ all nút thêm đi và chỉ xem được tầng và bàn thuộc cơ sở của mình mà thôi.

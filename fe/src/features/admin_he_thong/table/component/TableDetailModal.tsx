@@ -31,6 +31,8 @@ interface TableDetailModalProps {
     newStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE'
   ) => void;
   canEditOrDelete?: boolean;
+  isInShift?: boolean;
+  shiftReason?: string;
 }
 
 // Chuẩn hóa tên bàn hiển thị tránh trùng lặp
@@ -52,10 +54,25 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
   onOpenQrPrint,
   onStatusChange,
   canEditOrDelete = true,
+  isInShift = true,
+  shiftReason,
 }) => {
   const [copied, setCopied] = useState(false);
 
   if (!isOpen || !table) return null;
+
+  const canChangeStatus = canEditOrDelete || isInShift;
+
+  const handleSelectStatus = (newStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE') => {
+    if (!canChangeStatus) {
+      toast.error(
+        shiftReason ||
+          'Chỉ nhân viên đang trong ca trực (đã Điểm Danh Check-in) mới có quyền cập nhật trạng thái bàn.'
+      );
+      return;
+    }
+    onStatusChange(table, newStatus);
+  };
 
   const displayName = formatTableDisplayName(table.table_number);
 
@@ -167,17 +184,29 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
 
             <p className="text-[11px] text-[#6D7588]">{statusConfig.desc}</p>
 
+            {/* Cảnh báo nếu không trong ca trực */}
+            {!canChangeStatus && (
+              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] flex items-center gap-2">
+                <FaClock className="text-amber-400 shrink-0 text-xs" />
+                <span>
+                  {shiftReason ||
+                    'Bạn hiện không trong ca trực. Cần điểm danh Check-in Camera & GPS để cập nhật trạng thái bàn.'}
+                </span>
+              </div>
+            )}
+
             {/* 4 Nút Chọn Trạng Thái Lớn */}
             <div className="grid grid-cols-2 gap-2 pt-1">
               {/* Trống */}
               <button
                 type="button"
-                onClick={() => onStatusChange(table, 'AVAILABLE')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectStatus('AVAILABLE')}
+                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
                   table.status === 'AVAILABLE'
                     ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500 shadow-sm ring-1 ring-emerald-500/40'
                     : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-emerald-500/40 hover:text-emerald-400'
-                }`}
+                } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+                title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 <span>Trống</span>
@@ -186,12 +215,13 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               {/* Có Khách */}
               <button
                 type="button"
-                onClick={() => onStatusChange(table, 'OCCUPIED')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectStatus('OCCUPIED')}
+                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
                   table.status === 'OCCUPIED'
                     ? 'bg-amber-500/20 text-amber-300 border-amber-500 shadow-sm ring-1 ring-amber-500/40'
                     : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-amber-500/40 hover:text-amber-400'
-                }`}
+                } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+                title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
                 <span className="w-2 h-2 rounded-full bg-amber-400" />
                 <span>Có Khách</span>
@@ -200,12 +230,13 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               {/* Đã Đặt Trước */}
               <button
                 type="button"
-                onClick={() => onStatusChange(table, 'RESERVED')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectStatus('RESERVED')}
+                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
                   table.status === 'RESERVED'
                     ? 'bg-blue-500/20 text-blue-300 border-blue-500 shadow-sm ring-1 ring-blue-500/40'
                     : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-blue-500/40 hover:text-blue-400'
-                }`}
+                } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+                title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
                 <span className="w-2 h-2 rounded-full bg-blue-400" />
                 <span>Đã Đặt Trước</span>
@@ -214,12 +245,13 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               {/* Đang Bảo Trì */}
               <button
                 type="button"
-                onClick={() => onStatusChange(table, 'MAINTENANCE')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectStatus('MAINTENANCE')}
+                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
                   table.status === 'MAINTENANCE'
                     ? 'bg-rose-500/20 text-rose-300 border-rose-500 shadow-sm ring-1 ring-rose-500/40'
                     : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-rose-500/40 hover:text-rose-400'
-                }`}
+                } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+                title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
                 <span className="w-2 h-2 rounded-full bg-rose-400" />
                 <span>Đang Bảo Trì</span>

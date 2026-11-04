@@ -46,5 +46,18 @@ export const tableService = {
   async deleteZone(id: string): Promise<void> {
     await axiosClient.delete(`/api/v1/tables/zones/${id}`);
   },
+
+  // === KIỂM TRA QUYỀN TRONG CA (IN-SHIFT CHECK) ===
+  async getShiftStatus(storeId?: string): Promise<{
+    inShift: boolean;
+    mode: 'SUPERVISOR' | 'STAFF';
+    shiftName?: string;
+    checkInTime?: string;
+    reason?: string;
+  }> {
+    const params = storeId ? { store_id: storeId } : {};
+    const res = await axiosClient.get('/api/v1/tables/shift-status', { params });
+    return res.data.data;
+  },
 };
 
