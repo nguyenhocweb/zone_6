@@ -15,7 +15,7 @@ export interface ILiveCart {
 
 export interface IPosSession extends Document {
   store_id: mongoose.Types.ObjectId;
-  shift_id: mongoose.Types.ObjectId;
+  shift_id: any;
   session_code: string;
   status: 'ACTIVE' | 'CLOSED';
   current_cart: ILiveCart;
@@ -27,7 +27,7 @@ export interface IPosSession extends Document {
 const PosSessionSchema = new Schema<IPosSession>(
   {
     store_id: { type: Schema.Types.ObjectId, ref: 'stores', required: true, index: true },
-    shift_id: { type: Schema.Types.ObjectId, ref: 'shift_configs', required: true },
+    shift_id: { type: Schema.Types.Mixed, default: 'default' },
     session_code: { type: String, required: true, unique: true },
     status: { type: String, enum: ['ACTIVE', 'CLOSED'], default: 'ACTIVE' },
     current_cart: {

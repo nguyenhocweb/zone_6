@@ -1,7 +1,7 @@
 model PosSession {
   id             String           @id @default(auto()) @map("_id") @db.ObjectId
   storeId        String           @map("store_id") @db.ObjectId
-  shiftId        String           @map("shift_id") @db.ObjectId
+  shiftId        String           @map("shift_id")
   sessionCode    String           @unique @map("session_code")
   
   status         PosSessionStatus @default(ACTIVE)

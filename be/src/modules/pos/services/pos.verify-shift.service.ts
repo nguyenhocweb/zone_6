@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import { AttendanceModel } from '../../nhan_vien/attendance/models/attendance.model.js';
 import { StoreConfigModel } from '../../admin_he_thong/store-config/models/store-config.model.js';
+import { PosSessionRepository } from '../repositories/pos-session.repository.js';
 import { ForbiddenError, NotFoundError } from '../../../core/errors.js';
 import { AuthTokenPayload } from '../../../core/auth.token.js';
 
@@ -17,6 +18,12 @@ export interface IVerifyShiftResult {
 }
 
 export class PosVerifyShiftService {
+  private sessionRepo: PosSessionRepository;
+
+  constructor() {
+    this.sessionRepo = new PosSessionRepository();
+  }
+
   async execute(user: AuthTokenPayload, requestedStoreId?: string): Promise<IVerifyShiftResult> {
     const role = user.role || 'nhan_vien';
     const isSupervisor = role === 'admin_he_thong' || role === 'quan_ly';
@@ -44,6 +51,9 @@ export class PosVerifyShiftService {
       const storeIdStr = storeDoc._id.toString();
       const todayStr = new Date().toISOString().slice(0, 10);
       const sessionCode = `STORE_${storeIdStr}_SUPERVISOR_${todayStr}`;
+
+      // Khởi tạo phiên POS cho giám sát viên trên database
+      await this.sessionRepo.findOrCreateSession(storeIdStr, 'supervisor_active', sessionCode);
 
       return {
         allowed: true,
@@ -92,6 +102,9 @@ export class PosVerifyShiftService {
     const shiftName = activeAttendance.shift || 'Ca Trực';
     const todayStr = new Date().toISOString().slice(0, 10);
     const sessionCode = `STORE_${storeIdStr}_SHIFT_${shiftName.replace(/\s+/g, '_')}_${todayStr}`;
+
+    // Khởi tạo phiên POS cho nhân viên trong ca trên database
+    await this.sessionRepo.findOrCreateSession(storeIdStr, shiftName, sessionCode);
 
     return {
       allowed: true,

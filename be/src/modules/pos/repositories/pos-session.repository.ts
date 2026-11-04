@@ -3,14 +3,18 @@ import { PosSessionModel, IPosSession, ILiveCart } from '../models/pos-session.m
 
 export class PosSessionRepository {
   async findOrCreateSession(storeId: string, shiftId: string, sessionCode: string): Promise<IPosSession> {
-    const storeObjectId = new mongoose.Types.ObjectId(storeId);
-    const shiftObjectId = new mongoose.Types.ObjectId(shiftId);
+    const storeObjectId = mongoose.Types.ObjectId.isValid(storeId)
+      ? new mongoose.Types.ObjectId(storeId)
+      : null;
+    const shiftVal = (shiftId && mongoose.Types.ObjectId.isValid(shiftId))
+      ? new mongoose.Types.ObjectId(shiftId)
+      : (shiftId || 'default');
 
     let session = await PosSessionModel.findOne({ session_code: sessionCode });
     if (!session) {
       session = await PosSessionModel.create({
         store_id: storeObjectId,
-        shift_id: shiftObjectId,
+        shift_id: shiftVal,
         session_code: sessionCode,
         status: 'ACTIVE',
         current_cart: {

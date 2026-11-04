@@ -32,18 +32,20 @@ export function setupPosSocket(io: Server) {
       user: { userId: string; name: string };
     }) => {
       try {
-        const { sessionCode, user } = data;
+        const { sessionCode, storeId, shiftId, user } = data;
         currentRoom = `pos_${sessionCode}`;
         currentUser = user;
 
         socket.join(currentRoom);
-        logger.info(`[POS Socket] ${user.name} (${user.userId}) gia nhập phòng ${currentRoom}`);
+        logger.info(`[POS Socket] ${user?.name || 'Nhân viên'} (${user?.userId}) gia nhập phòng ${currentRoom}`);
+
+        // Đảm bảo phiên làm việc POS tồn tại trong Database
+        const session = await sessionRepo.findOrCreateSession(storeId, shiftId, sessionCode);
 
         // Ghi nhận nhân viên đang active
-        await sessionRepo.addActiveStaff(sessionCode, user.userId);
-
-        // Lấy thông tin session mới nhất
-        const session = await sessionRepo.getSessionByCode(sessionCode);
+        if (user?.userId) {
+          await sessionRepo.addActiveStaff(sessionCode, user.userId);
+        }
 
         // Báo cho người vừa vào thông tin giỏ hàng hiện tại
         socket.emit('pos:sync_initial', {

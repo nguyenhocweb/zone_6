@@ -4,6 +4,30 @@
 
 ---
 
+### [2026-11-04 22:25] - Khắc Phục Lỗi "Không Tìm Thấy Phiên Làm Việc POS Tương Ứng" Khi Thêm Món / Topping Vào Giỏ Hàng
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Phản hồi ảnh chụp thông báo `🔴 Không tìm thấy phiên làm việc POS tương ứng.` và câu hỏi "là sao"
+- **Nguyên nhân cốt lõi phát hiện:**
+  - Socket đã kết nối thành công (hiển thị `🟢 Đồng bộ tức thời`) và Topping đã hiển thị đầy đủ trên giao diện.
+  - Tuy nhiên khi thu ngân bấm thêm món / Topping vào giỏ hàng, Socket phát `pos:cart_update`, backend gọi `PosCartUpdateService.execute()`.
+  - Tại đây `existing = await this.repo.getSessionByCode(input.sessionCode)` tìm kiếm phiên POS trong collection `pos_sessions`.
+  - Bản ghi phiên POS chưa từng được lưu vào MongoDB Atlas do:
+    1. Schema `pos-session.model.ts` và `pos_session.prisma` định nghĩa cứng `shift_id` là `ObjectId`. Trong khi ca giám sát và ca trực thực tế trả về string (ví dụ: `"supervisor_active"`, `"Khuya"`, `"Ca Trực"`). Khi khởi tạo phiên, Mongoose vấp lỗi Cast to ObjectId failed.
+    2. Trong `pos.socket.ts` sự kiện `pos:join` chỉ `getSessionByCode` mà không gọi `findOrCreateSession`.
+    3. Trong `pos.verify-shift.service.ts` chưa gọi tạo trước phiên làm việc trong Database khi trả về mã `sessionCode`.
+- **Nội dung hoàn thành:**
+  - Nới lỏng kiểu dữ liệu `shift_id` trong `pos-session.model.ts` sang `Schema.Types.Mixed` và trong `pos_session.prisma` thành `String` linh hoạt.
+  - Sửa `PosSessionRepository.findOrCreateSession` ép kiểu an toàn cho `storeId` và `shiftId`, tránh lỗi BSON Cast error.
+  - Bổ sung cơ chế tự động tìm/tạo phiên làm việc (`findOrCreateSession`) tại 3 chốt chặn:
+    1. Trong `PosVerifyShiftService` khi xác thực ca thành công.
+    2. Trong `pos.socket.ts` khi client vừa `pos:join` vào phòng.
+    3. Trong `PosCartUpdateService` cơ chế tự cứu (fallback recovery) tự động giải mã `storeId` và `shiftId` từ `sessionCode` để tạo ngay phiên nếu DB chưa có.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 22:15] - Khắc Phục Triệt Để 2 Lỗi POS: Vòng Lặp Ngắt Kết Nối Socket (Infinite Reconnect Loop) & Hiển Thị Đầy Đủ Danh Mục Topping Bán Lẻ Từ Database
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "thiếu topping và vẫn lõi kết nối socket kaif"

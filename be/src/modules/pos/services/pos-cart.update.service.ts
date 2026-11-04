@@ -31,7 +31,17 @@ export class PosCartUpdateService {
   }
 
   async execute(input: IUpdateCartInput): Promise<ILiveCart> {
-    const existing = await this.repo.getSessionByCode(input.sessionCode);
+    let existing = await this.repo.getSessionByCode(input.sessionCode);
+    if (!existing) {
+      // Tự động khởi tạo phiên POS nếu chưa có trong DB từ sessionCode
+      const parts = input.sessionCode.split('_');
+      const storeId = parts.length > 1 ? parts[1] : '';
+      const shiftId = parts.length > 3 ? parts[3] : 'default';
+      if (storeId) {
+        existing = await this.repo.findOrCreateSession(storeId, shiftId, input.sessionCode);
+      }
+    }
+
     if (!existing) {
       throw new BadRequestError('Không tìm thấy phiên làm việc POS tương ứng.');
     }
