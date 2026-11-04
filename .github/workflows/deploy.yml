@@ -35,15 +35,17 @@ jobs:
 
             echo "📥 [2/4] Đồng bộ mã nguồn mới nhất từ GitHub..."
             if [ -d ".git" ]; then
-              git remote set-url origin https://github.com/nguyenhocweb/zone_6.git
+              git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/nguyenhocweb/zone_6.git
               git fetch origin main --depth=1
               git reset --hard origin/main
+              git remote set-url origin https://github.com/nguyenhocweb/zone_6.git
             else
-              git clone --depth=1 https://github.com/nguyenhocweb/zone_6.git .
+              git clone --depth=1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/nguyenhocweb/zone_6.git .
+              git remote set-url origin https://github.com/nguyenhocweb/zone_6.git
             fi
 
             echo "⚙️ [3/4] Cập nhật cấu hình môi trường be/.env..."
-            cat << 'EOF' > be/.env
+            cat << 'EOF' | sed 's/^[ \t]*//' > be/.env
             PORT=8000
             NODE_ENV=production
             DATABASE_URL="mongodb+srv://My_Restaurant:Matkhau2k3.@nguyenhocweb.pqyjucr.mongodb.net/zone_6?retryWrites=true&w=majority&appName=nguyenhocweb"
