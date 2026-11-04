@@ -66,7 +66,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
     const finalZone = zoneName || effectiveZoneNames[0];
 
     if (table) {
-      onSubmitUpdate(table.id, {
+      onSubmitUpdate(table.id || (table as any)._id, {
         table_number: tableNumber.trim(),
         zone_name: finalZone,
         capacity: Number(capacity),

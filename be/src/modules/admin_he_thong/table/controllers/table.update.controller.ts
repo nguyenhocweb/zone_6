@@ -4,13 +4,17 @@ import { TableUpdateService } from '../services/table.update.service.js';
 import { TableShiftVerifyService } from '../services/table-shift.verify.service.js';
 import { emitTableEvent } from '../socket/table.socket.js';
 import { AuthenticatedRequest } from '../../../../middlewares/auth.middleware.js';
-import { ForbiddenError } from '../../../../core/errors.js';
+import { ForbiddenError, BadRequestError } from '../../../../core/errors.js';
+import mongoose from 'mongoose';
 
 const service = new TableUpdateService();
 const shiftVerifyService = new TableShiftVerifyService();
 
 export const updateTableController = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const tableId = String(req.params.id);
+  if (!tableId || tableId === 'undefined' || !mongoose.Types.ObjectId.isValid(tableId)) {
+    throw new BadRequestError('Mã định danh bàn (tableId) không hợp lệ');
+  }
   const role = req.user?.role || '';
   const canManageStructure = ['admin_he_thong', 'quan_ly', 'truong_ca'].includes(role);
 

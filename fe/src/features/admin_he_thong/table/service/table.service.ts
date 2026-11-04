@@ -4,22 +4,29 @@ import { TableItem, TableZoneItem, CreateTableDto, UpdateTableDto, CreateTableZo
 export const tableService = {
   async getAll(params?: { store_id?: string; zone_name?: string; status?: string }): Promise<TableItem[]> {
     const res = await axiosClient.get('/api/v1/tables', { params });
-    return res.data.data || [];
+    const raw = res.data.data || [];
+    return raw.map((t: any) => ({
+      ...t,
+      id: t.id || t._id,
+    }));
   },
 
   async getById(id: string): Promise<TableItem> {
     const res = await axiosClient.get(`/api/v1/tables/${id}`);
-    return res.data.data;
+    const t = res.data.data;
+    return t ? { ...t, id: t.id || t._id } : t;
   },
 
   async create(data: CreateTableDto): Promise<TableItem> {
     const res = await axiosClient.post('/api/v1/tables', data);
-    return res.data.data;
+    const t = res.data.data;
+    return t ? { ...t, id: t.id || t._id } : t;
   },
 
   async update(id: string, data: UpdateTableDto): Promise<TableItem> {
     const res = await axiosClient.put(`/api/v1/tables/${id}`, data);
-    return res.data.data;
+    const t = res.data.data;
+    return t ? { ...t, id: t.id || t._id } : t;
   },
 
   async delete(id: string): Promise<void> {
@@ -28,19 +35,25 @@ export const tableService = {
 
   async regenerateToken(id: string): Promise<TableItem> {
     const res = await axiosClient.post(`/api/v1/tables/${id}/regenerate-token`);
-    return res.data.data;
+    const t = res.data.data;
+    return t ? { ...t, id: t.id || t._id } : t;
   },
 
   // === TẦNG / KHU VỰC (TABLE ZONES) ===
   async getZones(storeId?: string): Promise<TableZoneItem[]> {
     const params = storeId ? { store_id: storeId } : {};
     const res = await axiosClient.get('/api/v1/tables/zones', { params });
-    return res.data.data || [];
+    const raw = res.data.data || [];
+    return raw.map((z: any) => ({
+      ...z,
+      id: z.id || z._id,
+    }));
   },
 
   async createZone(data: CreateTableZoneDto): Promise<TableZoneItem> {
     const res = await axiosClient.post('/api/v1/tables/zones', data);
-    return res.data.data;
+    const z = res.data.data;
+    return z ? { ...z, id: z.id || z._id } : z;
   },
 
   async deleteZone(id: string): Promise<void> {

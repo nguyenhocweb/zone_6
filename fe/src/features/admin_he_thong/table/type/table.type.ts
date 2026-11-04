@@ -1,5 +1,6 @@
 export interface TableItem {
   id: string;
+  _id?: string;
   store_id: string;
   table_number: string;
   zone_name: string;
@@ -13,6 +14,7 @@ export interface TableItem {
 
 export interface TableZoneItem {
   id: string;
+  _id?: string;
   store_id: string;
   name: string;
   order: number;

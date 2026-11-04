@@ -4,6 +4,29 @@
 
 ---
 
+### [2026-11-04 19:04] - Khắc Phục Lỗi Cast to ObjectId Failed Cho Model Table & Đồng Bộ Chuẩn Id/ObjectId Giữa FE-BE
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Báo lỗi `Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "Table"` khi thao tác bàn trên giao diện sơ đồ bàn.
+- **Nguyên nhân cốt lõi (Root Cause):**
+  - Mongoose Document `TableModel` trả về trường `_id` mà không có cấu hình `toJSON: { virtuals: true }` hay `id` transformer.
+  - Phía Frontend gọi API `PUT /api/v1/tables/${table.id}`, do `table.id` là `undefined`, URL trở thành `PUT /api/v1/tables/undefined`.
+  - Backend nhận param `:id = "undefined"`, Mongoose cố gắng cast chuỗi `"undefined"` thành `ObjectId` và ném lỗi `CastError`.
+- **Nội dung hoàn thành:**
+  - **Backend Mongoose Schema ([`table.model.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/models/table.model.ts) & [`table-zone.model.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/models/table-zone.model.ts)):**
+    - Thêm cấu hình `toJSON` và `toObject` với `transform` tự động map `ret.id = ret._id.toString()`.
+  - **Backend Controller Validation ([`table.update.controller.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/controllers/table.update.controller.ts), [`table.delete.controller.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/controllers/table.delete.controller.ts), [`table-zone.delete.controller.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/admin_he_thong/table/controllers/table-zone.delete.controller.ts)):**
+    - Kiểm tra hợp lệ `tableId` bằng `mongoose.Types.ObjectId.isValid(tableId)`. Ném `BadRequestError('Mã định danh bàn không hợp lệ')` rõ ràng nếu id là `undefined` hoặc sai format.
+  - **Frontend Table Service & Types ([`table.service.ts`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/service/table.service.ts), [`table.type.ts`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/type/table.type.ts)):**
+    - Bổ sung `_id?: string;` vào interface `TableItem` và `TableZoneItem`.
+    - Chuẩn hóa tầng service `getAll`, `getById`, `create`, `update`, `regenerateToken`, `getZones`, `createZone` tự động map `id: t.id || t._id`.
+  - **Frontend UI Fallback ([`TableManagementView.tsx`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/component/TableManagementView.tsx), [`TableFormModal.tsx`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/component/TableFormModal.tsx), [`TableQrPrintModal.tsx`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/component/TableQrPrintModal.tsx)):**
+    - Bảo đảm fallback an toàn `table.id || (table as any)._id` cho toàn bộ các thao tác `onStatusChange`, `handleDeleteTable`, `handleEditTable`, `handleDeleteZone`, `handleRegenerate` và react `key`.
+- **Verification:**
+  - TypeScript Backend (`be`): Exit code 0, 0 lỗi.
+  - TypeScript Frontend (`fe`): Exit code 0, 0 lỗi.
+
+---
+
 ### [2026-11-04 18:32] - Ràng Buộc Nhân Viên Trong Ca Mới Được Cập Nhật Trạng Thái Bàn & Đồng Bộ Sơ Đồ Bàn Socket.io Thời Gian Thực
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Trạng thái bàn này chỉ có nhân viên trong ca mới có thể cập nhật và các bàn này và sơ đồ bàn sẽ dùng socket để cập nhật theo thời gian thực.

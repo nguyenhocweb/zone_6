@@ -85,11 +85,12 @@
     "Ẩn hoàn toàn chức năng 'Cấu Hình Ca Làm' (/shifts) trên Sidebar đối với cấp Nhân Viên (nhan_vien) và bổ sung Route Guard ngăn chặn truy cập trực tiếp URL /shifts khi không có quyền quản lý.",
     "Tái thiết kế hiển thị Sơ Đồ Bàn (/tables): Nhóm các bàn theo từng tầng khi chọn Tất Cả Tầng (Tầng 1, Tầng 2...), tinh giản thẻ bàn chỉ gồm tên và số lượng chứa, phân biệt trạng thái (Trống, Có khách, Đã đặt, Bảo trì) qua màu nền và viền, bổ sung Modal Chi Tiết Bàn khi bấm vào bất kỳ bàn nào.",
     "Phân quyền sơ đồ bàn & tầng (/tables): Ẩn 100% tất cả các nút thêm bàn, thêm tầng và xóa tầng đối với cấp Nhân Viên (nhan_vien) và Phó Ca (pho_ca_lam_lich, pho_ca_vat_lieu); Khóa cứng hiển thị duy nhất cơ sở trực thuộc của tài khoản trên cả FE và BE; Cho phép Nhân viên & Phó ca cập nhật trạng thái bàn (Trống, Có Khách, Đã Đặt, Bảo Trì) khi phục vụ khách nhưng cấm sửa cấu trúc bàn; Khắc phục dữ liệu assigned_store_id trong CSDL MongoDB Atlas.",
-    "Ràng buộc Nhân viên trong ca trực mới được cập nhật trạng thái bàn & Đồng bộ sơ đồ bàn WebSocket Socket.io thời gian thực: Xây dựng TableShiftVerifyService và endpoint GET /api/v1/tables/shift-status đối chiếu lịch sử Check-in camera/GPS hôm nay; khóa nút trạng thái bàn và hiển thị cảnh báo nếu không trong ca; tích hợp Socket.io namespace /tables tự động phát sóng table:updated khi nhân viên đổi trạng thái hoặc khách quét QR đặt món; Frontend useTableSocket cập nhật React Query cache tức thì và hiển thị Live Sync."
+    "Ràng buộc Nhân viên trong ca trực mới được cập nhật trạng thái bàn & Đồng bộ sơ đồ bàn WebSocket Socket.io thời gian thực: Xây dựng TableShiftVerifyService và endpoint GET /api/v1/tables/shift-status đối chiếu lịch sử Check-in camera/GPS hôm nay; khóa nút trạng thái bàn và hiển thị cảnh báo nếu không trong ca; tích hợp Socket.io namespace /tables tự động phát sóng table:updated khi nhân viên đổi trạng thái hoặc khách quét QR đặt món; Frontend useTableSocket cập nhật React Query cache tức thì và hiển thị Live Sync.",
+    "Khắc phục triệt để lỗi Cast to ObjectId failed for model Table: Bổ sung toJSON/toObject virtuals id transform cho TableModel và TableZoneModel, chuẩn hóa mapping id: t.id || t._id trên table.service.ts và kiểm tra ObjectId hợp lệ tại backend controller."
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-04T18:33:00Z"
+  "last_updated": "2026-11-04T19:05:00Z"
 }
 
 

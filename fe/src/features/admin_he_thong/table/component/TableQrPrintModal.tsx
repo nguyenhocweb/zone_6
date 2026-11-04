@@ -43,7 +43,7 @@ export const TableQrPrintModal: React.FC<TableQrPrintModalProps> = ({ table, onC
 
   const handleRegenerate = () => {
     if (confirm(`Bạn có chắc muốn đổi mã QR cho Bàn ${table.table_number}? Mã cũ in trên mica sẽ không còn hiệu lực!`)) {
-      regenerateMutation.mutate(table.id);
+      regenerateMutation.mutate(table.id || (table as any)._id);
     }
   };
 

@@ -234,7 +234,7 @@ export const TableManagementView: React.FC = () => {
         toast.info(`Tầng "${zone.name}" sẽ tự động biến mất khi không còn bàn.`);
         return;
       }
-      deleteZoneMutation.mutate(zone.id, {
+      deleteZoneMutation.mutate(zone.id || (zone as any)._id, {
         onSuccess: () => {
           if (selectedZone === zone.name) {
             setSelectedZone('ALL');
@@ -248,7 +248,7 @@ export const TableManagementView: React.FC = () => {
   const handleDeleteTable = (table: TableItem) => {
     const displayName = formatTableDisplayName(table.table_number);
     if (confirm(`Bạn có chắc chắn muốn xóa ${displayName} (${table.zone_name}) không?`)) {
-      deleteTableMutation.mutate(table.id);
+      deleteTableMutation.mutate(table.id || (table as any)._id);
     }
   };
 
@@ -270,14 +270,14 @@ export const TableManagementView: React.FC = () => {
 
     updateTableMutation.mutate(
       {
-        id: table.id,
+        id: table.id || (table as any)._id,
         data: { status: newStatus },
       },
       {
         onSuccess: () => {
           // Cập nhật state nếu modal chi tiết đang mở
           setSelectedDetailTable((prev) =>
-            prev && prev.id === table.id ? { ...prev, status: newStatus } : prev
+            prev && (prev.id === (table.id || (table as any)._id) || (prev as any)._id === (table.id || (table as any)._id)) ? { ...prev, status: newStatus } : prev
           );
           const labels = {
             AVAILABLE: 'Trống',
@@ -334,7 +334,7 @@ export const TableManagementView: React.FC = () => {
 
     return (
       <div
-        key={table.id}
+        key={table.id || (table as any)._id || table.table_number}
         onClick={() => setSelectedDetailTable(table)}
         className={`p-3 rounded-2xl border transition-all duration-150 cursor-pointer hover:-translate-y-0.5 active:scale-95 flex flex-col justify-between min-h-[76px] shadow-sm ${styles.card}`}
         title="Bấm để xem chi tiết và cập nhật trạng thái bàn"
@@ -741,7 +741,7 @@ export const TableManagementView: React.FC = () => {
 
                 return (
                   <div
-                    key={zone.id || zone.name}
+                    key={zone.id || (zone as any)._id || zone.name}
                     className="p-5 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-4"
                   >
                     {/* Header Tầng */}
