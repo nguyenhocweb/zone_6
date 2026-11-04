@@ -4,7 +4,7 @@ export interface TableItem {
   table_number: string;
   zone_name: string;
   capacity: number;
-  status: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED';
+  status: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE';
   qr_token: string;
   is_active: boolean;
   created_at?: string;
@@ -37,7 +37,7 @@ export interface UpdateTableDto {
   table_number?: string;
   zone_name?: string;
   capacity?: number;
-  status?: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED';
+  status?: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE';
   is_active?: boolean;
 }
 

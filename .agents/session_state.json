@@ -79,11 +79,12 @@
     "Tích Hợp Gửi Email Mật Khẩu Thật (Gmail SMTP) & Pop-up Hiển Thị Sao Chép Mật Khẩu Khi Tạo Nhân Viên: Cấu hình SMTP Gmail vào .env và CI/CD deploy.yml; staff.create.service.ts bắt ngoại lệ gửi email an toàn và trả về temp_password, email_sent; CreateStaffModal.tsx bổ sung Pop-up Obsidian Gold hiển thị tài khoản, mật khẩu kèm nút Sao Chép và ghi chú trạng thái email; hoàn thành build BE và FE (24/24 routes).",
     "Khắc phục triệt để lỗi màn hình trắng 'This page couldn't load' trên Vercel khi mở màn hình POS (/pos): Chuẩn hóa cấu trúc bóc tách mảng công thức món từ API /api/v1/recipes trong pos.service.ts và table-order.service.ts, bọc kiểm tra Array.isArray phòng vệ an toàn trong MenuCatalog.tsx và CustomerMenu.tsx, thêm error boundary toàn cục tại fe/src/app/error.tsx theo nhận diện Obsidian Gold.",
     "Bổ sung bộ chọn cơ sở Store Selector và tái cấu trúc giao diện 2 cột quản lý Sơ đồ Bàn (/tables): Cột trái danh sách các tầng/khu vực và tạo thêm tầng nhanh, cột phải hiển thị bàn thuộc tầng; bổ sung Prisma schema table_zone.prisma, Mongoose TableZoneModel, granular services và API endpoints GET/POST/DELETE /api/v1/tables/zones.",
-    "Ẩn hoàn toàn chức năng 'Cấu Hình Ca Làm' (/shifts) trên Sidebar đối với cấp Nhân Viên (nhan_vien) và bổ sung Route Guard ngăn chặn truy cập trực tiếp URL /shifts khi không có quyền quản lý."
+    "Ẩn hoàn toàn chức năng 'Cấu Hình Ca Làm' (/shifts) trên Sidebar đối với cấp Nhân Viên (nhan_vien) và bổ sung Route Guard ngăn chặn truy cập trực tiếp URL /shifts khi không có quyền quản lý.",
+    "Tái thiết kế hiển thị Sơ Đồ Bàn (/tables): Nhóm các bàn theo từng tầng khi chọn Tất Cả Tầng (Tầng 1, Tầng 2...), tinh giản thẻ bàn chỉ gồm tên và số lượng chứa, phân biệt trạng thái (Trống, Có khách, Đã đặt, Bảo trì) qua màu nền và viền, bổ sung Modal Chi Tiết Bàn khi bấm vào bất kỳ bàn nào."
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-04T16:55:00Z"
+  "last_updated": "2026-11-04T17:06:00Z"
 }
 
 

@@ -14,6 +14,8 @@ import {
   FaBuilding,
   FaTimes,
   FaCheck,
+  FaTools,
+  FaClock,
 } from 'react-icons/fa';
 import {
   useTables,
@@ -27,6 +29,7 @@ import {
 import { TableItem, TableZoneItem } from '../type/table.type';
 import { TableQrPrintModal } from './TableQrPrintModal';
 import { TableFormModal } from './TableFormModal';
+import { TableDetailModal, formatTableDisplayName } from './TableDetailModal';
 import { StoreInventorySelector } from '@/features/pho_ca_vat_lieu/material/component/StoreInventorySelector';
 import { toast } from 'sonner';
 
@@ -57,7 +60,9 @@ export const TableManagementView: React.FC = () => {
 
   // Modals
   const [selectedTableForQr, setSelectedTableForQr] = useState<TableItem | null>(null);
+  const [selectedDetailTable, setSelectedDetailTable] = useState<TableItem | null>(null);
   const [editingTable, setEditingTable] = useState<TableItem | null>(null);
+  const [initialFormZone, setInitialFormZone] = useState<string>('Tầng 1');
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   // Danh sách các Tầng hợp nhất (từ DB + từ các bàn đã có)
@@ -106,6 +111,7 @@ export const TableManagementView: React.FC = () => {
   const availableCount = tables.filter((t) => t.status === 'AVAILABLE').length;
   const occupiedCount = tables.filter((t) => t.status === 'OCCUPIED').length;
   const reservedCount = tables.filter((t) => t.status === 'RESERVED').length;
+  const maintenanceCount = tables.filter((t) => t.status === 'MAINTENANCE').length;
 
   // Xử lý tạo tầng mới
   const handleCreateZone = (e: React.FormEvent) => {
@@ -151,18 +157,112 @@ export const TableManagementView: React.FC = () => {
 
   // Xử lý xóa bàn
   const handleDeleteTable = (table: TableItem) => {
-    if (confirm(`Bạn có chắc chắn muốn xóa Bàn ${table.table_number} (${table.zone_name}) không?`)) {
+    const displayName = formatTableDisplayName(table.table_number);
+    if (confirm(`Bạn có chắc chắn muốn xóa ${displayName} (${table.zone_name}) không?`)) {
       deleteTableMutation.mutate(table.id);
     }
   };
 
   // Đổi nhanh trạng thái bàn
-  const handleQuickStatusChange = (table: TableItem, newStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED') => {
+  const handleQuickStatusChange = (
+    table: TableItem,
+    newStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE'
+  ) => {
     if (table.status === newStatus) return;
-    updateTableMutation.mutate({
-      id: table.id,
-      data: { status: newStatus },
-    });
+    updateTableMutation.mutate(
+      {
+        id: table.id,
+        data: { status: newStatus },
+      },
+      {
+        onSuccess: () => {
+          // Cập nhật state nếu modal chi tiết đang mở
+          setSelectedDetailTable((prev) =>
+            prev && prev.id === table.id ? { ...prev, status: newStatus } : prev
+          );
+          const labels = {
+            AVAILABLE: 'Trống',
+            OCCUPIED: 'Có Khách',
+            RESERVED: 'Đã Đặt',
+            MAINTENANCE: 'Bảo Trì',
+          };
+          toast.success(
+            `Đã chuyển ${formatTableDisplayName(table.table_number)} sang trạng thái "${labels[newStatus]}"`
+          );
+        },
+      }
+    );
+  };
+
+  // Render thẻ bàn tinh gọn theo yêu cầu:
+  // "gồm tên bàn số lượng chứa thôi và trống có khách đã đặt, bảo trì thì thể hiện qua màu bg và viền"
+  const renderTableCard = (table: TableItem) => {
+    const displayName = formatTableDisplayName(table.table_number);
+    const status = table.status || 'AVAILABLE';
+
+    // Style màu bg và viền phân biệt rõ ràng 4 trạng thái
+    const styles = {
+      AVAILABLE: {
+        card: 'bg-[#0B1A13]/90 hover:bg-[#0E261C] border-emerald-500/40 hover:border-emerald-400 text-emerald-300 shadow-sm hover:shadow-emerald-950/40',
+        badge: 'text-emerald-400 font-extrabold text-[11px]',
+        dot: 'bg-emerald-400',
+        label: 'Trống',
+      },
+      OCCUPIED: {
+        card: 'bg-[#241708]/90 hover:bg-[#301E0A] border-amber-500/40 hover:border-amber-400 text-amber-300 shadow-sm hover:shadow-amber-950/40',
+        badge: 'text-amber-400 font-extrabold text-[11px]',
+        dot: 'bg-amber-400',
+        label: 'Có Khách',
+      },
+      RESERVED: {
+        card: 'bg-[#0B152A]/90 hover:bg-[#0F1E3D] border-blue-500/40 hover:border-blue-400 text-blue-300 shadow-sm hover:shadow-blue-950/40',
+        badge: 'text-blue-400 font-extrabold text-[11px]',
+        dot: 'bg-blue-400',
+        label: 'Đã Đặt',
+      },
+      MAINTENANCE: {
+        card: 'bg-[#1C1216]/90 hover:bg-[#271820] border-rose-500/40 hover:border-rose-400 text-rose-300 shadow-sm hover:shadow-rose-950/40',
+        badge: 'text-rose-400 font-extrabold text-[11px]',
+        dot: 'bg-rose-400',
+        label: 'Bảo Trì',
+      },
+    }[status] || {
+      card: 'bg-[#12141A] border-[#212532] text-gray-300',
+      badge: 'text-gray-400 font-bold text-[11px]',
+      dot: 'bg-gray-400',
+      label: status,
+    };
+
+    return (
+      <div
+        key={table.id}
+        onClick={() => setSelectedDetailTable(table)}
+        className={`p-3.5 rounded-2xl border transition-all duration-150 cursor-pointer hover:-translate-y-0.5 active:scale-95 flex flex-col justify-between min-h-[96px] ${styles.card}`}
+        title="Bấm để xem chi tiết và thao tác bàn"
+      >
+        {/* Dòng 1: Tên bàn và badge trạng thái */}
+        <div className="flex items-start justify-between gap-1.5">
+          <span className="text-sm font-black text-white uppercase tracking-tight truncate">
+            {displayName}
+          </span>
+          <span className={`flex items-center gap-1 shrink-0 ${styles.badge}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
+            <span>{styles.label}</span>
+          </span>
+        </div>
+
+        {/* Dòng 2: Số chỗ ngồi */}
+        <div className="flex items-center justify-between text-xs text-[#8E95A5] pt-2 border-t border-white/5">
+          <span className="flex items-center gap-1.5">
+            <FaChair className="text-[11px] opacity-70" />
+            <span>{table.capacity || 4} chỗ</span>
+          </span>
+          <span className="text-[10px] text-white/40 hover:text-[#D4AF37] transition font-bold">
+            Chi tiết →
+          </span>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -190,6 +290,7 @@ export const TableManagementView: React.FC = () => {
 
         <button
           onClick={() => {
+            setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
             setEditingTable(null);
             setIsFormOpen(true);
           }}
@@ -252,8 +353,10 @@ export const TableManagementView: React.FC = () => {
 
         <div className="p-4 rounded-2xl bg-[#12141A] border border-[#212532] shadow-md flex items-center justify-between">
           <div>
-            <div className="text-[11px] text-[#8E95A5] font-bold">Đã Đặt Trước</div>
-            <div className="text-2xl font-mono font-black text-blue-400 mt-1">{reservedCount}</div>
+            <div className="text-[11px] text-[#8E95A5] font-bold">Đã Đặt / Bảo Trì</div>
+            <div className="text-2xl font-mono font-black text-blue-400 mt-1">
+              {reservedCount} <span className="text-xs text-[#8E95A5]">/ {maintenanceCount} bảo trì</span>
+            </div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
             <FaLayerGroup />
@@ -428,9 +531,9 @@ export const TableManagementView: React.FC = () => {
         </aside>
 
         {/* =========================================================================
-         * CỘT BÊN PHẢI: NƠI HIỂN THỊ DANH SÁCH BÀN CỦA TẦNG ĐANG CHỌN
+         * CỘT BÊN PHẢI: NƠI HIỂN THỊ DANH SÁCH BÀN (NHÓM THEO TẦNG KHI CHỌN ALL)
          * ========================================================================= */}
-        <section className="flex-1 min-w-0 w-full space-y-4">
+        <section className="flex-1 min-w-0 w-full space-y-5">
           {/* Sub-Header & Status Filter */}
           <div className="p-4 rounded-3xl bg-[#12141A] border border-[#212532] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
             <div>
@@ -444,7 +547,7 @@ export const TableManagementView: React.FC = () => {
               </div>
               <p className="text-xs text-[#8E95A5] mt-0.5">
                 {selectedZone === 'ALL'
-                  ? 'Hiển thị tất cả bàn trên mọi tầng của cơ sở'
+                  ? 'Bàn được nhóm theo từng tầng, bấm vào bàn để xem chi tiết & đổi trạng thái'
                   : `Danh sách bàn phục vụ tại ${selectedZone}`}
               </p>
             </div>
@@ -457,6 +560,7 @@ export const TableManagementView: React.FC = () => {
                   { key: 'AVAILABLE', label: 'Trống' },
                   { key: 'OCCUPIED', label: 'Có Khách' },
                   { key: 'RESERVED', label: 'Đã Đặt' },
+                  { key: 'MAINTENANCE', label: 'Bảo Trì' },
                 ].map((s) => (
                   <button
                     key={s.key}
@@ -474,6 +578,7 @@ export const TableManagementView: React.FC = () => {
 
               <button
                 onClick={() => {
+                  setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
                   setEditingTable(null);
                   setIsFormOpen(true);
                 }}
@@ -486,7 +591,7 @@ export const TableManagementView: React.FC = () => {
             </div>
           </div>
 
-          {/* Table Grid */}
+          {/* Table List / Groups */}
           {isTablesLoading ? (
             <div className="p-16 text-center text-xs text-[#8E95A5] rounded-3xl bg-[#12141A] border border-[#212532]">
               Đang tải danh sách bàn...
@@ -506,6 +611,7 @@ export const TableManagementView: React.FC = () => {
               </p>
               <button
                 onClick={() => {
+                  setInitialFormZone(selectedZone !== 'ALL' ? selectedZone : zones[0]?.name || 'Tầng 1');
                   setEditingTable(null);
                   setIsFormOpen(true);
                 }}
@@ -520,143 +626,132 @@ export const TableManagementView: React.FC = () => {
                 </span>
               </button>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-              {filteredTables.map((table) => {
-                const isAvailable = table.status === 'AVAILABLE';
-                const isOccupied = table.status === 'OCCUPIED';
+          ) : selectedZone === 'ALL' ? (
+            /* =========================================================================
+             * KHI HIỂN THỊ ALL TẦNG: NHÓM THEO TỪNG TẦNG (VÍ DỤ TẦNG 1, TẦNG 2...)
+             * ========================================================================= */
+            <div className="space-y-6">
+              {zones.map((zone) => {
+                const tablesInThisZone = filteredTables.filter((t) => t.zone_name === zone.name);
 
                 return (
                   <div
-                    key={table.id}
-                    className="p-5 rounded-3xl bg-[#12141A] border border-[#212532] hover:border-[#D4AF37]/50 transition-all duration-200 shadow-lg flex flex-col justify-between group hover:shadow-xl hover:shadow-[#D4AF37]/5"
+                    key={zone.id || zone.name}
+                    className="p-5 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-4"
                   >
-                    {/* Header Card */}
-                    <div>
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#181B24] text-[#D4AF37] border border-[#212532] uppercase tracking-wider flex items-center gap-1 truncate">
-                          <FaLayerGroup className="text-[8px]" />
-                          <span>{table.zone_name}</span>
-                        </span>
-
-                        {/* Dropdown Đổi Nhanh Trạng Thái */}
-                        <div className="flex items-center gap-1">
-                          <span
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold flex items-center gap-1 ${
-                              isAvailable
-                                ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
-                                : isOccupied
-                                ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
-                                : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'
-                            }`}
-                          >
-                            <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                            {isAvailable ? 'Trống' : isOccupied ? 'Có Khách' : 'Đã Đặt'}
-                          </span>
+                    {/* Header Tầng */}
+                    <div className="flex items-center justify-between pb-3 border-b border-[#212532] gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-[#181B24] border border-[#D4AF37]/40 text-[#D4AF37] flex items-center justify-center text-sm shadow-sm">
+                          <FaLayerGroup />
                         </div>
-                      </div>
-
-                      <div className="my-4 flex items-center justify-between">
                         <div>
-                          <div className="text-2xl font-black text-white font-mono tracking-tight">
-                            BÀN {table.table_number}
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                              {zone.name}
+                            </h3>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#181B24] text-[#D4AF37] border border-[#212532]">
+                              {tablesInThisZone.length} bàn
+                            </span>
                           </div>
-                          <div className="text-xs text-[#8E95A5] mt-0.5 flex items-center gap-1">
-                            <FaChair className="text-[10px] text-[#D4AF37]" />
-                            <span>{table.capacity || 4} chỗ ngồi</span>
-                          </div>
+                          {tablesInThisZone.length > 0 && (
+                            <div className="flex items-center gap-2 mt-0.5 text-[11px] text-[#8E95A5]">
+                              <span className="text-emerald-400 font-bold">
+                                {tablesInThisZone.filter((t) => t.status === 'AVAILABLE').length} trống
+                              </span>
+                              <span>•</span>
+                              <span className="text-amber-400 font-bold">
+                                {tablesInThisZone.filter((t) => t.status === 'OCCUPIED').length} có khách
+                              </span>
+                              <span>•</span>
+                              <span className="text-blue-400 font-bold">
+                                {tablesInThisZone.filter((t) => t.status === 'RESERVED').length} đã đặt
+                              </span>
+                              {tablesInThisZone.some((t) => t.status === 'MAINTENANCE') && (
+                                <>
+                                  <span>•</span>
+                                  <span className="text-rose-400 font-bold">
+                                    {tablesInThisZone.filter((t) => t.status === 'MAINTENANCE').length} bảo trì
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          )}
                         </div>
-
-                        {/* Nút Xem QR Standee Nhanh */}
-                        <button
-                          onClick={() => setSelectedTableForQr(table)}
-                          className="w-12 h-12 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black flex items-center justify-center text-xl transition shadow-md cursor-pointer group-hover:scale-105"
-                          title="Xem & Tải Mã QR In Mica Standee"
-                        >
-                          <FaQrcode />
-                        </button>
                       </div>
 
-                      {/* Bộ Nút Chuyển Nhanh Trạng Thái 1-Chạm */}
-                      <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#181B24]/70 rounded-xl border border-[#212532] text-[10px] font-bold">
-                        <button
-                          onClick={() => handleQuickStatusChange(table, 'AVAILABLE')}
-                          className={`py-1 rounded-lg transition cursor-pointer text-center ${
-                            isAvailable
-                              ? 'bg-emerald-500 text-black font-extrabold shadow-sm'
-                              : 'text-[#8E95A5] hover:text-emerald-400'
-                          }`}
-                        >
-                          Trống
-                        </button>
-                        <button
-                          onClick={() => handleQuickStatusChange(table, 'OCCUPIED')}
-                          className={`py-1 rounded-lg transition cursor-pointer text-center ${
-                            isOccupied
-                              ? 'bg-amber-500 text-black font-extrabold shadow-sm'
-                              : 'text-[#8E95A5] hover:text-amber-400'
-                          }`}
-                        >
-                          Có Khách
-                        </button>
-                        <button
-                          onClick={() => handleQuickStatusChange(table, 'RESERVED')}
-                          className={`py-1 rounded-lg transition cursor-pointer text-center ${
-                            table.status === 'RESERVED'
-                              ? 'bg-blue-500 text-white font-extrabold shadow-sm'
-                              : 'text-[#8E95A5] hover:text-blue-400'
-                          }`}
-                        >
-                          Đã Đặt
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Footer Actions */}
-                    <div className="mt-4 pt-3 border-t border-[#212532] flex items-center justify-between">
                       <button
-                        onClick={() => setSelectedTableForQr(table)}
-                        className="text-xs text-[#D4AF37] hover:underline font-bold flex items-center gap-1 cursor-pointer"
+                        onClick={() => {
+                          setInitialFormZone(zone.name);
+                          setEditingTable(null);
+                          setIsFormOpen(true);
+                        }}
+                        disabled={!selectedStoreId}
+                        className="py-1.5 px-3 rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#FAECB8] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-50"
                       >
-                        <FaQrcode className="text-[10px]" />
-                        <span>Mã QR Standee</span>
+                        <FaPlus className="text-[9px]" />
+                        <span>Thêm Bàn</span>
                       </button>
-
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => {
-                            setEditingTable(table);
-                            setIsFormOpen(true);
-                          }}
-                          className="p-2 rounded-xl bg-[#181B24] text-[#8E95A5] hover:text-white border border-[#212532] hover:border-[#D4AF37]/50 transition cursor-pointer"
-                          title="Chỉnh sửa bàn"
-                        >
-                          <FaEdit className="text-xs" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTable(table)}
-                          className="p-2 rounded-xl bg-[#181B24] text-[#8E95A5] hover:text-red-400 border border-[#212532] hover:border-red-500/50 transition cursor-pointer"
-                          title="Xóa bàn"
-                        >
-                          <FaTrash className="text-xs" />
-                        </button>
-                      </div>
                     </div>
+
+                    {/* Grid Các Bàn Của Tầng Này */}
+                    {tablesInThisZone.length === 0 ? (
+                      <div className="p-8 text-center text-xs text-[#8E95A5] border border-dashed border-[#212532] rounded-2xl">
+                        Chưa có bàn nào tại {zone.name}.
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
+                        {tablesInThisZone.map(renderTableCard)}
+                      </div>
+                    )}
                   </div>
                 );
               })}
+            </div>
+          ) : (
+            /* =========================================================================
+             * KHI CHỌN 1 TẦNG CỤ THỂ: HIỂN THỊ CÁC BÀN CỦA RIÊNG TẦNG ĐÓ
+             * ========================================================================= */
+            <div className="p-5 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
+                {filteredTables.map(renderTableCard)}
+              </div>
             </div>
           )}
         </section>
       </div>
 
-      {/* 5. Form Modal (Create / Edit Table) */}
+      {/* 5. Modal Chi Tiết Bàn Khi Bấm Vào Bàn */}
+      <TableDetailModal
+        isOpen={!!selectedDetailTable}
+        table={selectedDetailTable}
+        onClose={() => setSelectedDetailTable(null)}
+        onEdit={(table) => {
+          setSelectedDetailTable(null);
+          setEditingTable(table);
+          setInitialFormZone(table.zone_name);
+          setIsFormOpen(true);
+        }}
+        onDelete={(table) => {
+          setSelectedDetailTable(null);
+          handleDeleteTable(table);
+        }}
+        onOpenQrPrint={(table) => {
+          setSelectedDetailTable(null);
+          setSelectedTableForQr(table);
+        }}
+        onStatusChange={(table, newStatus) => {
+          handleQuickStatusChange(table, newStatus);
+        }}
+      />
+
+      {/* 6. Form Modal (Create / Edit Table) */}
       <TableFormModal
         isOpen={isFormOpen}
         table={editingTable}
         storeId={selectedStoreId || ''}
         zones={zones}
-        initialZone={selectedZone}
+        initialZone={initialFormZone}
         onClose={() => {
           setIsFormOpen(false);
           setEditingTable(null);
@@ -680,7 +775,7 @@ export const TableManagementView: React.FC = () => {
         isSubmitting={createTableMutation.isPending || updateTableMutation.isPending}
       />
 
-      {/* 6. QR Code Standee Print Modal */}
+      {/* 7. Modal In / Tải Mã QR Standee Mica */}
       <TableQrPrintModal
         table={selectedTableForQr}
         onClose={() => setSelectedTableForQr(null)}

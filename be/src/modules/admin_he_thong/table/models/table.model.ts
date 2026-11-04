@@ -6,7 +6,7 @@ export interface ITableDoc extends Document {
   zone_name: string;
   capacity: number;
   qr_token: string;
-  status: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED';
+  status: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE';
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
@@ -43,7 +43,7 @@ const TableSchema = new Schema<ITableDoc>(
     },
     status: {
       type: String,
-      enum: ['AVAILABLE', 'OCCUPIED', 'RESERVED'],
+      enum: ['AVAILABLE', 'OCCUPIED', 'RESERVED', 'MAINTENANCE'],
       default: 'AVAILABLE',
       index: true,
     },

@@ -31,7 +31,7 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
   const [zoneName, setZoneName] = useState('Tầng 1');
   const [customZone, setCustomZone] = useState('');
   const [capacity, setCapacity] = useState(4);
-  const [status, setStatus] = useState<'AVAILABLE' | 'OCCUPIED' | 'RESERVED'>('AVAILABLE');
+  const [status, setStatus] = useState<'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE'>('AVAILABLE');
 
   const zoneNames = zones.map((z) => z.name);
 
@@ -172,11 +172,12 @@ export const TableFormModal: React.FC<TableFormModalProps> = ({
               <label className="text-xs font-bold text-[#f4f5f8] uppercase tracking-wider">
                 Trạng Thái Bàn
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-4 gap-1.5">
                 {[
                   { key: 'AVAILABLE', label: 'Trống', color: 'text-emerald-400' },
                   { key: 'OCCUPIED', label: 'Có Khách', color: 'text-amber-400' },
                   { key: 'RESERVED', label: 'Đã Đặt', color: 'text-blue-400' },
+                  { key: 'MAINTENANCE', label: 'Bảo Trì', color: 'text-rose-400' },
                 ].map((s) => (
                   <button
                     key={s.key}

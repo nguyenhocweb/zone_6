@@ -18,7 +18,7 @@ export const UpdateTableSchema = z.object({
   table_number: z.string().min(1).trim().optional(),
   zone_name: z.string().trim().optional(),
   capacity: z.number().int().min(1).optional(),
-  status: z.enum(['AVAILABLE', 'OCCUPIED', 'RESERVED']).optional(),
+  status: z.enum(['AVAILABLE', 'OCCUPIED', 'RESERVED', 'MAINTENANCE']).optional(),
   is_active: z.boolean().optional(),
 });
 
@@ -26,6 +26,6 @@ export interface UpdateTableDto {
   table_number?: string;
   zone_name?: string;
   capacity?: number;
-  status?: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED';
+  status?: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE';
   is_active?: boolean;
 }

@@ -87,6 +87,7 @@ enum TableStatus {
   AVAILABLE
   OCCUPIED
   RESERVED
+  MAINTENANCE
 }
 
 enum OrderingMode {

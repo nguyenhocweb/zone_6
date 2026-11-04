@@ -4,6 +4,34 @@
 
 ---
 
+### [2026-11-04 17:05] - Nhóm Bàn Theo Tầng Khi Xem Tất Cả Tầng, Tinh Giản Thẻ Bàn & Bổ Sung Modal Chi Tiết Bàn
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Khi hiển thị "Tất Cả Tầng": Hiển thị nhóm theo từng tầng (VD: Header Tầng 1, dưới là các bàn Tầng 1; Header Tầng 2, dưới là các bàn Tầng 2...).
+  2. Tinh giản thẻ bàn: Chỉ gồm Tên bàn và Số lượng chứa (loại bỏ các nút rườm rà), các trạng thái (Trống, Có khách, Đã đặt, Bảo trì) thể hiện trực quan qua màu nền (background) và viền (border).
+  3. Khi bấm vào bất kỳ bàn nào sẽ mở Modal Chi Tiết Bàn để xem thông tin, chuyển nhanh trạng thái 1-chạm, in/tải mã Standee mica, sửa hoặc xóa bàn.
+- **Nội dung hoàn thành:**
+  - **Backend & Database Schema:**
+    - Cập nhật enum `TableStatus` trong `be/src/databases/prisma/schema/enum.prisma` bổ sung giá trị `MAINTENANCE` (Bảo Trì).
+    - Cập nhật Mongoose model `be/src/modules/admin_he_thong/table/models/table.model.ts` và Zod validator `table.schema.ts` hỗ trợ `'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'MAINTENANCE'`.
+    - Build Prisma client & compile TypeScript backend đạt 100% (0 lỗi).
+  - **Frontend Table UI & Modal Chi Tiết:**
+    - Tạo mới `fe/src/features/admin_he_thong/table/component/TableDetailModal.tsx`:
+      - Hiển thị tên bàn chuẩn hóa (`formatTableDisplayName`), tầng, sức chứa.
+      - 4 nút chuyển đổi trạng thái lớn 1-chạm: Trống (Emerald), Có Khách (Amber), Đã Đặt Trước (Blue), Đang Bảo Trì (Rose).
+      - Mã QR Standee mica xem trước, nút "In Standee Mica" (kết nối `TableQrPrintModal`), nút "Sao chép link gọi món" và nút mở trang gọi món.
+      - Nút "Chỉnh Sửa Bàn" và "Xóa Bàn Này".
+    - Cập nhật `TableManagementView.tsx`:
+      - Khi chọn "Tất Cả Tầng" (`selectedZone === 'ALL'`), chia khối theo từng tầng (Tầng 1, Tầng 2...) với Header tầng, badge số bàn (số trống, số có khách, số đã đặt, số bảo trì) và nút "+ Thêm Bàn" nhanh cho tầng.
+      - Thẻ bàn thiết kế siêu gọn gàng: Chỉ gồm Tên bàn, số chỗ ngồi và màu nền + viền sang trọng chuẩn nhận diện Obsidian Gold theo trạng thái bàn.
+      - Bấm vào bàn mở `TableDetailModal`.
+    - Cập nhật `TableFormModal.tsx` hỗ trợ đủ 4 trạng thái (Trống, Có Khách, Đã Đặt, Bảo Trì).
+  - **Build Verification:**
+    - Backend build (`prisma generate && tsc`): Exit code 0.
+    - Frontend Next.js 16 build (`npm run build`): Exit code 0 (24/24 static routes, 0 lỗi TypeScript).
+
+---
+
 ### [2026-11-04 16:55] - Ẩn & Chặn Phân Quyền Chức Năng Cấu Hình Ca Làm Việc (/shifts) Đối Với Cấp Nhân Viên (nhan_vien)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Cấp nhân viên bỏ chức năng này đi (kèm ảnh tài khoản Nhân Viên Nguyên truy cập và nhìn thấy "Cấu Hình Ca Làm Việc & Định Biên" `/shifts`).
