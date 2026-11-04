@@ -241,9 +241,14 @@ export default function HomePage() {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#181b24] text-[#a0a5b5] border border-[#212532] uppercase">
                     Cà Phê Signature
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37]">
-                    Lạnh
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                      Size M
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37]">
+                      Lạnh
+                    </span>
+                  </div>
                 </div>
                 <h3 className="text-lg font-black text-white mb-2">
                   Cà Phê Muối Cố Đô Zone 6
@@ -275,9 +280,14 @@ export default function HomePage() {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#181b24] text-[#a0a5b5] border border-[#212532] uppercase">
                     Trà Trái Cây Tươi
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37]">
-                    Lạnh
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                      Size L
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37]">
+                      Lạnh
+                    </span>
+                  </div>
                 </div>
                 <h3 className="text-lg font-black text-white mb-2">
                   Trà Dâu Tây Tươi Zone 6
@@ -305,9 +315,14 @@ export default function HomePage() {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#181b24] text-[#a0a5b5] border border-[#212532] uppercase">
                     Trà Trái Cây Tươi
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37]">
-                    Lạnh
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                      Size L
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37]">
+                      Lạnh
+                    </span>
+                  </div>
                 </div>
                 <h3 className="text-lg font-black text-white mb-2">
                   Trà Đào Cam Sả Tươi

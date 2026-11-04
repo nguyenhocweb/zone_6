@@ -151,7 +151,12 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
                     <span className="text-xs font-mono font-extrabold text-[#d4af37]">
                       {price.toLocaleString('vi-VN')} đ
                     </span>
-                    {item.unit && (
+                    {item.serving_size && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 font-bold border border-amber-500/30">
+                        {item.serving_size}
+                      </span>
+                    )}
+                    {item.unit && !item.serving_size && (
                       <span className="text-[10px] text-[#6c7280]">/{item.unit}</span>
                     )}
                   </div>

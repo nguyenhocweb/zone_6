@@ -151,20 +151,27 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
                       }`}
                     >
                       <div>
-                        {/* Badge nhiệt độ / Danh mục */}
+                        {/* Badge nhiệt độ / Danh mục / Size */}
                         <div className="flex items-center justify-between gap-1 mb-2">
                           <span className="text-[10px] font-semibold text-[#a0a5b5] uppercase tracking-wider truncate">
                             {recipe.category || 'MÓN'}
                           </span>
-                          {recipe.serving_mode && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#181b24] text-[#d4af37] border border-[#212532]">
-                              {recipe.serving_mode === 'cold'
-                                ? 'Lạnh'
-                                : recipe.serving_mode === 'hot'
-                                ? 'Nóng'
-                                : 'Nóng/Lạnh'}
-                            </span>
-                          )}
+                          <div className="flex items-center gap-1 shrink-0">
+                            {recipe.serving_size && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 font-bold border border-amber-500/30">
+                                {recipe.serving_size}
+                              </span>
+                            )}
+                            {recipe.serving_mode && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#181b24] text-[#d4af37] border border-[#212532]">
+                                {recipe.serving_mode === 'cold'
+                                  ? 'Lạnh'
+                                  : recipe.serving_mode === 'hot'
+                                  ? 'Nóng'
+                                  : 'Nóng/Lạnh'}
+                              </span>
+                            )}
+                          </div>
                         </div>
 
                         {/* Tên món */}
@@ -175,9 +182,16 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
 
                       {/* Giá tiền & Nút thêm nhanh */}
                       <div className="mt-3.5 pt-2.5 border-t border-[#212532] flex items-center justify-between">
-                        <span className="text-sm font-extrabold text-[#d4af37]">
-                          {price.toLocaleString()}đ
-                        </span>
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="text-sm font-extrabold text-[#d4af37]">
+                            {price.toLocaleString()}đ
+                          </span>
+                          {recipe.serving_size && (
+                            <span className="text-[10px] text-[#a0a5b5] font-semibold">
+                              / {recipe.serving_size}
+                            </span>
+                          )}
+                        </div>
                         <button
                           type="button"
                           onClick={(e) => {

@@ -4,6 +4,26 @@
 
 ---
 
+### [2026-11-04 22:45] - Hiển Thị Kích Thước (Size) Đồ Uống Trên Thẻ Món & Bổ Sung Tùy Chọn Kích Thước (Size M / L) Đa Mức Giá Trong POS Modal
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Phản hồi ảnh chụp thẻ đồ uống POS ("Cà Phê Muối Cố Đô Zone 6", "Trà Dâu Tây Tươi Zone 6", "Trà Đào Cam Sả Tươi") và thông báo "thiếu hiển thị size"
+- **Nội dung hoàn thành:**
+  - **Hiển thị huy hiệu Size rõ ràng trên Thẻ Món POS (`fe/src/features/pos/component/MenuCatalog.tsx`):**
+    - Hiển thị badge kích cỡ (`Size M`, `Size L`...) bên cạnh badge nhiệt độ (Lạnh/Nóng) trong header của từng thẻ đồ uống.
+    - Hiển thị đơn vị kích cỡ bên cạnh giá tiền (`29.000đ / Size M`, `35.000đ / Size L`, `32.000đ / Size L`).
+  - **Bổ sung Tùy chọn Size (Kích thước) trong Modal POS (`fe/src/features/pos/component/PosItemCustomModal.tsx`):**
+    - Thêm bộ chọn `📏 KÍCH THƯỚC (SIZE)` với 2 mức Size Vừa (M) và Size Lớn (L) tương tự trải nghiệm gọi món tại bàn.
+    - Tự động nhận diện Size mặc định của công thức từ MongoDB Atlas (`serving_size`).
+    - Tính toán phụ thu chênh lệch giá linh hoạt (+5.000đ nếu chọn Size L cho món mặc định Size M, hoặc giảm -5.000đ nếu chuyển về Size M cho món mặc định Size L).
+    - Cập nhật tên món `[Tên món] (Size [M/L])` và ghi chú đơn hàng khi thêm vào giỏ hàng POS đồng bộ.
+  - **Đồng bộ hiển thị Size trên Thực đơn Khách hàng (`CustomerMenu.tsx`) và Landing Page (`page.tsx`):**
+    - Khách hàng xem thực đơn trực quan nắm được kích cỡ phục vụ tiêu chuẩn của từng món.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 22:35] - Xóa Nút Gọi Món Tại Bàn Khỏi Landing Page & Khóa Chặt Truy Cập Chỉ Cho Phép Khi Quét Đúng Mã QR Standee Mica Tại Bàn
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "bỏ cái này đi và chỉ đc phép quét mã tại bàn mới hiện ra trang order ở khách hàng còn không thì ở trang ko đx liên kết đến" (kèm ảnh chụp nút [GỌI MÓN TẠI BÀN] trên navbar)

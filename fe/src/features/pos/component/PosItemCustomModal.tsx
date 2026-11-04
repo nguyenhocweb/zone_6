@@ -33,6 +33,7 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
   onConfirm,
 }) => {
   const [selectedToppings, setSelectedToppings] = useState<IPosSellableTopping[]>([]);
+  const [selectedSize, setSelectedSize] = useState<'M' | 'L'>('M');
   const [sugarLevel, setSugarLevel] = useState<string>('100% Đường');
   const [iceLevel, setIceLevel] = useState<string>('100% Đá');
   const [extraNote, setExtraNote] = useState<string>('');
@@ -41,6 +42,7 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setSelectedToppings([]);
+      setSelectedSize(recipe?.serving_size?.includes('L') ? 'L' : 'M');
       setSugarLevel('100% Đường');
       setIceLevel(recipe?.serving_mode === 'hot' ? 'Nóng (Không đá)' : '100% Đá');
       setExtraNote('');
@@ -50,6 +52,10 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
   if (!isOpen || !recipe) return null;
 
   const basePrice = Number(recipe.price ?? recipe.selling_price ?? 0);
+  const isDefaultL = recipe.serving_size?.includes('L');
+  // Nếu món gốc là M mà chọn L -> +5.000đ; Nếu món gốc là L mà chọn M -> -5.000đ
+  const sizeSurcharge = selectedSize === 'L' && !isDefaultL ? 5000 : selectedSize === 'M' && isDefaultL ? -5000 : 0;
+  const currentBasePrice = Math.max(0, basePrice + sizeSurcharge);
 
   // Toggle topping
   const handleToggleTopping = (topping: IPosSellableTopping) => {
@@ -67,13 +73,14 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
     }
   };
 
-  // Tính tổng tiền = Giá món gốc + Tổng giá các topping đã chọn
+  // Tính tổng tiền = Giá món theo size + Tổng giá các topping đã chọn
   const toppingTotal = selectedToppings.reduce((sum, t) => sum + Number(t.selling_price || 0), 0);
-  const finalUnitPrice = basePrice + toppingTotal;
+  const finalUnitPrice = currentBasePrice + toppingTotal;
 
   // Tổng hợp ghi chú
   const handleAddToCart = () => {
     const noteParts: string[] = [];
+    noteParts.push(`Size ${selectedSize}`);
     if (recipe.serving_mode !== 'hot' && iceLevel !== '100% Đá') {
       noteParts.push(iceLevel);
     }
@@ -90,7 +97,15 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
       price: Number(t.selling_price || 0),
     }));
 
-    onConfirm(recipe, formattedToppings, compiledNotes);
+    const customizedRecipe = {
+      ...recipe,
+      name: `${recipe.name} (Size ${selectedSize})`,
+      price: currentBasePrice,
+      selling_price: currentBasePrice,
+      serving_size: `Size ${selectedSize}`,
+    };
+
+    onConfirm(customizedRecipe, formattedToppings, compiledNotes);
     onClose();
   };
 
@@ -104,9 +119,12 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
               <FiCoffee className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="text-[10px] uppercase font-bold text-[#a0a5b5] bg-[#12141a] px-2 py-0.5 rounded border border-[#212532]">
                   {recipe.category || 'MÓN'}
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold">
+                  Size {selectedSize}
                 </span>
                 {recipe.serving_mode && (
                   <span className="text-[10px] px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/30 font-semibold">
@@ -114,7 +132,7 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
                   </span>
                 )}
               </div>
-              <h3 className="text-base font-bold text-white leading-tight mt-0.5">
+              <h3 className="text-base font-bold text-white leading-tight mt-1">
                 {recipe.name}
               </h3>
             </div>
@@ -129,6 +147,44 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
 
         {/* Nội dung Tùy chọn (Scrollable) */}
         <div className="p-5 overflow-y-auto space-y-5 flex-1 divide-y divide-[#212532]/60">
+          {/* 0. Chọn Kích Thước (Size) */}
+          <div className="space-y-2.5 pt-1">
+            <label className="text-xs font-bold text-white flex items-center justify-between">
+              <span>📏 KÍCH THƯỚC (SIZE)</span>
+              <span className="text-[11px] font-bold text-[#d4af37]">Size {selectedSize}</span>
+            </label>
+            <div className="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                onClick={() => setSelectedSize('M')}
+                className={`p-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-between ${
+                  selectedSize === 'M'
+                    ? 'bg-[#d4af37] text-[#0b0c10] border-[#d4af37] shadow-md shadow-[#d4af37]/20 font-black'
+                    : 'bg-[#181b24] text-[#a0a5b5] hover:text-white border-[#212532] hover:bg-[#212532]'
+                }`}
+              >
+                <span>Size Vừa (M)</span>
+                <span className={`text-[11px] font-mono ${selectedSize === 'M' ? 'text-[#0b0c10]' : 'text-[#6c7280]'}`}>
+                  {isDefaultL ? '-5.000đ' : 'Tiêu chuẩn'}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedSize('L')}
+                className={`p-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-between ${
+                  selectedSize === 'L'
+                    ? 'bg-[#d4af37] text-[#0b0c10] border-[#d4af37] shadow-md shadow-[#d4af37]/20 font-black'
+                    : 'bg-[#181b24] text-[#a0a5b5] hover:text-white border-[#212532] hover:bg-[#212532]'
+                }`}
+              >
+                <span>Size Lớn (L)</span>
+                <span className={`text-[11px] font-mono ${selectedSize === 'L' ? 'text-[#0b0c10]' : 'text-[#d4af37]'}`}>
+                  {isDefaultL ? 'Tiêu chuẩn' : '+5.000đ'}
+                </span>
+              </button>
+            </div>
+          </div>
+
           {/* 1. Mức Đá (Nếu không phải món chỉ uống nóng) */}
           {recipe.serving_mode !== 'hot' && (
             <div className="space-y-2.5 pt-1">
