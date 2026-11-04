@@ -95,9 +95,10 @@
     "Khắc phục lỗi 'Không tìm thấy phiên làm việc POS tương ứng' khi thêm món/topping vào giỏ hàng: Nới lỏng kiểu dữ liệu shift_id trong pos-session.model.ts sang Mixed và Prisma pos_session.prisma sang String; bổ sung tự động tạo phiên POS tại PosVerifyShiftService, pos:join socket event, và PosCartUpdateService fallback recovery.",
     "Xóa nút Gọi Món Tại Bàn khỏi Navbar & Khóa truy cập trang /order: Bỏ toàn bộ liên kết /order trên trang chủ; loại bỏ chọn bàn thủ công; bắt buộc chỉ khách hàng quét đúng mã QR mica dán tại bàn (kèm token) mới mở được màn hình gọi món.",
     "Hiển Thị Kích Thước (Size) Đồ Uống Trên Thẻ Món & Bổ Sung Tùy Chọn Kích Thước (Size M / L) Đa Mức Giá Trong POS Modal: Hiển thị badge kích cỡ trên thẻ đồ uống POS MenuCatalog (/ Size M, / Size L), bổ sung bộ chọn Size M / L với chênh lệch giá linh hoạt trong PosItemCustomModal, đồng bộ kích cỡ lên thẻ món CustomerMenu và Landing Page.",
-    "Thay Thế Hộp Thoại Trình Duyệt Mặc Định Bằng Modal Xác Nhận Obsidian Gold (ConfirmModal): Áp dụng ConfirmModal cho thanh toán tiền mặt POS (hiển thị mã đơn, số tiền nổi bật, bàn/khách) và xóa cấu hình PayOS thay vì window.confirm."
+    "Thay Thế Hộp Thoại Trình Duyệt Mặc Định Bằng Modal Xác Nhận Obsidian Gold (ConfirmModal): Áp dụng ConfirmModal cho thanh toán tiền mặt POS (hiển thị mã đơn, số tiền nổi bật, bàn/khách) và xóa cấu hình PayOS thay vì window.confirm.",
+    "Chuyển Đổi Bàn Số Sang Dropdown Select Bàn Trống (Mặc Định Mang Về) & Tự Động Cập Nhật Trạng Thái Bàn Sang Đang Sử Dụng (Real-time Socket) Khi Thanh Toán: LiveCart chuyển sang select các bàn AVAILABLE, mặc định 'Mang về', OrderCheckoutService tự động cập nhật status bàn OCCUPIED và broadcast table:updated socket thời gian thực."
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-04T22:52:00Z"
+  "last_updated": "2026-11-04T23:05:00Z"
 }

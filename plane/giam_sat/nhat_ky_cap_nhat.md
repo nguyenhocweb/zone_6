@@ -4,6 +4,29 @@
 
 ---
 
+### [2026-11-04 23:05] - Chuyển Đổi Bàn Số Sang Dropdown Select Bàn Trống (Mặc Định Mang Về) & Tự Động Cập Nhật Trạng Thái Bàn Sang Đang Sử Dụng (Real-time Socket) Khi Thanh Toán
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "dạng select các bạn đang trống và mặc định là mang về nếu chọn bàn thì mới gán vô bàn đó và khi thanh toán thì cập nhật theo thời gian thực bàn đó đang xử dung;" (kèm ảnh chụp ô nhập BÀN SỐ trên POS LiveCart)
+- **Nội dung hoàn thành:**
+  - **Chuyển đổi ô BÀN SỐ thành Dropdown Select (`fe/src/features/pos/component/LiveCart.tsx`):**
+    - Thay thế text input bằng `<select>` nhận diện Obsidian Gold sang trọng.
+    - Mặc định luôn là: `🥡 Mang về (Mặc định)` (không dùng bàn).
+    - Tự động lọc danh sách bàn chỉ hiển thị các bàn đang trống (`status: 'AVAILABLE'`) của cơ sở trực thuộc ca trực (hoặc bàn đang được chọn cho đơn hiện tại).
+    - Hiển thị đầy đủ tên bàn, tầng (zone) và số lượng chỗ ngồi (ví dụ: `🪑 Bàn 01 (Tầng 1) • Trống`).
+    - Nhãn trạng thái phía trên tự động chuyển giữa `Mang về` và `Tại quán` trực quan.
+  - **Đồng bộ thời gian thực Sơ đồ Bàn trên POS (`fe/src/app/pos/page.tsx`):**
+    - Kết nối `useTables` và `useTableSocket` trên trang POS, tự động cập nhật danh sách bàn trống ngay khi có bàn mới được ngồi hoặc giải phóng.
+  - **Cập nhật trạng thái bàn sang `OCCUPIED` khi thanh toán (`be/src/modules/pos/services/order.checkout.service.ts` & `table.repository.ts`):**
+    - Khi thu ngân chọn bàn cụ thể và hoàn tất thanh toán (VietQR hoặc Tiền mặt):
+      - Hệ thống tìm chính xác bản ghi bàn trong CSDL MongoDB Atlas qua `findByStoreAndNumber`.
+      - Cập nhật trạng thái bàn thành `OCCUPIED` (Đang sử dụng / Có khách).
+      - Phát sự kiện WebSocket `table:updated` qua namespace `/tables` để toàn bộ màn hình Sơ Đồ Bàn (`/tables`) và các máy POS khác lập tức cập nhật trạng thái bàn thời gian thực.
+- **Verification:**
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 22:52] - Thay Thế Hộp Thoại Trình Duyệt Bằng Modal Xác Nhận Obsidian Gold (ConfirmModal) Khi Thanh Toán Tiền Mặt & Xóa Cấu Hình PayOS
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Phản hồi ảnh chụp popup xác nhận mặc định của trình duyệt (`window.confirm("Xác nhận khách thanh toán 5.000đ bằng TIỀN MẶT?")`) và câu hỏi "tôi có mẫu xác nhận mà sao lại dùng thẻ mặc định z"

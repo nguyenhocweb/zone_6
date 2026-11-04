@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   FiTrash2,
   FiPlus,
@@ -12,10 +12,22 @@ import {
   FiUser,
 } from 'react-icons/fi';
 import { ILiveCartState, IPosCartItem } from '../type/pos.type';
+import { TableItem } from '@/features/admin_he_thong/table/type/table.type';
+
+// Helper chuẩn hóa hiển thị tên bàn
+function formatTableDisplayName(rawName: string): string {
+  if (!rawName) return 'Bàn';
+  let clean = rawName.trim();
+  while (clean.toLowerCase().startsWith('bàn')) {
+    clean = clean.slice(3).trim();
+  }
+  return clean ? `Bàn ${clean}` : 'Bàn';
+}
 
 interface LiveCartProps {
   cart: ILiveCartState;
   currentUserId: string;
+  tables?: TableItem[];
   onUpdateQuantity: (index: number, quantity: number) => void;
   onClearCart: () => void;
   onOpenCheckout: (method: 'VIETQR' | 'CASH') => void;
@@ -26,6 +38,7 @@ interface LiveCartProps {
 export const LiveCart: React.FC<LiveCartProps> = ({
   cart,
   currentUserId,
+  tables = [],
   onUpdateQuantity,
   onClearCart,
   onOpenCheckout,
@@ -37,6 +50,34 @@ export const LiveCart: React.FC<LiveCartProps> = ({
 
   const cartItems = Array.isArray(cart?.items) ? cart.items : [];
   const totalItemsCount = cartItems.reduce((sum, it) => sum + (it?.quantity || 0), 0);
+
+  // Lọc danh sách bàn đang trống (AVAILABLE) hoặc bàn đang được chọn cho giỏ hàng này
+  const availableOrSelectedTables = useMemo(() => {
+    if (!tables || !Array.isArray(tables)) return [];
+    return tables
+      .filter((t) => {
+        if (t.status === 'AVAILABLE') return true;
+        const formatted = formatTableDisplayName(t.table_number);
+        if (
+          cart?.tableNumber &&
+          (cart.tableNumber === formatted || cart.tableNumber === t.table_number)
+        ) {
+          return true;
+        }
+        return false;
+      })
+      .sort((a, b) => {
+        if (a.zone_name !== b.zone_name) {
+          return (a.zone_name || '').localeCompare(b.zone_name || '');
+        }
+        return (a.table_number || '').localeCompare(b.table_number || '', undefined, {
+          numeric: true,
+        });
+      });
+  }, [tables, cart?.tableNumber]);
+
+  const selectedTable =
+    cart?.tableNumber && cart.tableNumber !== '' ? cart.tableNumber : 'Mang về';
 
   return (
     <div className="flex flex-col h-full bg-[#12141a] border-l border-[#212532]">
@@ -68,20 +109,50 @@ export const LiveCart: React.FC<LiveCartProps> = ({
           )}
         </div>
 
-        {/* Input Số Bàn & Tên Khách Hàng */}
+        {/* Select Số Bàn (Bàn Đang Trống & Mặc Định Mang Về) & Tên Khách Hàng */}
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="text-[10px] text-[#a0a5b5] font-medium block mb-1">
-              BÀN SỐ
+            <label className="text-[10px] text-[#a0a5b5] font-medium block mb-1 flex items-center justify-between">
+              <span>BÀN SỐ</span>
+              <span
+                className={`text-[9px] font-bold ${
+                  selectedTable !== 'Mang về' ? 'text-[#d4af37]' : 'text-[#6c7280]'
+                }`}
+              >
+                {selectedTable !== 'Mang về' ? 'Tại quán' : 'Mang về'}
+              </span>
             </label>
-            <input
-              type="text"
+            <select
               disabled={!!isLockedByOther}
-              value={cart?.tableNumber || ''}
+              value={selectedTable}
               onChange={(e) => onTableChange(e.target.value)}
-              placeholder="VD: Bàn 04"
-              className="w-full bg-[#12141a] border border-[#212532] rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-[#6c7280] focus:outline-none focus:border-[#d4af37]"
-            />
+              className="w-full bg-[#12141a] border border-[#212532] rounded-lg px-2.5 py-1.5 text-xs text-white font-medium focus:outline-none focus:border-[#d4af37] cursor-pointer"
+            >
+              <option value="Mang về" className="bg-[#12141a] text-white">
+                🥡 Mang về (Mặc định)
+              </option>
+              {availableOrSelectedTables.length === 0 ? (
+                <option disabled className="bg-[#12141a] text-[#6c7280]">
+                  (Hết bàn trống)
+                </option>
+              ) : (
+                availableOrSelectedTables.map((tbl) => {
+                  const displayName = formatTableDisplayName(tbl.table_number);
+                  const isCurrentSelected =
+                    cart?.tableNumber === displayName || cart?.tableNumber === tbl.table_number;
+                  return (
+                    <option
+                      key={tbl.id || (tbl as any)._id}
+                      value={displayName}
+                      className="bg-[#12141a] text-white"
+                    >
+                      🪑 {displayName} {tbl.zone_name ? `(${tbl.zone_name})` : ''}{' '}
+                      {isCurrentSelected && tbl.status !== 'AVAILABLE' ? '• Đang chọn' : '• Trống'}
+                    </option>
+                  );
+                })
+              )}
+            </select>
           </div>
           <div>
             <label className="text-[10px] text-[#a0a5b5] font-medium block mb-1">

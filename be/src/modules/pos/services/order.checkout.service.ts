@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { OrderRepository } from '../repositories/order.repository.js';
 import { PosSessionRepository } from '../repositories/pos-session.repository.js';
+import { TableRepository } from '../../admin_he_thong/table/repositories/table.repository.js';
+import { emitTableEvent } from '../../admin_he_thong/table/socket/table.socket.js';
 import { IOrder, IOrderItem } from '../models/order.model.js';
 import { StoreConfigModel } from '../../admin_he_thong/store-config/models/store-config.model.js';
 import { BadRequestError } from '../../../core/errors.js';
@@ -35,10 +37,12 @@ export interface ICheckoutInput {
 export class OrderCheckoutService {
   private orderRepo: OrderRepository;
   private sessionRepo: PosSessionRepository;
+  private tableRepo: TableRepository;
 
   constructor() {
     this.orderRepo = new OrderRepository();
     this.sessionRepo = new PosSessionRepository();
+    this.tableRepo = new TableRepository();
   }
 
   async execute(input: ICheckoutInput): Promise<IOrder> {
@@ -65,13 +69,38 @@ export class OrderCheckoutService {
       addedByName: item.addedByName || input.user.name,
     }));
 
+    // 1. Kiểm tra gán bàn & cập nhật trạng thái bàn thời gian thực
+    let matchedTable: any = null;
+    const cleanTable = input.tableNumber?.trim();
+    const isTakeAway =
+      !cleanTable ||
+      cleanTable.toLowerCase() === 'mang về' ||
+      cleanTable.toLowerCase() === 'mang ve';
+
+    if (!isTakeAway && cleanTable) {
+      matchedTable = await this.tableRepo.findByStoreAndNumber(input.storeId, cleanTable);
+      if (matchedTable) {
+        // Cập nhật trạng thái bàn sang OCCUPIED (Đang sử dụng / Có khách)
+        const updatedTable = await this.tableRepo.update(matchedTable._id.toString(), {
+          status: 'OCCUPIED',
+        });
+
+        // Bắn Socket.io cập nhật Sơ đồ bàn (/tables) và POS terminals thời gian thực
+        emitTableEvent(input.storeId, 'table:updated', {
+          table: updatedTable,
+          actionUser: { name: `${input.user.name} (POS Bán Hàng)` },
+        });
+      }
+    }
+
     const orderData: Partial<IOrder> = {
       store_id: new mongoose.Types.ObjectId(input.storeId),
       shift_id: input.shiftId && mongoose.Types.ObjectId.isValid(input.shiftId)
         ? new mongoose.Types.ObjectId(input.shiftId)
         : undefined,
       order_code: orderCode,
-      table_number: input.tableNumber || '',
+      table_id: matchedTable ? matchedTable._id : undefined,
+      table_number: isTakeAway ? 'Mang về' : (input.tableNumber || 'Mang về'),
       customer_name: input.customerName || 'Khách lẻ',
       items: formattedItems,
       total_amount: input.totalAmount,

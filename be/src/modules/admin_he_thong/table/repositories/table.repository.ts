@@ -15,9 +15,19 @@ export class TableRepository {
   }
 
   async findByStoreAndNumber(storeId: string, tableNumber: string): Promise<ITableDoc | null> {
+    const raw = tableNumber.trim();
+    let numOnly = raw;
+    while (numOnly.toLowerCase().startsWith('bàn')) {
+      numOnly = numOnly.slice(3).trim();
+    }
     return TableModel.findOne({
       store_id: new mongoose.Types.ObjectId(storeId),
-      table_number: tableNumber,
+      is_active: true,
+      $or: [
+        { table_number: raw },
+        { table_number: numOnly },
+        { table_number: `Bàn ${numOnly}` },
+      ],
     }).exec();
   }
 

@@ -12,6 +12,8 @@ import { LiveCart } from '@/features/pos/component/LiveCart';
 import { VietQrModal } from '@/features/pos/component/VietQrModal';
 import { OrderHistoryModal } from '@/features/pos/component/OrderHistoryModal';
 import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
+import { useTables } from '@/features/admin_he_thong/table/hook/useTables';
+import { useTableSocket } from '@/features/admin_he_thong/table/hook/useTableSocket';
 import { FiLock, FiCamera, FiAlertTriangle, FiRefreshCw, FiHome } from 'react-icons/fi';
 import { toast } from 'sonner';
 
@@ -46,6 +48,14 @@ export default function PosPage() {
       name: user.name || (user as any).username || 'Nhân viên',
     };
   }, [user?.id, (user as any)?._id, user?.name, (user as any)?.username]);
+
+  // Lấy danh sách bàn theo cơ sở của ca trực
+  const { data: storeTables = [] } = useTables(
+    shiftData?.storeId ? { store_id: shiftData.storeId } : undefined
+  );
+
+  // Lắng nghe cập nhật trạng thái bàn thời gian thực từ Socket
+  useTableSocket(shiftData?.storeId, liveUser || undefined);
 
   // Hook Live POS đồng bộ WebSocket
   const {
@@ -271,6 +281,7 @@ export default function PosPage() {
           <LiveCart
             cart={cart}
             currentUserId={currentUserId}
+            tables={storeTables}
             onUpdateQuantity={updateQuantity}
             onClearCart={clearCart}
             onOpenCheckout={handleOpenCheckout}
