@@ -11,6 +11,7 @@ import { MenuCatalog } from '@/features/pos/component/MenuCatalog';
 import { LiveCart } from '@/features/pos/component/LiveCart';
 import { VietQrModal } from '@/features/pos/component/VietQrModal';
 import { OrderHistoryModal } from '@/features/pos/component/OrderHistoryModal';
+import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
 import { FiLock, FiCamera, FiAlertTriangle, FiRefreshCw, FiHome } from 'react-icons/fi';
 import { toast } from 'sonner';
 
@@ -31,6 +32,8 @@ export default function PosPage() {
 
   // Modal VietQR
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+  // Modal Tiền Mặt (ConfirmModal chuẩn Obsidian Gold)
+  const [isCashConfirmOpen, setIsCashConfirmOpen] = useState(false);
   const [orderCodePreview, setOrderCodePreview] = useState('');
   const [pendingPaymentMethod, setPendingPaymentMethod] = useState<'VIETQR' | 'CASH'>('VIETQR');
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -127,12 +130,8 @@ export default function PosPage() {
     if (method === 'VIETQR') {
       setIsQrModalOpen(true);
     } else {
-      // Xác nhận tiền mặt trực tiếp
-      if (confirm(`Xác nhận khách thanh toán ${(cart?.finalTotal || 0).toLocaleString()}đ bằng TIỀN MẶT?`)) {
-        handleConfirmPayment('CASH');
-      } else {
-        setLockForPayment(false);
-      }
+      // Mở modal xác nhận tiền mặt chuẩn giao diện Obsidian Gold
+      setIsCashConfirmOpen(true);
     }
   };
 
@@ -305,6 +304,43 @@ export default function PosPage() {
         onClose={() => setIsHistoryOpen(false)}
         orders={historyOrders}
         isLoading={isHistoryLoading}
+      />
+
+      {/* Modal Xác Nhận Thanh Toán Tiền Mặt chuẩn Obsidian Gold (Không dùng popup mặc định trình duyệt) */}
+      <ConfirmModal
+        isOpen={isCashConfirmOpen}
+        title="Xác Nhận Thu TIỀN MẶT"
+        message={
+          <div className="space-y-3.5">
+            <p className="text-sm text-[#a0a5b5]">
+              Xác nhận thu tiền mặt từ khách hàng cho đơn{' '}
+              <span className="text-[#d4af37] font-bold">{effectiveOrderCode}</span>:
+            </p>
+            <div className="p-4 rounded-2xl bg-[#181b24] border border-[#d4af37]/30 flex items-center justify-between shadow-inner">
+              <span className="text-xs text-[#a0a5b5] uppercase font-bold tracking-wider">
+                Tổng tiền cần thu:
+              </span>
+              <span className="text-2xl font-black text-[#d4af37]">
+                {(cart?.finalTotal || 0).toLocaleString()} VNĐ
+              </span>
+            </div>
+            <div className="text-xs text-[#8e95a5] flex justify-between items-center px-1">
+              <span>Bàn phục vụ: <strong className="text-white">{cart?.tableNumber || 'Mang về / Tại quầy'}</strong></span>
+              <span>Khách hàng: <strong className="text-white">{cart?.customerName || 'Khách lẻ'}</strong></span>
+            </div>
+          </div>
+        }
+        confirmLabel="💵 Xác Nhận Đã Thu Tiền"
+        cancelLabel="Hủy Bỏ"
+        isLoading={isCheckingOut}
+        onConfirm={() => {
+          setIsCashConfirmOpen(false);
+          handleConfirmPayment('CASH');
+        }}
+        onCancel={() => {
+          setIsCashConfirmOpen(false);
+          setLockForPayment(false);
+        }}
       />
     </div>
   );

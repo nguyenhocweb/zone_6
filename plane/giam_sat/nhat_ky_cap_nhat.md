@@ -4,6 +4,27 @@
 
 ---
 
+### [2026-11-04 22:52] - Thay Thế Hộp Thoại Trình Duyệt Bằng Modal Xác Nhận Obsidian Gold (ConfirmModal) Khi Thanh Toán Tiền Mặt & Xóa Cấu Hình PayOS
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Phản hồi ảnh chụp popup xác nhận mặc định của trình duyệt (`window.confirm("Xác nhận khách thanh toán 5.000đ bằng TIỀN MẶT?")`) và câu hỏi "tôi có mẫu xác nhận mà sao lại dùng thẻ mặc định z"
+- **Nội dung hoàn thành:**
+  - **Nâng cấp `ConfirmModal.tsx` (`fe/src/core/components/ui/ConfirmModal.tsx`):**
+    - Hỗ trợ linh hoạt cả `string` lẫn `React.ReactNode` cho thuộc tính `message` và bổ sung `children`.
+    - Giữ trọn vẹn phong cách Obsidian Gold Signature (`bg-[#12141A]`, `border-[#212532]`, `gold-gradient-bg`).
+  - **Loại bỏ hoàn toàn `window.confirm` trên POS (`fe/src/app/pos/page.tsx`):**
+    - Khi thu ngân bấm `TIỀN MẶT`, hệ thống kích hoạt `ConfirmModal` chuyên nghiệp:
+      - Hiển thị mã đơn hàng `Z6-POS-XXXXXX`.
+      - Khối nổi bật Obsidian Gold hiển thị rõ tổng số tiền cần thu `VNĐ`.
+      - Hiển thị thông tin Bàn phục vụ và Tên khách hàng.
+      - Nút hành động `[ 💵 Xác Nhận Đã Thu Tiền ]` và nút `[ Hủy Bỏ ]`.
+  - **Chuẩn hóa xác nhận xóa PayOS (`fe/src/features/admin_he_thong/payos/component/PayOSAccountCard.tsx`):**
+    - Chuyển đổi lệnh `confirm(...)` cũ sang `ConfirmModal` với cờ `isDestructive: true`.
+- **Verification:**
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 22:45] - Hiển Thị Kích Thước (Size) Đồ Uống Trên Thẻ Món & Bổ Sung Tùy Chọn Kích Thước (Size M / L) Đa Mức Giá Trong POS Modal
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Phản hồi ảnh chụp thẻ đồ uống POS ("Cà Phê Muối Cố Đô Zone 6", "Trà Dâu Tây Tươi Zone 6", "Trà Đào Cam Sả Tươi") và thông báo "thiếu hiển thị size"

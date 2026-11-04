@@ -4,7 +4,8 @@ import { createPortal } from "react-dom";
 interface ConfirmModalProps {
   isOpen: boolean;
   title: string;
-  message: string;
+  message?: React.ReactNode;
+  children?: React.ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   isDestructive?: boolean;
@@ -17,6 +18,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
   title,
   message,
+  children,
   confirmLabel = "Xác nhận",
   cancelLabel = "Hủy bỏ",
   isDestructive = false,
@@ -65,8 +67,13 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     >
       <div className="w-full max-w-md rounded-2xl bg-[#12141A] p-6 shadow-2xl border border-[#212532] text-[#F4F5F8] relative z-10 animate-in fade-in zoom-in-95 duration-150">
         <h3 className="text-lg font-bold text-[#F4F5F8] mb-2">{title}</h3>
-        <p className="text-sm text-[#8E95A5] mb-6 leading-relaxed">{message}</p>
-        <div className="flex justify-end gap-3">
+        {typeof message === "string" ? (
+          <p className="text-sm text-[#8E95A5] mb-5 leading-relaxed">{message}</p>
+        ) : message ? (
+          <div className="text-sm text-[#8E95A5] mb-5 leading-relaxed">{message}</div>
+        ) : null}
+        {children && <div className="mb-5">{children}</div>}
+        <div className="flex justify-end gap-3 pt-2 border-t border-[#212532]/60">
           <button
             type="button"
             disabled={isLoading}

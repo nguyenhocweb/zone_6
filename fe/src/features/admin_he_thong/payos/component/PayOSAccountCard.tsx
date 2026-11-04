@@ -14,6 +14,7 @@ import {
   FiKey,
 } from 'react-icons/fi';
 import { toast } from 'sonner';
+import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
 import {
   useSetDefaultPayOSConfig,
   useDeletePayOSConfig,
@@ -28,6 +29,7 @@ interface PayOSAccountCardProps {
 
 export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEdit }) => {
   const [showSecret, setShowSecret] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const setDefaultMutation = useSetDefaultPayOSConfig();
   const deleteMutation = useDeletePayOSConfig();
   const testMutation = useTestPayOSConfig();
@@ -42,9 +44,7 @@ export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEd
   };
 
   const handleDelete = () => {
-    if (confirm(`Bạn có chắc chắn muốn xóa cấu hình PayOS "${config.name}" không?`)) {
-      deleteMutation.mutate(config.id);
-    }
+    setIsDeleteModalOpen(true);
   };
 
   const handleTest = () => {
@@ -205,6 +205,22 @@ export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEd
           </div>
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="Xác Nhận Xóa Cấu Hình PayOS"
+        message={`Bạn có chắc chắn muốn xóa cấu hình PayOS "${config.name}" (${config.bank_name} - ${config.account_number}) khỏi hệ thống không?`}
+        confirmLabel="Xóa Cấu Hình"
+        cancelLabel="Hủy Bỏ"
+        isDestructive={true}
+        isLoading={deleteMutation.isPending}
+        onConfirm={() => {
+          deleteMutation.mutate(config.id, {
+            onSettled: () => setIsDeleteModalOpen(false),
+          });
+        }}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };
