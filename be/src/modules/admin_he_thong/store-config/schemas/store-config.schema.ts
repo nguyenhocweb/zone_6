@@ -22,6 +22,10 @@ export const StoreConfigUpdateSchema = z.object({
   ordering_mode: z.enum(['STAFF_ONLY', 'CUSTOMER_SELF_ORDER', 'HYBRID']).default('HYBRID').optional(),
   table_geofence_radius_meters: z.number().min(5).max(500).default(30).optional(),
   is_table_geofence_strict: z.boolean().default(true).optional(),
+  vat_enabled: z.boolean().default(false).optional(),
+  vat_rate: z.number().min(0, 'Thuế VAT không được âm').max(100, 'Thuế VAT tối đa 100%').default(8).optional(),
+  vat_apply_mode: z.enum(['ALL', 'SPECIFIC_SHIFTS']).default('ALL').optional(),
+  vat_applied_shifts: z.array(z.string()).default([]).optional(),
 });
 
 export type StoreConfigUpdateDto = z.infer<typeof StoreConfigUpdateSchema>;
@@ -47,5 +51,9 @@ export interface StoreConfigResponse {
   ordering_mode?: 'STAFF_ONLY' | 'CUSTOMER_SELF_ORDER' | 'HYBRID';
   table_geofence_radius_meters?: number;
   is_table_geofence_strict?: boolean;
+  vat_enabled?: boolean;
+  vat_rate?: number;
+  vat_apply_mode?: 'ALL' | 'SPECIFIC_SHIFTS';
+  vat_applied_shifts?: string[];
   updated_at?: string | Date;
 }

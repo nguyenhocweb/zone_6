@@ -12,6 +12,10 @@ export interface CheckinConfig {
   ordering_mode?: 'STAFF_ONLY' | 'CUSTOMER_SELF_ORDER' | 'HYBRID';
   table_geofence_radius_meters?: number;
   is_table_geofence_strict?: boolean;
+  vat_enabled?: boolean;
+  vat_rate?: number;
+  vat_apply_mode?: 'ALL' | 'SPECIFIC_SHIFTS';
+  vat_applied_shifts?: string[];
   updated_at?: string;
 }
 
@@ -28,6 +32,10 @@ export interface UpdateCheckinConfigPayload {
   ordering_mode?: 'STAFF_ONLY' | 'CUSTOMER_SELF_ORDER' | 'HYBRID';
   table_geofence_radius_meters?: number;
   is_table_geofence_strict?: boolean;
+  vat_enabled?: boolean;
+  vat_rate?: number;
+  vat_apply_mode?: 'ALL' | 'SPECIFIC_SHIFTS';
+  vat_applied_shifts?: string[];
 }
 
 export interface VerifyLocationResponse {

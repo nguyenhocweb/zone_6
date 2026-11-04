@@ -15,12 +15,15 @@ export class OrderCheckoutController {
     const {
       storeId,
       shiftId,
+      shiftName,
       sessionCode,
       tableNumber,
       customerName,
       items,
       totalAmount,
       discountAmount,
+      vatRate,
+      vatAmount,
       finalAmount,
       paymentMethod,
     } = req.body;
@@ -28,12 +31,15 @@ export class OrderCheckoutController {
     const newOrder = await this.service.execute({
       storeId,
       shiftId,
+      shiftName,
       sessionCode,
       tableNumber,
       customerName,
       items,
       totalAmount,
       discountAmount,
+      vatRate,
+      vatAmount,
       finalAmount,
       paymentMethod: paymentMethod || 'VIETQR',
       user: {

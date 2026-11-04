@@ -16,10 +16,12 @@ import {
   FaCompass,
   FaQrcode,
   FaMobileAlt,
+  FaReceipt,
 } from "react-icons/fa";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useCheckinConfig } from "../hook/useCheckinConfig";
 import { useUpdateCheckinConfig } from "../hook/useUpdateCheckinConfig";
+import { useGetShiftConfigs } from "@/features/pho_ca_lam_lich/scheduling/hook/useShiftConfigs";
 import {
   verifyLocationService,
   reverseGeocodeService,
@@ -29,6 +31,8 @@ import { toast } from "sonner";
 export const CheckinConfigView: React.FC = () => {
   const { user } = useAuth();
   const { data: config, isLoading, isError } = useCheckinConfig();
+  const { data: shiftsResponse } = useGetShiftConfigs();
+  const shiftsList = shiftsResponse?.shifts || [];
   const updateMutation = useUpdateCheckinConfig();
 
   // Form State
@@ -44,6 +48,12 @@ export const CheckinConfigView: React.FC = () => {
   const [orderingMode, setOrderingMode] = useState<"STAFF_ONLY" | "CUSTOMER_SELF_ORDER" | "HYBRID">("HYBRID");
   const [tableGeofenceRadius, setTableGeofenceRadius] = useState<number>(30);
   const [isTableGeofenceStrict, setIsTableGeofenceStrict] = useState<boolean>(true);
+
+  // Cấu hình Thuế VAT & Phạm vi ca áp dụng
+  const [vatEnabled, setVatEnabled] = useState<boolean>(false);
+  const [vatRate, setVatRate] = useState<number>(8);
+  const [vatApplyMode, setVatApplyMode] = useState<"ALL" | "SPECIFIC_SHIFTS">("ALL");
+  const [vatAppliedShifts, setVatAppliedShifts] = useState<string[]>([]);
 
   // Vị trí GPS hiện tại của thiết bị Admin (dùng để test & lấy tọa độ)
   const [isLocating, setIsLocating] = useState(false);
@@ -74,8 +84,18 @@ export const CheckinConfigView: React.FC = () => {
       setOrderingMode(config.ordering_mode ?? "HYBRID");
       setTableGeofenceRadius(config.table_geofence_radius_meters ?? 30);
       setIsTableGeofenceStrict(config.is_table_geofence_strict ?? true);
+      setVatEnabled(config.vat_enabled ?? false);
+      setVatRate(config.vat_rate ?? 8);
+      setVatApplyMode(config.vat_apply_mode ?? "ALL");
+      setVatAppliedShifts(config.vat_applied_shifts ?? []);
     }
   }, [config]);
+
+  const handleToggleShift = (shiftName: string) => {
+    setVatAppliedShifts((prev) =>
+      prev.includes(shiftName) ? prev.filter((s) => s !== shiftName) : [...prev, shiftName]
+    );
+  };
 
 
   // Lấy vị trí GPS của Admin để điền vào tọa độ quán và tự động cập nhật địa chỉ
@@ -192,6 +212,10 @@ export const CheckinConfigView: React.FC = () => {
     setOrderingMode("HYBRID");
     setTableGeofenceRadius(30);
     setIsTableGeofenceStrict(true);
+    setVatEnabled(false);
+    setVatRate(8);
+    setVatApplyMode("ALL");
+    setVatAppliedShifts([]);
     toast.info("Đã khôi phục các giá trị mặc định của Zone 6");
   };
 
@@ -217,6 +241,10 @@ export const CheckinConfigView: React.FC = () => {
       ordering_mode: orderingMode,
       table_geofence_radius_meters: Number(tableGeofenceRadius),
       is_table_geofence_strict: isTableGeofenceStrict,
+      vat_enabled: vatEnabled,
+      vat_rate: Number(vatRate),
+      vat_apply_mode: vatApplyMode,
+      vat_applied_shifts: vatAppliedShifts,
     });
   };
 
@@ -858,6 +886,245 @@ export const CheckinConfigView: React.FC = () => {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* =========================================================================
+             * THẺ 4: CẤU HÌNH THUẾ VAT & PHẠM VI ÁP DỤNG THEO CA LÀM VIỆC
+             * ========================================================================= */}
+            <div className="lg:col-span-2 p-6 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-6">
+              <div className="flex items-center justify-between pb-3 border-b border-[#212532]">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] text-sm">
+                    <FaReceipt />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-[#F4F5F8]">
+                      Cấu Hình Thuế VAT &amp; Phạm Vi Áp Dụng Theo Ca
+                    </h3>
+                    <p className="text-[11px] text-[#8E95A5]">
+                      Thiết lập tỉ lệ phần trăm thuế VAT và lựa chọn ca làm việc áp dụng thuế (hoặc áp dụng tất cả các ca)
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-[#8E95A5]">Tính Thuế VAT:</span>
+                  <button
+                    type="button"
+                    onClick={() => setVatEnabled(!vatEnabled)}
+                    className={`w-11 h-6 rounded-full transition-colors relative p-0.5 cursor-pointer ${
+                      vatEnabled ? "bg-[#D4AF37]" : "bg-[#212532]"
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-full bg-[#0B0C10] shadow-md transition-transform ${
+                        vatEnabled ? "translate-x-5" : "translate-x-0"
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {vatEnabled && (
+                <div className="space-y-6 animate-in fade-in duration-200">
+                  {/* Mức Thuế VAT (%) */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-xs font-bold text-[#F4F5F8]">
+                        Tỉ Lệ Thuế VAT (%):
+                      </label>
+                      <span className="text-base font-black text-[#D4AF37] font-mono">
+                        {vatRate}%
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        step={1}
+                        value={vatRate}
+                        onChange={(e) => setVatRate(Math.max(0, Math.min(100, Number(e.target.value))))}
+                        className="w-24 px-3 py-2 rounded-xl border border-[#212532] bg-[#0E1015] text-[#F4F5F8] text-sm font-bold text-center focus:outline-none focus:border-[#D4AF37]"
+                      />
+                      <div className="flex items-center gap-1.5">
+                        {[0, 5, 8, 10].map((rate) => (
+                          <button
+                            key={rate}
+                            type="button"
+                            onClick={() => setVatRate(rate)}
+                            className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition cursor-pointer ${
+                              vatRate === rate
+                                ? "border-[#D4AF37] bg-[#D4AF37]/20 text-[#D4AF37]"
+                                : "border-[#212532] bg-[#12141A] text-[#8E95A5] hover:text-[#F4F5F8]"
+                            }`}
+                          >
+                            {rate}%
+                          </button>
+                        ))}
+                      </div>
+                      <span className="text-xs text-[#8E95A5] italic">
+                        (Mức thuế hiện hành thông dụng: 8% hoặc 10%)
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Chế độ Áp Dụng: ALL hay SPECIFIC_SHIFTS */}
+                  <div className="space-y-3 pt-4 border-t border-[#212532]">
+                    <label className="text-xs font-bold text-[#F4F5F8] block">
+                      Phạm Vi Ca Làm Việc Áp Dụng Thuế:
+                    </label>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div
+                        onClick={() => setVatApplyMode("ALL")}
+                        className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                          vatApplyMode === "ALL"
+                            ? "bg-[#D4AF37]/10 border-[#D4AF37] text-white shadow-md shadow-[#D4AF37]/5"
+                            : "bg-[#0E1015] border-[#212532] text-[#8E95A5] hover:border-[#2C3242]"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-bold text-white flex items-center gap-2">
+                            <span>🌐 Áp Dụng Tất Cả Các Ca (All)</span>
+                          </span>
+                          <div
+                            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              vatApplyMode === "ALL"
+                                ? "border-[#D4AF37] bg-[#D4AF37]"
+                                : "border-[#4A5162]"
+                            }`}
+                          >
+                            {vatApplyMode === "ALL" && (
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#0B0C10]" />
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-[11px] text-[#8E95A5]">
+                          Mọi đơn hàng thanh toán trong bất kỳ ca nào đều tự động cộng thuế VAT.
+                        </p>
+                      </div>
+
+                      <div
+                        onClick={() => setVatApplyMode("SPECIFIC_SHIFTS")}
+                        className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                          vatApplyMode === "SPECIFIC_SHIFTS"
+                            ? "bg-[#D4AF37]/10 border-[#D4AF37] text-white shadow-md shadow-[#D4AF37]/5"
+                            : "bg-[#0E1015] border-[#212532] text-[#8E95A5] hover:border-[#2C3242]"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-bold text-white flex items-center gap-2">
+                            <span>⏱️ Chỉ Áp Dụng Cho Ca Được Chọn</span>
+                          </span>
+                          <div
+                            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              vatApplyMode === "SPECIFIC_SHIFTS"
+                                ? "border-[#D4AF37] bg-[#D4AF37]"
+                                : "border-[#4A5162]"
+                            }`}
+                          >
+                            {vatApplyMode === "SPECIFIC_SHIFTS" && (
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#0B0C10]" />
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-[11px] text-[#8E95A5]">
+                          Chỉ tính thuế VAT khi ca trực hiện tại thuộc danh sách ca được tích chọn bên dưới.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Danh sách các ca làm việc để chọn (nếu chọn SPECIFIC_SHIFTS) */}
+                    {vatApplyMode === "SPECIFIC_SHIFTS" && (
+                      <div className="mt-3 p-4 rounded-2xl bg-[#0E1015] border border-[#212532] space-y-3 animate-in fade-in duration-150">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-[#F4F5F8]">
+                            Chọn các ca áp dụng thuế VAT:
+                          </span>
+                          <span className="text-[11px] text-[#D4AF37] font-semibold">
+                            Đã chọn: {vatAppliedShifts.length} ca
+                          </span>
+                        </div>
+
+                        {shiftsList.length === 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {["Ca Sáng", "Ca Chiều", "Ca Tối", "Ca Khuya"].map((shiftName) => {
+                              const isChecked = vatAppliedShifts.includes(shiftName);
+                              return (
+                                <button
+                                  key={shiftName}
+                                  type="button"
+                                  onClick={() => handleToggleShift(shiftName)}
+                                  className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+                                    isChecked
+                                      ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white"
+                                      : "bg-[#12141A] border-[#212532] text-[#8E95A5] hover:text-white"
+                                  }`}
+                                >
+                                  <span
+                                    className={`w-3.5 h-3.5 rounded flex items-center justify-center border text-[9px] ${
+                                      isChecked
+                                        ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10]"
+                                        : "border-[#4A5162]"
+                                    }`}
+                                  >
+                                    {isChecked ? "✓" : ""}
+                                  </span>
+                                  <span>{shiftName}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+                            {shiftsList.map((shift: any) => {
+                              const sName = shift.shift_name || shift.name;
+                              const isChecked =
+                                vatAppliedShifts.includes(sName) ||
+                                (shift.shift_code && vatAppliedShifts.includes(shift.shift_code));
+                              return (
+                                <button
+                                  key={shift.id || shift._id || shift.shift_code}
+                                  type="button"
+                                  onClick={() => handleToggleShift(sName)}
+                                  className={`p-3 rounded-xl border text-xs font-bold transition flex items-center justify-between text-left cursor-pointer ${
+                                    isChecked
+                                      ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white"
+                                      : "bg-[#12141A] border-[#212532] text-[#8E95A5] hover:text-white"
+                                  }`}
+                                >
+                                  <div>
+                                    <div className="flex items-center gap-2">
+                                      <span
+                                        className="w-2.5 h-2.5 rounded-full shrink-0"
+                                        style={{ backgroundColor: shift.color || "#D4AF37" }}
+                                      />
+                                      <span className="font-bold text-white">{sName}</span>
+                                    </div>
+                                    <span className="text-[10px] text-[#8E95A5] font-mono mt-0.5 block">
+                                      {shift.start_time} - {shift.end_time}
+                                    </span>
+                                  </div>
+                                  <span
+                                    className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ${
+                                      isChecked
+                                        ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10] font-black"
+                                        : "border-[#4A5162]"
+                                    }`}
+                                  >
+                                    {isChecked ? "✓" : ""}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

@@ -10,6 +10,7 @@ import { BadRequestError } from '../../../core/errors.js';
 export interface ICheckoutInput {
   storeId: string;
   shiftId?: string;
+  shiftName?: string;
   sessionCode?: string;
   tableNumber?: string;
   customerName?: string;
@@ -26,6 +27,8 @@ export interface ICheckoutInput {
   }>;
   totalAmount: number;
   discountAmount?: number;
+  vatRate?: number;
+  vatAmount?: number;
   finalAmount: number;
   paymentMethod: 'VIETQR' | 'CASH' | 'CARD';
   user: {
@@ -93,6 +96,47 @@ export class OrderCheckoutService {
       }
     }
 
+    // 2. Tính toán thuế VAT (theo cấu hình cơ sở và ca làm việc)
+    let isVatApplied = false;
+    let vatRate = 0;
+    let vatAmount = 0;
+
+    if (storeDoc?.vat_enabled) {
+      const mode = storeDoc.vat_apply_mode || 'ALL';
+      const appliedShifts: string[] = storeDoc.vat_applied_shifts || [];
+
+      if (mode === 'ALL') {
+        isVatApplied = true;
+      } else if (mode === 'SPECIFIC_SHIFTS') {
+        const currentShiftName = (input.shiftName || '').toLowerCase().trim();
+        const currentShiftId = (input.shiftId || '').toLowerCase().trim();
+
+        isVatApplied = appliedShifts.some((s) => {
+          const target = s.toLowerCase().trim();
+          return (
+            target === currentShiftName ||
+            target === currentShiftId ||
+            currentShiftName.includes(target) ||
+            target.includes(currentShiftName)
+          );
+        });
+      }
+
+      if (isVatApplied) {
+        vatRate = storeDoc.vat_rate ?? 8;
+        const taxableAmount = Math.max(0, input.totalAmount - (input.discountAmount || 0));
+        vatAmount = Math.round((taxableAmount * vatRate) / 100);
+      }
+    }
+
+    // Sử dụng vatAmount client gửi lên nếu đã tính chính xác, hoặc dùng vatAmount backend tính
+    const effectiveVatRate = input.vatRate !== undefined && input.vatRate > 0 ? input.vatRate : vatRate;
+    const effectiveVatAmount = input.vatAmount !== undefined && input.vatAmount > 0 ? input.vatAmount : vatAmount;
+    const calculatedFinalAmount =
+      input.finalAmount !== undefined && input.finalAmount > 0
+        ? input.finalAmount
+        : Math.max(0, input.totalAmount - (input.discountAmount || 0)) + effectiveVatAmount;
+
     const orderData: Partial<IOrder> = {
       store_id: new mongoose.Types.ObjectId(input.storeId),
       shift_id: input.shiftId && mongoose.Types.ObjectId.isValid(input.shiftId)
@@ -105,7 +149,9 @@ export class OrderCheckoutService {
       items: formattedItems,
       total_amount: input.totalAmount,
       discount_amount: input.discountAmount || 0,
-      final_amount: input.finalAmount,
+      vat_rate: effectiveVatRate,
+      vat_amount: effectiveVatAmount,
+      final_amount: calculatedFinalAmount,
       payment_method: input.paymentMethod,
       payment_status: 'COMPLETED',
       created_by_id: new mongoose.Types.ObjectId(input.user.userId),

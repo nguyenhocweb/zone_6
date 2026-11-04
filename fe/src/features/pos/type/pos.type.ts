@@ -49,6 +49,8 @@ export interface IOrderRecord {
   items: IPosCartItem[];
   total_amount: number;
   discount_amount: number;
+  vat_rate?: number;
+  vat_amount?: number;
   final_amount: number;
   payment_method: 'VIETQR' | 'CASH' | 'CARD';
   payment_status: 'COMPLETED' | 'PENDING' | 'CANCELLED';

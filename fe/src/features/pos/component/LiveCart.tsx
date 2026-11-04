@@ -28,6 +28,12 @@ interface LiveCartProps {
   cart: ILiveCartState;
   currentUserId: string;
   tables?: TableItem[];
+  vatInfo?: {
+    isApplied: boolean;
+    rate: number;
+    amount: number;
+    shiftLabel?: string;
+  };
   onUpdateQuantity: (index: number, quantity: number) => void;
   onClearCart: () => void;
   onOpenCheckout: (method: 'VIETQR' | 'CASH') => void;
@@ -39,6 +45,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
   cart,
   currentUserId,
   tables = [],
+  vatInfo,
   onUpdateQuantity,
   onClearCart,
   onOpenCheckout,
@@ -78,6 +85,14 @@ export const LiveCart: React.FC<LiveCartProps> = ({
 
   const selectedTable =
     cart?.tableNumber && cart.tableNumber !== '' ? cart.tableNumber : 'Mang về';
+
+  // Tính toán số tiền sau thuế VAT (nếu ca hiện tại được cấu hình áp dụng thuế)
+  const taxableAmount = Math.max(0, (cart?.subtotal || 0) - (cart?.discount || 0));
+  const vatRate = vatInfo?.isApplied ? (vatInfo?.rate || 0) : 0;
+  const vatAmount = vatInfo?.isApplied
+    ? (vatInfo?.amount ?? Math.round((taxableAmount * vatRate) / 100))
+    : 0;
+  const displayFinalTotal = taxableAmount + vatAmount;
 
   return (
     <div className="flex flex-col h-full bg-[#12141a] border-l border-[#212532]">
@@ -282,10 +297,21 @@ export const LiveCart: React.FC<LiveCartProps> = ({
               <span>-{(cart.discount || 0).toLocaleString()}đ</span>
             </div>
           )}
+          {vatInfo?.isApplied && vatAmount > 0 && (
+            <div className="flex justify-between text-amber-300">
+              <span className="flex items-center gap-1">
+                <span>Thuế VAT ({vatRate}%)</span>
+                {vatInfo.shiftLabel && (
+                  <span className="text-[10px] text-[#8e95a5]">({vatInfo.shiftLabel})</span>
+                )}
+              </span>
+              <span className="font-semibold">+{vatAmount.toLocaleString()}đ</span>
+            </div>
+          )}
           <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-[#212532]">
             <span>Tổng cộng</span>
             <span className="text-lg text-[#d4af37]">
-              {(cart?.finalTotal || 0).toLocaleString()}đ
+              {displayFinalTotal.toLocaleString()}đ
             </span>
           </div>
         </div>

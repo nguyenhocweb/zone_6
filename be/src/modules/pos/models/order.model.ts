@@ -32,6 +32,8 @@ export interface IOrder extends Document {
   items: IOrderItem[];
   total_amount: number;
   discount_amount: number;
+  vat_rate?: number;
+  vat_amount?: number;
   final_amount: number;
   payment_method: 'VIETQR' | 'CASH' | 'CARD';
   payment_status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
@@ -91,6 +93,8 @@ const OrderSchema = new Schema<IOrder>(
     items: { type: [OrderItemSchema], default: [] },
     total_amount: { type: Number, required: true, min: 0 },
     discount_amount: { type: Number, default: 0, min: 0 },
+    vat_rate: { type: Number, default: 0, min: 0 },
+    vat_amount: { type: Number, default: 0, min: 0 },
     final_amount: { type: Number, required: true, min: 0 },
     payment_method: {
       type: String,

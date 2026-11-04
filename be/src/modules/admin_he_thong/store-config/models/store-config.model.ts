@@ -15,6 +15,10 @@ export interface IStoreConfigDoc extends Document {
   ordering_mode: 'STAFF_ONLY' | 'CUSTOMER_SELF_ORDER' | 'HYBRID';
   table_geofence_radius_meters: number;
   is_table_geofence_strict: boolean;
+  vat_enabled: boolean;
+  vat_rate: number;
+  vat_apply_mode: 'ALL' | 'SPECIFIC_SHIFTS';
+  vat_applied_shifts: string[];
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
@@ -92,6 +96,23 @@ const StoreConfigSchema = new Schema<IStoreConfigDoc>(
     is_table_geofence_strict: {
       type: Boolean,
       default: true,
+    },
+    vat_enabled: {
+      type: Boolean,
+      default: false,
+    },
+    vat_rate: {
+      type: Number,
+      default: 8,
+    },
+    vat_apply_mode: {
+      type: String,
+      enum: ['ALL', 'SPECIFIC_SHIFTS'],
+      default: 'ALL',
+    },
+    vat_applied_shifts: {
+      type: [String],
+      default: [],
     },
     is_active: {
       type: Boolean,

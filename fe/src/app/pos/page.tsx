@@ -14,6 +14,7 @@ import { OrderHistoryModal } from '@/features/pos/component/OrderHistoryModal';
 import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
 import { useTables } from '@/features/admin_he_thong/table/hook/useTables';
 import { useTableSocket } from '@/features/admin_he_thong/table/hook/useTableSocket';
+import { useCheckinConfig } from '@/features/admin_he_thong/checkin-config/hook/useCheckinConfig';
 import { FiLock, FiCamera, FiAlertTriangle, FiRefreshCw, FiHome } from 'react-icons/fi';
 import { toast } from 'sonner';
 
@@ -54,6 +55,9 @@ export default function PosPage() {
     shiftData?.storeId ? { store_id: shiftData.storeId } : undefined
   );
 
+  // Lấy cấu hình quán (bao gồm Thuế VAT và Ca áp dụng)
+  const { data: storeConfig } = useCheckinConfig();
+
   // Lắng nghe cập nhật trạng thái bàn thời gian thực từ Socket
   useTableSocket(shiftData?.storeId, liveUser || undefined);
 
@@ -68,6 +72,48 @@ export default function PosPage() {
     notifyOrderCompleted,
     syncCartToServer,
   } = useLivePos(shiftData, liveUser);
+
+  // Tính toán trạng thái áp dụng thuế VAT theo ca làm việc hiện tại
+  const vatInfo = React.useMemo(() => {
+    if (!storeConfig?.vat_enabled) {
+      return { isApplied: false, rate: 0, amount: 0 };
+    }
+
+    const rate = storeConfig.vat_rate ?? 8;
+    const mode = storeConfig.vat_apply_mode || 'ALL';
+    let isApplied = false;
+
+    if (mode === 'ALL') {
+      isApplied = true;
+    } else if (mode === 'SPECIFIC_SHIFTS') {
+      const shiftName = (shiftData?.shiftName || '').toLowerCase().trim();
+      const shiftId = (shiftData?.shiftId || '').toLowerCase().trim();
+      const appliedList = storeConfig.vat_applied_shifts || [];
+
+      isApplied = appliedList.some((s) => {
+        const target = s.toLowerCase().trim();
+        return (
+          target === shiftName ||
+          target === shiftId ||
+          shiftName.includes(target) ||
+          target.includes(shiftName)
+        );
+      });
+    }
+
+    const taxable = Math.max(0, (cart?.subtotal || 0) - (cart?.discount || 0));
+    const amount = isApplied ? Math.round((taxable * rate) / 100) : 0;
+
+    return {
+      isApplied,
+      rate,
+      amount,
+      shiftLabel: isApplied ? `${shiftData?.shiftName || 'Ca trực'}` : undefined,
+    };
+  }, [storeConfig, shiftData?.shiftName, shiftData?.shiftId, cart?.subtotal, cart?.discount]);
+
+  const effectiveFinalTotal =
+    Math.max(0, (cart?.subtotal || 0) - (cart?.discount || 0)) + (vatInfo.isApplied ? vatInfo.amount : 0);
 
   // 1. Kiểm tra điều kiện ca trực & điểm danh
   const checkShiftAccess = async () => {
@@ -154,13 +200,16 @@ export default function PosPage() {
       const newOrder = await posService.checkoutOrder({
         storeId: shiftData.storeId,
         shiftId: shiftData.shiftId,
+        shiftName: shiftData.shiftName,
         sessionCode: shiftData.sessionCode,
         tableNumber: cart.tableNumber,
         customerName: cart.customerName,
         items: cart.items,
         totalAmount: cart.subtotal,
         discountAmount: cart.discount,
-        finalAmount: cart.finalTotal,
+        vatRate: vatInfo.isApplied ? vatInfo.rate : 0,
+        vatAmount: vatInfo.isApplied ? vatInfo.amount : 0,
+        finalAmount: effectiveFinalTotal,
         paymentMethod: method,
       });
 
@@ -282,6 +331,7 @@ export default function PosPage() {
             cart={cart}
             currentUserId={currentUserId}
             tables={storeTables}
+            vatInfo={vatInfo}
             onUpdateQuantity={updateQuantity}
             onClearCart={clearCart}
             onOpenCheckout={handleOpenCheckout}
@@ -302,7 +352,7 @@ export default function PosPage() {
           setIsQrModalOpen(false);
           setLockForPayment(false);
         }}
-        totalAmount={cart?.finalTotal || 0}
+        totalAmount={effectiveFinalTotal}
         orderCode={effectiveOrderCode}
         tableNumber={cart?.tableNumber}
         onConfirmSuccess={() => handleConfirmPayment('VIETQR')}
@@ -328,11 +378,18 @@ export default function PosPage() {
               <span className="text-[#d4af37] font-bold">{effectiveOrderCode}</span>:
             </p>
             <div className="p-4 rounded-2xl bg-[#181b24] border border-[#d4af37]/30 flex items-center justify-between shadow-inner">
-              <span className="text-xs text-[#a0a5b5] uppercase font-bold tracking-wider">
-                Tổng tiền cần thu:
-              </span>
+              <div>
+                <span className="text-xs text-[#a0a5b5] uppercase font-bold tracking-wider block">
+                  Tổng tiền cần thu:
+                </span>
+                {vatInfo.isApplied && vatInfo.amount > 0 && (
+                  <span className="text-[10px] text-amber-300 font-semibold block mt-0.5">
+                    (Đã gồm VAT {vatInfo.rate}%: +{vatInfo.amount.toLocaleString()}đ)
+                  </span>
+                )}
+              </div>
               <span className="text-2xl font-black text-[#d4af37]">
-                {(cart?.finalTotal || 0).toLocaleString()} VNĐ
+                {effectiveFinalTotal.toLocaleString()} VNĐ
               </span>
             </div>
             <div className="text-xs text-[#8e95a5] flex justify-between items-center px-1">

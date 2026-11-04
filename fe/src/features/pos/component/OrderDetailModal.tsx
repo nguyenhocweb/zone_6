@@ -141,6 +141,12 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   <span className="font-mono">-{order.discount_amount.toLocaleString('vi-VN')} đ</span>
                 </div>
               )}
+              {order.vat_amount && order.vat_amount > 0 ? (
+                <div className="flex justify-between text-amber-300 print:text-black">
+                  <span>Thuế VAT ({order.vat_rate || 8}%):</span>
+                  <span className="font-mono">+{order.vat_amount.toLocaleString('vi-VN')} đ</span>
+                </div>
+              ) : null}
               <div className="flex justify-between text-sm font-black text-[#d4af37] print:text-black pt-1 border-t border-[#212532] print:border-black">
                 <span>TỔNG CỘNG:</span>
                 <span className="font-mono">{order.final_amount.toLocaleString('vi-VN')} đ</span>

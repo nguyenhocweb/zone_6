@@ -33,12 +33,15 @@ export const posService = {
   async checkoutOrder(data: {
     storeId: string;
     shiftId?: string;
+    shiftName?: string;
     sessionCode?: string;
     tableNumber?: string;
     customerName?: string;
     items: any[];
     totalAmount: number;
     discountAmount?: number;
+    vatRate?: number;
+    vatAmount?: number;
     finalAmount: number;
     paymentMethod: 'VIETQR' | 'CASH' | 'CARD';
   }): Promise<IOrderRecord> {

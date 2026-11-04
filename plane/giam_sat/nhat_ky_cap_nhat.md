@@ -4,6 +4,38 @@
 
 ---
 
+### [2026-11-04 23:20] - Bổ Sung Cấu Hình Thuế VAT (% Thuế & Áp Dụng Cho Tất Cả Các Ca Hay Chỉ Ca Được Chọn) & Tích Hợp Vào POS / Hóa Đơn
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "ở admin cấu hình thêm thuế avt bao nhiêu phần trăm và cáu hình ca nào sẽ áp dụng thuế hay áp dụng all"
+- **Nội dung hoàn thành:**
+  - **Mở rộng Cơ sở dữ liệu & Cấu hình Quán (StoreConfig & Order):**
+    - `StoreConfigModel` (`be/src/modules/admin_he_thong/store-config/models/store-config.model.ts`) và `store_config.prisma`:
+      - `vat_enabled`: boolean (Bật/tắt tính thuế VAT, mặc định false)
+      - `vat_rate`: number (Tỉ lệ phần trăm thuế VAT, mặc định 8%)
+      - `vat_apply_mode`: 'ALL' | 'SPECIFIC_SHIFTS' (Phạm vi: Áp dụng tất cả các ca hoặc chỉ ca được chọn)
+      - `vat_applied_shifts`: string[] (Danh sách tên hoặc mã ca làm việc áp dụng thuế)
+    - `OrderModel` (`be/src/modules/pos/models/order.model.ts`) và `order.prisma`:
+      - `vat_rate`: number (Tỉ lệ phần trăm VAT áp dụng tại thời điểm thanh toán)
+      - `vat_amount`: number (Số tiền thuế VAT được tính vào đơn hàng)
+  - **Giao diện Cấu hình Thuế VAT Admin (`fe/src/features/admin_he_thong/checkin-config/component/CheckinConfigView.tsx`):**
+    - Thêm Thẻ 4 "Cấu Hình Thuế VAT & Phạm Vi Áp Dụng Theo Ca" phong cách Obsidian Gold.
+    - Switch bật/tắt tính thuế VAT.
+    - Bộ nhập phần trăm thuế VAT linh hoạt (0%, 5%, 8%, 10%...).
+    - Lựa chọn chế độ: "Áp Dụng Tất Cả Các Ca (All)" hoặc "Chỉ Áp Dụng Cho Ca Được Chọn".
+    - Khi chọn theo ca: Tự động tải danh sách ca làm việc thật từ `shift_configs` (`useGetShiftConfigs`), cho phép Admin tích chọn trực quan từng ca (có hiển thị màu sắc và khung giờ ca).
+  - **Tích hợp Tự động Tính Thuế vào Bán Hàng POS & Hóa Đơn (`LiveCart.tsx`, `page.tsx`, `order.checkout.service.ts`, `OrderDetailModal.tsx`):**
+    - POS tự động đối chiếu ca làm việc hiện tại (`shiftData.shiftName`) với cấu hình VAT của cơ sở.
+    - Nếu ca hiện tại thuộc diện áp dụng thuế:
+      - `LiveCart` hiển thị rõ dòng `Thuế VAT (X%)` và cộng vào `Tổng cộng`.
+      - Khi thanh toán (VietQR hoặc Tiền mặt): Modal xác nhận và VietQR hiển thị đúng số tiền đã gồm VAT.
+      - Backend lưu chính xác `vat_rate`, `vat_amount`, `final_amount` vào collection `orders`.
+      - Chi tiết đơn hàng (`OrderDetailModal.tsx`) và Bill in nhiệt K80 hiển thị đầy đủ dòng Thuế VAT.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 23:05] - Chuyển Đổi Bàn Số Sang Dropdown Select Bàn Trống (Mặc Định Mang Về) & Tự Động Cập Nhật Trạng Thái Bàn Sang Đang Sử Dụng (Real-time Socket) Khi Thanh Toán
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "dạng select các bạn đang trống và mặc định là mang về nếu chọn bàn thì mới gán vô bàn đó và khi thanh toán thì cập nhật theo thời gian thực bàn đó đang xử dung;" (kèm ảnh chụp ô nhập BÀN SỐ trên POS LiveCart)

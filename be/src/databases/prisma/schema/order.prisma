@@ -18,6 +18,8 @@ model Order {
   items          Json          // Mảng các món: [{ recipeId, name, quantity, unitPrice, subtotal, toppings: [], notes, addedByName }]
   totalAmount    Float         @map("total_amount")
   discountAmount Float         @default(0) @map("discount_amount")
+  vatRate        Float         @default(0) @map("vat_rate")
+  vatAmount      Float         @default(0) @map("vat_amount")
   finalAmount    Float         @map("final_amount")
   
   paymentMethod  PaymentMethod @default(VIETQR) @map("payment_method")

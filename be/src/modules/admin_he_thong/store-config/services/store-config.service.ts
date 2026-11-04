@@ -66,6 +66,10 @@ export class StoreConfigService {
       if (dto.ordering_mode) config.ordering_mode = dto.ordering_mode;
       if (dto.table_geofence_radius_meters !== undefined) config.table_geofence_radius_meters = dto.table_geofence_radius_meters;
       if (dto.is_table_geofence_strict !== undefined) config.is_table_geofence_strict = dto.is_table_geofence_strict;
+      if (dto.vat_enabled !== undefined) config.vat_enabled = dto.vat_enabled;
+      if (dto.vat_rate !== undefined) config.vat_rate = dto.vat_rate;
+      if (dto.vat_apply_mode) config.vat_apply_mode = dto.vat_apply_mode;
+      if (dto.vat_applied_shifts !== undefined) config.vat_applied_shifts = dto.vat_applied_shifts;
     }
 
     await config.save();
@@ -223,6 +227,10 @@ export class StoreConfigService {
       ordering_mode: doc.ordering_mode ?? 'HYBRID',
       table_geofence_radius_meters: doc.table_geofence_radius_meters ?? 30,
       is_table_geofence_strict: doc.is_table_geofence_strict ?? true,
+      vat_enabled: doc.vat_enabled ?? false,
+      vat_rate: doc.vat_rate ?? 8,
+      vat_apply_mode: doc.vat_apply_mode ?? 'ALL',
+      vat_applied_shifts: doc.vat_applied_shifts ?? [],
       updated_at: doc.updated_at,
     };
   }
