@@ -16,12 +16,18 @@ import {
   FaChevronRight,
   FaCheckCircle,
 } from 'react-icons/fa';
+import { useAuth } from '@/features/shared/auth/hook/useAuth';
 import { useOrderManagement, useVoidOrder } from '../hook/useOrderManagement';
 import { IOrderRecord, OrderFilterParams } from '../type/pos.type';
 import { OrderDetailModal } from './OrderDetailModal';
 import { VoidOrderModal } from './VoidOrderModal';
 
 export const OrderManagementView: React.FC = () => {
+  const { user } = useAuth();
+  // Phân quyền: Chỉ Quản lý, Trưởng ca và Admin mới có quyền hủy hóa đơn (Void)
+  const canVoidOrder =
+    user?.role === 'admin_he_thong' || user?.role === 'quan_ly' || user?.role === 'truong_ca';
+
   const [filters, setFilters] = useState<OrderFilterParams>({
     page: 1,
     limit: 15,
@@ -362,7 +368,7 @@ export const OrderManagementView: React.FC = () => {
                             <FaPrint className="text-xs" />
                           </button>
 
-                          {!isCancelled && (
+                          {canVoidOrder && !isCancelled && (
                             <button
                               onClick={() => setSelectedOrderForVoid(order)}
                               className="p-2 rounded-lg bg-[#181B24] text-[#8E95A5] hover:text-red-400 transition cursor-pointer"
@@ -411,10 +417,14 @@ export const OrderManagementView: React.FC = () => {
       <OrderDetailModal
         order={selectedOrderForDetail}
         onClose={() => setSelectedOrderForDetail(null)}
-        onVoidClick={(order) => {
-          setSelectedOrderForDetail(null);
-          setSelectedOrderForVoid(order);
-        }}
+        onVoidClick={
+          canVoidOrder
+            ? (order) => {
+                setSelectedOrderForDetail(null);
+                setSelectedOrderForVoid(order);
+              }
+            : undefined
+        }
       />
 
       {/* Void Modal */}

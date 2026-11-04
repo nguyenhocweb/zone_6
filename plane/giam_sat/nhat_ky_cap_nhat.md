@@ -4,6 +4,21 @@
 
 ---
 
+### [2026-11-04 23:25] - Ẩn Nút Hủy Hóa Đơn (Void) Đối Với Nhân Sự Không Có Quyền
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "những người không có quyền cho nút này thì hãy ẩn nút đó đi" (kèm ảnh chụp nút icon `FaBan` ⊘ và cột Thao Tác trong bảng Quản Lý Hóa Đơn)
+- **Nội dung hoàn thành:**
+  - **Phân quyền nút Hủy Hóa Đơn (`fe/src/features/pos/component/OrderManagementView.tsx`):**
+    - Kiểm tra vai trò của tài khoản đăng nhập hiện tại qua hook `useAuth()`.
+    - Ràng buộc: Chỉ **Admin Hệ Thống (`admin_he_thong`)**, **Quản Lý (`quan_ly`)** và **Trưởng Ca (`truong_ca`)** mới được phép nhìn thấy nút `[ ⊘ ]` (Hủy Hóa Đơn).
+    - Ẩn hoàn toàn 100% nút Hủy Hóa Đơn trên từng dòng hóa đơn trong bảng Quản Lý Hóa Đơn đối với cấp Nhân Viên (`nhan_vien`), Phó Ca Vật Liệu (`pho_ca_vat_lieu`) và Phó Ca Làm Lịch (`pho_ca_lam_lich`).
+    - Đồng thời ẩn luôn nút "Hủy Hóa Đơn" bên trong modal Chi Tiết Hóa Đơn (`OrderDetailModal.tsx`) đối với các tài khoản không có thẩm quyền.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 23:20] - Bổ Sung Cấu Hình Thuế VAT (% Thuế & Áp Dụng Cho Tất Cả Các Ca Hay Chỉ Ca Được Chọn) & Tích Hợp Vào POS / Hóa Đơn
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "ở admin cấu hình thêm thuế avt bao nhiêu phần trăm và cáu hình ca nào sẽ áp dụng thuế hay áp dụng all"
