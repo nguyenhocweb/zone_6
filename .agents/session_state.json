@@ -88,12 +88,10 @@
     "Ràng buộc Nhân viên trong ca trực mới được cập nhật trạng thái bàn & Đồng bộ sơ đồ bàn WebSocket Socket.io thời gian thực: Xây dựng TableShiftVerifyService và endpoint GET /api/v1/tables/shift-status đối chiếu lịch sử Check-in camera/GPS hôm nay; khóa nút trạng thái bàn và hiển thị cảnh báo nếu không trong ca; tích hợp Socket.io namespace /tables tự động phát sóng table:updated khi nhân viên đổi trạng thái hoặc khách quét QR đặt món; Frontend useTableSocket cập nhật React Query cache tức thì và hiển thị Live Sync.",
     "Khắc phục triệt để lỗi Cast to ObjectId failed for model Table: Bổ sung toJSON/toObject virtuals id transform cho TableModel và TableZoneModel, chuẩn hóa mapping id: t.id || t._id trên table.service.ts và kiểm tra ObjectId hợp lệ tại backend controller.",
     "Khắc phục kết nối Socket POS trên Vercel: Bổ sung rewrite rule /socket.io trong next.config.ts, chuyển transport sang polling trước rồi nâng cấp websocket, cập nhật store_id cho danh mục thực đơn món ăn trên CSDL Atlas.",
-    "Triển khai Cấu Hình Cổng Thanh Toán PayOS (Open Banking & VietQR Động) (CN15): Cho phép Admin Hệ Thống tạo nhiều tài khoản PayOS lưu trên Database MongoDB Atlas (collection: payos_configs, model: PayOSConfigModel), ràng buộc DUY NHẤT 1 TÀI KHOẢN THANH TOÁN CHÍNH (is_default: true), tự động đồng bộ vào POS (VietQrModal.tsx) và Gọi món tại bàn (TableVietQrModal.tsx), cung cấp tính năng kiểm tra kết nối Credentials trực tiếp với PayOS; Xây dựng đầy đủ Granular SRP Services, Controllers, Routes và giao diện Obsidian Gold tại fe/src/app/payos/page.tsx và AppShell Sidebar."
+    "Triển khai Cấu Hình Cổng Thanh Toán PayOS (Open Banking & VietQR Động) (CN15): Cho phép Admin Hệ Thống tạo nhiều tài khoản PayOS lưu trên Database MongoDB Atlas (collection: payos_configs, model: PayOSConfigModel), ràng buộc DUY NHẤT 1 TÀI KHOẢN THANH TOÁN CHÍNH (is_default: true), tự động đồng bộ vào POS (VietQrModal.tsx) và Gọi món tại bàn (TableVietQrModal.tsx), cung cấp tính năng kiểm tra kết nối Credentials trực tiếp với PayOS; Xây dựng đầy đủ Granular SRP Services, Controllers, Routes và giao diện Obsidian Gold tại fe/src/app/payos/page.tsx và AppShell Sidebar.",
+    "Khắc phục triệt để hiển thị giá món và tích hợp chọn Topping thật từ Database vào POS: Lấy đúng recipe.price từ collection recipes, lọc bỏ công thức sơ chế nội bộ internal_prep; xây dựng modal chọn topping thật PosItemCustomModal kết nối với collection sellable_toppings (/api/v1/sellable-toppings); sửa lỗi ngắt kết nối Socket do HTTP 308 Redirect bằng skipTrailingSlashRedirect trong next.config.ts; ngăn chặn lỗi ObjectId undefined trên sơ đồ bàn."
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-04T20:00:00Z"
+  "last_updated": "2026-11-04T21:20:00Z"
 }
-
-
-

@@ -18,15 +18,15 @@ export function useTableSocket(storeId?: string | null, currentUser?: { id?: str
 
     const socketUrl =
       process.env.NEXT_PUBLIC_SOCKET_URL ||
-      process.env.NEXT_PUBLIC_API_URL ||
       (typeof window !== 'undefined' ? window.location.origin : '');
 
     const socket = io(`${socketUrl}/tables`, {
       path: '/socket.io',
       transports: ['polling', 'websocket'],
       upgrade: true,
-      reconnectionAttempts: 10,
+      reconnectionAttempts: 20,
       reconnectionDelay: 2000,
+      timeout: 10000,
     });
 
     socketRef.current = socket;
@@ -49,10 +49,18 @@ export function useTableSocket(storeId?: string | null, currentUser?: { id?: str
       (data: { table: TableItem; storeId: string; actionUser?: { userId?: string; name?: string } }) => {
         if (!data?.table) return;
 
+        const updatedId = String(data.table.id || (data.table as any)._id || '');
+        if (!updatedId) return;
+
         // 1. Cập nhật cache tức thì (Optimistic UI sync)
         queryClient.setQueriesData<TableItem[]>({ queryKey: TABLE_QUERY_KEY }, (oldData) => {
           if (!oldData || !Array.isArray(oldData)) return oldData;
-          return oldData.map((t) => (t.id === data.table.id ? { ...t, ...data.table } : t));
+          return oldData.map((t) => {
+            const currentId = String(t.id || (t as any)._id || '');
+            return currentId === updatedId
+              ? { ...t, ...data.table, id: updatedId, _id: updatedId }
+              : t;
+          });
         });
 
         // 2. Làm mới để đồng bộ hoàn toàn
@@ -82,7 +90,15 @@ export function useTableSocket(storeId?: string | null, currentUser?: { id?: str
       queryClient.invalidateQueries({ queryKey: TABLE_QUERY_KEY });
     });
 
+    // Dự phòng Polling 10s nếu socket mất kết nối
+    const interval = setInterval(() => {
+      if (!socketRef.current?.connected) {
+        queryClient.invalidateQueries({ queryKey: TABLE_QUERY_KEY });
+      }
+    }, 10000);
+
     return () => {
+      clearInterval(interval);
       socket.disconnect();
       socketRef.current = null;
     };

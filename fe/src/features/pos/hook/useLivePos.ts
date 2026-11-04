@@ -27,17 +27,17 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
   useEffect(() => {
     if (!shiftData || !user) return;
 
-    // Xác định URL Socket.io (Ưu tiên biến môi trường Backend VPS, fallback về window.location.origin)
+    // Xác định URL Socket.io (Ưu tiên biến môi trường NEXT_PUBLIC_SOCKET_URL, fallback về window.location.origin qua rewrite proxy)
     const socketUrl =
       process.env.NEXT_PUBLIC_SOCKET_URL ||
-      process.env.NEXT_PUBLIC_API_URL ||
       (typeof window !== 'undefined' ? window.location.origin : '');
     const socket = io(`${socketUrl}/pos`, {
       path: '/socket.io',
       transports: ['polling', 'websocket'],
       upgrade: true,
-      reconnectionAttempts: 15,
+      reconnectionAttempts: 20,
       reconnectionDelay: 2000,
+      timeout: 10000,
     });
 
     socketRef.current = socket;
@@ -118,6 +118,36 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
     };
   }, [shiftData, user]);
 
+  // Cơ chế dự phòng: Tự động đồng bộ giỏ hàng qua REST API định kỳ 5s nếu Socket tạm ngắt kết nối
+  useEffect(() => {
+    if (!shiftData || !user) return;
+
+    const interval = setInterval(async () => {
+      // Khi socket đang kết nối tốt thì không cần poll
+      if (socketRef.current?.connected) return;
+
+      try {
+        const session = await posService.getSession(
+          shiftData.storeId,
+          shiftData.shiftId,
+          shiftData.sessionCode
+        );
+        if (session?.cart) {
+          setCart((prev) => {
+            if (JSON.stringify(prev.items) !== JSON.stringify(session.cart.items)) {
+              return session.cart;
+            }
+            return prev;
+          });
+        }
+      } catch (e) {
+        // Dự phòng ngầm, không làm phiền giao diện
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [shiftData, user]);
+
   // Cập nhật giỏ hàng lên server và phát socket
   const syncCartToServer = useCallback(
     async (newItems: IPosCartItem[], tableNumber?: string, customerName?: string, discount?: number) => {
@@ -177,7 +207,7 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
       }
 
       const toppingTotal = toppings.reduce((sum, t) => sum + t.price, 0);
-      const unitPrice = recipe.selling_price || 0;
+      const unitPrice = Number(recipe.price ?? recipe.selling_price ?? 0);
       const subtotal = unitPrice + toppingTotal;
 
       const newItem: IPosCartItem = {

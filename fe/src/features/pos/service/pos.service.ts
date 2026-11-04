@@ -60,5 +60,14 @@ export const posService = {
     if (data && Array.isArray(data.recipes)) return data.recipes;
     return [];
   },
+
+  async getToppings(storeId?: string): Promise<any[]> {
+    const params = storeId ? { store_id: storeId, is_active: true } : { is_active: true };
+    const res = await axiosClient.get('/api/v1/sellable-toppings', { params });
+    const data = res.data?.data;
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.items)) return data.items;
+    return [];
+  },
 };
 

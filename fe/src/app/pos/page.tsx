@@ -23,6 +23,7 @@ export default function PosPage() {
 
   const [recipes, setRecipes] = useState<any[]>([]);
   const [isRecipesLoading, setIsRecipesLoading] = useState(false);
+  const [toppings, setToppings] = useState<any[]>([]);
 
   const [historyOrders, setHistoryOrders] = useState<IOrderRecord[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -73,7 +74,7 @@ export default function PosPage() {
     }
   }, [user]);
 
-  // 2. Tải danh mục món khi đã xác thực ca thành công
+  // 2. Tải danh mục món & Topping thật từ database khi đã xác thực ca thành công
   useEffect(() => {
     if (shiftData?.storeId) {
       setIsRecipesLoading(true);
@@ -93,6 +94,15 @@ export default function PosPage() {
           setRecipes([]);
         })
         .finally(() => setIsRecipesLoading(false));
+
+      posService
+        .getToppings(shiftData.storeId)
+        .then((data) => {
+          setToppings(Array.isArray(data) ? data : []);
+        })
+        .catch(() => {
+          setToppings([]);
+        });
     }
   }, [shiftData?.storeId]);
 
@@ -245,6 +255,7 @@ export default function PosPage() {
           <MenuCatalog
             recipes={recipes}
             isLoading={isRecipesLoading}
+            availableToppings={toppings}
             onAddItem={addItem}
             disabled={!!cart.lockedBy && cart.lockedBy !== currentUserId}
           />

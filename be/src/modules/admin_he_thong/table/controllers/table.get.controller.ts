@@ -21,8 +21,18 @@ export const getTablesController = asyncHandler(async (req: AuthenticatedRequest
   }
 
   const result = await service.execute(storeId);
+  const mapped = (result || []).map((t: any) => {
+    const doc = t.toObject ? t.toObject() : t;
+    const strId = t._id ? t._id.toString() : t.id;
+    return {
+      ...doc,
+      id: strId,
+      _id: strId,
+    };
+  });
+
   res.json({
     success: true,
-    data: result,
+    data: mapped,
   });
 });

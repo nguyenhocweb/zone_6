@@ -41,12 +41,18 @@ export const updateTableController = asyncHandler(async (req: AuthenticatedReque
   }
 
   const result = await service.execute(tableId, payload);
+  const tableObj = result.toObject ? result.toObject() : result;
+  const normalizedTable = {
+    ...tableObj,
+    id: result._id.toString(),
+    _id: result._id.toString(),
+  };
 
   // 3. Phát tín hiệu Socket.io thời gian thực cập nhật sơ đồ bàn cho tất cả màn hình
   const storeId = result.store_id ? result.store_id.toString() : '';
   if (storeId) {
     emitTableEvent(storeId, 'table:updated', {
-      table: result,
+      table: normalizedTable,
       actionUser: {
         userId: req.user?.userId,
         name: req.user?.name,
@@ -58,6 +64,6 @@ export const updateTableController = asyncHandler(async (req: AuthenticatedReque
   res.json({
     success: true,
     message: 'Cập nhật bàn thành công',
-    data: result,
+    data: normalizedTable,
   });
 });

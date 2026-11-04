@@ -1,23 +1,31 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { FiSearch, FiCoffee, FiPlus, FiCheck } from 'react-icons/fi';
+import { FiSearch, FiCoffee, FiPlus } from 'react-icons/fi';
+import { PosItemCustomModal, IPosSellableTopping } from './PosItemCustomModal';
 
 interface MenuCatalogProps {
   recipes: any[];
   isLoading: boolean;
-  onAddItem: (recipe: any, toppings?: Array<{ name: string; price: number }>, notes?: string) => void;
+  availableToppings?: IPosSellableTopping[];
+  onAddItem: (
+    recipe: any,
+    toppings?: Array<{ name: string; price: number }>,
+    notes?: string
+  ) => void;
   disabled?: boolean;
 }
 
 export const MenuCatalog: React.FC<MenuCatalogProps> = ({
   recipes,
   isLoading,
+  availableToppings = [],
   onAddItem,
   disabled = false,
 }) => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  const [customizingRecipe, setCustomizingRecipe] = useState<any | null>(null);
 
   // Chuẩn hóa danh sách món an toàn
   const recipeList: any[] = useMemo(() => {
@@ -26,16 +34,18 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
     return [];
   }, [recipes]);
 
-  // Danh mục duy nhất
+  // Danh mục duy nhất (chỉ lấy món thương phẩm bán cho khách 'customer_product')
   const categories = useMemo(() => {
     const set = new Set<string>();
     recipeList.forEach((r: any) => {
-      if (r?.category) set.add(r.category);
+      if (!r) return;
+      if (r.type && r.type !== 'customer_product') return; // Bỏ qua sơ chế nội bộ
+      if (r.category) set.add(r.category);
     });
     return ['ALL', ...Array.from(set)];
   }, [recipeList]);
 
-  // Lọc món theo search và category
+  // Lọc món theo search và category (Chỉ lấy customer_product bán cho khách)
   const filteredRecipes = useMemo(() => {
     return recipeList.filter((r: any) => {
       if (!r) return false;
@@ -108,11 +118,12 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
             {filteredRecipes.map((recipe: any) => {
-              const price = recipe.selling_price || 0;
+              // Lấy đúng giá thật từ database (trường 'price')
+              const price = Number(recipe.price ?? recipe.selling_price ?? 0);
               return (
                 <div
                   key={recipe._id || recipe.id}
-                  onClick={() => !disabled && onAddItem(recipe)}
+                  onClick={() => !disabled && setCustomizingRecipe(recipe)}
                   className={`group relative bg-[#12141a] hover:bg-[#181b24] border border-[#212532] hover:border-[#d4af37]/50 rounded-2xl p-3.5 flex flex-col justify-between transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-[#d4af37]/5 select-none ${
                     disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-97'
                   }`}
@@ -125,7 +136,11 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
                       </span>
                       {recipe.serving_mode && (
                         <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#181b24] text-[#d4af37] border border-[#212532]">
-                          {recipe.serving_mode === 'cold' ? 'Lạnh' : recipe.serving_mode === 'hot' ? 'Nóng' : 'Nóng/Lạnh'}
+                          {recipe.serving_mode === 'cold'
+                            ? 'Lạnh'
+                            : recipe.serving_mode === 'hot'
+                            ? 'Nóng'
+                            : 'Nóng/Lạnh'}
                         </span>
                       )}
                     </div>
@@ -141,9 +156,17 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
                     <span className="text-sm font-extrabold text-[#d4af37]">
                       {price.toLocaleString()}đ
                     </span>
-                    <div className="w-7 h-7 rounded-lg bg-[#181b24] group-hover:bg-[#d4af37] text-[#a0a5b5] group-hover:text-[#0b0c10] flex items-center justify-center transition-all duration-200 border border-[#212532] group-hover:border-[#d4af37]">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!disabled) onAddItem(recipe);
+                      }}
+                      title="Thêm nhanh món này (không kèm topping)"
+                      className="w-7 h-7 rounded-lg bg-[#181b24] group-hover:bg-[#d4af37] text-[#a0a5b5] group-hover:text-[#0b0c10] flex items-center justify-center transition-all duration-200 border border-[#212532] group-hover:border-[#d4af37] cursor-pointer"
+                    >
                       <FiPlus className="w-4 h-4 font-bold" />
-                    </div>
+                    </button>
                   </div>
                 </div>
               );
@@ -151,7 +174,17 @@ export const MenuCatalog: React.FC<MenuCatalogProps> = ({
           </div>
         )}
       </div>
+
+      {/* Modal Tùy Chọn Món & Chọn Topping Thật Từ Database */}
+      <PosItemCustomModal
+        recipe={customizingRecipe}
+        isOpen={!!customizingRecipe}
+        availableToppings={availableToppings}
+        onClose={() => setCustomizingRecipe(null)}
+        onConfirm={(rec, selectedToppings, notes) => {
+          onAddItem(rec, selectedToppings, notes);
+        }}
+      />
     </div>
   );
 };
-

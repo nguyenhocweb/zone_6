@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  skipTrailingSlashRedirect: true,
   cacheComponents: true,
   partialPrefetching: true,
   experimental: {
@@ -20,6 +21,10 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/socket.io",
+        destination: `${backendUrl}/socket.io/`,
+      },
+      {
+        source: "/socket.io/",
         destination: `${backendUrl}/socket.io/`,
       },
       {

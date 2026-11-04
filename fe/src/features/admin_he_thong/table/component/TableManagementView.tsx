@@ -147,7 +147,8 @@ export const TableManagementView: React.FC = () => {
   // Đồng bộ trạng thái live của modal chi tiết bàn khi có socket update
   useEffect(() => {
     if (selectedDetailTable) {
-      const live = tables.find((t) => t.id === selectedDetailTable.id);
+      const selectedId = String(selectedDetailTable.id || (selectedDetailTable as any)._id || "");
+      const live = tables.find((t) => String(t.id || (t as any)._id || "") === selectedId);
       if (live && live.status !== selectedDetailTable.status) {
         setSelectedDetailTable((prev) => (prev ? { ...prev, status: live.status } : prev));
       }
@@ -268,9 +269,15 @@ export const TableManagementView: React.FC = () => {
       return;
     }
 
+    const targetId = String(table.id || (table as any)._id || '');
+    if (!targetId || targetId === 'undefined') {
+      toast.error('Không tìm thấy ID của bàn để cập nhật');
+      return;
+    }
+
     updateTableMutation.mutate(
       {
-        id: table.id || (table as any)._id,
+        id: targetId,
         data: { status: newStatus },
       },
       {

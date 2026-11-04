@@ -4,6 +4,37 @@
 
 ---
 
+### [2026-11-04 21:15] - Khắc Phục Triệt Để 3 Vấn Đề: Hiển Thị Giá Món POS & Topping Thật Từ DB, Sửa Lỗi Ngắt Kết Nối Socket 308, Ngăn Chặn Lỗi ObjectId Undefined
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. "1: dữ liệu này lấy đâu ra z"
+  2. "2: bắt buộc lấy dữ liệu thật từ database món ăn và topping .... món bắn cho khách"
+  3. "3 tại sao không kết nối socket đc z"
+- **Nguyên nhân cốt lõi phát hiện:**
+  1. *Dữ liệu món & giá 0đ:* Món lấy từ MongoDB collection `recipes`, nhưng FE đọc `recipe.selling_price` thay vì trường `recipe.price` có trong Database. Danh mục POS còn chứa cả sơ chế nội bộ `internal_prep`.
+  2. *Chọn Topping thật:* Trước đó chưa có modal cho phép thu ngân chọn các topping thương phẩm từ MongoDB collection `sellable_toppings`.
+  3. *Mất kết nối Socket:* Khi FE chạy trên Vercel proxy về VPS, Next.js redirect trailing slash `HTTP 308 Permanent Redirect` trên đường dẫn `/socket.io/?...`. Client `socket.io-client` nhận 308 coi là lỗi `TransportError` và ngắt kết nối.
+  4. *Lỗi Cast to ObjectId failed for value "undefined":* Do dữ liệu bàn phát qua socket thiếu tường minh thuộc tính `id` dạng chuỗi và `TableManagementView` chưa gác chặn `table.id || table._id`.
+- **Nội dung hoàn thành:**
+  - **Dữ liệu Món & Giá thật từ Database:**
+    - Cập nhật `MenuCatalog.tsx` và `useLivePos.ts`: Hiển thị đúng giá thật `Number(recipe.price ?? recipe.selling_price ?? 0)`.
+    - Lọc bỏ hoàn toàn các công thức sơ chế nội bộ (`internal_prep`) khỏi danh mục POS, chỉ giữ lại món bán cho khách (`customer_product`).
+  - **Tích hợp Topping Thật từ MongoDB Atlas:**
+    - Cập nhật `pos.service.ts`: Bổ sung API `getToppings` lấy dữ liệu thật từ `/api/v1/sellable-toppings`.
+    - Xây dựng Modal tùy biến món cao cấp `PosItemCustomModal.tsx`: Tải danh sách topping thật từ database (Trân châu trắng 3Q 5.000đ, Trân châu hoàng kim 5.000đ, Thạch củ năng 5.000đ, Đào ngâm Cronos 10.000đ...), cho phép chọn nhiều topping, chọn mức đá, mức đường, ghi chú và tự động tính tổng tiền.
+    - Cập nhật `fe/src/app/pos/page.tsx` nạp toppings và truyền vào `MenuCatalog`.
+  - **Sửa Lỗi Ngắt Kết Nối Socket.io:**
+    - Cập nhật `fe/next.config.ts`: Bổ sung `skipTrailingSlashRedirect: true` và ánh xạ rewrite `/socket.io/` để triệt tiêu vĩnh viễn lỗi HTTP 308 Redirect.
+    - Cập nhật `useLivePos.ts` và `useTableSocket.ts`: Tối ưu hóa cấu hình Socket.io kết nối trực tiếp hoặc qua proxy đồng bộ, nâng số lần tái kết nối lên 20 lần và bổ sung cơ chế Polling đồng bộ ngầm dự phòng khi mạng chập chờn.
+  - **Ngăn Chặn Lỗi ObjectId Undefined:**
+    - Cập nhật `be/src/modules/admin_he_thong/table/controllers/table.update.controller.ts` & `table.get.controller.ts`: Chuẩn hóa `normalizedTable` luôn chứa `id` và `_id` chuỗi hợp lệ khi phát Socket và trả về JSON.
+    - Cập nhật `fe/src/features/admin_he_thong/table/component/TableManagementView.tsx`: Thêm điều kiện an toàn gác chặn `targetId = String(table.id || table._id || '')`, không bao giờ gửi chuỗi `'undefined'` lên API.
+- **Verification:**
+  - Frontend TypeScript (`tsc -p fe/tsconfig.json --noEmit`): 0 lỗi.
+  - Backend TypeScript (`tsc -p be/tsconfig.json --noEmit`): 0 lỗi.
+
+---
+
 ### [2026-11-04 19:55] - Triển Khai Hoàn Chỉnh Phân Hệ Cấu Hình PayOS Cho Admin & Đồng Bộ VietQR Động Vào POS / Gọi Món Tại Bàn (CN15)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "bổ sung thêm admin cấu hình payos để thanh toán và cấu hình đó lưu trên datavase và có thể tạo nhiều tài khoản và chỉ đc chọn 1 tài khoản đc thanh toán chính"
