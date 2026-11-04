@@ -32,3 +32,4 @@ export class TableZoneDeleteService {
     return this.repo.delete(id);
   }
 }
+

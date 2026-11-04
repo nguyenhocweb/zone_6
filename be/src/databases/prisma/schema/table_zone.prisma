@@ -11,3 +11,4 @@ model TableZone {
   @@index([storeId])
   @@map("table_zones")
 }
+

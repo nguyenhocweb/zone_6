@@ -4,6 +4,24 @@
 
 ---
 
+### [2026-11-04 16:55] - Ẩn & Chặn Phân Quyền Chức Năng Cấu Hình Ca Làm Việc (/shifts) Đối Với Cấp Nhân Viên (nhan_vien)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Cấp nhân viên bỏ chức năng này đi (kèm ảnh tài khoản Nhân Viên Nguyên truy cập và nhìn thấy "Cấu Hình Ca Làm Việc & Định Biên" `/shifts`).
+- **Nội dung hoàn thành:**
+  - **Frontend Layout (`fe/src/core/components/layout/AppShell.tsx`):**
+    - Bổ sung biến kiểm tra quyền `canConfigShifts = ["admin_he_thong", "quan_ly", "truong_ca", "pho_ca_lam_lich"].includes(user.role);`.
+    - Bọc nút chuyển hướng Sidebar "Cấu Hình Ca Làm" trong `{canConfigShifts && (...)}`.
+    - Ẩn hoàn toàn mục này khỏi Sidebar của vai trò `nhan_vien` (và `pho_ca_vat_lieu`).
+  - **Frontend View Route Guard (`fe/src/features/pho_ca_lam_lich/scheduling/component/ShiftsManagementView.tsx`):**
+    - Bổ sung màn hình chặn truy cập trực tiếp URL `/shifts` đối với các vai trò không được cấp phép (`!canManage`).
+    - Hiển thị thông báo bảo vệ "Không Có Quyền Cấu Hình Ca Làm Việc" chuẩn Obsidian Gold và nút quay về trang Xếp Lịch.
+  - **Backend Route Guard (`be/src/modules/pho_ca_lam_lich/scheduling/routes/scheduling.routes.ts`):**
+    - Đã xác minh các API mutation cấu hình ca (`POST`, `PUT`, `DELETE`, `RESET /shift-configs`) được bảo vệ nghiêm ngặt bằng middleware `requireRoles('admin_he_thong', 'quan_ly', 'truong_ca', 'pho_ca_lam_lich')`.
+  - **Build Verification:**
+    - Next.js 16 Production Build: Biên dịch 100% thành công (24/24 static routes, 0 lỗi TypeScript).
+
+---
+
 ### [2026-11-04 16:45] - Bổ Sung Bộ Chọn Chi Nhánh (Store Selector) & Tái Cấu Trúc Giao Diện 2 Cột Quản Lý Tầng / Bàn (/tables)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**

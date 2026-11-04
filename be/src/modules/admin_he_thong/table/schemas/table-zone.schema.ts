@@ -9,3 +9,4 @@ export interface CreateTableZoneDto {
   store_id: string;
   name: string;
 }
+

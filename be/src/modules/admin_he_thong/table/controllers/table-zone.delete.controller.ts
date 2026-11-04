@@ -13,3 +13,4 @@ export const deleteTableZoneController = asyncHandler(async (req: AuthenticatedR
     message: 'Đã xóa tầng/khu vực thành công.',
   });
 });
+

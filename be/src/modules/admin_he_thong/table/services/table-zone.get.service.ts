@@ -22,3 +22,4 @@ export class TableZoneGetService {
     return this.repo.listByStore(finalStoreId);
   }
 }
+

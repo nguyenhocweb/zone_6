@@ -19,3 +19,4 @@ export class TableZoneCreateService {
     return this.repo.create(dto.store_id, trimmedName);
   }
 }
+

@@ -107,6 +107,14 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   // Quyền cấu hình check-in & tọa độ quán (Chỉ Admin Hệ Thống & Quản Lý)
   const canConfigCheckin = ["admin_he_thong", "quan_ly"].includes(user.role);
 
+  // Quyền cấu hình ca làm việc & định biên (Chỉ Quản Lý, Trưởng Ca, Phó Ca Làm Lịch & Admin)
+  const canConfigShifts = [
+    "admin_he_thong",
+    "quan_ly",
+    "truong_ca",
+    "pho_ca_lam_lich",
+  ].includes(user.role);
+
   // Quyền cấu hình Zalo Bot (Chỉ duy nhất Admin Hệ Thống)
   const canConfigZalo = user.role === "admin_he_thong";
 
@@ -434,30 +442,32 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </div>
               </Link>
 
-              {/* 3b. Cấu Hình Ca Làm (Giờ làm & Định biên nhân sự tối thiểu) */}
-              <Link
-                href="/shifts"
-                id="tab-btn-shifts"
-                data-testid="tab-shifts"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isShiftsActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+              {/* 3b. Cấu Hình Ca Làm (Giờ làm & Định biên nhân sự tối thiểu - Chỉ Quản lý/Trưởng ca/Phó ca làm lịch/Admin) */}
+              {canConfigShifts && (
+                <Link
+                  href="/shifts"
+                  id="tab-btn-shifts"
+                  data-testid="tab-shifts"
+                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
                     isShiftsActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
+                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
                   }`}
                 >
-                  <FaClock />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Cấu Hình Ca Làm
-                </div>
-              </Link>
+                  <div
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                      isShiftsActive
+                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
+                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
+                    }`}
+                  >
+                    <FaClock />
+                  </div>
+                  <div className="text-xs font-black truncate flex-1">
+                    Cấu Hình Ca Làm
+                  </div>
+                </Link>
+              )}
 
               {/* 3.1 Quản Lý Kho & Vật Liệu (Dành cho nhân sự từ Nhân Viên trở lên) */}
               <Link

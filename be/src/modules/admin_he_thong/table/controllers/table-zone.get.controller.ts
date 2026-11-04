@@ -17,3 +17,4 @@ export const getTableZonesController = asyncHandler(async (req: AuthenticatedReq
     data: result,
   });
 });
+

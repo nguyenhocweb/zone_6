@@ -13,3 +13,4 @@ export const createTableZoneController = asyncHandler(async (req: AuthenticatedR
     data: result,
   });
 });
+

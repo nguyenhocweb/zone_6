@@ -18,6 +18,7 @@ import {
   FaBed,
   FaSlidersH,
   FaInfoCircle,
+  FaLock,
 } from "react-icons/fa";
 import {
   useGetShiftConfigs,
@@ -127,6 +128,35 @@ export const ShiftsManagementView: React.FC = () => {
       .filter((s) => s.is_active)
       .reduce((sum, s) => sum + (s.work_hours || 0), 0),
   };
+
+  if (!canManage) {
+    return (
+      <div className="w-full max-w-2xl mx-auto my-12 bg-[#12141A] border border-amber-500/30 rounded-3xl p-8 text-center space-y-4 shadow-2xl">
+        <div className="w-16 h-16 rounded-2xl bg-amber-950/40 border border-amber-500/40 flex items-center justify-center text-amber-400 mx-auto text-3xl shadow-inner">
+          <FaLock />
+        </div>
+        <div className="space-y-1.5">
+          <h2 className="text-lg font-black text-[#F4F5F8] uppercase tracking-wide">
+            Không Có Quyền Cấu Hình Ca Làm Việc
+          </h2>
+          <p className="text-xs text-[#8E95A5] max-w-md mx-auto leading-relaxed">
+            Chức năng thiết lập khung giờ và định biên nhân sự chỉ dành cho{" "}
+            <strong className="text-amber-400">Quản Lý</strong>,{" "}
+            <strong className="text-emerald-400">Trưởng Ca</strong> và{" "}
+            <strong className="text-blue-400">Phó Ca Làm Lịch</strong>. Nhân viên không có quyền truy cập trang này.
+          </p>
+        </div>
+        <div className="pt-2">
+          <a
+            href="/schedule"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs gold-glow-sm hover:brightness-110 transition shadow-lg"
+          >
+            Quay Về Trang Xếp Lịch
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   const handleOpenCreate = () => {
     setEditingId(null);

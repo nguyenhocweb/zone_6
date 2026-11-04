@@ -42,3 +42,4 @@ TableZoneSchema.index({ store_id: 1, name: 1 }, { unique: true });
 
 export const TableZoneModel =
   mongoose.models.TableZone || mongoose.model<ITableZoneDoc>('TableZone', TableZoneSchema);
+
