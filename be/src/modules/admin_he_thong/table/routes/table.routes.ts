@@ -48,11 +48,11 @@ export function createTableRouter(): Router {
     createTableController
   );
 
-  // PUT /api/v1/tables/:id: Cập nhật thông tin/trạng thái bàn
+  // PUT /api/v1/tables/:id: Cập nhật thông tin / trạng thái bàn
+  // Nhân viên & Phó ca được phép cập nhật trạng thái bàn khi phục vụ khách
   router.put(
     '/:id',
     authenticate,
-    requireRoles('admin_he_thong', 'quan_ly', 'truong_ca'),
     validateBody(UpdateTableSchema),
     updateTableController
   );

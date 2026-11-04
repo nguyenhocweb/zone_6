@@ -4,6 +4,39 @@
 
 ---
 
+### [2026-11-04 18:15] - Phân Quyền Sơ Đồ Bàn: Ẩn 100% Nút Thêm Cho Nhân Viên & Phó Ca; Khóa Cứng Cơ Sở Trực Thuộc; Cho Phép Cập Nhật Trạng Thái Bàn
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Ở cấp nhân viên và phó ca không có quyền thêm nên bỏ all nút thêm đi và chỉ xem được tầng và bàn thuộc cơ sở của mình mà thôi.
+- **Nội dung hoàn thành:**
+  - **Phân quyền cấu trúc bàn & tầng (`canManageStructure`):**
+    - Xác định rõ ràng: `isStaffOrVice = ['nhan_vien', 'pho_ca_lam_lich', 'pho_ca_vat_lieu'].includes(user?.role || '')`.
+    - Biến `canManageStructure = !isStaffOrVice && ['admin_he_thong', 'quan_ly', 'truong_ca'].includes(user?.role || '')`.
+    - Biến `canSwitchStore = !isStaffOrVice && ['admin_he_thong', 'quan_ly'].includes(user?.role || '')`.
+    - Cấp Nhân Viên và Phó Ca **TUYỆT ĐỐI KHÔNG CÓ QUYỀN THÊM/SỬA/XÓA**:
+      - Ẩn nút `+ Thêm Tầng` và form tạo tầng nhanh ở Sidebar bên trái.
+      - Ẩn nút thùng rác xóa tầng ở Sidebar bên trái.
+      - Ẩn nút `Thêm Bàn Đầu Tiên` tại màn hình Empty State.
+      - Ẩn nút `+ Thêm Bàn` ở header từng khối tầng trong chế độ xem Tất Cả Tầng.
+      - Ẩn nút `+ Thêm Bàn` trong chế độ xem từng tầng cụ thể.
+      - Trong `TableDetailModal`: Ẩn nút `Chỉnh Sửa` và `Xóa Bàn Này`, chỉ hiển thị nút `Đóng` kèm 4 nút chuyển đổi trạng thái phục vụ khách.
+  - **Khóa cứng cơ sở trực thuộc (Multi-store scoping & locking):**
+    - Frontend (`TableManagementView.tsx`):
+      - Cấp nhân viên / phó ca bị khóa cứng `selectedStoreId` theo `user.assigned_store_id`, hiển thị nhãn `Cơ Sở Trực Thuộc: {Tên Cơ Sở} (Cố định)`, không có dropdown đổi cơ sở.
+      - `allowedStores` lọc chính xác duy nhất cơ sở trực thuộc của tài khoản nhân viên.
+    - Backend Controllers (`table.get.controller.ts`, `table-zone.get.controller.ts`):
+      - Nếu `role` không thuộc `['admin_he_thong', 'quan_ly']`, ép buộc `storeId = req.user.assigned_store_id`, ngăn chặn hoàn toàn việc can thiệp query param để xem chéo cơ sở khác.
+  - **Cho phép Nhân viên & Phó ca cập nhật trạng thái bàn (`table.routes.ts`, `table.update.controller.ts`):**
+    - Mở quyền `PUT /api/v1/tables/:id` cho tài khoản đã xác thực.
+    - Tại controller, kiểm tra: Nếu là `nhan_vien` hoặc `pho_ca_lam_lich` / `pho_ca_vat_lieu`, **CHỈ ĐƯỢC PHÉP CẬP NHẬT FIELD `status`** (Trống $\leftrightarrow$ Có khách $\leftrightarrow$ Đã đặt $\leftrightarrow$ Bảo trì). Nếu cố tình gửi các field cấu trúc khác (`table_number`, `zone_name`, `capacity`), hệ thống ném ngay `ForbiddenError` (403).
+  - **Sửa dữ liệu liên kết cơ sở trong CSDL MongoDB Atlas:**
+    - Đồng bộ `assigned_store_id` của tài khoản nhân viên `nvnremix@gmail.com` trỏ chính xác về cơ sở đang hoạt động `Zone Six Cafe & Lounge` (`6aeaf594c9e224bb9eedac0f`).
+    - Dọn dẹp các tầng mồ côi thuộc cơ sở cũ.
+- **Verification:**
+  - TypeScript Backend (`be`): Exit code 0, 0 lỗi.
+  - TypeScript Frontend (`fe`): Exit code 0, 0 lỗi.
+
+---
+
 ### [2026-11-04 17:50] - Chuẩn Hóa Quá Trình Đăng Nhập: Access Token Lưu Cookie (15 Phút), Refresh Token Lưu Database (3 Ngày) & Cấu Hình ENV
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**

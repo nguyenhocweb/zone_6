@@ -36,9 +36,12 @@ import { toast } from 'sonner';
 
 export const TableManagementView: React.FC = () => {
   const { user } = useAuth();
-  // Quyền cấu hình bàn và tầng: Chỉ Admin, Quản Lý, Trưởng Ca
-  // Nhân viên (nhan_vien) chỉ được xem và cập nhật trạng thái bàn
-  const canManageStructure = ['admin_he_thong', 'quan_ly', 'truong_ca'].includes(user?.role || '');
+  // Quyền cấu hình bàn và tầng:
+  // Cấp nhân viên (nhan_vien) và phó ca (pho_ca_lam_lich, pho_ca_vat_lieu) TUYỆT ĐỐI KHÔNG CÓ QUYỀN THÊM/SỬA/XÓA
+  // Chỉ Admin và Quản Lý (hoặc Trưởng ca) mới có quyền cấu hình sơ đồ
+  const isStaffOrVice = ['nhan_vien', 'pho_ca_lam_lich', 'pho_ca_vat_lieu'].includes(user?.role || '');
+  const canManageStructure = !isStaffOrVice && ['admin_he_thong', 'quan_ly', 'truong_ca'].includes(user?.role || '');
+  const canSwitchStore = !isStaffOrVice && ['admin_he_thong', 'quan_ly'].includes(user?.role || '');
 
   // 1. Quản lý Cơ sở đang chọn
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
@@ -47,24 +50,41 @@ export const TableManagementView: React.FC = () => {
   const { data: storesData, isLoading: isStoresLoading } = useGetStores({ is_active: true });
   const stores = useMemo(() => storesData?.stores || [], [storesData]);
 
-  const canSwitchStore = ['admin_he_thong', 'quan_ly'].includes(user?.role || '');
-
-  // Danh sách cơ sở user được phép xem/chọn
+  // Danh sách cơ sở user được phép xem/chọn:
+  // Cấp nhân viên và phó ca CHỈ XEM ĐƯỢC TẦNG VÀ BÀN THUỘC CƠ SỞ CỦA MÌNH
   const allowedStores = useMemo(() => {
     if (!user) return stores;
-    if (user.role === 'admin_he_thong') return stores;
-    if (user.role === 'quan_ly' && user.assigned_stores && user.assigned_stores.length > 0) {
-      return stores.filter((s) => user.assigned_stores?.includes(s.id));
+    if (canSwitchStore) {
+      if (user.role === 'admin_he_thong') return stores;
+      if (user.role === 'quan_ly' && user.assigned_stores && user.assigned_stores.length > 0) {
+        return stores.filter((s) => user.assigned_stores?.includes(s.id));
+      }
+      return stores;
     }
+    // Cấp nhân viên / phó ca / trưởng ca: Khóa cứng theo cơ sở biên chế
     if (user.assigned_store_id) {
-      return stores.filter((s) => s.id === user.assigned_store_id);
+      const match = stores.filter((s) => s.id === user.assigned_store_id);
+      if (match.length > 0) return match;
     }
-    return stores;
-  }, [user, stores]);
+    if (stores.length > 0) return [stores[0]];
+    return [];
+  }, [user, stores, canSwitchStore]);
 
   // Tự động khởi tạo và đồng bộ selectedStoreId theo cơ sở hợp lệ
   useEffect(() => {
     if (stores.length === 0) return;
+
+    if (!canSwitchStore) {
+      // Cấp nhân viên & phó ca: Cố định tuyệt đối theo cơ sở biên chế của mình
+      const targetStoreId =
+        (user?.assigned_store_id && stores.some((s) => s.id === user.assigned_store_id))
+          ? user.assigned_store_id
+          : stores[0]?.id || null;
+      if (targetStoreId && selectedStoreId !== targetStoreId) {
+        setSelectedStoreId(targetStoreId);
+      }
+      return;
+    }
 
     if (!selectedStoreId) {
       if (user?.assigned_store_id && allowedStores.some((s) => s.id === user.assigned_store_id)) {
@@ -78,7 +98,7 @@ export const TableManagementView: React.FC = () => {
         setSelectedStoreId(allowedStores[0].id);
       }
     }
-  }, [stores, user, selectedStoreId, allowedStores]);
+  }, [stores, user, selectedStoreId, allowedStores, canSwitchStore]);
 
   const currentStore = useMemo(() => {
     return stores.find((s) => s.id === selectedStoreId) || allowedStores[0] || null;
@@ -334,7 +354,7 @@ export const TableManagementView: React.FC = () => {
           </div>
           <div className="flex flex-col min-w-[200px]">
             <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-wider">
-              Cơ Sở Đang Quản Lý:
+              {canSwitchStore ? 'Cơ Sở Đang Quản Lý:' : 'Cơ Sở Trực Thuộc:'}
             </span>
             {canSwitchStore && allowedStores.length > 1 ? (
               <select
@@ -355,6 +375,7 @@ export const TableManagementView: React.FC = () => {
               <span className="text-xs font-black text-[#F4F5F8] truncate">
                 {currentStore?.store_name || 'Đang tải cơ sở...'}
                 {currentStore?.store_code ? ` (${currentStore.store_code})` : ''}
+                {!canSwitchStore && ' (Cố định)'}
               </span>
             )}
           </div>
