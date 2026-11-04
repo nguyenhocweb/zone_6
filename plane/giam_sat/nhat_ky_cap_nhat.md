@@ -4,6 +4,28 @@
 
 ---
 
+### [2026-11-04 19:25] - Khắc Phục Tình Trạng Mất Kết Nối Socket Trên POS & Đồng Bộ Danh Mục Món Cho Cơ Sở
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Giải thích và xử lý "Sao lại mất kết nối socket" và hiển thị đầy đủ món trên màn hình POS (`/pos`).
+- **Nguyên nhân cốt lõi (Root Cause):**
+  1. Khi git push commit mới, GitHub Actions kích hoạt pipeline deploy lên VPS `160.191.243.53`, chạy `docker compose up -d --build` để biên dịch lại container backend. Trong thời gian container backend khởi động lại (1-2 phút), kết nối socket tạm thời bị gián đoạn (`🔴 Mất kết nối Socket`).
+  2. Vercel Serverless Cloud không duy trì kết nối WebSocket liên tục qua rewrite proxy nếu client chỉ ưu tiên WebSocket thuần.
+  3. Trong `next.config.ts`, route rewrite thiếu `/socket.io` (không có trailing slash) khi Vercel tự động strip trailing slash.
+  4. Danh mục món trong CSDL trước đây có `store_id: undefined` nên bộ lọc của POS chi nhánh không tìm thấy món ("Không tìm thấy món nào phù hợp").
+- **Nội dung hoàn thành:**
+  - **Tối ưu hóa Vercel Rewrite Proxy ([`next.config.ts`](file:///d:/DuAnCaNhan/zone_6/fe/next.config.ts)):**
+    - Bổ sung rewrite rule cho cả `/socket.io` và `/socket.io/:path*` chuyển tiếp về Nginx VPS backend.
+  - **Cấu hình Socket Client Resilient ([`useLivePos.ts`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/pos/hook/useLivePos.ts) & [`useTableSocket.ts`](file:///d:/DuAnCaNhan/zone_6/fe/src/features/admin_he_thong/table/hook/useTableSocket.ts)):**
+    - Thiết lập `transports: ['polling', 'websocket']` và `upgrade: true`. Ưu tiên HTTP Long-Polling (hoạt động 100% qua Vercel rewrites không bị ngắt) và tự động nâng cấp WebSocket khi mạng thông suốt. Tăng số lần thử lại kết nối `reconnectionAttempts: 15`.
+  - **Cập nhật CSDL & Bộ Lọc Món ([`recipe.repository.ts`](file:///d:/DuAnCaNhan/zone_6/be/src/modules/pho_ca_vat_lieu/material/repositories/recipe.repository.ts)):**
+    - Cập nhật liên kết `store_id: 6aeaf594c9e224bb9eedac0f` cho các món ăn và nước uống trong CSDL MongoDB Atlas.
+    - Bộ lọc `findAll`, `countTotal`, `countByType` mở rộng tìm cả món có `store_id` trực thuộc lẫn món toàn chuỗi (`null` hoặc chưa gán), đảm bảo POS luôn hiển thị thực đơn đầy đủ.
+- **Verification:**
+  - Backend TypeScript: Exit code 0, 0 lỗi.
+  - CSDL Atlas: Đã cập nhật 6 công thức món cho Store.
+
+---
+
 ### [2026-11-04 19:04] - Khắc Phục Lỗi Cast to ObjectId Failed Cho Model Table & Đồng Bộ Chuẩn Id/ObjectId Giữa FE-BE
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Báo lỗi `Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "Table"` khi thao tác bàn trên giao diện sơ đồ bàn.

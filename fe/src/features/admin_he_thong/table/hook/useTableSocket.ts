@@ -23,7 +23,8 @@ export function useTableSocket(storeId?: string | null, currentUser?: { id?: str
 
     const socket = io(`${socketUrl}/tables`, {
       path: '/socket.io',
-      transports: ['websocket', 'polling'],
+      transports: ['polling', 'websocket'],
+      upgrade: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 2000,
     });

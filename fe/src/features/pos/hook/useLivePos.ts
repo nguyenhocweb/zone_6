@@ -34,8 +34,9 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
       (typeof window !== 'undefined' ? window.location.origin : '');
     const socket = io(`${socketUrl}/pos`, {
       path: '/socket.io',
-      transports: ['websocket', 'polling'],
-      reconnectionAttempts: 10,
+      transports: ['polling', 'websocket'],
+      upgrade: true,
+      reconnectionAttempts: 15,
       reconnectionDelay: 2000,
     });
 

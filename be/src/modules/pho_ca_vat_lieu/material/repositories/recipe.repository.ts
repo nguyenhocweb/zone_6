@@ -12,7 +12,11 @@ export class RecipeRepository {
     const query: any = {};
 
     if (filters?.store_id) {
-      query.store_id = filters.store_id;
+      query.$or = [
+        { store_id: filters.store_id },
+        { store_id: null },
+        { store_id: { $exists: false } },
+      ];
     }
 
     if (filters?.is_active !== undefined) {
@@ -124,13 +128,13 @@ export class RecipeRepository {
 
   async countTotal(store_id?: string): Promise<number> {
     const query: any = {};
-    if (store_id) query.store_id = store_id;
+    if (store_id) query.$or = [{ store_id }, { store_id: null }, { store_id: { $exists: false } }];
     return RecipeModel.countDocuments(query).exec();
   }
 
   async countByType(type: string, store_id?: string): Promise<number> {
     const query: any = { type };
-    if (store_id) query.store_id = store_id;
+    if (store_id) query.$or = [{ store_id }, { store_id: null }, { store_id: { $exists: false } }];
     return RecipeModel.countDocuments(query).exec();
   }
 
