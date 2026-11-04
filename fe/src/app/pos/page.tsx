@@ -35,6 +35,15 @@ export default function PosPage() {
   const [pendingPaymentMethod, setPendingPaymentMethod] = useState<'VIETQR' | 'CASH'>('VIETQR');
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
+  // Memoize liveUser để tránh re-create object mỗi render gây đứt kết nối Socket
+  const liveUser = React.useMemo(() => {
+    if (!user) return null;
+    return {
+      userId: user.id || (user as any)._id || '',
+      name: user.name || (user as any).username || 'Nhân viên',
+    };
+  }, [user?.id, (user as any)?._id, user?.name, (user as any)?.username]);
+
   // Hook Live POS đồng bộ WebSocket
   const {
     cart,
@@ -45,10 +54,7 @@ export default function PosPage() {
     setLockForPayment,
     notifyOrderCompleted,
     syncCartToServer,
-  } = useLivePos(
-    shiftData,
-    user ? { userId: user.id || (user as any)._id, name: user.name || (user as any).username || 'Nhân viên' } : null
-  );
+  } = useLivePos(shiftData, liveUser);
 
   // 1. Kiểm tra điều kiện ca trực & điểm danh
   const checkShiftAccess = async () => {

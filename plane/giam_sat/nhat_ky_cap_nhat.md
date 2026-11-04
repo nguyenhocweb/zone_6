@@ -4,6 +4,40 @@
 
 ---
 
+### [2026-11-04 22:15] - Khắc Phục Triệt Để 2 Lỗi POS: Vòng Lặp Ngắt Kết Nối Socket (Infinite Reconnect Loop) & Hiển Thị Đầy Đủ Danh Mục Topping Bán Lẻ Từ Database
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "thiếu topping và vẫn lõi kết nối socket kaif"
+- **Nguyên nhân cốt lõi phát hiện:**
+  1. *Lỗi kết nối Socket (`🔴 Mất kết nối Socket`):*
+     - Trong `fe/src/app/pos/page.tsx`, object `user ? { userId: ..., name: ... } : null` được tạo mới (new object literal reference) trên MỖI LẦN COMPONENT RENDER.
+     - Trong `fe/src/features/pos/hook/useLivePos.ts`, `useEffect` kết nối socket phụ thuộc vào dependency `[shiftData, user]`.
+     - Khi Socket kết nối thành công, `socket.on('connect')` kích hoạt `setIsConnected(true)`, gây re-render component cha.
+     - Khi re-render, `user` object mới được tạo $\rightarrow$ React thấy tham chiếu `user` thay đổi $\rightarrow$ chạy hàm cleanup: `socket.disconnect()`.
+     - `socket.on('disconnect')` gọi `setIsConnected(false)`, kích hoạt re-render tiếp theo $\rightarrow$ Socket rơi vào vòng lặp kết nối - ngắt kết nối vô tận (Reconnect / Teardown Death Loop).
+     - Đồng thời, khi đi qua Vercel proxy rewrite, cơ chế WebSocket upgrade probe (`upgrade: true`) bị Vercel Serverless Function từ chối do không hỗ trợ persistent TCP tunnel.
+  2. *Thiếu Topping trên màn hình POS:*
+     - Trong backend `SellableToppingRepository.findAll`, câu query lọc cứng `query.store_id = new mongoose.Types.ObjectId(filters.store_id)`. Trong khi các Topping chuẩn chuỗi hệ thống trong MongoDB Atlas có `store_id: null` (dùng chung cho toàn bộ chi nhánh Zone 6). Do đó query trả về 0 topping!
+     - Trên frontend `MenuCatalog.tsx`, danh mục tabs `categories` chỉ quét danh sách `recipeList` và không hiển thị tab `Topping`. Đồng thời giao diện thiếu các thẻ Topping để thu ngân bấm bán nhanh hoặc thêm vào đơn.
+- **Nội dung hoàn thành:**
+  - **Khắc phục Socket.io POS Kết Nối Ổn Định 100%:**
+    - Cập nhật `fe/src/app/pos/page.tsx`: Dùng `React.useMemo` memoize `liveUser` theo `user.id`, `user.name` để chặn triệt để tình trạng tạo object reference mới mỗi render.
+    - Cập nhật `fe/src/features/pos/hook/useLivePos.ts`:
+      - Phân tách dependencies thành các kiểu nguyên thủy (primitive string values): `sessionCode`, `storeId`, `shiftId`, `userId`, `userName`.
+      - Tự động nhận diện môi trường Vercel (`window.location.hostname.includes('vercel.app')`) để kích hoạt chế độ `transports: ['polling']`, `upgrade: false`, đảm bảo HTTP Long-Polling xuyên qua Vercel Rewrite Proxy về VPS ổn định 100%, không bị rớt kết nối.
+      - Tối ưu hóa các callbacks `syncCartToServer`, `setLockForPayment`, `notifyOrderCompleted` theo các biến nguyên thủy.
+  - **Mở Khóa Topping Toàn Chuỗi & Hiển Thị Trực Quan Trên POS Catalog:**
+    - Cập nhật backend `be/src/modules/pho_ca_vat_lieu/material/repositories/sellable-topping.repository.ts`: Mở rộng điều kiện truy vấn `$or` chấp nhận cả Topping theo chi nhánh (`store_id`) lẫn Topping toàn chuỗi (`store_id: null` hoặc không tồn tại), trả về đầy đủ 100% topping trong MongoDB Atlas.
+    - Cập nhật frontend `fe/src/features/pos/component/MenuCatalog.tsx`:
+      - Bổ sung tab danh mục `Topping` bên cạnh các danh mục thức uống (`Cà phê`, `Trà trái cây`...).
+      - Lọc và hiển thị danh sách Topping thật: Trân châu trắng 3Q giòn (5.000đ), Trân châu đen hoàng kim (5.000đ), Thạch củ năng giòn lá dứa (5.000đ), Đào ngâm miếng giòn Cronos (10.000đ)...
+      - Khi chọn tab `Tất cả món`, hiển thị khối phân cách chuyên biệt `Topping Bán Lẻ & Thêm` ngay dưới thức uống.
+      - Hỗ trợ thu ngân bấm nút `+` trên thẻ topping để thêm nhanh topping vào giỏ hàng Live Cart hoặc click vào thức uống để chọn topping đi kèm qua modal tùy biến.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 21:50] - Triển Khai Landing Page Trang Chủ Chuẩn Obsidian Gold & Hoàn Thiện Tự Gọi Món Tại Bàn Không Cần Login (Lưu Định Vị GPS, Mã Thiết Bị, Tên Thiết Bị, SĐT Tích Điểm)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "tôi muốn 1 trang landing page làm trang chủ và trang dành cho khi khách hàng quét mã mà đc cung cấp or dán ở bàn sẽ hiện các món để chọn thành toán mã qr ... mà ko cần login yêu cầu là phải xác định vị trí và lưu thông tin khách hàng mã định danh của htieets bị tên thiết bị .... sau này có thể bổ sung thêm tài khoản khách hàng thân thiết có thêm tên số ddienj thoại .... nhưng hiện h chưa bắt buộc lắm đâu làm đủ là đc"

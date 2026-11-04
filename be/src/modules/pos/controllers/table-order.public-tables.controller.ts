@@ -38,3 +38,4 @@ export const getPublicStoresAndTablesController = asyncHandler(async (_req: Requ
     data,
   });
 });
+

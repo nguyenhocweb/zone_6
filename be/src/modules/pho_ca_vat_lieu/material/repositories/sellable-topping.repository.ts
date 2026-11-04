@@ -8,21 +8,34 @@ export class SellableToppingRepository {
    * Lấy danh sách tất cả Topping bán ra, kèm dữ liệu tồn kho thực tế từ bảng toppings
    */
   async findAll(filters?: { store_id?: string; is_active?: boolean; search?: string }): Promise<any[]> {
-    const query: any = {};
+    const conditions: any[] = [];
+
     if (filters?.store_id) {
-      query.store_id = new mongoose.Types.ObjectId(filters.store_id);
+      conditions.push({
+        $or: [
+          { store_id: new mongoose.Types.ObjectId(filters.store_id) },
+          { store_id: null },
+          { store_id: { $exists: false } },
+        ],
+      });
     }
+
     if (filters?.is_active !== undefined) {
-      query.is_active = filters.is_active;
+      conditions.push({ is_active: filters.is_active });
     }
+
     if (filters?.search && filters.search.trim()) {
       const s = filters.search.trim();
-      query.$or = [
-        { name: { $regex: s, $options: 'i' } },
-        { code: { $regex: s, $options: 'i' } },
-        { portion_unit: { $regex: s, $options: 'i' } },
-      ];
+      conditions.push({
+        $or: [
+          { name: { $regex: s, $options: 'i' } },
+          { code: { $regex: s, $options: 'i' } },
+          { portion_unit: { $regex: s, $options: 'i' } },
+        ],
+      });
     }
+
+    const query = conditions.length > 0 ? { $and: conditions } : {};
 
     const items = await SellableToppingModel.find(query).sort({ name: 1 }).exec();
 

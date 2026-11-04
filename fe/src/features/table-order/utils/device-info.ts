@@ -47,3 +47,4 @@ export function detectDeviceName(): string {
 
   return `${os} (${browser})`;
 }
+

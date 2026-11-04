@@ -23,21 +23,33 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
   const [activeStaff, setActiveStaff] = useState<Array<{ userId: string; name: string }>>([]);
   const socketRef = useRef<Socket | null>(null);
 
+  // Trích xuất các trường nguyên thủy để làm dependencies, tránh re-connect loop do object reference
+  const sessionCode = shiftData?.sessionCode;
+  const storeId = shiftData?.storeId;
+  const shiftId = shiftData?.shiftId;
+  const userId = user?.userId;
+  const userName = user?.name;
+
   // Khởi tạo kết nối Socket.io
   useEffect(() => {
-    if (!shiftData || !user) return;
+    if (!sessionCode || !storeId || !userId) return;
 
     // Xác định URL Socket.io (Ưu tiên biến môi trường NEXT_PUBLIC_SOCKET_URL, fallback về window.location.origin qua rewrite proxy)
+    const isVercel = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
     const socketUrl =
       process.env.NEXT_PUBLIC_SOCKET_URL ||
       (typeof window !== 'undefined' ? window.location.origin : '');
+
+    // Trên Vercel proxy rewrite, WebSocket upgrade không được hỗ trợ bởi serverless edge rewrites
+    // Cần dùng transports: ['polling'], upgrade: false để giữ kết nối HTTP Long-Polling siêu ổn định
     const socket = io(`${socketUrl}/pos`, {
       path: '/socket.io',
-      transports: ['polling', 'websocket'],
-      upgrade: true,
-      reconnectionAttempts: 20,
+      transports: isVercel ? ['polling'] : ['polling', 'websocket'],
+      upgrade: !isVercel,
+      reconnectionAttempts: 50,
       reconnectionDelay: 2000,
-      timeout: 10000,
+      timeout: 15000,
+      autoConnect: true,
     });
 
     socketRef.current = socket;
@@ -45,15 +57,20 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
     socket.on('connect', () => {
       setIsConnected(true);
       socket.emit('pos:join', {
-        sessionCode: shiftData.sessionCode,
-        storeId: shiftData.storeId,
-        shiftId: shiftData.shiftId,
-        user: { userId: user.userId, name: user.name },
+        sessionCode,
+        storeId,
+        shiftId,
+        user: { userId, name: userName || 'Nhân viên' },
       });
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (reason) => {
+      console.warn('POS Socket disconnected:', reason);
       setIsConnected(false);
+    });
+
+    socket.on('connect_error', (err) => {
+      console.warn('POS Socket connect_error:', err?.message || err);
     });
 
     // Đồng bộ ban đầu khi vừa vào phòng
@@ -82,7 +99,7 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
         lockedByName: data.lockedByName,
       }));
 
-      if (data.isLocked && data.lockedBy !== user.userId) {
+      if (data.isLocked && data.lockedBy !== userId) {
         toast.warning(`🔒 ${data.lockedByName || 'Đồng nghiệp'} đang tiến hành thanh toán đơn hàng này.`);
       } else if (!data.isLocked) {
         toast.info('🔓 Đơn hàng đã được mở khóa chỉnh sửa.');
@@ -116,11 +133,11 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
     return () => {
       socket.disconnect();
     };
-  }, [shiftData, user]);
+  }, [sessionCode, storeId, shiftId, userId, userName]);
 
   // Cơ chế dự phòng: Tự động đồng bộ giỏ hàng qua REST API định kỳ 5s nếu Socket tạm ngắt kết nối
   useEffect(() => {
-    if (!shiftData || !user) return;
+    if (!sessionCode || !storeId) return;
 
     const interval = setInterval(async () => {
       // Khi socket đang kết nối tốt thì không cần poll
@@ -128,9 +145,9 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
 
       try {
         const session = await posService.getSession(
-          shiftData.storeId,
-          shiftData.shiftId,
-          shiftData.sessionCode
+          storeId,
+          shiftId || '',
+          sessionCode
         );
         if (session?.cart) {
           setCart((prev) => {
@@ -146,12 +163,12 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [shiftData, user]);
+  }, [sessionCode, storeId, shiftId]);
 
   // Cập nhật giỏ hàng lên server và phát socket
   const syncCartToServer = useCallback(
     async (newItems: IPosCartItem[], tableNumber?: string, customerName?: string, discount?: number) => {
-      if (!shiftData || !user) return;
+      if (!sessionCode || !userId) return;
 
       const subtotal = newItems.reduce((acc, it) => acc + it.subtotal, 0);
       const finalDiscount = discount ?? cart.discount;
@@ -173,18 +190,18 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
       // Phát qua Socket nếu đã kết nối
       if (socketRef.current?.connected) {
         socketRef.current.emit('pos:cart_update', {
-          sessionCode: shiftData.sessionCode,
+          sessionCode,
           items: newItems,
           tableNumber: updatedCart.tableNumber,
           customerName: updatedCart.customerName,
           discount: finalDiscount,
-          user: { userId: user.userId, name: user.name },
+          user: { userId, name: userName || 'Nhân viên' },
         });
       } else {
         // Fallback qua REST API nếu socket rớt
         try {
           await posService.updateCart({
-            sessionCode: shiftData.sessionCode,
+            sessionCode,
             items: newItems,
             tableNumber: updatedCart.tableNumber,
             customerName: updatedCart.customerName,
@@ -195,7 +212,7 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
         }
       }
     },
-    [shiftData, user, cart]
+    [sessionCode, userId, userName, cart]
   );
 
   // Thêm món vào giỏ hàng
@@ -283,38 +300,38 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
   // Khóa / Mở khóa đơn hàng khi thanh toán
   const setLockForPayment = useCallback(
     (isLocked: boolean) => {
-      if (!shiftData || !user) return;
+      if (!sessionCode || !userId) return;
 
       if (socketRef.current?.connected) {
         socketRef.current.emit('pos:cart_lock', {
-          sessionCode: shiftData.sessionCode,
+          sessionCode,
           isLocked,
-          user: { userId: user.userId, name: user.name },
+          user: { userId, name: userName || 'Nhân viên' },
         });
       }
 
       setCart((prev) => ({
         ...prev,
-        lockedBy: isLocked ? user.userId : null,
-        lockedByName: isLocked ? user.name : null,
+        lockedBy: isLocked ? userId : null,
+        lockedByName: isLocked ? (userName || 'Nhân viên') : null,
       }));
     },
-    [shiftData, user]
+    [sessionCode, userId, userName]
   );
 
   // Thông báo thanh toán hoàn tất
   const notifyOrderCompleted = useCallback(
     (order: any) => {
-      if (!shiftData || !user) return;
+      if (!sessionCode || !userId) return;
       if (socketRef.current?.connected) {
         socketRef.current.emit('pos:order_completed', {
-          sessionCode: shiftData.sessionCode,
+          sessionCode,
           order,
-          user: { userId: user.userId, name: user.name },
+          user: { userId, name: userName || 'Nhân viên' },
         });
       }
     },
-    [shiftData, user]
+    [sessionCode, userId, userName]
   );
 
   return {
