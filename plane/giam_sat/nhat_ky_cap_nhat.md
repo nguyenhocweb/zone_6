@@ -4,6 +4,22 @@
 
 ---
 
+### [2026-11-04 16:15] - Tinh Gọn Thanh Tabs Vật Liệu & Công Thức: Loại Bỏ Toàn Bộ Icon, Thu Gọn Padding & Phông Chữ Chuẩn Obsidian Gold
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** *"feed sao cho gọn lại và ko cần icon đâu"* (kèm ảnh chụp thanh tabs Kho & Vật Liệu).
+- **Nội dung hoàn thành:**
+  - **`MaterialsView.tsx`:**
+    - Gỡ bỏ hoàn toàn 5 icon thừa trên các tabs (`FaThLarge`, `FaTable`, `FaTruckLoading`, `FaFileAlt`, `FaTruck`).
+    - Thu gọn nhãn tab súc tích: "Vật Liệu & Bao Bì", "Tồn Kho Hiện Tại", "Nhà Cung Cấp", "Yêu Cầu Nhập Kho", "Đơn Thu Mua PO".
+    - Lược bỏ các huy hiệu phụ cồng kềnh ("Admin & Quản Lý", "Đa Quán"), tối ưu padding từ `px-6 py-3.5` xuống `px-3.5 py-2.5`, kích thước chữ `text-xs sm:text-sm font-bold`.
+    - Hỗ trợ cuộn ngang mượt mà không vỡ dòng (`overflow-x-auto scrollbar-none whitespace-nowrap`).
+  - **`RecipesView.tsx`:**
+    - Đồng bộ gỡ bỏ các icon (`FaBookOpen`, `FaIceCream`) và chuẩn hóa kích thước tabs tinh gọn tương tự.
+  - **Build Verification:**
+    - Next.js build thành công 100% (24/24 static routes, 0 lỗi).
+
+---
+
 ### [2026-10-31 19:25] - Tích Hợp Gửi Email Mật Khẩu Thật (Gmail SMTP) & Pop-up Hiển Thị Sao Chép Mật Khẩu Khi Tạo Nhân Viên
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Kiểm tra kỹ cơ chế gửi mật khẩu khi tạo nhân viên, cấu hình Gmail SMTP và cập nhật toàn bộ lên GitHub.

@@ -114,20 +114,19 @@ export const RecipesView: React.FC = () => {
         onSelectStore={setSelectedStoreId}
       />
 
-      {/* Tab Switcher */}
-      <div className="flex items-center gap-2 border-b border-white/10 pb-1">
+      {/* Tab Switcher: Tinh gọn, không icon */}
+      <div className="flex items-center border-b border-white/10 gap-1 sm:gap-2 overflow-x-auto scrollbar-none pb-px">
         <button
           type="button"
           onClick={() => setActiveTab("recipes")}
-          className={`flex items-center gap-2.5 px-6 py-3.5 border-b-2 font-bold text-sm transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "recipes"
-              ? "border-amber-400 text-amber-300 bg-amber-500/5 rounded-t-2xl"
-              : "border-transparent text-white/60 hover:text-white"
+              ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/5 rounded-t-xl"
+              : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
           }`}
         >
-          <FaBookOpen className="text-sm" />
-          <span>Sổ Tay Công Thức & Danh Mục Món</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-white/70">
+          <span>Sổ Tay Công Thức & Món</span>
+          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/10 text-white/70">
             {recipesData?.total || 0} món
           </span>
         </button>
@@ -135,15 +134,14 @@ export const RecipesView: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveTab("toppings")}
-          className={`flex items-center gap-2.5 px-6 py-3.5 border-b-2 font-bold text-sm transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "toppings"
-              ? "border-amber-400 text-amber-300 bg-amber-500/5 rounded-t-2xl"
-              : "border-transparent text-white/60 hover:text-white"
+              ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/5 rounded-t-xl"
+              : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
           }`}
         >
-          <FaIceCream className="text-sm text-amber-400" />
-          <span>Topping Bán Kèm (Table Riêng)</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+          <span>Topping Bán Kèm</span>
+          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30">
             Menu Add-on
           </span>
         </button>

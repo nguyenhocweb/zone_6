@@ -255,20 +255,19 @@ export const MaterialsView: React.FC = () => {
         </div>
       </div>
 
-      {/* Tabs Switcher: Danh mục thẻ (Ảnh 1) vs Tồn kho hiện tại */}
-      <div className="flex border-b border-white/10 gap-3">
+      {/* Tabs Switcher: Tinh gọn, không icon, chuẩn Obsidian & Gold */}
+      <div className="flex items-center border-b border-white/10 gap-1 sm:gap-2 overflow-x-auto scrollbar-none pb-px">
         <button
           type="button"
           onClick={() => setActiveTab("catalog")}
-          className={`flex items-center gap-2.5 px-6 py-3.5 border-b-2 font-bold text-sm transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "catalog"
-              ? "border-amber-400 text-amber-300 bg-amber-500/5 rounded-t-2xl"
-              : "border-transparent text-white/60 hover:text-white"
+              ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/5 rounded-t-xl"
+              : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
           }`}
         >
-          <FaThLarge className="text-sm" />
-          <span>Danh Mục Vật Liệu & Bao Bì</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-white/70">
+          <span>Vật Liệu & Bao Bì</span>
+          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/10 text-white/70">
             {materialsData?.total || 0}
           </span>
         </button>
@@ -276,41 +275,36 @@ export const MaterialsView: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveTab("inventory")}
-          className={`flex items-center gap-2.5 px-6 py-3.5 border-b-2 font-bold text-sm transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "inventory"
-              ? "border-amber-400 text-amber-300 bg-amber-500/5 rounded-t-2xl"
-              : "border-transparent text-white/60 hover:text-white"
+              ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/5 rounded-t-xl"
+              : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
           }`}
         >
-          <FaTable className="text-sm" />
-          <span>Tồn Kho Hiện Tại & Kiểm Kê</span>
+          <span>Tồn Kho Hiện Tại</span>
           {materialsData?.low_stock_count ? (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-black">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-black">
               {materialsData.low_stock_count} cần nhập
             </span>
           ) : (
-            <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
               Ổn định
             </span>
           )}
         </button>
 
-        {/* Tab 3: Nhà Cung Cấp & Nguồn Hàng - CHỈ DÀNH CHO ADMIN VÀ QUẢN LÝ */}
+        {/* Tab 3: Nhà Cung Cấp */}
         {canManageSuppliers && (
           <button
             type="button"
             onClick={() => setActiveTab("suppliers")}
-            className={`flex items-center gap-2.5 px-6 py-3.5 border-b-2 font-bold text-sm transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "suppliers"
-                ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/10 rounded-t-2xl"
-                : "border-transparent text-white/60 hover:text-white"
+                ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/10 rounded-t-xl"
+                : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
             }`}
           >
-            <FaTruckLoading className="text-sm" />
-            <span>Nhà Cung Cấp & Nguồn Hàng</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30">
-              Admin & Quản Lý
-            </span>
+            <span>Nhà Cung Cấp</span>
           </button>
         )}
 
@@ -319,33 +313,28 @@ export const MaterialsView: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab("requisitions")}
-            className={`flex items-center gap-2.5 px-6 py-3.5 border-b-2 font-bold text-sm transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "requisitions"
-                ? "border-amber-400 text-amber-300 bg-amber-500/10 rounded-t-2xl"
-                : "border-transparent text-white/60 hover:text-white"
+                ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/10 rounded-t-xl"
+                : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
             }`}
           >
-            <FaFileAlt className="text-sm" />
             <span>Yêu Cầu Nhập Kho</span>
           </button>
         )}
 
-        {/* Tab 5: Trung Tâm Thu Mua & Gộp PO (Chỉ Quản Lý & Admin) */}
+        {/* Tab 5: Đơn Thu Mua PO (Chỉ Quản Lý & Admin) */}
         {canManageProcurement && (
           <button
             type="button"
             onClick={() => setActiveTab("procurement")}
-            className={`flex items-center gap-2.5 px-6 py-3.5 border-b-2 font-bold text-sm transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "procurement"
-                ? "border-blue-500 text-blue-400 bg-blue-500/10 rounded-t-2xl"
-                : "border-transparent text-white/60 hover:text-white"
+                ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/10 rounded-t-xl"
+                : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
             }`}
           >
-            <FaTruck className="text-sm" />
-            <span>Đơn Thu Mua & Gộp PO</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500 text-white">
-              Đa Quán
-            </span>
+            <span>Đơn Thu Mua PO</span>
           </button>
         )}
       </div>
