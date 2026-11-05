@@ -187,6 +187,10 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
           is_geofence_required: values.is_geofence_required,
           is_time_window_strict: values.is_time_window_strict,
           is_active: values.is_active,
+          vat_enabled: values.vat_enabled ?? false,
+          vat_rate: Number(values.vat_rate || 8),
+          vat_apply_mode: values.vat_apply_mode || "ALL",
+          vat_applied_shifts: values.vat_applied_shifts || [],
         },
       });
       onClose();
@@ -444,7 +448,7 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
                 <FaReceipt className="text-sm" /> Thuế VAT Chi Nhánh
               </span>
               <div
-                onClick={() => setValue("vat_enabled", !vatEnabled)}
+                onClick={() => setValue("vat_enabled", !vatEnabled, { shouldDirty: true, shouldValidate: true })}
                 className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer transition border ${
                   vatEnabled
                     ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"

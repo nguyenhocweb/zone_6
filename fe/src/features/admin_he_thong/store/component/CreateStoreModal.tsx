@@ -430,7 +430,7 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                 <FaReceipt className="text-sm" /> Thuế VAT Chi Nhánh
               </span>
               <div
-                onClick={() => setValue("vat_enabled", !vatEnabled)}
+                onClick={() => setValue("vat_enabled", !vatEnabled, { shouldDirty: true, shouldValidate: true })}
                 className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer transition border ${
                   vatEnabled
                     ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"

@@ -7,6 +7,7 @@
     "database": "MongoDB Atlas (Cluster: nguyenhocweb.pqyjucr.mongodb.net, Database: zone_6)"
   },
   "completed_tasks": [
+    "Fix triệt để lỗi không lưu cấu hình thuế VAT trong EditStoreModal: Bổ sung vat_enabled, vat_rate, vat_apply_mode, vat_applied_shifts vào payload gửi lên backend khi submit.",
     "Tích hợp API danh sách ca làm việc (useGetShiftConfigs) & Bộ chọn đa ca (Multi-Select) áp dụng thuế VAT cho chi nhánh tại EditStoreModal, CreateStoreModal và CheckinConfigView.",
     "Loại bỏ Widget Thẻ Quy Trình & Lịch Kiểm Kho Đang Áp Dụng khỏi InventoryAuditView giúp giao diện kiểm kê gọn gàng, giảm bớt chiếm diện tích không cần thiết.",
     "Tối ưu hóa UI/UX Dropdown Danh Mục Món: Phân nhóm rõ ràng theo '── Món Bán ──' và '── Món Nội Bộ ──' bằng thẻ <optgroup>, loại bỏ các tiền tố emoji và hậu tố dư thừa (Món bán) / (Nội bộ) trên CreateRecipeModal, EditRecipeModal và RecipesView.",

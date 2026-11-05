@@ -4,6 +4,21 @@
 
 ---
 
+### [2026-11-05 12:00] - Khắc Phục Lỗi Không Lưu Cấu Hình Thuế VAT Khi Bấm Lưu Trong EditStoreModal
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "tại bấm lưu thuế cấu hình vat rồi mà không lưu thuwcxj l;ại thông báo đã luuw là sao" (kèm ảnh chụp form Cấu hình Thuế VAT Chi Nhánh hiển thị Đang Tắt Thuế VAT sau khi lưu)
+- **Nguyên nhân cốt lõi (Root Cause):**
+  - Trong `fe/src/features/admin_he_thong/store/component/EditStoreModal.tsx`, hàm `onSubmit` khi gửi payload lên mutation `updateMutation.mutateAsync` chỉ bọc các trường tọa độ GPS và tên chi nhánh mà bỏ sót 4 trường cấu hình VAT: `vat_enabled`, `vat_rate`, `vat_apply_mode`, `vat_applied_shifts`.
+  - Do đó mutation báo thành công (toast "Cập nhật thành công") nhưng dữ liệu VAT không hề được gửi lên backend, dẫn đến database không thay đổi trạng thái bật/tắt VAT.
+- **Nội dung hoàn thành:**
+  - Bổ sung đầy đủ 4 trường `vat_enabled`, `vat_rate`, `vat_apply_mode`, `vat_applied_shifts` vào payload gửi đi trong `onSubmit` của `EditStoreModal.tsx`.
+  - Đảm bảo sự kiện bấm nút bật/tắt VAT kích hoạt `{ shouldDirty: true, shouldValidate: true }` cho `setValue` ở cả `EditStoreModal.tsx` và `CreateStoreModal.tsx`.
+- **Verification:**
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 11:10] - Tích Hợp API Danh Sách Ca & Bộ Chọn Đa Ca (Multi-Select) Áp Dụng Thuế VAT Cho Chi Nhánh
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "có thể gọi api lấy dữ liệu all ca để dạng chọn 1 or nhiều á nha" (kèm ảnh chụp dropdown Phạm Vi Áp Dụng Ca trong modal Cấu hình Chi nhánh)
