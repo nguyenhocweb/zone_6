@@ -37,7 +37,7 @@ export const CheckinConfigView: React.FC = () => {
   const [selectedStoreId, setSelectedStoreId] = useState<string>("");
 
   const { data: config, isLoading, isError } = useCheckinConfig(selectedStoreId || undefined);
-  const { data: shiftsResponse } = useGetShiftConfigs();
+  const { data: shiftsResponse } = useGetShiftConfigs(selectedStoreId || undefined);
   const shiftsList = shiftsResponse?.shifts || [];
   const updateMutation = useUpdateCheckinConfig();
 
@@ -1096,9 +1096,32 @@ export const CheckinConfigView: React.FC = () => {
                           <span className="text-xs font-bold text-[#F4F5F8]">
                             Chọn các ca áp dụng thuế VAT:
                           </span>
-                          <span className="text-[11px] text-[#D4AF37] font-semibold">
-                            Đã chọn: {vatAppliedShifts.length} ca
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const allNames =
+                                  shiftsList.length > 0
+                                    ? shiftsList.map((s: any) => s.shift_name || s.name)
+                                    : ["Ca Sáng", "Ca Chiều", "Ca Tối", "Ca Khuya"];
+                                setVatAppliedShifts(allNames);
+                              }}
+                              className="text-[10px] text-[#D4AF37] hover:underline font-semibold cursor-pointer"
+                            >
+                              Chọn tất cả
+                            </button>
+                            <span className="text-white/20 text-[10px]">|</span>
+                            <button
+                              type="button"
+                              onClick={() => setVatAppliedShifts([])}
+                              className="text-[10px] text-[#8E95A5] hover:text-white hover:underline font-semibold cursor-pointer"
+                            >
+                              Bỏ chọn
+                            </button>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#D4AF37]/15 text-[#D4AF37]">
+                              Đã chọn: {vatAppliedShifts.length} ca
+                            </span>
+                          </div>
                         </div>
 
                         {shiftsList.length === 0 ? (

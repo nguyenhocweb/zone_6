@@ -18,6 +18,7 @@ import {
 import { storeCreateSchema, type StoreCreateFormValues } from "../schema/store.create.schema";
 import { useUpdateStore } from "../hook/useUpdateStore";
 import { reverseGeocodeService } from "../../checkin-config/service/checkin-config.service";
+import { useGetShiftConfigs } from "@/features/pho_ca_lam_lich/scheduling/hook/useShiftConfigs";
 import type { Store } from "../type/store.type";
 import { toast } from "sonner";
 
@@ -31,6 +32,10 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
   const updateMutation = useUpdateStore();
   const [isLocating, setIsLocating] = useState(false);
   const [isResolvingAddress, setIsResolvingAddress] = useState(false);
+
+  // Gọi API lấy danh sách tất cả các ca làm việc của cơ sở này
+  const { data: shiftConfigData, isLoading: isLoadingShifts } = useGetShiftConfigs(store?.id);
+  const shiftsList = shiftConfigData?.shifts || [];
 
   const {
     register,
@@ -139,6 +144,30 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
+  };
+
+  // Quản lý chọn 1 hoặc nhiều ca áp dụng thuế VAT
+  const handleToggleShift = (shiftName: string) => {
+    const current = watch("vat_applied_shifts") || [];
+    const exists = current.some(
+      (s) => s.toLowerCase().trim() === shiftName.toLowerCase().trim()
+    );
+    const updated = exists
+      ? current.filter((s) => s.toLowerCase().trim() !== shiftName.toLowerCase().trim())
+      : [...current, shiftName];
+    setValue("vat_applied_shifts", updated, { shouldDirty: true, shouldValidate: true });
+  };
+
+  const handleSelectAllShifts = () => {
+    const allNames =
+      shiftsList.length > 0
+        ? shiftsList.map((s) => s.shift_name)
+        : ["Ca Sáng", "Ca Chiều", "Ca Tối", "Ca Khuya"];
+    setValue("vat_applied_shifts", allNames, { shouldDirty: true, shouldValidate: true });
+  };
+
+  const handleDeselectAllShifts = () => {
+    setValue("vat_applied_shifts", [], { shouldDirty: true, shouldValidate: true });
   };
 
   const onSubmit = async (values: StoreCreateFormValues) => {
@@ -428,29 +457,158 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
             </div>
 
             {vatEnabled && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <div>
-                  <label className="text-[11px] text-[#8E95A5] block mb-1">Tỷ Lệ Thuế VAT (%)</label>
-                  <input
-                    type="number"
-                    min={0}
-                    max={100}
-                    {...register("vat_rate", { valueAsNumber: true })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-[#D4AF37] font-bold focus:border-[#D4AF37] focus:outline-none"
-                    placeholder="VD: 8, 10"
-                  />
+              <div className="space-y-3 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[11px] text-[#8E95A5] block mb-1">Tỷ Lệ Thuế VAT (%)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      max={100}
+                      {...register("vat_rate", { valueAsNumber: true })}
+                      className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-[#D4AF37] font-bold focus:border-[#D4AF37] focus:outline-none"
+                      placeholder="VD: 8, 10"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] text-[#8E95A5] block mb-1">Phạm Vi Áp Dụng Ca</label>
+                    <select
+                      {...register("vat_apply_mode")}
+                      className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-white font-medium focus:border-[#D4AF37] focus:outline-none"
+                    >
+                      <option value="ALL">Áp dụng tất cả các ca (All)</option>
+                      <option value="SPECIFIC_SHIFTS">Theo ca chỉ định (chọn 1 hoặc nhiều ca)</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="text-[11px] text-[#8E95A5] block mb-1">Phạm Vi Áp Dụng Ca</label>
-                  <select
-                    {...register("vat_apply_mode")}
-                    className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-white font-medium focus:border-[#D4AF37] focus:outline-none"
-                  >
-                    <option value="ALL">Áp dụng tất cả các ca (All)</option>
-                    <option value="SPECIFIC_SHIFTS">Theo ca chỉ định (Xem chi tiết ở trang Cấu hình)</option>
-                  </select>
-                </div>
+                {/* Khi chọn SPECIFIC_SHIFTS: hiển thị danh sách tất cả các ca lấy từ API để chọn 1 hoặc nhiều */}
+                {watch("vat_apply_mode") === "SPECIFIC_SHIFTS" && (
+                  <div className="p-3.5 rounded-xl bg-[#0E1015] border border-[#212532] space-y-3 animate-in fade-in duration-150">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#F4F5F8]">
+                          Chọn các ca áp dụng thuế VAT:
+                        </span>
+                        {isLoadingShifts && (
+                          <span className="text-[10px] text-[#D4AF37] flex items-center gap-1 font-medium">
+                            <FaSpinner className="animate-spin text-[10px]" />
+                            Đang tải ca...
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={handleSelectAllShifts}
+                          className="text-[10px] text-[#D4AF37] hover:underline font-semibold cursor-pointer"
+                        >
+                          Chọn tất cả
+                        </button>
+                        <span className="text-white/20 text-[10px]">|</span>
+                        <button
+                          type="button"
+                          onClick={handleDeselectAllShifts}
+                          className="text-[10px] text-[#8E95A5] hover:text-white hover:underline font-semibold cursor-pointer"
+                        >
+                          Bỏ chọn
+                        </button>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#D4AF37]/15 text-[#D4AF37]">
+                          Đã chọn: {(watch("vat_applied_shifts") || []).length} ca
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Danh sách ca làm việc */}
+                    {shiftsList.length === 0 && !isLoadingShifts ? (
+                      <div className="flex flex-wrap gap-2">
+                        {["Ca Sáng", "Ca Chiều", "Ca Tối", "Ca Khuya"].map((shiftName) => {
+                          const currentShifts = watch("vat_applied_shifts") || [];
+                          const isChecked = currentShifts.some(
+                            (s) => s.toLowerCase().trim() === shiftName.toLowerCase().trim()
+                          );
+                          return (
+                            <button
+                              key={shiftName}
+                              type="button"
+                              onClick={() => handleToggleShift(shiftName)}
+                              className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+                                isChecked
+                                  ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white"
+                                  : "bg-[#141724] border-[#262C3F] text-[#8E95A5] hover:text-white"
+                              }`}
+                            >
+                              <span
+                                className={`w-3.5 h-3.5 rounded flex items-center justify-center border text-[9px] ${
+                                  isChecked
+                                    ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10] font-bold"
+                                    : "border-[#4A5162]"
+                                }`}
+                              >
+                                {isChecked ? "✓" : ""}
+                              </span>
+                              <span>{shiftName}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                        {shiftsList.map((shift) => {
+                          const sName = shift.shift_name;
+                          const currentShifts = watch("vat_applied_shifts") || [];
+                          const isChecked = currentShifts.some(
+                            (s) =>
+                              s.toLowerCase().trim() === sName.toLowerCase().trim() ||
+                              (shift.shift_code &&
+                                s.toLowerCase().trim() === shift.shift_code.toLowerCase().trim())
+                          );
+                          return (
+                            <button
+                              key={shift._id || shift.shift_code}
+                              type="button"
+                              onClick={() => handleToggleShift(sName)}
+                              className={`p-2.5 rounded-xl border text-xs font-semibold transition flex items-center justify-between text-left cursor-pointer ${
+                                isChecked
+                                  ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white shadow-sm shadow-[#D4AF37]/10"
+                                  : "bg-[#141724] border-[#262C3F] text-[#8E95A5] hover:text-white hover:border-[#4A5162]"
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0">
+                                <span
+                                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                                  style={{ backgroundColor: shift.color || "#D4AF37" }}
+                                />
+                                <div className="truncate">
+                                  <span className="font-bold text-white block truncate">{sName}</span>
+                                  <span className="text-[10px] text-[#8E95A5] font-mono block">
+                                    {shift.start_time} - {shift.end_time}
+                                  </span>
+                                </div>
+                              </div>
+                              <span
+                                className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ml-2 ${
+                                  isChecked
+                                    ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10] font-bold"
+                                    : "border-[#4A5162]"
+                                }`}
+                              >
+                                {isChecked ? "✓" : ""}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {(watch("vat_applied_shifts") || []).length === 0 && (
+                      <p className="text-[11px] text-amber-400/80 italic">
+                        * Chưa chọn ca nào: Thuế VAT sẽ tạm thời không áp dụng cho ca nào cho đến khi chọn ít nhất 1 ca.
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>

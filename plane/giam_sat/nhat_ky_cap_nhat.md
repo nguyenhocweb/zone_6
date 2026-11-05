@@ -4,6 +4,24 @@
 
 ---
 
+### [2026-11-05 11:10] - Tích Hợp API Danh Sách Ca & Bộ Chọn Đa Ca (Multi-Select) Áp Dụng Thuế VAT Cho Chi Nhánh
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "có thể gọi api lấy dữ liệu all ca để dạng chọn 1 or nhiều á nha" (kèm ảnh chụp dropdown Phạm Vi Áp Dụng Ca trong modal Cấu hình Chi nhánh)
+- **Nội dung hoàn thành:**
+  - **Tích hợp API Ca Làm Việc (`EditStoreModal.tsx`, `CreateStoreModal.tsx`, `CheckinConfigView.tsx`):**
+    - Sử dụng `useGetShiftConfigs(store?.id)` gọi API `GET /api/v1/scheduling/shift-configs?store_id=...` để nạp danh sách toàn bộ các ca làm việc thực tế của cơ sở (Ca Sáng, Ca Chiều, Ca Tối, Ca Khuya... kèm thời gian, mã màu).
+    - Cung cấp bộ chọn đa ca (Multi-Select Pills / Cards) khi chọn chế độ "Theo ca chỉ định (chọn 1 hoặc nhiều ca)":
+      - Cho phép click chọn 1 hoặc nhiều ca độc lập, tự động toggle lưu vào mảng `vat_applied_shifts`.
+      - Hiển thị đầy đủ màu sắc ca, tên ca, khung giờ (start_time - end_time), ô đánh dấu tích chọn `[✓]` màu vàng kim Obsidian Gold.
+      - Nút hỗ trợ nhanh: "Chọn tất cả" và "Bỏ chọn" kèm badge đếm số lượng ca đã chọn (`Đã chọn: X ca`).
+      - Cảnh báo trực quan nếu chưa chọn ca nào.
+    - Cập nhật đồng bộ tại cả `EditStoreModal.tsx`, `CreateStoreModal.tsx` và `CheckinConfigView.tsx`.
+- **Verification:**
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 10:35] - Loại Bỏ Widget Thẻ Quy Trình & Lịch Kiểm Kho Đang Áp Dụng Khỏi Giao Diện Kiểm Kê
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "bỏ hiển thị cái này đi khong cần thiết cho lắm" (kèm ảnh chụp card Quy Trình & Lịch Kiểm Kho Đang Áp Dụng chiếm nhiều diện tích)
