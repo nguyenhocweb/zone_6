@@ -11,6 +11,7 @@ import {
   useTestPayOSConfig,
 } from '../hook';
 import type { PayOSConfig } from '../type/payos.type';
+import { toast } from 'sonner';
 
 interface PayOSAccountModalProps {
   isOpen: boolean;
@@ -102,7 +103,7 @@ export const PayOSAccountModal: React.FC<PayOSAccountModalProps> = ({
 
   const handleTestConnection = () => {
     if (!watchedClientId || !watchedApiKey || !watchedChecksumKey) {
-      alert('Vui lòng nhập Client ID, API Key và Checksum Key trước khi kiểm tra');
+      toast.warning('Vui lòng nhập Client ID, API Key và Checksum Key trước khi kiểm tra');
       return;
     }
     testMutation.mutate({

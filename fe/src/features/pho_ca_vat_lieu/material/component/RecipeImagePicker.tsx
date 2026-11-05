@@ -10,6 +10,7 @@ import {
   FaFolder,
   FaSpinner,
 } from "react-icons/fa";
+import { toast } from "sonner";
 
 interface RecipeImagePickerProps {
   value?: string | null;
@@ -49,11 +50,11 @@ export const RecipeImagePicker: React.FC<RecipeImagePickerProps> = ({
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        alert("Vui lòng chọn tệp hình ảnh (jpg, png, webp...)");
+        toast.error("Vui lòng chọn tệp hình ảnh (jpg, png, webp...)");
         return;
       }
       if (file.size > 10 * 1024 * 1024) {
-        alert("Kích thước ảnh tối đa là 10MB");
+        toast.error("Kích thước ảnh tối đa là 10MB");
         return;
       }
       onFileChange(file);

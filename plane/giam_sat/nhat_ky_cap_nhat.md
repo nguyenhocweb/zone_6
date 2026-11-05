@@ -4,6 +4,31 @@
 
 ---
 
+### [2026-11-05 13:10] - Xóa Bỏ Hoàn Toàn Hộp Thoại Trình Duyệt (alert, confirm, prompt) & Ban Hành Quy Chuẩn Kiến Trúc Cấm Tuyệt Đối
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "đừng đê thông báo xác nhận dạng này đưa agent luật bắt buộc không áp dụng xác nhận dạng này" (kèm ảnh chụp pop-up native alert của trình duyệt `zone-6.vercel.app cho biết: Vui lòng nhập Client ID, API Key và Checksum Key trước khi kiểm tra`)
+- **Nội dung hoàn thành:**
+  - **Quét & Thay thế triệt để 100% native dialogs trong toàn bộ Frontend:**
+    - `PayOSAccountModal.tsx`: Chuyển `alert(...)` kiểm tra credentials thành `toast.warning(...)` từ `sonner`.
+    - `RecipeImagePicker.tsx`: Chuyển `alert(...)` kiểm tra định dạng và kích cỡ file sang `toast.error(...)`.
+    - `ZaloManager.tsx`: Chuyển `confirm(...)` khi đăng xuất Zalo OA sang modal `<ConfirmModal>` chuẩn Obsidian Gold.
+    - `AttendanceDetailModal.tsx`: Chuyển `confirm(...)` hủy điểm danh sang modal `<ConfirmModal>`.
+    - `TableQrPrintModal.tsx`: Chuyển `confirm(...)` tạo mới mã QR bàn sang `<ConfirmModal>`.
+    - `TableManagementView.tsx`: Chuyển 2 lệnh `confirm(...)` xóa khu vực và xóa bàn sang 2 modal `<ConfirmModal>`.
+    - `ShiftConfigModal.tsx`: Chuyển 2 lệnh `confirm(...)` xóa ca làm việc và khôi phục mặc định sang `<ConfirmModal>`.
+    - `ShiftsManagementView.tsx`: Chuyển 2 lệnh `confirm(...)` xóa ca làm việc và khôi phục mặc định sang `<ConfirmModal>`.
+  - **Ban hành Điều Cấm Kỵ Kỹ Thuật Bắt Buộc (Strict Architectural Rule):**
+    - Cập nhật `.agents/AGENTS.md` (Mục 4.5): CẤM TUYỆT ĐỐI dùng `alert()`, `confirm()`, `prompt()` của trình duyệt. Mọi thông báo validation / lỗi bắt buộc dùng `toast` từ `sonner`. Mọi thao tác xác nhận bắt buộc dùng `<ConfirmModal>` Obsidian Gold.
+    - Cập nhật `.agents/rules/nextjs_app_router_rules.md` (Mục 5.2): Đồng bộ hóa quy định cấm triệt để vào tài liệu quy chuẩn Next.js App Router.
+- **Verification:**
+  - `git grep -n "alert(" fe/src/`: 0 kết quả.
+  - `git grep -n "confirm(" fe/src/`: 0 kết quả.
+  - `git grep -n "prompt(" fe/src/`: 0 kết quả.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 12:00] - Khắc Phục Lỗi Không Lưu Cấu Hình Thuế VAT Khi Bấm Lưu Trong EditStoreModal
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "tại bấm lưu thuế cấu hình vat rồi mà không lưu thuwcxj l;ại thông báo đã luuw là sao" (kèm ảnh chụp form Cấu hình Thuế VAT Chi Nhánh hiển thị Đang Tắt Thuế VAT sau khi lưu)

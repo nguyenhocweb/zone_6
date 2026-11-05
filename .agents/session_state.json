@@ -7,6 +7,7 @@
     "database": "MongoDB Atlas (Cluster: nguyenhocweb.pqyjucr.mongodb.net, Database: zone_6)"
   },
   "completed_tasks": [
+    "Xóa bỏ hoàn toàn 100% hộp thoại trình duyệt (alert, confirm, prompt) trên toàn bộ Frontend Next.js (thay bằng sonner toast & Obsidian Gold ConfirmModal), đồng thời ban hành điều cấm kỵ kỹ thuật bắt buộc trong .agents/AGENTS.md và .agents/rules/nextjs_app_router_rules.md.",
     "Fix triệt để lỗi không lưu cấu hình thuế VAT trong EditStoreModal: Bổ sung vat_enabled, vat_rate, vat_apply_mode, vat_applied_shifts vào payload gửi lên backend khi submit.",
     "Tích hợp API danh sách ca làm việc (useGetShiftConfigs) & Bộ chọn đa ca (Multi-Select) áp dụng thuế VAT cho chi nhánh tại EditStoreModal, CreateStoreModal và CheckinConfigView.",
     "Loại bỏ Widget Thẻ Quy Trình & Lịch Kiểm Kho Đang Áp Dụng khỏi InventoryAuditView giúp giao diện kiểm kê gọn gàng, giảm bớt chiếm diện tích không cần thiết.",
@@ -110,5 +111,5 @@
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-05T09:40:00Z"
+  "last_updated": "2026-11-05T13:10:00+07:00"
 }

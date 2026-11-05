@@ -5,6 +5,7 @@ import { FaTimes, FaQrcode, FaDownload, FaCopy, FaCheck, FaSyncAlt, FaShieldAlt 
 import { toast } from 'sonner';
 import { TableItem } from '../type/table.type';
 import { useRegenerateTableToken } from '../hook/useTables';
+import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
 
 interface TableQrPrintModalProps {
   table: TableItem | null;
@@ -13,6 +14,7 @@ interface TableQrPrintModalProps {
 
 export const TableQrPrintModal: React.FC<TableQrPrintModalProps> = ({ table, onClose }) => {
   const [copied, setCopied] = useState(false);
+  const [isRegenerateConfirmOpen, setIsRegenerateConfirmOpen] = useState(false);
   const regenerateMutation = useRegenerateTableToken();
 
   if (!table) return null;
@@ -42,9 +44,12 @@ export const TableQrPrintModal: React.FC<TableQrPrintModalProps> = ({ table, onC
   };
 
   const handleRegenerate = () => {
-    if (confirm(`Bạn có chắc muốn đổi mã QR cho Bàn ${table.table_number}? Mã cũ in trên mica sẽ không còn hiệu lực!`)) {
-      regenerateMutation.mutate(table.id || (table as any)._id);
-    }
+    setIsRegenerateConfirmOpen(true);
+  };
+
+  const handleConfirmRegenerate = () => {
+    setIsRegenerateConfirmOpen(false);
+    regenerateMutation.mutate(table.id || (table as any)._id);
   };
 
   return (
@@ -142,6 +147,19 @@ export const TableQrPrintModal: React.FC<TableQrPrintModalProps> = ({ table, onC
           </div>
         </div>
       </div>
+
+      {/* Modal xác nhận Đổi mã Token QR */}
+      <ConfirmModal
+        isOpen={isRegenerateConfirmOpen}
+        title="Đổi Mã QR Bàn"
+        message={`Bạn có chắc muốn đổi mã QR cho Bàn ${table.table_number}? Mã QR cũ đã in trên mica/standee sẽ không còn hiệu lực và bạn cần in lại mã mới cho bàn này.`}
+        confirmLabel="Đổi Mã QR Mới"
+        cancelLabel="Hủy Bỏ"
+        isDestructive={true}
+        isLoading={regenerateMutation.isPending}
+        onConfirm={handleConfirmRegenerate}
+        onCancel={() => setIsRegenerateConfirmOpen(false)}
+      />
     </div>
   );
 };

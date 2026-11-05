@@ -91,6 +91,7 @@ be/src/
 2. **CẤM gọi Database từ Controller hoặc Service:** Chỉ duy nhất thư mục `repositories/` (hoặc `*.repo.js`) được phép thao tác trực tiếp với Database.
 3. **CẤM dùng try...catch trong Controller:** Mọi controller phải được bọc trong `asyncHandler`. Toàn bộ lỗi phải ném từ tầng Service qua các lớp `Error` chuẩn (`ConflictError`, `NotFoundError`, `BadRequestError`, `ForbiddenError`).
 4. **CẤM gọi chéo Controller giữa các module:** Giao tiếp liên module bắt buộc phải là Service gọi Service (`service -> service`).
+5. **CẤM TUYỆT ĐỐI dùng `alert()`, `confirm()`, `prompt()` của trình duyệt:** Nghiêm cấm 100% việc gọi `alert()`, `confirm()`, `prompt()` hoặc `window.alert()`, `window.confirm()`, `window.prompt()`. Tất cả thông báo validation, cảnh báo và lỗi BẮT BUỘC dùng `toast` từ `sonner` (`toast.error()`, `toast.warning()`, `toast.success()`, `toast.info()`). Tất cả các thao tác xác nhận hành động (xóa, hủy, đổi trạng thái...) BẮT BUỘC sử dụng `<ConfirmModal>` (`@/core/components/ui/ConfirmModal`) đồng bộ phong cách Obsidian Gold của hệ thống.
 
 ---
 

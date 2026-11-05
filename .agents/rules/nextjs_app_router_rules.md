@@ -119,7 +119,7 @@ export type CreateSubscriptionFormValues = z.infer<typeof createSubscriptionSche
 ## 🚫 5. CÁC ĐIỀU CẤM KỴ TUYỆT ĐỐI (NEXT.JS ZERO TOLERANCE)
 
 1. **CẤM gọi `axiosClient` trực tiếp trong Component:** Mọi thao tác HTTP phải thông qua custom hook React Query.
-2. **CẤM lạm dụng `window.confirm()`:** Sử dụng modal xác nhận chuyên dụng `<ConfirmModal>`.
+2. **CẤM TUYỆT ĐỐI dùng `alert()`, `confirm()`, `prompt()` của trình duyệt:** Nghiêm cấm 100% việc gọi `alert()`, `confirm()`, `prompt()` hoặc `window.alert()`, `window.confirm()`, `window.prompt()`. Tất cả thông báo validation, cảnh báo và lỗi BẮT BUỘC dùng `toast` từ `sonner` (`toast.error()`, `toast.warning()`, `toast.success()`, `toast.info()`). Tất cả các thao tác xác nhận hành động (xóa, hủy, đổi trạng thái...) BẮT BUỘC sử dụng `<ConfirmModal>` (`@/core/components/ui/ConfirmModal`) đồng bộ phong cách Obsidian Gold của hệ thống.
 3. **CẤM quên Animation và Loading Skeleton:** Giao diện khi fetch dữ liệu phải có Skeleton state, các card phải bọc hiệu ứng mượt mà (`<FadeIn>`).
 4. **CẤM thiếu phân trang (Pagination):** Bất kỳ danh sách nào cũng phải hỗ trợ phân trang và chọn rows per page.
 5. **CẤM hardcode URL:** URL API luôn dùng biến môi trường `NEXT_PUBLIC_API_URL`.

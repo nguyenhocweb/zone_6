@@ -32,6 +32,7 @@ import type {
   ShiftConfigCreatePayload,
 } from "../type/shift-config.type";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
+import { ConfirmModal } from "@/core/components/ui/ConfirmModal";
 
 const PRESET_COLORS = [
   { label: "Vàng Gold", value: "#D4AF37" },
@@ -95,6 +96,8 @@ export const ShiftsManagementView: React.FC = () => {
   // Form State
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deletingShift, setDeletingShift] = useState<{ id: string; name: string } | null>(null);
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const [formData, setFormData] = useState<ShiftConfigCreatePayload>({
     shift_name: "",
     shift_code: "",
@@ -208,20 +211,24 @@ export const ShiftsManagementView: React.FC = () => {
 
   const handleDelete = (id: string, name: string) => {
     if (!canManage) return;
-    if (confirm(`Bạn có chắc chắn muốn xóa ca làm việc '${name}' không?`)) {
-      deleteMutation.mutate(id);
-    }
+    setDeletingShift({ id, name });
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deletingShift) return;
+    deleteMutation.mutate(deletingShift.id, {
+      onSettled: () => setDeletingShift(null),
+    });
   };
 
   const handleResetDefaults = () => {
     if (!canManage) return;
-    if (
-      confirm(
-        "Bạn có chắc muốn khôi phục 4 ca làm việc mặc định chuẩn Zone Six (Sáng, Chiều, Tối, Khuya) không?"
-      )
-    ) {
-      resetMutation.mutate();
-    }
+    setIsResetConfirmOpen(true);
+  };
+
+  const handleConfirmReset = () => {
+    setIsResetConfirmOpen(false);
+    resetMutation.mutate();
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -742,6 +749,36 @@ export const ShiftsManagementView: React.FC = () => {
           ))
         )}
       </div>
+
+      {/* Modal Xác Nhận Xóa Ca */}
+      <ConfirmModal
+        isOpen={!!deletingShift}
+        title="Xác Nhận Xóa Ca Làm Việc"
+        message={
+          deletingShift
+            ? `Bạn có chắc chắn muốn xóa ca làm việc "${deletingShift.name}" không?`
+            : ""
+        }
+        confirmLabel="Xóa Ca"
+        cancelLabel="Hủy Bỏ"
+        isDestructive={true}
+        isLoading={deleteMutation.isPending}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setDeletingShift(null)}
+      />
+
+      {/* Modal Xác Nhận Khôi Phục Ca Mặc Định */}
+      <ConfirmModal
+        isOpen={isResetConfirmOpen}
+        title="Khôi Phục Ca Làm Mặc Định"
+        message="Bạn có chắc muốn khôi phục 4 ca làm việc mặc định chuẩn Zone Six (Sáng, Chiều, Tối, Khuya) không?"
+        confirmLabel="Khôi Phục Mặc Định"
+        cancelLabel="Hủy Bỏ"
+        isDestructive={false}
+        isLoading={resetMutation.isPending}
+        onConfirm={handleConfirmReset}
+        onCancel={() => setIsResetConfirmOpen(false)}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   FaTimes,
   FaCheckCircle,
@@ -13,6 +13,7 @@ import {
   FaUserCheck,
 } from "react-icons/fa";
 import { useSlotAttendance, useCancelCheckIn } from "../hook/useAttendance";
+import { ConfirmModal } from "@/core/components/ui/ConfirmModal";
 
 interface AttendanceDetailModalProps {
   isOpen: boolean;
@@ -45,26 +46,30 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
   );
 
   const cancelMutation = useCancelCheckIn();
+  const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
 
   if (!isOpen || !slotData) return null;
 
   const handleCancel = () => {
+    setIsCancelConfirmOpen(true);
+  };
+
+  const handleConfirmCancel = () => {
     if (!slotData) return;
-    if (confirm(`Bạn có chắc chắn muốn hủy điểm danh ca ${slotData.shift} (${slotData.day}) cho ${slotData.staff_name}?`)) {
-      cancelMutation.mutate(
-        {
-          week_start_date: slotData.week_start_date,
-          day: slotData.day,
-          shift: slotData.shift,
-          role: slotData.role,
+    setIsCancelConfirmOpen(false);
+    cancelMutation.mutate(
+      {
+        week_start_date: slotData.week_start_date,
+        day: slotData.day,
+        shift: slotData.shift,
+        role: slotData.role,
+      },
+      {
+        onSuccess: () => {
+          onClose();
         },
-        {
-          onSuccess: () => {
-            onClose();
-          },
-        }
-      );
-    }
+      }
+    );
   };
 
   return (
@@ -233,6 +238,19 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Modal xác nhận Hủy điểm danh */}
+      <ConfirmModal
+        isOpen={isCancelConfirmOpen}
+        title="Hủy Điểm Danh Ca Làm"
+        message={`Bạn có chắc chắn muốn hủy điểm danh ca ${slotData.shift} (${slotData.day}) cho nhân viên ${slotData.staff_name}? Trạng thái ca sẽ được đưa về Chưa Check-in.`}
+        confirmLabel="Hủy Điểm Danh"
+        cancelLabel="Quay Lại"
+        isDestructive={true}
+        isLoading={cancelMutation.isPending}
+        onConfirm={handleConfirmCancel}
+        onCancel={() => setIsCancelConfirmOpen(false)}
+      />
     </div>
   );
 };

@@ -42,6 +42,7 @@ import {
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/features/shared/auth/hook/useAuth';
+import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
 
 interface StoreOption {
   id: string;
@@ -183,6 +184,8 @@ export const ZaloManager: React.FC = () => {
   const sendMessageMutation = useSendZaloMessage();
   const updateChannelsMutation = useUpdateStoreZaloChannels();
 
+  const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
+
   // Lấy danh sách cấu hình 4 kênh của cơ sở đang chọn
   const {
     data: remoteChannels,
@@ -286,8 +289,12 @@ export const ZaloManager: React.FC = () => {
     }
   };
 
-  const handleLogout = async () => {
-    if (!confirm('Bạn có chắc chắn muốn đăng xuất tài khoản Zalo này?')) return;
+  const handleLogout = () => {
+    setIsLogoutConfirmOpen(true);
+  };
+
+  const handleConfirmLogout = async () => {
+    setIsLogoutConfirmOpen(false);
     try {
       await logoutMutation.mutateAsync();
       toast.success('Đã đăng xuất tài khoản Zalo');
@@ -941,6 +948,19 @@ export const ZaloManager: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal xác nhận Đăng xuất Zalo */}
+      <ConfirmModal
+        isOpen={isLogoutConfirmOpen}
+        title="Đăng Xuất Tài Khoản Zalo Bot"
+        message="Bạn có chắc chắn muốn đăng xuất tài khoản Zalo này? Hệ thống sẽ tạm dừng gửi thông báo tự động cho đến khi có tài khoản mới được quét mã QR kết nối."
+        confirmLabel="Đăng Xuất Ngay"
+        cancelLabel="Hủy Bỏ"
+        isDestructive={true}
+        isLoading={logoutMutation.isPending}
+        onConfirm={handleConfirmLogout}
+        onCancel={() => setIsLogoutConfirmOpen(false)}
+      />
     </div>
   );
 };

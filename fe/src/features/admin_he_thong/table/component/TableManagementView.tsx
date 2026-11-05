@@ -35,6 +35,7 @@ import { TableDetailModal, formatTableDisplayName } from './TableDetailModal';
 import { useGetStores } from '@/features/admin_he_thong/store/hook/useGetStores';
 import { useAuth } from '@/features/shared/auth/hook/useAuth';
 import { toast } from 'sonner';
+import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
 
 export const TableManagementView: React.FC = () => {
   const { user } = useAuth();
@@ -143,6 +144,8 @@ export const TableManagementView: React.FC = () => {
   const [editingTable, setEditingTable] = useState<TableItem | null>(null);
   const [initialFormZone, setInitialFormZone] = useState<string>('Tầng 1');
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [deletingZone, setDeletingZone] = useState<TableZoneItem | null>(null);
+  const [deletingTable, setDeletingTable] = useState<TableItem | null>(null);
 
   // Đồng bộ trạng thái live của modal chi tiết bàn khi có socket update
   useEffect(() => {
@@ -230,27 +233,43 @@ export const TableManagementView: React.FC = () => {
       return;
     }
 
-    if (confirm(`Xác nhận xóa "${zone.name}"?`)) {
-      if (zone.id.startsWith('temp-')) {
-        toast.info(`Tầng "${zone.name}" sẽ tự động biến mất khi không còn bàn.`);
-        return;
-      }
-      deleteZoneMutation.mutate(zone.id || (zone as any)._id, {
-        onSuccess: () => {
-          if (selectedZone === zone.name) {
-            setSelectedZone('ALL');
-          }
-        },
-      });
+    if (zone.id.startsWith('temp-')) {
+      toast.info(`Tầng "${zone.name}" sẽ tự động biến mất khi không còn bàn.`);
+      return;
     }
+    setDeletingZone(zone);
+  };
+
+  const handleConfirmDeleteZone = () => {
+    if (!deletingZone) return;
+    deleteZoneMutation.mutate(deletingZone.id || (deletingZone as any)._id, {
+      onSuccess: () => {
+        if (selectedZone === deletingZone.name) {
+          setSelectedZone('ALL');
+        }
+        setDeletingZone(null);
+      },
+      onError: () => {
+        setDeletingZone(null);
+      },
+    });
   };
 
   // Xử lý xóa bàn
   const handleDeleteTable = (table: TableItem) => {
-    const displayName = formatTableDisplayName(table.table_number);
-    if (confirm(`Bạn có chắc chắn muốn xóa ${displayName} (${table.zone_name}) không?`)) {
-      deleteTableMutation.mutate(table.id || (table as any)._id);
-    }
+    setDeletingTable(table);
+  };
+
+  const handleConfirmDeleteTable = () => {
+    if (!deletingTable) return;
+    deleteTableMutation.mutate(deletingTable.id || (deletingTable as any)._id, {
+      onSuccess: () => {
+        setDeletingTable(null);
+      },
+      onError: () => {
+        setDeletingTable(null);
+      },
+    });
   };
 
   // Đổi nhanh trạng thái bàn
@@ -934,6 +953,36 @@ export const TableManagementView: React.FC = () => {
       <TableQrPrintModal
         table={selectedTableForQr}
         onClose={() => setSelectedTableForQr(null)}
+      />
+
+      {/* 8. Modal Xác Nhận Xóa Tầng / Khu Vực */}
+      <ConfirmModal
+        isOpen={!!deletingZone}
+        title="Xác Nhận Xóa Khu Vực / Tầng"
+        message={deletingZone ? `Bạn có chắc chắn muốn xóa khu vực "${deletingZone.name}" không?` : ""}
+        confirmLabel="Xóa Khu Vực"
+        cancelLabel="Hủy Bỏ"
+        isDestructive={true}
+        isLoading={deleteZoneMutation.isPending}
+        onConfirm={handleConfirmDeleteZone}
+        onCancel={() => setDeletingZone(null)}
+      />
+
+      {/* 9. Modal Xác Nhận Xóa Bàn */}
+      <ConfirmModal
+        isOpen={!!deletingTable}
+        title="Xác Nhận Xóa Bàn"
+        message={
+          deletingTable
+            ? `Bạn có chắc chắn muốn xóa ${formatTableDisplayName(deletingTable.table_number)} (${deletingTable.zone_name}) không? Mã QR in cho bàn này sẽ mất hiệu lực.`
+            : ""
+        }
+        confirmLabel="Xóa Bàn"
+        cancelLabel="Hủy Bỏ"
+        isDestructive={true}
+        isLoading={deleteTableMutation.isPending}
+        onConfirm={handleConfirmDeleteTable}
+        onCancel={() => setDeletingTable(null)}
       />
     </div>
   );
