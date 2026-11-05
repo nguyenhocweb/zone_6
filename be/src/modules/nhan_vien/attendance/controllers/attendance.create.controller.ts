@@ -20,7 +20,9 @@ export class AttendanceCreateController {
       meta: {
         distance_meters: result.distance_meters,
         is_geofence_valid: result.is_geofence_valid,
+        zalo: result.zalo,
       },
+      zalo: result.zalo,
     });
   });
 }

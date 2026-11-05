@@ -1,11 +1,12 @@
 import axiosClient from "@/core/api/axios-instance";
-import type { CheckInPayload, AttendanceRecord } from "../type/attendance.type";
+import type { CheckInPayload, AttendanceRecord, ZaloNotificationResult } from "../type/attendance.type";
 
 interface ApiResponse<T> {
   success: boolean;
   data: T;
   message: string;
   meta?: any;
+  zalo?: ZaloNotificationResult;
 }
 
 export async function checkInShiftService(

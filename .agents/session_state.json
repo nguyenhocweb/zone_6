@@ -7,6 +7,7 @@
     "database": "MongoDB Atlas (Cluster: nguyenhocweb.pqyjucr.mongodb.net, Database: zone_6)"
   },
   "completed_tasks": [
+    "Khắc phục triệt để luồng tự động bắn ảnh & tin nhắn Zalo khi check-in: Cố định truy vấn channel_type 'CHECKIN' (kèm fallback đa cơ sở), await kết quả gửi Zalo và phản hồi chi tiết lý do (chưa cấu hình nhóm Zalo, bot chưa đăng nhập, kênh bị tắt...) lên toast thông báo người dùng.",
     "Xóa bỏ hoàn toàn 100% hộp thoại trình duyệt (alert, confirm, prompt) trên toàn bộ Frontend Next.js (thay bằng sonner toast & Obsidian Gold ConfirmModal), đồng thời ban hành điều cấm kỵ kỹ thuật bắt buộc trong .agents/AGENTS.md và .agents/rules/nextjs_app_router_rules.md.",
     "Fix triệt để lỗi không lưu cấu hình thuế VAT trong EditStoreModal: Bổ sung vat_enabled, vat_rate, vat_apply_mode, vat_applied_shifts vào payload gửi lên backend khi submit.",
     "Tích hợp API danh sách ca làm việc (useGetShiftConfigs) & Bộ chọn đa ca (Multi-Select) áp dụng thuế VAT cho chi nhánh tại EditStoreModal, CreateStoreModal và CheckinConfigView.",
@@ -111,5 +112,5 @@
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-05T13:10:00+07:00"
+  "last_updated": "2026-11-05T13:25:00+07:00"
 }

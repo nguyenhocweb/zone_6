@@ -4,6 +4,37 @@
 
 ---
 
+### [2026-11-05 13:25] - Khắc Phục Tự Động Bắn Ảnh/Tin Nhắn Lên Zalo Khi Check-in & Thông Báo Minh Bạch Chi Tiết Trạng Thái Zalo
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "sau khi tôi gửi checkin xong thì nó chưa làm đc việc gửi ảnh và tin nawhsn lên zalo nếu ko gửi lên zalo đc thì cũng phải thong báo bạn chưa cấu hình hay chưa login zalo ...." (kèm 2 ảnh chụp: màn hình check-in camera tại /checkin và thẻ Cấu hình Zalo kênh CHECKIN với Group ID 4140305380379629303)
+- **Nguyên nhân cốt lõi (Root Cause):**
+  1. Trong `be/src/modules/nhan_vien/attendance/services/attendance.create.service.ts`:
+     - Câu lệnh truy vấn cấu hình Zalo dùng `ZaloConfigModel.findOne().exec()` không có điều kiện `channel_type: 'CHECKIN'`, dẫn đến việc MongoDB trả về ngẫu nhiên kênh khác (như MATERIAL, GENERAL) có `target_id` rỗng, khiến hệ thống ngầm bỏ qua việc gửi tin Zalo mà không gửi đến Group ID điểm danh đã cấu hình.
+     - Hàm `sendCheckInNotificationToZalo` được gọi theo cơ chế unawaited fire-and-forget (`.catch(...)`), không trả về kết quả cho Controller và không phản hồi lại cho Frontend, khiến người dùng hoàn toàn không biết việc gửi Zalo thành công hay thất bại vì lý do gì.
+     - `photo_url` chỉ xử lý base64 cục bộ, thiếu hỗ trợ download tải ảnh từ HTTP URL nếu ảnh được lưu trữ trên CDN/Cloudinary.
+- **Nội dung hoàn thành:**
+  - **Backend (`be/src/modules/nhan_vien/attendance/`):**
+    - Bổ sung `store_id` vào `CheckInPayloadSchema` để liên kết chính xác cơ sở.
+    - Cấu trúc lại hàm `sendCheckInNotificationToZalo`:
+      - Kiểm tra tình trạng kết nối Zalo Bot (`status.connected`), nếu chưa đăng nhập -> trả về `status: 'not_logged_in'` kèm thông báo cụ thể "Zalo Bot chưa đăng nhập hoặc mất kết nối (Cần Admin quét mã QR trong Quản Lý Zalo Bot)".
+      - Tìm kiếm cấu hình kênh `CHECKIN` theo chuỗi ưu tiên: Đúng `store_id` -> Cấu hình chung `store_id: null` -> Bất kỳ kênh `CHECKIN` nào có `target_id` hợp lệ. Nếu không có `target_id` -> trả về `status: 'not_configured'` kèm thông báo "Chưa cấu hình ID nhóm Zalo cho kênh Điểm Danh (CHECKIN). Vui lòng vào Quản Lý Zalo Bot để cài đặt ID nhóm".
+      - Nếu kênh bị tắt (`is_active: false`) -> trả về `status: 'disabled'`.
+      - Hỗ trợ tải và chuyển đổi ảnh sang file tạm cho cả base64 và HTTP URL.
+      - Gửi ảnh qua `sendImageMessage` kèm caption chuẩn người dùng yêu cầu: "[Tên] checkin ca [Tên ca]" (hoặc chụp chung 2 người), fallback `sendTextMessage` nếu lỗi ảnh.
+      - Cập nhật `last_sent_at` cho `zaloConfig`.
+    - Trong `checkIn()`: `await` kết quả gửi Zalo (kèm timeout 7s tránh treo request), gộp kết quả `zalo` vào response trả về cho client và đính kèm lý do vào `message`.
+  - **Frontend (`fe/src/features/nhan_vien/attendance/`):**
+    - `CheckInDashboard.tsx` & `CheckInCameraModal.tsx`:
+      - Truyền `store_id` chính xác vào mutation `checkInMutation`.
+      - Trong `onSuccess`: Kiểm tra `res.zalo`:
+        - Nếu `zalo.sent = true`: Hiển thị `toast.success` thông báo điểm danh thành công và kèm mô tả đã gửi ảnh & tin nhắn Zalo tới nhóm.
+        - Nếu `zalo.sent = false`: Hiển thị `toast.success` điểm danh kèm `toast.warning("⚠️ Chưa gửi Zalo: " + zalo.message, { duration: 8000 })` cảnh báo rõ ràng lý do: chưa cấu hình ID nhóm, Bot chưa đăng nhập QR, hoặc kênh bị tắt.
+- **Verification:**
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 13:10] - Xóa Bỏ Hoàn Toàn Hộp Thoại Trình Duyệt (alert, confirm, prompt) & Ban Hành Quy Chuẩn Kiến Trúc Cấm Tuyệt Đối
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "đừng đê thông báo xác nhận dạng này đưa agent luật bắt buộc không áp dụng xác nhận dạng này" (kèm ảnh chụp pop-up native alert của trình duyệt `zone-6.vercel.app cho biết: Vui lòng nhập Client ID, API Key và Checksum Key trước khi kiểm tra`)

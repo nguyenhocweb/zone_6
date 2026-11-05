@@ -679,11 +679,13 @@ export const CheckInDashboard: React.FC = () => {
     const effectiveLat = latitude ?? storeConfig?.latitude ?? 18.679584;
     const effectiveLon = longitude ?? storeConfig?.longitude ?? 105.681329;
     const effectiveAddress = locationAddress || storeConfig?.address || "214 Lê Ninh, P.Quán Bàu, TP.Vinh, Nghệ An";
+    const effectiveStoreId = (scheduleData as any)?.store_id || (user as any)?.assigned_store_id || (user as any)?.store_id || null;
 
     const isGroup = Boolean(isGroupCheckIn && effectivePartnerNames.length > 0);
 
     checkInMutation.mutate(
       {
+        store_id: effectiveStoreId,
         week_start_date: weekInfo.startDateStr,
         day: todayDayName,
         shift: selectedShift,
@@ -703,12 +705,25 @@ export const CheckInDashboard: React.FC = () => {
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({ queryKey: ["weekly-schedule"] });
           queryClient.invalidateQueries({ queryKey: ["attendance"] });
-          const msg =
-            res?.message ||
-            (isGroup
-              ? `Điểm danh Chụp Chung thành công cho ${user?.name} và ${effectivePartnerNames.join(", ")}!`
-              : `Điểm danh ca ${selectedShift} thành công!`);
-          toast.success(msg);
+          
+          const defaultTitle = isGroup
+            ? `Điểm danh Chụp Chung thành công cho ${user?.name} và ${effectivePartnerNames.join(", ")}!`
+            : `Điểm danh ca ${selectedShift} thành công!`;
+          
+          const zalo = res?.zalo || res?.meta?.zalo;
+          if (zalo?.sent) {
+            toast.success(res?.message || defaultTitle, {
+              description: `🚀 ${zalo.message}`,
+              duration: 5000,
+            });
+          } else if (zalo?.message) {
+            toast.success(defaultTitle);
+            toast.warning(`⚠️ Chưa gửi Zalo: ${zalo.message}`, {
+              duration: 8000,
+            });
+          } else {
+            toast.success(res?.message || defaultTitle);
+          }
         },
       }
     );

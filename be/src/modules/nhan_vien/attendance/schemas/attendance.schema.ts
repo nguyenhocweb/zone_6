@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const CheckInPayloadSchema = z.object({
+  store_id: z.string().nullable().optional(),
   week_start_date: z.string().min(1, 'week_start_date là bắt buộc'),
   day: z.string().min(1, 'day là bắt buộc'),
   shift: z.string().min(1, 'shift là bắt buộc'),

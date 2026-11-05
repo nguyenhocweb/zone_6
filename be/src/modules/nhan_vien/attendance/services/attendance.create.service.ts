@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import mongoose from 'mongoose';
 import { logger } from '../../../../core/logger.js';
 import { AttendanceRepository } from '../repositories/attendance.repository.js';
 import type { CheckInPayloadDto } from '../schemas/attendance.schema.js';
@@ -12,6 +13,14 @@ import { WeeklyScheduleModel } from '../../../pho_ca_lam_lich/scheduling/models/
 import { UserModel } from '../../../quan_ly/staff/models/user.model.js';
 import type { ZaloService } from '../../../admin_he_thong/zalo/services/zalo.service.js';
 import { ZaloConfigModel } from '../../../admin_he_thong/zalo/models/zalo-config.model.js';
+
+export interface ZaloNotificationResult {
+  sent: boolean;
+  status: 'sent' | 'not_configured' | 'not_logged_in' | 'disabled' | 'failed' | 'service_unavailable';
+  message: string;
+  target_id?: string;
+  group_name?: string;
+}
 
 export class AttendanceCreateService {
   constructor(
@@ -29,6 +38,7 @@ export class AttendanceCreateService {
     message: string;
     distance_meters: number;
     is_geofence_valid: boolean;
+    zalo: ZaloNotificationResult;
   }> {
     // 1. KIỂM TRA BẮT BUỘC: Ảnh chụp điểm danh
     if (!dto.photo_url || dto.photo_url.trim().length < 10) {
@@ -252,16 +262,50 @@ export class AttendanceCreateService {
     }
 
     // 9. Bắn hình ảnh và thông báo qua Zalo đã cấu hình
-    // (Bọc try-catch không cản trở quá trình điểm danh)
-    this.sendCheckInNotificationToZalo(dto, partnerNamesSaved).catch((err) => {
-      logger.error('Lỗi bất đồng bộ khi gửi thông báo Zalo:', err);
-    });
+    const targetStoreId =
+      dto.store_id ||
+      schedule.store_id?.toString() ||
+      storeConfig?._id?.toString() ||
+      null;
+
+    let zaloResult: ZaloNotificationResult;
+    try {
+      // Giới hạn thời gian tối đa 7 giây để không làm treo giao diện điểm danh
+      zaloResult = await Promise.race([
+        this.sendCheckInNotificationToZalo(dto, partnerNamesSaved, targetStoreId),
+        new Promise<ZaloNotificationResult>((resolve) =>
+          setTimeout(
+            () =>
+              resolve({
+                sent: false,
+                status: 'failed',
+                message: 'Quá thời gian chờ phản hồi từ Zalo (timeout 7s). Vui lòng kiểm tra lại kết nối bot.',
+              }),
+            7000
+          )
+        ),
+      ]);
+    } catch (zaloErr: any) {
+      zaloResult = {
+        sent: false,
+        status: 'failed',
+        message: `Lỗi xử lý gửi Zalo: ${zaloErr?.message || String(zaloErr)}`,
+      };
+    }
+
+    let finalMessage = successMsg;
+    if (zaloResult.sent) {
+      finalMessage = `${successMsg} 🚀 Đã gửi ảnh & thông báo tới nhóm Zalo!`;
+    } else if (zaloResult.message) {
+      finalMessage = `${successMsg} (⚠️ Zalo: ${zaloResult.message})`;
+    }
 
     return {
       attendance,
-      message: successMsg,
+      message: finalMessage,
       distance_meters: distanceMeters,
       is_geofence_valid: isGeofenceValid,
+      zalo: zaloResult,
     };
   }
 
@@ -270,33 +314,95 @@ export class AttendanceCreateService {
    * Định dạng chuẩn theo yêu cầu:
    * - 1 người: [Tên người đó] checkin ca [Tên ca] (vd: "Ngọc checkin ca Sáng")
    * - Chụp chung: [Tên 1] và [Tên 2] checkin ca [Tên ca] (vd: "Hoàng và Nam checkin ca Tối")
+   * Trả về kết quả chi tiết để phản hồi minh bạch cho người dùng
    */
-  private async sendCheckInNotificationToZalo(
+  async sendCheckInNotificationToZalo(
     dto: CheckInPayloadDto,
-    partnerNames: string[] = []
-  ): Promise<void> {
+    partnerNames: string[] = [],
+    storeId?: string | null
+  ): Promise<ZaloNotificationResult> {
     try {
       if (!this.zaloService) {
         logger.debug('ZaloService chưa được inject vào AttendanceCreateService');
-        return;
+        return {
+          sent: false,
+          status: 'service_unavailable',
+          message: 'Dịch vụ Zalo Bot chưa được khởi tạo trên hệ thống.',
+        };
       }
 
-      // 1. Kiểm tra cấu hình Zalo trong cơ sở dữ liệu
-      const zaloConfig = await ZaloConfigModel.findOne().exec();
+      // 1. Kiểm tra trạng thái hoạt động của Zalo Bot
+      try {
+        const status = await this.zaloService.getStatus();
+        if (!status?.connected) {
+          logger.warn('Bot Zalo chưa đăng nhập (cần quét QR trước), không thể gửi ảnh điểm danh');
+          return {
+            sent: false,
+            status: 'not_logged_in',
+            message: 'Zalo Bot chưa đăng nhập hoặc mất kết nối (Cần Admin quét mã QR trong Quản Lý Zalo Bot).',
+          };
+        }
+      } catch (statusErr: any) {
+        return {
+          sent: false,
+          status: 'not_logged_in',
+          message: `Chưa thể kiểm tra trạng thái Zalo Bot: ${statusErr?.message || 'Chưa kết nối'}`,
+        };
+      }
+
+      // 2. Tìm cấu hình Zalo cho kênh CHECKIN
+      let zaloConfig: any = null;
+      if (storeId && mongoose.Types.ObjectId.isValid(storeId)) {
+        zaloConfig = await ZaloConfigModel.findOne({
+          store_id: new mongoose.Types.ObjectId(storeId),
+          channel_type: 'CHECKIN',
+        }).exec();
+      }
+
+      // Fallback 1: Tìm cấu hình chung (store_id = null)
+      if (!zaloConfig || !zaloConfig.target_id?.trim()) {
+        const globalCheckin = await ZaloConfigModel.findOne({
+          store_id: null,
+          channel_type: 'CHECKIN',
+        }).exec();
+        if (globalCheckin && globalCheckin.target_id?.trim()) {
+          zaloConfig = globalCheckin;
+        }
+      }
+
+      // Fallback 2: Tìm bất kỳ cấu hình CHECKIN nào có target_id hợp lệ
+      if (!zaloConfig || !zaloConfig.target_id?.trim()) {
+        const anyCheckin = await ZaloConfigModel.findOne({
+          channel_type: 'CHECKIN',
+          target_id: { $exists: true, $nin: ['', null] },
+        }).exec();
+        if (anyCheckin) {
+          zaloConfig = anyCheckin;
+        }
+      }
+
       if (!zaloConfig || !zaloConfig.target_id || zaloConfig.target_id.trim().length === 0) {
         logger.debug('Chưa cấu hình nhóm Zalo (target_id) để nhận thông báo điểm danh');
-        return;
+        return {
+          sent: false,
+          status: 'not_configured',
+          message: 'Chưa cấu hình ID nhóm Zalo cho kênh Điểm Danh (CHECKIN). Vui lòng vào Quản Lý Zalo Bot để cài đặt ID nhóm.',
+        };
       }
 
-      // 2. Kiểm tra trạng thái hoạt động của Zalo Bot
-      const status = await this.zaloService.getStatus();
-      if (!status.connected) {
-        logger.warn('Bot Zalo chưa đăng nhập (cần quét QR trước), không thể gửi ảnh điểm danh');
-        return;
+      if (zaloConfig.is_active === false) {
+        return {
+          sent: false,
+          status: 'disabled',
+          message: 'Kênh Zalo Điểm Danh (CHECKIN) hiện đang bị tắt trong cấu hình.',
+          target_id: zaloConfig.target_id,
+          group_name: zaloConfig.group_name || zaloConfig.target_name,
+        };
       }
 
       const targetId = zaloConfig.target_id.trim();
       const isGroup = zaloConfig.thread_type === 'group';
+      const groupName = zaloConfig.group_name || zaloConfig.target_name || targetId;
 
       // 3. Xây dựng nội dung caption theo yêu cầu chính xác của người dùng:
       // Định dạng: 1 người -> "Ngọc checkin ca sáng", chụp chung -> "Hoàng và Nam checkin ca tối"
@@ -309,24 +415,14 @@ export class AttendanceCreateService {
         captionText = `${dto.staff_name.trim()} checkin ca ${shiftDisplay}`;
       }
 
-      // 4. Lưu ảnh base64 ra file tạm để upload qua zca-js
+      // 4. Lưu ảnh base64 hoặc URL ra file tạm để upload qua zca-js
       let tempFilePath: string | null = null;
       try {
         if (dto.photo_url) {
-          let base64Content = '';
-          if (dto.photo_url.includes('base64,')) {
-            base64Content = dto.photo_url.split('base64,')[1].trim();
-          } else if (dto.photo_url.startsWith('data:')) {
-            const commaIdx = dto.photo_url.indexOf(',');
-            if (commaIdx !== -1) {
-              base64Content = dto.photo_url.slice(commaIdx + 1).trim();
-            }
-          } else if (dto.photo_url.length > 100) {
-            base64Content = dto.photo_url.trim();
-          }
-
-          if (base64Content) {
-            const buffer = Buffer.from(base64Content, 'base64');
+          if (dto.photo_url.startsWith('http://') || dto.photo_url.startsWith('https://')) {
+            const resp = await fetch(dto.photo_url);
+            const arrayBuffer = await resp.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
             const tempDir = path.join(process.cwd(), 'temp_uploads');
             if (!fs.existsSync(tempDir)) {
               await fs.promises.mkdir(tempDir, { recursive: true });
@@ -336,10 +432,35 @@ export class AttendanceCreateService {
               `checkin_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`
             );
             await fs.promises.writeFile(tempFilePath, buffer);
+          } else {
+            let base64Content = '';
+            if (dto.photo_url.includes('base64,')) {
+              base64Content = dto.photo_url.split('base64,')[1].trim();
+            } else if (dto.photo_url.startsWith('data:')) {
+              const commaIdx = dto.photo_url.indexOf(',');
+              if (commaIdx !== -1) {
+                base64Content = dto.photo_url.slice(commaIdx + 1).trim();
+              }
+            } else if (dto.photo_url.length > 100) {
+              base64Content = dto.photo_url.trim();
+            }
+
+            if (base64Content) {
+              const buffer = Buffer.from(base64Content, 'base64');
+              const tempDir = path.join(process.cwd(), 'temp_uploads');
+              if (!fs.existsSync(tempDir)) {
+                await fs.promises.mkdir(tempDir, { recursive: true });
+              }
+              tempFilePath = path.join(
+                tempDir,
+                `checkin_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`
+              );
+              await fs.promises.writeFile(tempFilePath, buffer);
+            }
           }
         }
       } catch (err) {
-        logger.warn('Không thể tạo file ảnh tạm từ base64:', err);
+        logger.warn('Không thể tạo file ảnh tạm từ photo_url:', err);
       }
 
       // 5. Gửi hình ảnh qua Zalo kèm caption
@@ -352,7 +473,7 @@ export class AttendanceCreateService {
             isGroup,
           });
           logger.info(`Đã bắn ảnh điểm danh Zalo thành công: "${captionText}" tới ${targetId}`);
-        } catch (imgErr) {
+        } catch (imgErr: any) {
           logger.error('Gửi ảnh Zalo thất bại, fallback qua tin nhắn văn bản:', imgErr);
           await this.zaloService.sendTextMessage({
             threadId: targetId,
@@ -371,10 +492,27 @@ export class AttendanceCreateService {
           text: `📸 ${captionText}`,
           isGroup,
         });
-        logger.info(`Đã gửi tin nhắn điểm danh Zalo: "${captionText}"`);
+        logger.info(`Đã gửi tin nhắn điểm danh Zalo: "${captionText}" tới ${targetId}`);
       }
-    } catch (error) {
+
+      // Cập nhật thời gian gửi tin cuối cùng
+      zaloConfig.last_sent_at = new Date();
+      await zaloConfig.save().catch(() => {});
+
+      return {
+        sent: true,
+        status: 'sent',
+        message: `Đã gửi ảnh & thông báo tới nhóm Zalo [${groupName}]!`,
+        target_id: targetId,
+        group_name: groupName,
+      };
+    } catch (error: any) {
       logger.error('Lỗi khi bắn thông báo điểm danh qua Zalo:', error);
+      return {
+        sent: false,
+        status: 'failed',
+        message: `Gửi Zalo thất bại: ${error?.message || String(error)}`,
+      };
     }
   }
 }

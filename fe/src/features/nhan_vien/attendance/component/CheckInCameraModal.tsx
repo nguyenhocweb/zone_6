@@ -588,6 +588,7 @@ export const CheckInCameraModal: React.FC<CheckInCameraModalProps> = ({
 
     checkInMutation.mutate(
       {
+        store_id: (slotData as any)?.store_id || null,
         week_start_date: slotData.week_start_date,
         day: slotData.day,
         shift: slotData.shift,
@@ -602,7 +603,22 @@ export const CheckInCameraModal: React.FC<CheckInCameraModalProps> = ({
           typeof navigator !== "undefined" ? navigator.userAgent : "",
       },
       {
-        onSuccess: () => {
+        onSuccess: (res: any) => {
+          const defaultMsg = `Điểm danh ca ${slotData.shift} (${slotData.day}) thành công!`;
+          const zalo = res?.zalo || res?.meta?.zalo;
+          if (zalo?.sent) {
+            toast.success(res?.message || defaultMsg, {
+              description: `🚀 ${zalo.message}`,
+              duration: 5000,
+            });
+          } else if (zalo?.message) {
+            toast.success(defaultMsg);
+            toast.warning(`⚠️ Chưa gửi Zalo: ${zalo.message}`, {
+              duration: 8000,
+            });
+          } else {
+            toast.success(res?.message || defaultMsg);
+          }
           onClose();
         },
       }

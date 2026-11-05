@@ -5,7 +5,16 @@ export type AttendanceVerificationStatus =
   | 'LATE'
   | 'MANUAL_APPROVED';
 
+export interface ZaloNotificationResult {
+  sent: boolean;
+  status: 'sent' | 'not_configured' | 'not_logged_in' | 'disabled' | 'failed' | 'service_unavailable';
+  message: string;
+  target_id?: string;
+  group_name?: string;
+}
+
 export interface CheckInPayload {
+  store_id?: string | null;
   week_start_date: string;
   day: string;
   shift: string;
