@@ -4,6 +4,19 @@
 
 ---
 
+### [2026-11-05 10:35] - Loại Bỏ Widget Thẻ Quy Trình & Lịch Kiểm Kho Đang Áp Dụng Khỏi Giao Diện Kiểm Kê
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "bỏ hiển thị cái này đi khong cần thiết cho lắm" (kèm ảnh chụp card Quy Trình & Lịch Kiểm Kho Đang Áp Dụng chiếm nhiều diện tích)
+- **Nội dung hoàn thành:**
+  - **Tối ưu hóa giao diện Kiểm Kê Kho (`InventoryAuditView.tsx`):**
+    - Loại bỏ hoàn toàn khối widget card "Quy Trình & Lịch Kiểm Kho Đang Áp Dụng" và các thông tin chu kỳ, ca kiểm trong ngày, phân quyền người tạo, phân quyền người duyệt.
+    - Dọn dẹp sạch sẽ các biến trạng thái và import không còn sử dụng (`FaTasks`, `FaHourglassHalf`, `scheduleStatus`, `auditConfig`).
+    - Nút chức năng "⚙️ Cấu Hình Kiểm Kho" trên thanh tiêu đề phía trên vẫn được bảo toàn cho cấp Quản lý / Admin khi có nhu cầu điều chỉnh chu kỳ hoặc phân quyền.
+- **Verification:**
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 09:50] - Phân Nhóm Danh Mục Món Theo "Món Bán" & "Món Nội Bộ" Với `<optgroup>` Chuẩn Giao Diện
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "có thể để món bán dưới danh sách món món nội bộ dưới là danh sách món đc không" (kèm ảnh chụp dropdown danh mục món bị trộn lẫn và có hậu tố lặp lại `(Món bán)`, `(Nội bộ)`)

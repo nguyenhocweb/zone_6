@@ -7,6 +7,7 @@
     "database": "MongoDB Atlas (Cluster: nguyenhocweb.pqyjucr.mongodb.net, Database: zone_6)"
   },
   "completed_tasks": [
+    "Loại bỏ Widget Thẻ Quy Trình & Lịch Kiểm Kho Đang Áp Dụng khỏi InventoryAuditView giúp giao diện kiểm kê gọn gàng, giảm bớt chiếm diện tích không cần thiết.",
     "Tối ưu hóa UI/UX Dropdown Danh Mục Món: Phân nhóm rõ ràng theo '── Món Bán ──' và '── Món Nội Bộ ──' bằng thẻ <optgroup>, loại bỏ các tiền tố emoji và hậu tố dư thừa (Món bán) / (Nội bộ) trên CreateRecipeModal, EditRecipeModal và RecipesView.",
     "Khảo sát và phân tích toàn diện kho tri thức và kiến trúc Zalo cá nhân / zca-js",
     "Chuyển đổi 100% backend từ Python FastAPI sang Node.js TypeScript trong thư mục be/ chạy cổng 8000",

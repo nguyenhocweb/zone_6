@@ -19,16 +19,11 @@ import {
   FaClock,
   FaCog,
   FaShieldAlt,
-  FaTasks,
   FaInfoCircle,
-  FaHourglassHalf,
 } from "react-icons/fa";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useGetMaterials } from "../hook/useGetMaterials";
-import {
-  useGetInventoryAudits,
-  useGetInventoryAuditConfig,
-} from "../hook/useInventoryAudits";
+import { useGetInventoryAudits } from "../hook/useInventoryAudits";
 import { StoreInventorySelector } from "./StoreInventorySelector";
 import { InventoryAuditModal } from "./InventoryAuditModal";
 import { InventoryAuditDetailModal } from "./InventoryAuditDetailModal";
@@ -46,7 +41,6 @@ const ROLE_LABEL_MAP: Record<string, string> = {
 
 export const InventoryAuditView: React.FC = () => {
   const { user } = useAuth();
-  const isAdmin = user?.role === "admin_he_thong";
 
   // Multi-Store Branch Scope State
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
@@ -74,9 +68,6 @@ export const InventoryAuditView: React.FC = () => {
     store_id: selectedStoreId || undefined,
   });
   const materials = useMemo(() => materialsData?.materials || [], [materialsData]);
-
-  // Query audit config & schedule status
-  const { data: auditConfig } = useGetInventoryAuditConfig(selectedStoreId);
 
   // Query audits
   const { data: audits = [], isLoading } = useGetInventoryAudits({
@@ -142,8 +133,6 @@ export const InventoryAuditView: React.FC = () => {
     };
   }, [audits]);
 
-  const scheduleStatus = auditConfig?.schedule_status;
-
   return (
     <div className="space-y-6 animate-fade-in text-white">
       {/* ============================================================== */}
@@ -202,145 +191,6 @@ export const InventoryAuditView: React.FC = () => {
         selectedStoreId={selectedStoreId}
         onSelectStore={setSelectedStoreId}
       />
-
-      {/* ============================================================== */}
-      {/* 2B. CẤU HÌNH & TRẠNG THÁI CHU KỲ KIỂM KHO (CHỈ CẤP ADMIN MỚI THẤY) */}
-      {/* ============================================================== */}
-      {isAdmin && auditConfig && (
-        <div className="bg-[#161820] border border-[#D4AF37]/30 rounded-3xl p-5 shadow-xl relative overflow-hidden">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-4 border-b border-white/10">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] text-lg shrink-0">
-                <FaTasks />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-white tracking-wide">
-                    Quy Trình & Lịch Kiểm Kho Đang Áp Dụng
-                  </h3>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#D4AF37]/20 text-[#D4AF37]">
-                    {auditConfig.store_name || "Mặc Định Toàn Chuỗi"}
-                  </span>
-                </div>
-                <p className="text-xs text-white/50 mt-0.5">
-                  Chu kỳ:{" "}
-                  <strong className="text-white">
-                    {auditConfig.frequency_type === "daily"
-                      ? "Hằng ngày (1 ngày/lần)"
-                      : auditConfig.frequency_type === "interval_days"
-                      ? `Định kỳ ${auditConfig.interval_days} ngày / lần`
-                      : `Hàng tuần (${auditConfig.days_of_week?.length || 1} ngày/tuần)`}
-                  </strong>{" "}
-                  • Giờ nhắc nhở: <strong className="text-[#D4AF37] font-mono">{auditConfig.reminder_time}</strong>
-                </p>
-              </div>
-            </div>
-
-            {/* Trạng thái hôm nay */}
-            <div className="flex items-center gap-3">
-              {scheduleStatus?.today_is_due ? (
-                scheduleStatus.is_today_completed ? (
-                  <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
-                    <FaCheckCircle />
-                    <span>Hôm nay: Đã hoàn thành các ca kiểm bắt buộc</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-bold animate-pulse">
-                    <FaHourglassHalf />
-                    <span>Hôm nay: ĐẾN HẠN KIỂM KHO</span>
-                  </div>
-                )
-              ) : (
-                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-white/60 text-xs font-medium">
-                  <FaCalendarAlt />
-                  <span>
-                    Chưa tới lịch (Kế tiếp:{" "}
-                    <strong className="text-[#D4AF37]">{scheduleStatus?.next_due_date || "---"}</strong>)
-                  </span>
-                </div>
-              )}
-
-              {canConfigure && (
-                <button
-                  type="button"
-                  onClick={() => setIsConfigModalOpen(true)}
-                  className="text-xs text-[#D4AF37] hover:underline font-semibold shrink-0"
-                >
-                  Điều chỉnh
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Chi tiết ca kiểm kho & phân quyền */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 text-xs">
-            {/* Cột 1: Các ca kiểm kho */}
-            <div className="bg-white/5 rounded-2xl p-3.5 border border-white/5">
-              <div className="text-white/50 text-[11px] mb-2 flex items-center justify-between">
-                <span>Ca kiểm kho trong ngày:</span>
-                <span className="font-mono text-[#D4AF37] font-bold">
-                  {auditConfig.audit_shifts?.length || 0} ca
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {auditConfig.audit_shifts?.map((s) => (
-                  <span
-                    key={s.shift_id}
-                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 border ${
-                      s.is_required
-                        ? "bg-[#D4AF37]/15 border-[#D4AF37]/40 text-[#D4AF37]"
-                        : "bg-white/5 border-white/10 text-white/60"
-                    }`}
-                  >
-                    <span>{s.shift_name}</span>
-                    {s.is_required && <span className="text-[9px] text-amber-400">★</span>}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Cột 2: Phân quyền người tạo */}
-            <div className="bg-white/5 rounded-2xl p-3.5 border border-white/5">
-              <div className="text-white/50 text-[11px] mb-2 flex items-center justify-between">
-                <span>Được quyền tạo phiếu:</span>
-                <span className="font-mono text-emerald-400 font-bold">
-                  {auditConfig.allowed_creator_roles?.length || 0} vai trò
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {auditConfig.allowed_creator_roles?.map((role) => (
-                  <span
-                    key={role}
-                    className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/5 text-white/90 border border-white/10"
-                  >
-                    {ROLE_LABEL_MAP[role] || role}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Cột 3: Phân quyền người sửa & duyệt */}
-            <div className="bg-white/5 rounded-2xl p-3.5 border border-white/5">
-              <div className="text-white/50 text-[11px] mb-2 flex items-center justify-between">
-                <span>Được quyền sửa / duyệt kho:</span>
-                <span className="font-mono text-blue-400 font-bold">
-                  {auditConfig.allowed_reviewer_roles?.length || 0} vai trò
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {auditConfig.allowed_reviewer_roles?.map((role) => (
-                  <span
-                    key={role}
-                    className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20"
-                  >
-                    {ROLE_LABEL_MAP[role] || role}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ============================================================== */}
       {/* 3. TÀI KHOẢN & NGƯỜI KIỂM KHO NGÀY HÔM NAY (WIDGET ĐẶC TẢ) */}
