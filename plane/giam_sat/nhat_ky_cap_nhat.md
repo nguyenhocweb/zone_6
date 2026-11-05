@@ -4,6 +4,28 @@
 
 ---
 
+### [2026-11-05 09:50] - Phân Nhóm Danh Mục Món Theo "Món Bán" & "Món Nội Bộ" Với `<optgroup>` Chuẩn Giao Diện
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "có thể để món bán dưới danh sách món món nội bộ dưới là danh sách món đc không" (kèm ảnh chụp dropdown danh mục món bị trộn lẫn và có hậu tố lặp lại `(Món bán)`, `(Nội bộ)`)
+- **Nội dung hoàn thành:**
+  - **Phân loại danh mục theo nhóm nghiệp vụ (`CreateRecipeModal.tsx`, `EditRecipeModal.tsx`, `RecipesView.tsx`):**
+    - Tách danh sách danh mục thành 2 nhóm độc lập bằng `useMemo`:
+      - `customerCategories`: Danh mục món bán cho khách hàng (`type !== 'internal_prep'`).
+      - `internalCategories`: Danh mục bán thành phẩm / sơ chế nội bộ (`type === 'internal_prep'`).
+    - Sử dụng thẻ HTML `<optgroup>` chuẩn để hiển thị phân nhóm rõ ràng, mạch lạc:
+      - `<optgroup label="── Món Bán ──">`: Hiển thị danh sách các món bán (Cà phê, Trà sữa, Trà trái cây, Đá xay - Matcha...).
+      - `<optgroup label="── Món Nội Bộ ──">`: Hiển thị danh sách các món nội bộ (Bán thành phẩm nội bộ, Cốt trà & Syrup sơ chế...).
+    - Loại bỏ tiền tố emoji 🏷️ và hậu tố dư thừa `(Món bán)` / `(Nội bộ)` khỏi từng dòng lựa chọn, giúp giao diện gọn gàng, tinh tế và đồng nhất chuẩn Obsidian Gold.
+    - Áp dụng cấu trúc phân nhóm đồng bộ cho cả:
+      - Modal Tạo Công Thức Món (`CreateRecipeModal.tsx`)
+      - Modal Sửa Công Thức Món (`EditRecipeModal.tsx`)
+      - Bộ Lọc Danh Mục trên thanh công cụ Quản Lý Món (`RecipesView.tsx`)
+- **Verification:**
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+  - `npm --prefix be run build`: 0 lỗi.
+
+---
+
 ### [2026-11-05 09:40] - Tích Hợp Tải Ảnh Món Từ Máy Tính Lên Cloudinary Folder `zone_6/menu/{id món}` Với Cơ Chế Ký Bảo Mật (Signed Upload)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "phần ảnh này chọn từ máy và sẽ đc lưu trên cloudinary folder zone_6/menu/{id món} quy trình lưu thì khi bấm lưu sẽ xin chữ ký từ be và fe sẽ lưu lên cloudinary" (kèm ảnh chụp ô nhập Link Ảnh Món / Hình Ảnh Sản Phẩm)

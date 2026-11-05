@@ -92,6 +92,15 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
   const { data: categoryData } = useGetRecipeCategories();
   const categoryList = categoryData?.categories || [];
 
+  const customerCategories = useMemo(
+    () => categoryList.filter((c) => c.type !== "internal_prep"),
+    [categoryList]
+  );
+  const internalCategories = useMemo(
+    () => categoryList.filter((c) => c.type === "internal_prep"),
+    [categoryList]
+  );
+
   const [isCustomCategory, setIsCustomCategory] = useState<boolean>(false);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
@@ -673,13 +682,28 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                         }}
                         className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors cursor-pointer"
                       >
-                        <option value="">-- Chọn danh mục món trong hệ thống --</option>
-                        {categoryList.map((cat) => (
-                          <option key={cat._id || cat.id} value={cat.name}>
-                            🏷️ {cat.name} {cat.type === "internal_prep" ? "(Nội bộ)" : "(Món bán)"}
-                          </option>
-                        ))}
-                        <option value="__custom__">➕ [Nhập tên danh mục mới nếu chưa có...]</option>
+                        <option value="" className="bg-[#12141A] text-white/50">-- Chọn danh mục món trong hệ thống --</option>
+                        {customerCategories.length > 0 && (
+                          <optgroup label="── Món Bán ──" className="bg-[#181B24] text-amber-400 font-semibold">
+                            {customerCategories.map((cat) => (
+                              <option key={cat._id || cat.id} value={cat.name} className="bg-[#12141A] text-white font-normal">
+                                {cat.name}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+                        {internalCategories.length > 0 && (
+                          <optgroup label="── Món Nội Bộ ──" className="bg-[#181B24] text-blue-400 font-semibold">
+                            {internalCategories.map((cat) => (
+                              <option key={cat._id || cat.id} value={cat.name} className="bg-[#12141A] text-white font-normal">
+                                {cat.name}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+                        <option value="__custom__" className="bg-[#12141A] text-[#D4AF37] font-semibold">
+                          ➕ [Nhập tên danh mục mới nếu chưa có...]
+                        </option>
                       </select>
 
                       {/* Quick pills */}

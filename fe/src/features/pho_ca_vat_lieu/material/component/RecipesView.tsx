@@ -69,6 +69,16 @@ export const RecipesView: React.FC = () => {
 
   const recipes = useMemo(() => recipesData?.recipes || [], [recipesData]);
 
+  const categories = useMemo(() => categoryData?.categories || [], [categoryData]);
+  const customerCategories = useMemo(
+    () => categories.filter((c) => c.type !== "internal_prep"),
+    [categories]
+  );
+  const internalCategories = useMemo(
+    () => categories.filter((c) => c.type === "internal_prep"),
+    [categories]
+  );
+
   return (
     <div className="space-y-6 animate-fade-in text-white">
       {/* Top Header */}
@@ -239,12 +249,25 @@ export const RecipesView: React.FC = () => {
             onChange={(e) => setRecipeCategoryFilter(e.target.value)}
             className="bg-[#12141A] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400 transition-colors cursor-pointer"
           >
-            <option value="all">🏷️ Tất Cả Danh Mục</option>
-            {(categoryData?.categories || []).map((cat) => (
-              <option key={cat._id || cat.id} value={cat.name}>
-                {cat.name}
-              </option>
-            ))}
+            <option value="all" className="bg-[#12141A] text-white">Tất Cả Danh Mục</option>
+            {customerCategories.length > 0 && (
+              <optgroup label="── Món Bán ──" className="bg-[#181B24] text-amber-400 font-semibold">
+                {customerCategories.map((cat) => (
+                  <option key={cat._id || cat.id} value={cat.name} className="bg-[#12141A] text-white font-normal">
+                    {cat.name}
+                  </option>
+                ))}
+              </optgroup>
+            )}
+            {internalCategories.length > 0 && (
+              <optgroup label="── Món Nội Bộ ──" className="bg-[#181B24] text-blue-400 font-semibold">
+                {internalCategories.map((cat) => (
+                  <option key={cat._id || cat.id} value={cat.name} className="bg-[#12141A] text-white font-normal">
+                    {cat.name}
+                  </option>
+                ))}
+              </optgroup>
+            )}
           </select>
 
           {[

@@ -21,3 +21,4 @@ export interface CloudinaryUploadResult {
   bytes: number;
   url: string;
 }
+

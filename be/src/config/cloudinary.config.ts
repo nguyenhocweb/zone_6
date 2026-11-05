@@ -38,3 +38,4 @@ export function generateCloudinarySignature(params: Record<string, any>): {
 
   return { signature, timestamp };
 }
+

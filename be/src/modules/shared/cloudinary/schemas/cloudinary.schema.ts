@@ -15,3 +15,4 @@ export interface CloudinarySignResponse {
   folder: string;
   item_id: string;
 }
+
