@@ -12,6 +12,7 @@ export function useUpdateCheckinConfig() {
     onSuccess: (data) => {
       queryClient.setQueryData(queryKeys.checkinConfig.current, data);
       queryClient.invalidateQueries({ queryKey: queryKeys.checkinConfig.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.stores.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.scheduling.all });
       toast.success("Đã cập nhật cấu hình Check-in & Định vị quán thành công!");
     },

@@ -17,10 +17,12 @@ import {
   FaQrcode,
   FaMobileAlt,
   FaReceipt,
+  FaStore,
 } from "react-icons/fa";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useCheckinConfig } from "../hook/useCheckinConfig";
 import { useUpdateCheckinConfig } from "../hook/useUpdateCheckinConfig";
+import { useGetStores } from "@/features/admin_he_thong/store/hook/useGetStores";
 import { useGetShiftConfigs } from "@/features/pho_ca_lam_lich/scheduling/hook/useShiftConfigs";
 import {
   verifyLocationService,
@@ -30,7 +32,11 @@ import { toast } from "sonner";
 
 export const CheckinConfigView: React.FC = () => {
   const { user } = useAuth();
-  const { data: config, isLoading, isError } = useCheckinConfig();
+  const { data: storesData } = useGetStores();
+  const stores = storesData?.stores || [];
+  const [selectedStoreId, setSelectedStoreId] = useState<string>("");
+
+  const { data: config, isLoading, isError } = useCheckinConfig(selectedStoreId || undefined);
   const { data: shiftsResponse } = useGetShiftConfigs();
   const shiftsList = shiftsResponse?.shifts || [];
   const updateMutation = useUpdateCheckinConfig();
@@ -68,10 +74,19 @@ export const CheckinConfigView: React.FC = () => {
   // Mẫu ca để minh họa Timeline
   const [sampleShift, setSampleShift] = useState<"sang" | "chieu" | "toi">("sang");
 
+  // Tự động chọn cơ sở đầu tiên nếu có danh sách chi nhánh
+  useEffect(() => {
+    if (stores.length > 0 && !selectedStoreId) {
+      setSelectedStoreId(stores[0].id);
+    }
+  }, [stores, selectedStoreId]);
 
   // Đồng bộ khi dữ liệu load từ Backend
   useEffect(() => {
     if (config) {
+      if (!selectedStoreId && config.id) {
+        setSelectedStoreId(config.id);
+      }
       setStoreName(config.store_name || "Zone Six Cafe & Lounge");
       setAddress(config.address || "214 Lê Ninh, Phường Quán Bàu, TP Vinh");
       setLatitude(config.latitude ?? 18.679584);
@@ -229,6 +244,7 @@ export const CheckinConfigView: React.FC = () => {
     }
 
     updateMutation.mutate({
+      store_id: selectedStoreId || config?.id,
       store_name: storeName.trim(),
       address: address.trim(),
       latitude: Number(latitude),
@@ -299,6 +315,44 @@ export const CheckinConfigView: React.FC = () => {
           <span>{updateMutation.isPending ? "Đang lưu..." : "Lưu Cấu Hình"}</span>
         </button>
       </div>
+
+      {/* 1.5 BỘ CHỌN CHI NHÁNH ĐA CƠ SỞ (MULTI-STORE SWITCHER) */}
+      {stores.length > 0 && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#12141A] border border-[#212532] shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] text-lg shrink-0">
+              <FaStore />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-white uppercase tracking-wider">
+                  Chọn Chi Nhánh Áp Dụng
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 font-semibold">
+                  {stores.length} Cơ sở
+                </span>
+              </div>
+              <p className="text-[11px] text-[#8E95A5] mt-0.5">
+                Thiết lập GPS, ca làm việc và tỷ lệ Thuế VAT riêng biệt cho từng cơ sở trong chuỗi
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <select
+              value={selectedStoreId}
+              onChange={(e) => setSelectedStoreId(e.target.value)}
+              className="w-full sm:w-72 bg-[#181B24] border border-[#D4AF37]/40 text-[#D4AF37] text-xs font-bold rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#D4AF37] cursor-pointer shadow-inner"
+            >
+              {stores.map((s) => (
+                <option key={s.id} value={s.id} className="bg-[#12141A] text-white">
+                  {s.store_name} ({s.store_code || "Z6"})
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
 
       {isLoading ? (
         <div className="p-12 text-center text-xs text-[#8E95A5] rounded-3xl bg-[#12141A] border border-[#212532]">

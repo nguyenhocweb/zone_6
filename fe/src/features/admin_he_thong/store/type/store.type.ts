@@ -13,6 +13,10 @@ export interface Store {
   is_geofence_required: boolean;
   is_time_window_strict: boolean;
   is_active: boolean;
+  vat_enabled?: boolean;
+  vat_rate?: number;
+  vat_apply_mode?: 'ALL' | 'SPECIFIC_SHIFTS';
+  vat_applied_shifts?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -37,6 +41,10 @@ export interface StoreCreatePayload {
   is_geofence_required: boolean;
   is_time_window_strict: boolean;
   is_active?: boolean;
+  vat_enabled?: boolean;
+  vat_rate?: number;
+  vat_apply_mode?: 'ALL' | 'SPECIFIC_SHIFTS';
+  vat_applied_shifts?: string[];
 }
 
 export type StoreUpdatePayload = Partial<StoreCreatePayload>;

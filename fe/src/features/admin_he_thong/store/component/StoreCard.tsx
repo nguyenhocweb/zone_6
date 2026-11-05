@@ -12,6 +12,7 @@ import {
   FaTrashAlt,
   FaCheckCircle,
   FaExternalLinkAlt,
+  FaReceipt,
 } from "react-icons/fa";
 import type { Store } from "../type/store.type";
 
@@ -122,6 +123,28 @@ export const StoreCard: React.FC<StoreCardProps> = ({
             <p className="font-mono text-sm font-semibold text-white">
               ±{store.allowed_checkin_before_minutes} phút
             </p>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 col-span-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-white/40 text-[11px]">
+                <FaReceipt className="text-[#D4AF37]/70" />
+                <span>Thuế VAT Chi Nhánh</span>
+              </div>
+              <span
+                className={`text-xs font-semibold ${
+                  store.vat_enabled ? "text-emerald-400" : "text-neutral-500"
+                }`}
+              >
+                {store.vat_enabled
+                  ? `${store.vat_rate}% (${
+                      store.vat_apply_mode === "ALL"
+                        ? "Tất cả ca"
+                        : `${store.vat_applied_shifts?.length || 0} ca`
+                    })`
+                  : "Chưa kích hoạt"}
+              </span>
+            </div>
           </div>
         </div>
 

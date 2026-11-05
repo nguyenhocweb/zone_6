@@ -6,7 +6,8 @@ export class StoreConfigController {
   constructor(private service: StoreConfigService = new StoreConfigService()) {}
 
   getConfig = asyncHandler(async (req: Request, res: Response) => {
-    const config = await this.service.getConfig();
+    const storeId = req.query.store_id as string | undefined;
+    const config = await this.service.getConfig(storeId);
     return res.status(200).json({
       success: true,
       data: config,
@@ -16,7 +17,8 @@ export class StoreConfigController {
 
   updateConfig = asyncHandler(async (req: Request, res: Response) => {
     const actorRole = (req as any).user?.role || 'admin_he_thong';
-    const updated = await this.service.updateConfig(actorRole, req.body);
+    const storeId = (req.query.store_id as string) || req.body.store_id || req.body.id;
+    const updated = await this.service.updateConfig(actorRole, req.body, storeId);
     return res.status(200).json({
       success: true,
       data: updated,

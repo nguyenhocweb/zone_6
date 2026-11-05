@@ -13,6 +13,10 @@ export const storeCreateSchema = z.object({
   is_geofence_required: z.boolean(),
   is_time_window_strict: z.boolean(),
   is_active: z.boolean(),
+  vat_enabled: z.boolean().default(false).optional(),
+  vat_rate: z.number().min(0).max(100).default(8).optional(),
+  vat_apply_mode: z.enum(['ALL', 'SPECIFIC_SHIFTS']).default('ALL').optional(),
+  vat_applied_shifts: z.array(z.string()).default([]).optional(),
 });
 
 export type StoreCreateFormValues = z.infer<typeof storeCreateSchema>;

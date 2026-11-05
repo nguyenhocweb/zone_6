@@ -4,6 +4,28 @@
 
 ---
 
+### [2026-11-05 09:20] - Toàn Diện Cấu Hình Thuế VAT Riêng Biệt Cho Từng Chi Nhánh (Multi-Store VAT & Shift Scoping)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "bạn có thêm cáu hình vat cho từng chi nhánh chưa vd bao nhiêu % và setup ca nào thì mới có thuế vat hay all"
+- **Nội dung hoàn thành:**
+  - **Kiến trúc Backend Đa Cơ Sở (`store-config` & `store`):**
+    - `StoreConfigController` & `StoreConfigService`: Cập nhật `getConfig` và `updateConfig` tiếp nhận `store_id` (qua query string hoặc request body) để truy vấn và lưu chính xác cấu hình (GPS, bán kính, % VAT, phạm vi ca áp dụng) cho đúng cơ sở/chi nhánh đó.
+    - `StoreSchema` & `StoreGetService`: Thêm `vat_enabled`, `vat_rate`, `vat_apply_mode`, `vat_applied_shifts` vào `StoreCreateSchema`, `StoreUpdateSchema` và `mapStoreDoc`.
+  - **Giao diện Cấu hình Check-in & VAT Chi Nhánh (`CheckinConfigView.tsx`):**
+    - Thêm **Bộ chọn Chi Nhánh (Multi-Store Switcher)** ở đầu trang với danh sách lấy từ `useGetStores()`.
+    - Khi Admin chuyển đổi giữa các chi nhánh: Tự động tải thông tin GPS, bán kính điểm danh và cấu hình Thuế VAT (% VAT, Tất cả ca hoặc Ca cụ thể) riêng biệt của chi nhánh đó.
+    - Lưu cấu hình cập nhật chính xác theo `store_id` của chi nhánh đang chọn.
+  - **Tích hợp POS theo Chi Nhánh (`fe/src/app/pos/page.tsx`):**
+    - Cập nhật `useCheckinConfig(shiftData?.storeId)`: Thu ngân làm việc tại chi nhánh nào sẽ tự động áp dụng đúng cấu hình Thuế VAT của riêng chi nhánh đó.
+  - **Quản lý Chi Nhánh (`/stores`):**
+    - `StoreCard.tsx`: Hiển thị micro-badge Thuế VAT trực quan (Tỷ lệ %, Tất cả ca hoặc Số ca áp dụng, trạng thái Kích hoạt/Tắt).
+    - `EditStoreModal.tsx`: Tích hợp trực tiếp bộ chỉnh sửa Thuế VAT khi cập nhật chi nhánh.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 09:05] - Tinh Chỉnh Dropdown Chọn Bàn POS: Loại Bỏ Icon và Chữ "Mặc định"
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "bỏ các icon đi và bỏ chữ mặc định đi" (kèm ảnh chụp dropdown chọn bàn trong LiveCart)

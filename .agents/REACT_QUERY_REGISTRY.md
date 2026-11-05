@@ -28,7 +28,7 @@ Tất cả QueryKey BẮT BUỘC là **mảng phân cấp**:
 | `zalo` | `groups` | `['zalo', 'groups']` | `useZaloGroups` | Khi tài khoản Zalo bot đăng nhập và tải danh sách nhóm tham gia |
 | `scheduling` | `notifications` | `['scheduling', 'notifications', filters]` | `useScheduleNotifications` | Khi tích check-in, đổi slot, đánh dấu đã đọc hoặc ẩn thông báo |
 | `shared` | `staff` | `['staff', 'list', filters]` | `useGetStaff` | Khi tạo tài khoản nhân viên mới (`useCreateStaff`) hoặc cập nhật nhân sự |
-| `system_admin` | `checkinConfig` | `['checkinConfig', 'current']` | `useCheckinConfig` | Khi cập nhật tọa độ quán, bán kính GPS hoặc thời gian trước/sau ca (`useUpdateCheckinConfig`) |
+| `system_admin` | `checkinConfig` | `['checkinConfig', 'current']` / `['checkinConfig', 'store', storeId]` | `useCheckinConfig` | Khi cập nhật tọa độ quán, bán kính GPS hoặc thời gian trước/sau ca và Thuế VAT theo từng chi nhánh (`useUpdateCheckinConfig`) |
 | `scheduling` | `attendance` | `['scheduling', 'attendance', 'slot', slotParams]` | `useSlotAttendance` | Khi check-in ca làm có ảnh (`useCheckInShift`) hoặc hủy điểm danh |
 | `scheduling` | `attendance_week` | `['scheduling', 'attendance', 'week', weekStartDate]` | `useWeekAttendances` | Tự động đồng bộ toàn bộ ảnh & lịch sử check-in của tuần |
 | `pho_ca_vat_lieu` | `materials` | `['pho_ca_vat_lieu', 'materials', filters]` | `useGetMaterials` | Khi thêm/sửa/xóa vật liệu hoặc điều chỉnh tồn kho (`useAdjustStock`) |

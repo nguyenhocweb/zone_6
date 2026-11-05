@@ -11,8 +11,10 @@ interface ApiResponse<T> {
   message: string;
 }
 
-export async function getCheckinConfigService(): Promise<CheckinConfig> {
-  const res = await axiosClient.get<ApiResponse<CheckinConfig>>("/api/v1/store-config");
+export async function getCheckinConfigService(storeId?: string): Promise<CheckinConfig> {
+  const res = await axiosClient.get<ApiResponse<CheckinConfig>>("/api/v1/store-config", {
+    params: storeId ? { store_id: storeId } : undefined,
+  });
   return res.data.data;
 }
 

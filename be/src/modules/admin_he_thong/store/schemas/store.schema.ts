@@ -19,6 +19,10 @@ export const StoreCreateSchema = z.object({
   is_geofence_required: z.boolean().default(true),
   is_time_window_strict: z.boolean().default(true),
   is_active: z.boolean().default(true),
+  vat_enabled: z.boolean().default(false).optional(),
+  vat_rate: z.number().min(0).max(100).default(8).optional(),
+  vat_apply_mode: z.enum(['ALL', 'SPECIFIC_SHIFTS']).default('ALL').optional(),
+  vat_applied_shifts: z.array(z.string()).default([]).optional(),
 });
 
 export const StoreUpdateSchema = StoreCreateSchema.partial();
@@ -45,6 +49,10 @@ export interface StoreResponse {
   is_geofence_required: boolean;
   is_time_window_strict: boolean;
   is_active: boolean;
+  vat_enabled?: boolean;
+  vat_rate?: number;
+  vat_apply_mode?: 'ALL' | 'SPECIFIC_SHIFTS';
+  vat_applied_shifts?: string[];
   created_at: string;
   updated_at: string;
 }

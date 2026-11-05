@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { StoreConfigModel, type IStoreConfigDoc } from '../models/store-config.model.js';
 import type { StoreConfigUpdateDto, StoreConfigResponse } from '../schemas/store-config.schema.js';
 import { calculateDistanceMeters } from '../../../../core/utils/geofence.js';
@@ -5,14 +6,22 @@ import { ForbiddenError, NotFoundError } from '../../../../core/errors.js';
 
 export class StoreConfigService {
   /**
-   * Lấy cấu hình check-in & định vị quán hiện tại.
+   * Lấy cấu hình check-in & định vị quán hiện tại hoặc theo chi nhánh.
    * Nếu chưa có trong MongoDB, tự động tạo cấu hình mặc định cho Zone 6.
    */
-  async getConfig(): Promise<StoreConfigResponse> {
-    let config = await StoreConfigModel.findOne().exec();
+  async getConfig(storeId?: string): Promise<StoreConfigResponse> {
+    let config: IStoreConfigDoc | null = null;
+
+    if (storeId && mongoose.Types.ObjectId.isValid(storeId)) {
+      config = await StoreConfigModel.findById(storeId).exec();
+    }
 
     if (!config) {
-      config = await StoreConfigModel.create({
+      config = await StoreConfigModel.findOne().exec();
+    }
+
+    if (!config) {
+      config = (await StoreConfigModel.create({
         store_name: 'Zone Six Cafe & Lounge',
         address: '214 Lê Ninh, Phường Quán Bàu, TP Vinh',
         latitude: 18.679584,
@@ -22,7 +31,7 @@ export class StoreConfigService {
         allowed_checkin_after_minutes: 30,
         is_geofence_required: true,
         is_time_window_strict: true,
-      });
+      })) as IStoreConfigDoc;
     }
 
     return this.mapToResponse(config);
@@ -33,13 +42,23 @@ export class StoreConfigService {
    */
   async updateConfig(
     actorRole: string,
-    dto: StoreConfigUpdateDto
+    dto: StoreConfigUpdateDto,
+    storeId?: string
   ): Promise<StoreConfigResponse> {
     if (actorRole !== 'admin_he_thong' && actorRole !== 'quan_ly') {
       throw new ForbiddenError('Chỉ Admin hệ thống hoặc Quản lý mới có quyền chỉnh sửa cấu hình check-in!');
     }
 
-    let config = await StoreConfigModel.findOne().exec();
+    const targetId = storeId || (dto as any).store_id || (dto as any).id;
+    let config: IStoreConfigDoc | null = null;
+
+    if (targetId && mongoose.Types.ObjectId.isValid(targetId)) {
+      config = await StoreConfigModel.findById(targetId).exec();
+    }
+
+    if (!config) {
+      config = await StoreConfigModel.findOne().exec();
+    }
 
     if (!config) {
       config = new StoreConfigModel({
@@ -52,7 +71,7 @@ export class StoreConfigService {
         allowed_checkin_after_minutes: dto.allowed_checkin_after_minutes,
         is_geofence_required: dto.is_geofence_required,
         is_time_window_strict: dto.is_time_window_strict,
-      });
+      }) as IStoreConfigDoc;
     } else {
       if (dto.store_name) config.store_name = dto.store_name;
       if (dto.address) config.address = dto.address;
@@ -70,6 +89,10 @@ export class StoreConfigService {
       if (dto.vat_rate !== undefined) config.vat_rate = dto.vat_rate;
       if (dto.vat_apply_mode) config.vat_apply_mode = dto.vat_apply_mode;
       if (dto.vat_applied_shifts !== undefined) config.vat_applied_shifts = dto.vat_applied_shifts;
+    }
+
+    if (!config) {
+      throw new NotFoundError('Không tìm thấy cấu hình chi nhánh');
     }
 
     await config.save();

@@ -13,6 +13,7 @@ import {
   FaSpinner,
   FaClock,
   FaSyncAlt,
+  FaReceipt,
 } from "react-icons/fa";
 import { storeCreateSchema, type StoreCreateFormValues } from "../schema/store.create.schema";
 import { useUpdateStore } from "../hook/useUpdateStore";
@@ -53,10 +54,15 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
       is_geofence_required: true,
       is_time_window_strict: true,
       is_active: true,
+      vat_enabled: false,
+      vat_rate: 8,
+      vat_apply_mode: "ALL",
+      vat_applied_shifts: [],
     },
   });
 
   const isActive = watch("is_active");
+  const vatEnabled = watch("vat_enabled");
 
   useEffect(() => {
     if (store) {
@@ -73,6 +79,10 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
         is_geofence_required: store.is_geofence_required,
         is_time_window_strict: store.is_time_window_strict,
         is_active: store.is_active,
+        vat_enabled: store.vat_enabled ?? false,
+        vat_rate: store.vat_rate ?? 8,
+        vat_apply_mode: store.vat_apply_mode ?? "ALL",
+        vat_applied_shifts: store.vat_applied_shifts ?? [],
       });
     }
   }, [store, reset]);
@@ -396,6 +406,53 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
                 <span>{isActive ? "Đang Mở Cửa" : "Đã Đóng Cửa"}</span>
               </div>
             </div>
+          </div>
+
+          {/* Cấu hình Thuế VAT Chi Nhánh */}
+          <div className="p-4 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-2">
+                <FaReceipt className="text-sm" /> Thuế VAT Chi Nhánh
+              </span>
+              <div
+                onClick={() => setValue("vat_enabled", !vatEnabled)}
+                className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer transition border ${
+                  vatEnabled
+                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                    : "bg-[#212532] text-[#8E95A5] border-white/10"
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full ${vatEnabled ? "bg-emerald-400" : "bg-[#8E95A5]"}`} />
+                <span>{vatEnabled ? "Đang Bật Thuế VAT" : "Đang Tắt Thuế VAT"}</span>
+              </div>
+            </div>
+
+            {vatEnabled && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label className="text-[11px] text-[#8E95A5] block mb-1">Tỷ Lệ Thuế VAT (%)</label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    {...register("vat_rate", { valueAsNumber: true })}
+                    className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-[#D4AF37] font-bold focus:border-[#D4AF37] focus:outline-none"
+                    placeholder="VD: 8, 10"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] text-[#8E95A5] block mb-1">Phạm Vi Áp Dụng Ca</label>
+                  <select
+                    {...register("vat_apply_mode")}
+                    className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-white font-medium focus:border-[#D4AF37] focus:outline-none"
+                  >
+                    <option value="ALL">Áp dụng tất cả các ca (All)</option>
+                    <option value="SPECIFIC_SHIFTS">Theo ca chỉ định (Xem chi tiết ở trang Cấu hình)</option>
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Nút hành động */}

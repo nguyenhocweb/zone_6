@@ -18,6 +18,10 @@ export function mapStoreDoc(doc: IStoreConfigDoc): StoreResponse {
     is_geofence_required: doc.is_geofence_required ?? true,
     is_time_window_strict: doc.is_time_window_strict ?? true,
     is_active: doc.is_active !== false,
+    vat_enabled: doc.vat_enabled ?? false,
+    vat_rate: doc.vat_rate ?? 8,
+    vat_apply_mode: doc.vat_apply_mode || 'ALL',
+    vat_applied_shifts: doc.vat_applied_shifts || [],
     created_at: doc.created_at ? new Date(doc.created_at).toISOString() : new Date().toISOString(),
     updated_at: doc.updated_at ? new Date(doc.updated_at).toISOString() : new Date().toISOString(),
   };

@@ -26,6 +26,7 @@ export const StoreConfigUpdateSchema = z.object({
   vat_rate: z.number().min(0, 'Thuế VAT không được âm').max(100, 'Thuế VAT tối đa 100%').default(8).optional(),
   vat_apply_mode: z.enum(['ALL', 'SPECIFIC_SHIFTS']).default('ALL').optional(),
   vat_applied_shifts: z.array(z.string()).default([]).optional(),
+  store_id: z.string().optional(),
 });
 
 export type StoreConfigUpdateDto = z.infer<typeof StoreConfigUpdateSchema>;

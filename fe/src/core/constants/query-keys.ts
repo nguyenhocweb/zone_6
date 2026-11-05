@@ -29,6 +29,7 @@ export const queryKeys = {
   checkinConfig: {
     all: ["checkinConfig"] as const,
     current: ["checkinConfig", "current"] as const,
+    byStore: (storeId?: string | null) => ["checkinConfig", "store", storeId ?? "default"] as const,
   },
   stores: {
     all: ["stores"] as const,

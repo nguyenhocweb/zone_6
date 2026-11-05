@@ -36,6 +36,7 @@ export interface UpdateCheckinConfigPayload {
   vat_rate?: number;
   vat_apply_mode?: 'ALL' | 'SPECIFIC_SHIFTS';
   vat_applied_shifts?: string[];
+  store_id?: string;
 }
 
 export interface VerifyLocationResponse {

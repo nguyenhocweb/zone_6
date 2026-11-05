@@ -55,8 +55,8 @@ export default function PosPage() {
     shiftData?.storeId ? { store_id: shiftData.storeId } : undefined
   );
 
-  // Lấy cấu hình quán (bao gồm Thuế VAT và Ca áp dụng)
-  const { data: storeConfig } = useCheckinConfig();
+  // Lấy cấu hình quán theo chi nhánh của ca trực (bao gồm Thuế VAT và Ca áp dụng)
+  const { data: storeConfig } = useCheckinConfig(shiftData?.storeId);
 
   // Lắng nghe cập nhật trạng thái bàn thời gian thực từ Socket
   useTableSocket(shiftData?.storeId, liveUser || undefined);
