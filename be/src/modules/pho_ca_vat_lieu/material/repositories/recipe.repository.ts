@@ -63,6 +63,7 @@ export class RecipeRepository {
 
   async create(dto: RecipeCreateDto): Promise<IRecipeDoc> {
     return RecipeModel.create({
+      ...((dto as any)._id ? { _id: (dto as any)._id } : {}),
       store_id: dto.store_id || null,
       name: dto.name.trim(),
       code: dto.code?.trim().toUpperCase(),

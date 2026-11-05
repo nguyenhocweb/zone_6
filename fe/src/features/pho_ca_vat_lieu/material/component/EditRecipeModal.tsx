@@ -20,6 +20,9 @@ import { recipeFormSchema, type RecipeFormValues } from "../schema/recipe.schema
 import { useUpdateRecipe } from "../hook/useUpdateRecipe";
 import { useGetMaterials } from "../hook/useGetMaterials";
 import { useGetRecipeCategories } from "../hook/useGetRecipeCategories";
+import { uploadMenuItemImage } from "@/features/shared/cloudinary/service/cloudinary.service";
+import { RecipeImagePicker } from "./RecipeImagePicker";
+import { toast } from "sonner";
 import type { Material } from "../type/material.type";
 
 interface EditRecipeModalProps {
@@ -43,6 +46,8 @@ export const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
 
   const [activeTab, setActiveTab] = useState<"general" | "ingredients" | "steps">("general");
   const [isCustomCategory, setIsCustomCategory] = useState<boolean>(false);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
 
   const {
     register,
@@ -148,6 +153,7 @@ export const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
             : [],
         is_active: recipe.is_active,
       });
+      setSelectedImageFile(null);
     }
   }, [recipe, reset]);
 
@@ -303,6 +309,24 @@ export const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
   const onSubmit = async (values: RecipeFormValues) => {
     try {
       const targetId = recipe._id || recipe.id;
+      let finalImageUrl = values.image_url?.trim() || null;
+
+      // Nếu người dùng chọn file ảnh từ máy tính -> Xin chữ ký từ BE và upload lên Cloudinary folder zone_6/menu/{id món}
+      if (selectedImageFile) {
+        setIsUploadingImage(true);
+        try {
+          const uploadRes = await uploadMenuItemImage(selectedImageFile, targetId);
+          finalImageUrl = uploadRes.url;
+          setValue("image_url", finalImageUrl);
+        } catch (uploadErr: any) {
+          toast.error(`Lỗi tải ảnh lên Cloudinary: ${uploadErr.message || 'Không thể upload ảnh'}`);
+          setIsUploadingImage(false);
+          return;
+        } finally {
+          setIsUploadingImage(false);
+        }
+      }
+
       await updateMutation.mutateAsync({
         id: targetId,
         payload: {
@@ -314,7 +338,7 @@ export const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
           price: values.type === "internal_prep" ? 0 : Number(values.price),
           estimated_cost: Number(values.estimated_cost || 0),
           description: values.description?.trim() || null,
-          image_url: values.image_url?.trim() || null,
+          image_url: finalImageUrl,
           serving_mode: values.serving_mode || "cold",
           cold_cup_id: values.cold_cup_id || null,
           cold_cup_name: values.cold_cup_name || null,
@@ -343,6 +367,7 @@ export const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
         },
       });
 
+      setSelectedImageFile(null);
       onClose();
     } catch {
       // Handled by toast
@@ -754,36 +779,16 @@ export const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
                 />
               </div>
 
-              {/* Link Ảnh Món / Hình Ảnh Sản Phẩm */}
+              {/* Link Ảnh Món / Tải từ máy tính lên Cloudinary folder zone_6/menu/{id món} */}
               <div>
-                <label className="block text-xs font-semibold text-white/80 mb-1.5 flex items-center justify-between">
-                  <span>🖼️ Link Ảnh Món / Hình Ảnh Sản Phẩm</span>
-                  <span className="text-[11px] text-white/40">URL hình ảnh (jpg, png, webp)</span>
-                </label>
-                <input
-                  type="url"
-                  {...register("image_url")}
-                  placeholder="https://images.unsplash.com/... hoặc dán link ảnh sản phẩm"
-                  className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400 transition-colors"
+                <RecipeImagePicker
+                  value={watch("image_url")}
+                  onChangeUrl={(url) => setValue("image_url", url)}
+                  selectedFile={selectedImageFile}
+                  onFileChange={setSelectedImageFile}
+                  itemId={recipe._id || recipe.id}
+                  isUploading={isUploadingImage}
                 />
-                {watch("image_url") && (
-                  <div className="mt-2 flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
-                    <img
-                      src={watch("image_url") || ""}
-                      alt="Preview"
-                      className="w-12 h-12 object-cover rounded-lg border border-amber-500/40 shrink-0"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = "none";
-                      }}
-                    />
-                    <div className="text-xs text-white/70 min-w-0">
-                      <span className="text-emerald-400 font-semibold block">✓ Đã nhận liên kết ảnh món</span>
-                      <span className="text-[11px] text-white/40 truncate block">
-                        {watch("image_url")}
-                      </span>
-                    </div>
-                  </div>
-                )}
               </div>
 
               <div>
@@ -1109,10 +1114,15 @@ export const EditRecipeModal: React.FC<EditRecipeModalProps> = ({
               </button>
               <button
                 type="submit"
-                disabled={updateMutation.isPending}
+                disabled={updateMutation.isPending || isUploadingImage}
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
               >
-                {updateMutation.isPending ? (
+                {isUploadingImage ? (
+                  <>
+                    <FaSpinner className="animate-spin text-sm" />
+                    <span>Đang tải ảnh lên Cloudinary...</span>
+                  </>
+                ) : updateMutation.isPending ? (
                   <>
                     <FaSpinner className="animate-spin text-sm" />
                     <span>Đang cập nhật...</span>

@@ -4,6 +4,26 @@
 
 ---
 
+### [2026-11-05 09:40] - Tích Hợp Tải Ảnh Món Từ Máy Tính Lên Cloudinary Folder `zone_6/menu/{id món}` Với Cơ Chế Ký Bảo Mật (Signed Upload)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "phần ảnh này chọn từ máy và sẽ đc lưu trên cloudinary folder zone_6/menu/{id món} quy trình lưu thì khi bấm lưu sẽ xin chữ ký từ be và fe sẽ lưu lên cloudinary" (kèm ảnh chụp ô nhập Link Ảnh Món / Hình Ảnh Sản Phẩm)
+- **Nội dung hoàn thành:**
+  - **Hạ tầng Backend Ký Bảo Mật Cloudinary (`be/src/config/cloudinary.config.ts`, `be/src/modules/shared/cloudinary/`):**
+    - Cấu hình SDK & tiện ích băm chữ ký SHA-1 theo chuẩn API Cloudinary: `generateCloudinarySignature({ folder, timestamp })` kết hợp với `CLOUDINARY_API_SECRET`.
+    - Xây dựng Granular SRP Module: `CloudinarySignController`, `CloudinarySignService`, `CloudinarySignSchema`, `cloudinary.routes.ts`.
+    - Định tuyến API: `POST /api/v1/cloudinary/sign` (yêu cầu xác thực `authenticate`). Tiếp nhận `item_id` (nếu không truyền tự động sinh ObjectId mới) và tạo folder `zone_6/menu/{id món}`.
+  - **Giao diện & Tích hợp Frontend (`RecipeImagePicker.tsx`, `CreateRecipeModal.tsx`, `EditRecipeModal.tsx`):**
+    - `cloudinary.service.ts`: Cung cấp hàm `uploadMenuItemImage(file, itemId)` trọn gói (xin chữ ký từ BE -> upload thẳng lên Cloudinary endpoint `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`).
+    - Component `RecipeImagePicker.tsx`:
+      - Cho phép chọn ảnh từ máy tính (PNG, JPG, WEBP, tối đa 10MB) kèm xem trước (preview), thông tin dung lượng và huy hiệu thư mục Cloudinary đích: `zone_6/menu/{id món}`.
+      - Vẫn duy trì tùy chọn dán URL thủ công cho người dùng.
+    - Quy trình lưu: Khi người dùng bấm nút **Lưu Món** / **Cập Nhật Món**, nếu có ảnh mới chọn từ máy tính, form sẽ tự động xin chữ ký từ BE, upload ảnh lên Cloudinary, nhận về `secure_url` và lưu URL an toàn vào MongoDB Atlas.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 09:25] - Phân Quyền Widget Quy Trình Kiểm Kho Cho Admin & Chuyển Mã Vai Trò Sang Tên Hiển Thị
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "ở này cấp admin mới thấy và để tên chứ đừng để dạng mã" (kèm ảnh chụp khung Quy Trình & Lịch Kiểm Kho Đang Áp Dụng với các mã vai trò như admin_he_thong, nhan_vien...)

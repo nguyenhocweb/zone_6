@@ -28,6 +28,9 @@ import { useGetMaterials } from "../hook/useGetMaterials";
 import { useGetRecipeCategories } from "../hook/useGetRecipeCategories";
 import { useGetStores } from "@/features/admin_he_thong/store/hook/useGetStores";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
+import { uploadMenuItemImage } from "@/features/shared/cloudinary/service/cloudinary.service";
+import { RecipeImagePicker } from "./RecipeImagePicker";
+import { toast } from "sonner";
 import type { Material } from "../type/material.type";
 
 interface CreateRecipeModalProps {
@@ -90,6 +93,8 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
   const categoryList = categoryData?.categories || [];
 
   const [isCustomCategory, setIsCustomCategory] = useState<boolean>(false);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
 
   const {
     register,
@@ -344,11 +349,32 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
   const onSubmit = async (values: RecipeFormValues) => {
     try {
+      let finalImageUrl = values.image_url?.trim() || null;
+      let generatedRecipeId: string | undefined = undefined;
+
+      // Nếu người dùng chọn ảnh từ máy tính -> Xin chữ ký từ BE và upload trực tiếp lên Cloudinary folder zone_6/menu/{id món}
+      if (selectedImageFile) {
+        setIsUploadingImage(true);
+        try {
+          const uploadRes = await uploadMenuItemImage(selectedImageFile);
+          finalImageUrl = uploadRes.url;
+          generatedRecipeId = uploadRes.itemId;
+          setValue("image_url", finalImageUrl);
+        } catch (uploadErr: any) {
+          toast.error(`Lỗi tải ảnh lên Cloudinary: ${uploadErr.message || 'Không thể upload ảnh'}`);
+          setIsUploadingImage(false);
+          return;
+        } finally {
+          setIsUploadingImage(false);
+        }
+      }
+
       const finalStoreId = hasMultipleStores
         ? targetStoreId
         : allowedStores[0]?.id || selectedStoreId || null;
 
       await createMutation.mutateAsync({
+        ...(generatedRecipeId ? { _id: generatedRecipeId } : {}),
         store_id: finalStoreId,
         name: values.name.trim(),
         code: values.code?.trim() || undefined,
@@ -358,7 +384,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         price: values.type === "internal_prep" ? 0 : Number(values.price),
         estimated_cost: Number(values.estimated_cost || 0),
         description: values.description?.trim() || null,
-        image_url: values.image_url?.trim() || null,
+        image_url: finalImageUrl,
         serving_mode: values.serving_mode || "cold",
         cold_cup_id: values.cold_cup_id || null,
         cold_cup_name: values.cold_cup_name || null,
@@ -384,9 +410,10 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
           tips: st.tips?.trim() || null,
         })),
         is_active: values.is_active,
-      });
+      } as any);
 
       reset();
+      setSelectedImageFile(null);
       setActiveTab("general");
       onClose();
     } catch {
@@ -857,36 +884,15 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 />
               </div>
 
-              {/* Link Ảnh Món / Hình Ảnh Sản Phẩm */}
+              {/* Link Ảnh Món / Tải từ máy tính lên Cloudinary folder zone_6/menu/{id món} */}
               <div>
-                <label className="block text-xs font-semibold text-white/80 mb-1.5 flex items-center justify-between">
-                  <span>🖼️ Link Ảnh Món / Hình Ảnh Sản Phẩm</span>
-                  <span className="text-[11px] text-white/40">URL hình ảnh (jpg, png, webp)</span>
-                </label>
-                <input
-                  type="url"
-                  {...register("image_url")}
-                  placeholder="https://images.unsplash.com/... hoặc dán link ảnh sản phẩm"
-                  className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400 transition-colors"
+                <RecipeImagePicker
+                  value={watch("image_url")}
+                  onChangeUrl={(url) => setValue("image_url", url)}
+                  selectedFile={selectedImageFile}
+                  onFileChange={setSelectedImageFile}
+                  isUploading={isUploadingImage}
                 />
-                {watch("image_url") && (
-                  <div className="mt-2 flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
-                    <img
-                      src={watch("image_url") || ""}
-                      alt="Preview"
-                      className="w-12 h-12 object-cover rounded-lg border border-amber-500/40 shrink-0"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = "none";
-                      }}
-                    />
-                    <div className="text-xs text-white/70 min-w-0">
-                      <span className="text-emerald-400 font-semibold block">✓ Đã nhận liên kết ảnh món</span>
-                      <span className="text-[11px] text-white/40 truncate block">
-                        {watch("image_url")}
-                      </span>
-                    </div>
-                  </div>
-                )}
               </div>
 
               <div>
@@ -1385,10 +1391,15 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 ) : (
                   <button
                     type="submit"
-                    disabled={createMutation.isPending}
+                    disabled={createMutation.isPending || isUploadingImage}
                     className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                   >
-                    {createMutation.isPending ? (
+                    {isUploadingImage ? (
+                      <>
+                        <FaSpinner className="animate-spin text-sm" />
+                        <span>Đang tải ảnh lên Cloudinary...</span>
+                      </>
+                    ) : createMutation.isPending ? (
                       <>
                         <FaSpinner className="animate-spin text-sm" />
                         <span>Đang lưu...</span>
@@ -1407,10 +1418,15 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
               {activeTab === "store" && hasMultipleStores && (
                 <button
                   type="submit"
-                  disabled={createMutation.isPending || !targetStoreId}
+                  disabled={createMutation.isPending || isUploadingImage || !targetStoreId}
                   className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                 >
-                  {createMutation.isPending ? (
+                  {isUploadingImage ? (
+                    <>
+                      <FaSpinner className="animate-spin text-sm" />
+                      <span>Đang tải ảnh lên Cloudinary...</span>
+                    </>
+                  ) : createMutation.isPending ? (
                     <>
                       <FaSpinner className="animate-spin text-sm" />
                       <span>Đang lưu món...</span>

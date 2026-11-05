@@ -18,6 +18,7 @@ export const RecipeStepSchema = z.object({
 });
 
 export const RecipeCreateSchema = z.object({
+  _id: z.string().optional(),
   store_id: z.string().optional().nullable(),
   name: z.string().min(2, 'Tên công thức/món phải từ 2 ký tự trở lên'),
   code: z.string().trim().optional(),
