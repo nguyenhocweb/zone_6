@@ -98,9 +98,10 @@
     "Thay Thế Hộp Thoại Trình Duyệt Mặc Định Bằng Modal Xác Nhận Obsidian Gold (ConfirmModal): Áp dụng ConfirmModal cho thanh toán tiền mặt POS (hiển thị mã đơn, số tiền nổi bật, bàn/khách) và xóa cấu hình PayOS thay vì window.confirm.",
     "Chuyển Đổi Bàn Số Sang Dropdown Select Bàn Trống (Mặc Định Mang Về) & Tự Động Cập Nhật Trạng Thái Bàn Sang Đang Sử Dụng (Real-time Socket) Khi Thanh Toán: LiveCart chuyển sang select các bàn AVAILABLE, mặc định 'Mang về', OrderCheckoutService tự động cập nhật status bàn OCCUPIED và broadcast table:updated socket thời gian thực.",
     "Bổ Sung Cấu Hình Thuế VAT (% Thuế & Áp Dụng Cho Tất Cả Các Ca Hay Chỉ Ca Được Chọn) & Tích Hợp Vào POS / Hóa Đơn: Admin thiết lập vat_enabled, vat_rate, vat_apply_mode (ALL/SPECIFIC_SHIFTS), vat_applied_shifts; POS tự động nhận diện ca trực để tính thuế, hiển thị trên giỏ hàng LiveCart, lưu vào Order và in trên bill K80.",
-    "Ẩn Nút Hủy Hóa Đơn (Void) Đối Với Nhân Sự Không Có Quyền: OrderManagementView và OrderDetailModal kiểm tra role qua useAuth(), chỉ Admin, Quản Lý và Trưởng Ca mới thấy nút [⊘] Hủy Hóa Đơn, ẩn hoàn toàn với Nhân Viên và Phó Ca."
+    "Ẩn Nút Hủy Hóa Đơn (Void) Đối Với Nhân Sự Không Có Quyền: OrderManagementView và OrderDetailModal kiểm tra role qua useAuth(), chỉ Admin, Quản Lý và Trưởng Ca mới thấy nút [⊘] Hủy Hóa Đơn, ẩn hoàn toàn với Nhân Viên và Phó Ca.",
+    "Tinh Chỉnh Dropdown Chọn Bàn POS: Loại bỏ hoàn toàn các icon emoji (🥡, 🪑) và bỏ chữ '(Mặc định)', chuyển thành nhãn súc tích 'Mang về' và 'Bàn XX (tầng Y) • Trống / Đang chọn'."
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-04T23:25:00Z"
+  "last_updated": "2026-11-05T09:05:00Z"
 }

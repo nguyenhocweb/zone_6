@@ -4,6 +4,19 @@
 
 ---
 
+### [2026-11-05 09:05] - Tinh Chỉnh Dropdown Chọn Bàn POS: Loại Bỏ Icon và Chữ "Mặc định"
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "bỏ các icon đi và bỏ chữ mặc định đi" (kèm ảnh chụp dropdown chọn bàn trong LiveCart)
+- **Nội dung hoàn thành:**
+  - **Tối ưu giao diện Dropdown Bàn (`fe/src/features/pos/component/LiveCart.tsx`):**
+    - Loại bỏ emoji icon `🥡` và chữ `(Mặc định)` ở option mang về: đổi từ `🥡 Mang về (Mặc định)` thành `Mang về`.
+    - Loại bỏ emoji icon `🪑` ở option chọn bàn: hiển thị định dạng chuẩn sạch gọn `{displayName} (zone) • Trống / Đang chọn`.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-04 23:25] - Ẩn Nút Hủy Hóa Đơn (Void) Đối Với Nhân Sự Không Có Quyền
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "những người không có quyền cho nút này thì hãy ẩn nút đó đi" (kèm ảnh chụp nút icon `FaBan` ⊘ và cột Thao Tác trong bảng Quản Lý Hóa Đơn)

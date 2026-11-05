@@ -144,7 +144,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
               className="w-full bg-[#12141a] border border-[#212532] rounded-lg px-2.5 py-1.5 text-xs text-white font-medium focus:outline-none focus:border-[#d4af37] cursor-pointer"
             >
               <option value="Mang về" className="bg-[#12141a] text-white">
-                🥡 Mang về (Mặc định)
+                Mang về
               </option>
               {availableOrSelectedTables.length === 0 ? (
                 <option disabled className="bg-[#12141a] text-[#6c7280]">
@@ -161,7 +161,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
                       value={displayName}
                       className="bg-[#12141a] text-white"
                     >
-                      🪑 {displayName} {tbl.zone_name ? `(${tbl.zone_name})` : ''}{' '}
+                      {displayName} {tbl.zone_name ? `(${tbl.zone_name})` : ''}{' '}
                       {isCurrentSelected && tbl.status !== 'AVAILABLE' ? '• Đang chọn' : '• Trống'}
                     </option>
                   );
