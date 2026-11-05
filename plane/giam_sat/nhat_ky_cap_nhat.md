@@ -4,6 +4,21 @@
 
 ---
 
+### [2026-11-05 09:25] - Phân Quyền Widget Quy Trình Kiểm Kho Cho Admin & Chuyển Mã Vai Trò Sang Tên Hiển Thị
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "ở này cấp admin mới thấy và để tên chứ đừng để dạng mã" (kèm ảnh chụp khung Quy Trình & Lịch Kiểm Kho Đang Áp Dụng với các mã vai trò như admin_he_thong, nhan_vien...)
+- **Nội dung hoàn thành:**
+  - **Phân quyền hiển thị Widget Quy Trình & Lịch Kiểm Kho (`fe/src/features/pho_ca_vat_lieu/material/component/InventoryAuditView.tsx`):**
+    - Ràng buộc điều kiện hiển thị `{isAdmin && auditConfig && (...)`: Chỉ tài khoản có vai trò Admin Hệ Thống (`admin_he_thong`) mới được nhìn thấy card chính sách và lịch kiểm kho. Các vai trò khác (Nhân viên, Phó ca, Trưởng ca, Quản lý) được ẩn 100%.
+  - **Chuyển đổi mã vai trò sang tên tiếng Việt chuẩn mực (`ROLE_LABEL_MAP`):**
+    - Thay thế toàn bộ hiển thị dạng mã kỹ thuật (`nhan_vien`, `pho_ca_vat_lieu`, `pho_ca_lam_lich`, `truong_ca`, `quan_ly`, `admin_he_thong`) thành tên vai trò chính thức: "Nhân Viên", "Phó Ca Vật Liệu", "Phó Ca Làm Lịch", "Trưởng Ca", "Quản Lý", "Admin Hệ Thống".
+    - Áp dụng đồng bộ tại danh sách quyền tạo phiếu, quyền duyệt kho, danh sách người kiểm kho hôm nay và lịch sử kiểm kê trong bảng.
+- **Verification:**
+  - `tsc -p be/tsconfig.json --noEmit`: 0 lỗi.
+  - `tsc -p fe/tsconfig.json --noEmit`: 0 lỗi.
+
+---
+
 ### [2026-11-05 09:20] - Toàn Diện Cấu Hình Thuế VAT Riêng Biệt Cho Từng Chi Nhánh (Multi-Store VAT & Shift Scoping)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "bạn có thêm cáu hình vat cho từng chi nhánh chưa vd bao nhiêu % và setup ca nào thì mới có thuế vat hay all"

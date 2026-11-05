@@ -35,8 +35,18 @@ import { InventoryAuditDetailModal } from "./InventoryAuditDetailModal";
 import { InventoryAuditConfigModal } from "./InventoryAuditConfigModal";
 import type { InventoryAudit } from "../type/inventory-audit.type";
 
+const ROLE_LABEL_MAP: Record<string, string> = {
+  admin_he_thong: "Admin Hệ Thống",
+  quan_ly: "Quản Lý",
+  truong_ca: "Trưởng Ca",
+  pho_ca_vat_lieu: "Phó Ca Vật Liệu",
+  pho_ca_lam_lich: "Phó Ca Làm Lịch",
+  nhan_vien: "Nhân Viên",
+};
+
 export const InventoryAuditView: React.FC = () => {
   const { user } = useAuth();
+  const isAdmin = user?.role === "admin_he_thong";
 
   // Multi-Store Branch Scope State
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
@@ -194,9 +204,9 @@ export const InventoryAuditView: React.FC = () => {
       />
 
       {/* ============================================================== */}
-      {/* 2B. CẤU HÌNH & TRẠNG THÁI CHU KỲ KIỂM KHO (POLICY STATUS WIDGET) */}
+      {/* 2B. CẤU HÌNH & TRẠNG THÁI CHU KỲ KIỂM KHO (CHỈ CẤP ADMIN MỚI THẤY) */}
       {/* ============================================================== */}
-      {auditConfig && (
+      {isAdmin && auditConfig && (
         <div className="bg-[#161820] border border-[#D4AF37]/30 rounded-3xl p-5 shadow-xl relative overflow-hidden">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-4 border-b border-white/10">
             <div className="flex items-center gap-3">
@@ -301,9 +311,9 @@ export const InventoryAuditView: React.FC = () => {
                 {auditConfig.allowed_creator_roles?.map((role) => (
                   <span
                     key={role}
-                    className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-white/5 text-white/80 border border-white/10"
+                    className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/5 text-white/90 border border-white/10"
                   >
-                    {role}
+                    {ROLE_LABEL_MAP[role] || role}
                   </span>
                 ))}
               </div>
@@ -321,9 +331,9 @@ export const InventoryAuditView: React.FC = () => {
                 {auditConfig.allowed_reviewer_roles?.map((role) => (
                   <span
                     key={role}
-                    className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-blue-500/10 text-blue-300 border border-blue-500/20"
+                    className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20"
                   >
-                    {role}
+                    {ROLE_LABEL_MAP[role] || role}
                   </span>
                 ))}
               </div>
@@ -421,7 +431,7 @@ export const InventoryAuditView: React.FC = () => {
                         </span>
                       )}
                       <span className="text-[10px] text-gray-400 truncate">
-                        ({auditor.role})
+                        ({ROLE_LABEL_MAP[auditor.role] || auditor.role})
                       </span>
                     </div>
                   </div>
@@ -571,7 +581,7 @@ export const InventoryAuditView: React.FC = () => {
                               </span>
                             ) : null}
                             <span className="text-[10px] text-gray-400">
-                              ({audit.created_by_role})
+                              ({ROLE_LABEL_MAP[audit.created_by_role] || audit.created_by_role})
                             </span>
                           </div>
                           {audit.created_by_email && (
@@ -637,7 +647,7 @@ export const InventoryAuditView: React.FC = () => {
                               </span>
                             )}
                             {audit.reviewed_by_role && (
-                              <span>({audit.reviewed_by_role})</span>
+                              <span>({ROLE_LABEL_MAP[audit.reviewed_by_role] || audit.reviewed_by_role})</span>
                             )}
                           </div>
                         </div>
