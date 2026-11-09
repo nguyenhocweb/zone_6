@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaCrown, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaSignInAlt, FaShieldAlt } from "react-icons/fa";
 import { useAuth } from "../hook/useAuth";
 
 export const LoginForm: React.FC = () => {
+  const router = useRouter();
   const { login, isAuthenticating, authError } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -25,7 +27,9 @@ export const LoginForm: React.FC = () => {
     }
 
     const success = await login({ email, password });
-    if (!success) {
+    if (success) {
+      router.push("/profile");
+    } else {
       setErrorMsg(authError || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin hoặc thử lại sau.");
     }
   };

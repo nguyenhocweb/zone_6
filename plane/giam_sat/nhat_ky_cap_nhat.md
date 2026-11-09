@@ -4,6 +4,40 @@
 
 ---
 
+### [2026-11-09 13:50] - Điều Hướng Sau Khi Đăng Nhập Thành Công Sang Trang Hồ Sơ Cá Nhân (/profile)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "tại sao login vào trang lại ko đi đến trang doashboad của từng vai trò mà lại ra lại trang chủ làm z sau khi login thành công hãy dẫn đến link này https://zone-6.vercel.app/profile"
+- **Nguyên nhân cốt lõi (Root Cause):**
+  - Trong `fe/src/app/login/page.tsx`, hook `useEffect` trước đây được lập trình chuyển hướng cố định về `router.push("/")` (trang chủ khách hàng `HomePage` - landing page menu QR bên ngoài quán). Do đó, khi nhân sự đăng nhập thành công hoặc người dùng đã có phiên bấm vào Cổng Nhân Sự, hệ thống lại điều hướng ngược về `/` thay vì trang quản trị/hồ sơ của nhân sự.
+- **Nội dung hoàn thành:**
+  - **`fe/src/app/login/page.tsx`:**
+    - Cập nhật chuyển hướng trong hook `useEffect`: Khi `!isLoading && user` -> `router.push("/profile")`.
+  - **`fe/src/features/shared/auth/component/LoginForm.tsx`:**
+    - Bổ sung `useRouter` từ `next/navigation`.
+    - Trong hàm `handleSubmit`, khi `login()` thành công (`success === true`) -> lập tức gọi `router.push("/profile")` để điều hướng ngay tới `https://zone-6.vercel.app/profile`.
+- **Tệp thay đổi:**
+  - `fe/src/app/login/page.tsx`
+  - `fe/src/features/shared/auth/component/LoginForm.tsx`
+- **Verification:**
+  - `.\fe\node_modules\.bin\tsc -p fe/tsconfig.json --noEmit`: 0 lỗi typecheck.
+
+---
+
+### [2026-11-05 15:45] - Biên Soạn Toàn Diện Báo Cáo Học Thuật Đặc Tả 100% CSDL Prisma Schema & Mối Quan Hệ (32 Models, 15 Enums)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "@be/src/databases/prisma đọc file này lấy chi tiết all table và thuoojv tính của từng table và mối quan hệ không đc bỏ sot cái nào và viết vô file md mô tả chi tiết để nộp cô giáo"
+- **Nội dung hoàn thành:**
+  - **Khảo sát & Quét cạn 100% tệp lược đồ trong `be/src/databases/prisma/schema/`:**
+    - Quét trọn vẹn 34 files Prisma bao gồm `base.prisma`, `enum.prisma` (15 enums, 104 hằng số) và 32 files model.
+    - Trích xuất chi tiết từng thuộc tính: Tên trường, Tên cột trong MongoDB (`@map`), Kiểu Prisma, Kiểu MongoDB BSON (ObjectId, Double, Int32, Boolean, Date, Document, Array), Nullable, Mặc định, Ràng buộc Khóa chính/Khóa ngoại/Unique/Indexes và Ý nghĩa nghiệp vụ.
+    - Tổng hợp toàn bộ mối quan hệ: Quan hệ cứng (Hard Relations qua `@relation` với hành vi `onDelete: Cascade / SetNull`), Quan hệ mềm (Soft Relations phân lập theo `store_id`, `user_id`), và Composite Types nhúng (`RecipeIngredient`, `RecipeStep`, JSON Snapshot `Order.items`).
+  - **Đóng gói tài liệu học thuật hoàn chỉnh:**
+    - Tạo tệp `BAO_CAO_CSDL_PRISMA.md` tại thư mục gốc phục vụ nộp báo cáo giảng viên trực tiếp.
+    - Lưu trữ bản sao kiến trúc tại `plane/co_so_du_lieu/04_bao_cao_chi_tiet_prisma.md` và liên kết vào `plane/co_so_du_lieu/README.md`.
+    - Trình bày 4 sơ đồ thực thể liên kết phân hệ bằng Mermaid ERD chuẩn.
+
+---
+
 ### [2026-11-05 13:25] - Khắc Phục Tự Động Bắn Ảnh/Tin Nhắn Lên Zalo Khi Check-in & Thông Báo Minh Bạch Chi Tiết Trạng Thái Zalo
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "sau khi tôi gửi checkin xong thì nó chưa làm đc việc gửi ảnh và tin nawhsn lên zalo nếu ko gửi lên zalo đc thì cũng phải thong báo bạn chưa cấu hình hay chưa login zalo ...." (kèm 2 ảnh chụp: màn hình check-in camera tại /checkin và thẻ Cấu hình Zalo kênh CHECKIN với Group ID 4140305380379629303)

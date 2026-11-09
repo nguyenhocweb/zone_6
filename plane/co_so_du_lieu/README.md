@@ -76,3 +76,4 @@ Mọi dữ liệu nghiệp vụ vận hành hàng ngày (Lịch làm, Ca trực,
 - [01_so_do_thuc_the_erd.md](./01_so_do_thuc_the_erd.md): Sơ đồ quan hệ thực thể (ERD) chi tiết với các khóa chính, khóa ngoại và chỉ mục liên kết chuỗi đa cơ sở.
 - [02_chi_tiet_cac_collection.md](./02_chi_tiet_cac_collection.md): Đặc tả chi tiết từng trường dữ liệu, kiểu dữ liệu, giá trị mặc định và validation rules của tất cả các bảng.
 - [03_quy_trinh_seed_va_migration.md](./03_quy_trinh_seed_va_migration.md): Quy trình khởi tạo dữ liệu mẫu, dọn dẹp an toàn và đồng bộ schema vào MongoDB Atlas.
+- [04_bao_cao_chi_tiet_prisma.md](./04_bao_cao_chi_tiet_prisma.md): **Báo cáo học thuật chi tiết 100% toàn bộ 32 bảng, thuộc tính và mối quan hệ trích xuất từ Prisma Schema để nộp đồ án / giảng viên.**
