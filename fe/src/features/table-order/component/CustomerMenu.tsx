@@ -23,6 +23,33 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
     return [];
   }, [recipes]);
 
+  const safeCategories: any[] = useMemo(() => {
+    let rawList: any[] = [];
+    if (Array.isArray(categories)) {
+      rawList = categories;
+    } else if (categories && Array.isArray((categories as any).categories)) {
+      rawList = (categories as any).categories;
+    }
+
+    const filtered = rawList.filter((cat) => cat && cat.type !== 'internal_prep');
+    if (filtered.length > 0) {
+      return filtered;
+    }
+
+    // Fallback: Tự động trích xuất danh mục từ danh sách món ăn nếu API categories trả về rỗng
+    const catMap = new Map<string, { id: string; name: string }>();
+    safeRecipes.forEach((r: any) => {
+      const catName = r.category || r.category_name;
+      if (catName && !catMap.has(catName)) {
+        catMap.set(catName, {
+          id: r.category_id || catName,
+          name: catName,
+        });
+      }
+    });
+    return Array.from(catMap.values());
+  }, [categories, safeRecipes]);
+
   const filteredRecipes = useMemo(() => {
     return safeRecipes.filter((item: any) => {
       if (!item) return false;
@@ -33,7 +60,12 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
       // Lọc danh mục
       if (selectedCategory !== 'ALL') {
         const itemCat = item.category_id || item.category;
-        if (itemCat !== selectedCategory && item.category_name !== selectedCategory) {
+        const itemName = item.category_name || item.category;
+        if (
+          itemCat !== selectedCategory &&
+          itemName !== selectedCategory &&
+          item.category !== selectedCategory
+        ) {
           return false;
         }
       }
@@ -80,10 +112,10 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
               : 'bg-[#12141a] border border-[#212532] text-[#a0a5b5] hover:text-white'
           }`}
         >
-          Tất Cả Món ({recipes.length})
+          Tất Cả Món ({safeRecipes.length})
         </button>
 
-        {categories.map((cat) => {
+        {safeCategories.map((cat) => {
           const catId = cat.id || cat._id || cat.name;
           const isSelected = selectedCategory === catId || selectedCategory === cat.name;
           return (

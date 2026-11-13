@@ -7,6 +7,7 @@
     "database": "MongoDB Atlas (Cluster: nguyenhocweb.pqyjucr.mongodb.net, Database: zone_6)"
   },
   "completed_tasks": [
+    "Khắc phục triệt để lỗi sập trang 'e.map is not a function' tại màn hình gọi món tại bàn (/order): Chuẩn hóa bóc tách mảng data.categories trong table-order.service.ts, phòng vệ 3 lớp tại TableOrderView, CustomerMenu (safeCategories + fallback tự động trích xuất danh mục từ món) và CustomerCartDrawer (safeItems).",
     "Điều chỉnh chuyển hướng đăng nhập: Khắc phục nguyên nhân trước đây redirect về trang chủ ('/') do hardcode router.push('/') trong fe/src/app/login/page.tsx; chuyển hướng tức thời và chuẩn xác về https://zone-6.vercel.app/profile sau khi đăng nhập thành công cả trong handleSubmit của LoginForm lẫn useEffect của LoginPage.",
     "Biên soạn toàn diện Báo Cáo Học Thuật Đặc Tả 100% CSDL Prisma Schema & Mối Quan Hệ (32 Models, 15 Enums, 2 Composite Types) đầy đủ bảng thuộc tính, khóa, chỉ mục, ERD Mermaid và ma trận quan hệ để nộp giảng viên tại BAO_CAO_CSDL_PRISMA.md và plane/co_so_du_lieu/04_bao_cao_chi_tiet_prisma.md.",
     "Khắc phục triệt để luồng tự động bắn ảnh & tin nhắn Zalo khi check-in: Cố định truy vấn channel_type 'CHECKIN' (kèm fallback đa cơ sở), await kết quả gửi Zalo và phản hồi chi tiết lý do (chưa cấu hình nhóm Zalo, bot chưa đăng nhập, kênh bị tắt...) lên toast thông báo người dùng.",
@@ -114,5 +115,5 @@
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-09T13:50:00+07:00"
+  "last_updated": "2026-11-13T12:15:00+07:00"
 }

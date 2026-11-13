@@ -61,8 +61,15 @@ export const TableOrderView: React.FC = () => {
             tableOrderService.getCategories(),
             tableOrderService.getMenu(verifyRes.store?.id),
           ]);
-          setCategories(catRes);
-          setRecipes(menuRes);
+          const safeCatList = Array.isArray(catRes)
+            ? catRes
+            : (catRes as any)?.categories || [];
+          const safeMenuList = Array.isArray(menuRes)
+            ? menuRes
+            : (menuRes as any)?.recipes || [];
+
+          setCategories(safeCatList);
+          setRecipes(safeMenuList);
         } catch (err: any) {
           const msg = err.response?.data?.message || err.message || 'Lỗi xác thực bàn';
           toast.error(msg);

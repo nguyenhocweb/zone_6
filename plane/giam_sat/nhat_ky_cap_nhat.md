@@ -4,6 +4,34 @@
 
 ---
 
+### [2026-11-13 12:15] - Khắc Phục Lỗi Sập Màn Hình 'e.map is not a function' Tại Trang Gọi Món Tại Bàn (/order)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** "sao lỗ phần này" kèm ảnh chụp màn hình thông báo lỗi "Đã Xảy Ra Sự Cố Hiển Thị: e.map is not a function" tại URL `zone-6.vercel.app/order?token=bc1dfbf5b841de1004c939fc620b927f`.
+- **Nguyên nhân cốt lõi (Root Cause):**
+  - Backend API `/api/v1/recipes/categories` trả về cấu trúc đối tượng `{ categories: RecipeCategory[], total: number }` bọc trong `res.data.data`.
+  - Trong `fe/src/features/table-order/service/table-order.service.ts`, hàm `getCategories()` trước đây trả về trực tiếp `res.data.data || []`, dẫn đến việc trả về 1 object (`{ categories: [...], total: ... }`) thay vì một mảng `Array`.
+  - Khi `CustomerMenu.tsx` nhận biến `categories` và gọi `{categories.map((cat) => ...)}`, trên môi trường production của Next.js (được nén/minify biến thành `e`), JavaScript ném ngoại lệ `TypeError: e.map is not a function` và bị Error Boundary (`fe/src/app/error.tsx`) bắt lại.
+- **Nội dung hoàn thành:**
+  - **Tầng Service (`fe/src/features/table-order/service/table-order.service.ts`):**
+    - Cập nhật `getCategories()` bóc tách an toàn `data.categories` nếu `data` là object, luôn trả về `Array`.
+    - Bọc `try/catch` an toàn cho `getMenu()` để tránh unhandled rejection.
+  - **Tầng View State (`fe/src/features/table-order/component/TableOrderView.tsx`):**
+    - Bổ sung phòng vệ khi gán state `setCategories`: Đảm bảo luôn ép về `Array.isArray(catRes) ? catRes : catRes?.categories || []`.
+  - **Tầng UI Component (`fe/src/features/table-order/component/CustomerMenu.tsx` & `CustomerCartDrawer.tsx`):**
+    - Thiết lập `safeCategories` qua `useMemo` lọc bỏ sơ chế nội bộ `internal_prep`.
+    - Tự động trích xuất danh mục từ danh sách món ăn (`safeRecipes`) làm fallback thông minh nếu API danh mục rỗng.
+    - Đổi `categories.map` thành `safeCategories.map`, `recipes.length` thành `safeRecipes.length`.
+    - Kiểm tra mảng an toàn cho `safeItems` và `item.toppings` trong `CustomerCartDrawer.tsx`.
+- **Tệp thay đổi:**
+  - `fe/src/features/table-order/service/table-order.service.ts`
+  - `fe/src/features/table-order/component/TableOrderView.tsx`
+  - `fe/src/features/table-order/component/CustomerMenu.tsx`
+  - `fe/src/features/table-order/component/CustomerCartDrawer.tsx`
+- **Verification:**
+  - `.\fe\node_modules\.bin\tsc -p fe/tsconfig.json --noEmit`: 0 lỗi typecheck.
+
+---
+
 ### [2026-11-09 13:50] - Điều Hướng Sau Khi Đăng Nhập Thành Công Sang Trang Hồ Sơ Cá Nhân (/profile)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "tại sao login vào trang lại ko đi đến trang doashboad của từng vai trò mà lại ra lại trang chủ làm z sau khi login thành công hãy dẫn đến link này https://zone-6.vercel.app/profile"

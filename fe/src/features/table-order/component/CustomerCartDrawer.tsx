@@ -50,10 +50,11 @@ export const CustomerCartDrawer: React.FC<CustomerCartDrawerProps> = ({
     setDeviceName(detectDeviceName());
   }, []);
 
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalAmount = items.reduce((sum, item) => sum + item.subtotal, 0);
+  const safeItems = Array.isArray(items) ? items : [];
+  const totalQuantity = safeItems.reduce((sum, item) => sum + (item?.quantity || 0), 0);
+  const totalAmount = safeItems.reduce((sum, item) => sum + (item?.subtotal || 0), 0);
 
-  if (items.length === 0) return null;
+  if (safeItems.length === 0) return null;
 
   return (
     <>
@@ -124,11 +125,11 @@ export const CustomerCartDrawer: React.FC<CustomerCartDrawerProps> = ({
 
             {/* Items List */}
             <div className="p-4 space-y-3 flex-1 overflow-y-auto divide-y divide-[#212532]/60">
-              {items.map((item, idx) => (
+              {safeItems.map((item, idx) => (
                 <div key={idx} className="pt-3 first:pt-0 flex items-start justify-between gap-3">
                   <div className="flex-1">
                     <h4 className="text-xs font-bold text-white">{item.name}</h4>
-                    {item.toppings && item.toppings.length > 0 && (
+                    {Array.isArray(item.toppings) && item.toppings.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-1">
                         {item.toppings.map((top, tIdx) => (
                           <span

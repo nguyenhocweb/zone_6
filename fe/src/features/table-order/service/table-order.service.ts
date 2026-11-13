@@ -42,19 +42,26 @@ export const tableOrderService = {
   async getCategories(): Promise<any[]> {
     try {
       const res = await axiosClient.get('/api/v1/recipes/categories');
-      return res.data.data || [];
+      const data = res.data?.data;
+      if (Array.isArray(data)) return data;
+      if (data && Array.isArray(data.categories)) return data.categories;
+      return [];
     } catch {
       return [];
     }
   },
 
   async getMenu(storeId?: string): Promise<any[]> {
-    const params = storeId ? { store_id: storeId } : {};
-    const res = await axiosClient.get('/api/v1/recipes', { params });
-    const data = res.data?.data;
-    if (Array.isArray(data)) return data;
-    if (data && Array.isArray(data.recipes)) return data.recipes;
-    return [];
+    try {
+      const params = storeId ? { store_id: storeId } : {};
+      const res = await axiosClient.get('/api/v1/recipes', { params });
+      const data = res.data?.data;
+      if (Array.isArray(data)) return data;
+      if (data && Array.isArray(data.recipes)) return data.recipes;
+      return [];
+    } catch {
+      return [];
+    }
   },
 
   async submitOrder(payload: CreateTableOrderDto): Promise<TableOrderResult> {
