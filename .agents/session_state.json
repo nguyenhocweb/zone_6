@@ -113,9 +113,10 @@
     "Phân Quyền Widget Quy Trình Kiểm Kho Cho Admin & Chuyển Mã Vai Trò Sang Tên Hiển Thị: Ràng buộc chỉ admin_he_thong mới thấy widget Quy Trình & Lịch Kiểm Kho Đang Áp Dụng trên InventoryAuditView, thay thế toàn bộ mã vai trò thô sang tên tiếng Việt (Nhân Viên, Phó Ca, Trưởng Ca, Quản Lý, Admin Hệ Thống).",
     "Tích Hợp Tải Ảnh Món Từ Máy Tính Lên Cloudinary Folder zone_6/menu/{id món} Với Cơ Chế Ký Bảo Mật: API POST /api/v1/cloudinary/sign sinh chữ ký SHA-1 từ BE, component RecipeImagePicker chọn file xem trước, upload trực tiếp lên Cloudinary khi bấm Lưu Món/Cập Nhật Món trong CreateRecipeModal và EditRecipeModal.",
     "Khắc phục triệt để bảng lương tính 'giả lập' cứng 80h & Bổ sung Check-out ca làm: Tái cấu trúc user.service.ts và StaffSalaryTable.tsx tính toán động theo dữ liệu chấm công thực tế (attendances) và ca phân công tuần (weekly_schedules), bổ sung tính năng Check-out hết ca làm việc và tra cứu ca active (attendance.checkout.service.ts, CheckInDashboard.tsx), hiển thị KPI thực tế (giờ làm thực nhận, chuyên cần %, quỹ lương thực tế).",
-    "Khắc phục POS không có chuông/thông báo khi khách đặt món QR tại bàn: useLivePos.ts tích hợp chuông báo Web Audio API (E6 -> A6) và notification state lắng nghe sự kiện pos:new_table_order; PosHeader.tsx hiển thị notification badge phát sáng Obsidian Gold với nút xem/tắt tức thì."
+    "Khắc phục POS không có chuông/thông báo khi khách đặt món QR tại bàn: useLivePos.ts tích hợp chuông báo Web Audio API (E6 -> A6) và notification state lắng nghe sự kiện pos:new_table_order; PosHeader.tsx hiển thị notification badge phát sáng Obsidian Gold với nút xem/tắt tức thì.",
+    "Khắc phục triệt để lỗi 'Run Command Timeout' khi build Docker Backend trên VPS trong GitHub Actions: Thêm be/.dockerignore loại trừ node_modules/dist/sessions, tối ưu hóa be/Dockerfile chạy node trực tiếp với heap 2GB thay vì npx tsc, dùng npm prune thay vì cài lại 2 lần, tự động kích hoạt 2GB Swap cho VPS trong deploy.yml và đồng bộ phiên bản Prisma CLI với Client."
   ],
   "in_progress_tasks": [],
   "pending_tasks": [],
-  "last_updated": "2026-11-16T13:30:00+07:00"
+  "last_updated": "2026-11-16T17:15:00+07:00"
 }

@@ -1,0 +1,8 @@
+node_modules
+dist
+.sessions
+temp_uploads
+scratch
+.git
+.env
+*.log

@@ -38,7 +38,7 @@
     "@types/multer": "^2.3.0",
     "@types/node": "^22.10.7",
     "@types/nodemailer": "^8.0.2",
-    "prisma": "^6.4.1",
+    "prisma": "^6.19.3",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   }

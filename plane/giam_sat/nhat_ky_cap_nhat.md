@@ -4,6 +4,36 @@
 
 ---
 
+### [2026-11-16 17:10] - Khắc Phục Lỗi 'Run Command Timeout' Khi Deploy Docker Backend Lên VPS Qua GitHub Actions
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Xử lý sự cố GitHub Actions deploy thất bại với lỗi `2026/11/16 07:37:54 Run Command Timeout` tại bước `#12 [backend builder 8/8] RUN npx tsc`.
+- **Nguyên nhân cốt lõi (Root Cause):**
+  1. **Thiếu file `.dockerignore`:** Toàn bộ thư mục `node_modules`, `dist`, `.sessions`, temp logs... ở máy/môi trường bị đưa vào Docker build context làm tăng gánh nặng CPU/RAM.
+  2. **Treo do `npx tsc`:** `npx` trong môi trường headless CI/CD của container Docker có thể bị nghẽn do tự kiểm tra package update từ npm registry hoặc chờ prompt, đồng thời không cấp phát đủ bộ nhớ heap (`max-old-space-size`).
+  3. **VPS thiếu Swap:** Máy chủ VPS (1GB - 2GB RAM) khi chạy `docker build` đồng thời chạy `tsc` và `prisma generate` sẽ bị nghẽn RAM nghiêm trọng, dẫn đến tình trạng CPU 100% (kswapd0 thrashing) khiến lệnh build bị treo suốt 30 phút cho tới khi hết hạn `command_timeout`.
+  4. **Cài đặt dependencies 2 lần:** Stage 2 của Dockerfile tải lại toàn bộ dependencies bằng `npm install --omit=dev`, làm tăng gấp đôi thời gian và băng thông build.
+  5. **Cảnh báo không đồng nhất phiên bản Prisma:** CLI `prisma@6.4.1` không khớp `@prisma/client@6.19.3`.
+- **Nội dung hoàn thành:**
+  - **Khởi tạo `be/.dockerignore`:** Loại trừ hoàn toàn `node_modules`, `dist`, `.sessions`, `temp_uploads`, `scratch`, `.git`, `.env`, `*.log`.
+  - **Tối ưu hóa `be/Dockerfile`:**
+    - Thay thế `npx tsc` bằng lệnh Node trực tiếp có cấp phát bộ nhớ: `node --max-old-space-size=2048 ./node_modules/typescript/bin/tsc`.
+    - Dùng `./node_modules/.bin/prisma generate` cục bộ.
+    - Áp dụng `npm prune --omit=dev` ở Stage 1 và sao chép trực tiếp `node_modules` sang Stage 2 thay vì cài lại từ đầu.
+  - **Nâng cấp `.github/workflows/deploy.yml`:**
+    - Tự động kiểm tra và tạo 2GB Swap file trên VPS nếu VPS chưa có swap (`swapon`).
+    - Bổ sung `docker system prune -f` dọn rác bộ nhớ đệm trước khi build.
+    - Tăng `command_timeout: 45m` để đảm bảo lệnh không bị ngắt quãng giữa chừng.
+  - **Đồng bộ `be/package.json`:** Nâng `prisma` lên `^6.19.3` khớp với `@prisma/client`.
+- **Tệp thay đổi:**
+  - `be/.dockerignore`
+  - `be/Dockerfile`
+  - `be/package.json`
+  - `.github/workflows/deploy.yml`
+- **Verification:**
+  - Chạy thử nghiệm biên dịch `node --max-old-space-size=2048 ./node_modules/typescript/bin/tsc`: Thoát với mã 0 (0 lỗi).
+
+---
+
 ### [2026-11-16 13:30] - Xử Lý Bảng Lương Động Theo Chấm Công + Check-Out Ca Làm & Chuông Báo Đơn QR Tại Bàn Màn Hình POS
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**
