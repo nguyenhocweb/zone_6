@@ -1,11 +1,14 @@
 import axiosClient from "@/core/api/axios-instance";
-import type { CheckInPayload, AttendanceRecord, ZaloNotificationResult } from "../type/attendance.type";
+import type { CheckInPayload, CheckOutPayload, AttendanceRecord, ZaloNotificationResult } from "../type/attendance.type";
 
 interface ApiResponse<T> {
   success: boolean;
   data: T;
   message: string;
   meta?: any;
+  working_hours?: number;
+  check_in_time?: string;
+  check_out_time?: string;
   zalo?: ZaloNotificationResult;
 }
 
@@ -17,6 +20,27 @@ export async function checkInShiftService(
     payload
   );
   return res.data;
+}
+
+export async function checkOutShiftService(
+  payload?: CheckOutPayload
+): Promise<ApiResponse<AttendanceRecord>> {
+  const res = await axiosClient.post<ApiResponse<AttendanceRecord>>(
+    "/api/v1/attendance/check-out",
+    payload || {}
+  );
+  return res.data;
+}
+
+export async function getActiveAttendanceService(): Promise<AttendanceRecord | null> {
+  try {
+    const res = await axiosClient.get<ApiResponse<AttendanceRecord>>(
+      "/api/v1/attendance/active"
+    );
+    return res.data.data;
+  } catch {
+    return null;
+  }
 }
 
 export async function getSlotAttendanceService(params: {

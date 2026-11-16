@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { AttendanceCreateController } from '../controllers/attendance.create.controller.js';
 import { AttendanceGetController } from '../controllers/attendance.get.controller.js';
 import { AttendanceDeleteController } from '../controllers/attendance.delete.controller.js';
-import { CheckInPayloadSchema } from '../schemas/attendance.schema.js';
+import { AttendanceCheckoutController } from '../controllers/attendance.checkout.controller.js';
+import { CheckInPayloadSchema, CheckOutPayloadSchema } from '../schemas/attendance.schema.js';
 import { validateBody } from '../../../../middlewares/validation.middleware.js';
 import { authenticate, requireRoles } from '../../../../middlewares/auth.middleware.js';
 
@@ -16,6 +17,7 @@ export function createAttendanceRouter(zaloService?: ZaloService): Router {
   const createController = new AttendanceCreateController(createService);
   const getController = new AttendanceGetController();
   const deleteController = new AttendanceDeleteController();
+  const checkoutController = new AttendanceCheckoutController();
 
   // POST /api/v1/attendance/check-in (Điểm danh ca làm việc kèm ảnh chụp khuôn mặt và GPS)
   router.post(
@@ -23,6 +25,21 @@ export function createAttendanceRouter(zaloService?: ZaloService): Router {
     authenticate,
     validateBody(CheckInPayloadSchema),
     createController.checkIn
+  );
+
+  // POST /api/v1/attendance/check-out (Check-out kết thúc ca làm việc và tính giờ làm thực tế)
+  router.post(
+    '/check-out',
+    authenticate,
+    validateBody(CheckOutPayloadSchema),
+    checkoutController.checkOut
+  );
+
+  // GET /api/v1/attendance/active (Lấy ca làm việc đang mở chưa check-out của nhân sự)
+  router.get(
+    '/active',
+    authenticate,
+    checkoutController.getActive
   );
 
   // GET /api/v1/attendance/slot (Xem thông tin & ảnh bằng chứng điểm danh của 1 ca)

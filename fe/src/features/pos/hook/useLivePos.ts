@@ -6,6 +6,60 @@ import { toast } from 'sonner';
 import { posService } from '../service/pos.service';
 import { IVerifyShiftData, ILiveCartState, IPosCartItem } from '../type/pos.type';
 
+export interface ITableOrderNotification {
+  orderId: string;
+  orderCode: string;
+  tableNumber: string;
+  customerName?: string;
+  customerPhone?: string;
+  deviceName?: string;
+  distanceMeters?: number;
+  finalAmount: number;
+  itemsCount: number;
+  createdAt?: string;
+  storeId?: string;
+}
+
+/**
+ * Âm thanh chuông báo đơn mới chuẩn Web Audio API (chuông đôi tinh tế E6 -> A6)
+ * Không phụ thuộc file mp3 ngoài, hoạt động mượt mà trên mọi trình duyệt.
+ */
+export function playOrderNotificationSound() {
+  try {
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+
+    const now = ctx.currentTime;
+
+    // Tone 1: 1318.51Hz (Nốt E6)
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(1318.51, now);
+    gain1.gain.setValueAtTime(0.2, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.35);
+
+    // Tone 2: 1760.00Hz (Nốt A6)
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(1760.0, now + 0.15);
+    gain2.gain.setValueAtTime(0.25, now + 0.15);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.15);
+    osc2.stop(now + 0.7);
+  } catch (e) {
+    console.warn('[POS Audio] Không thể phát chuông do chính sách autoplay trình duyệt:', e);
+  }
+}
+
 export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: string; name: string } | null) {
   const [cart, setCart] = useState<ILiveCartState>({
     items: [],
@@ -21,6 +75,7 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
 
   const [isConnected, setIsConnected] = useState(false);
   const [activeStaff, setActiveStaff] = useState<Array<{ userId: string; name: string }>>([]);
+  const [newOrderAlert, setNewOrderAlert] = useState<ITableOrderNotification | null>(null);
   const socketRef = useRef<Socket | null>(null);
 
   // Trích xuất các trường nguyên thủy để làm dependencies, tránh re-connect loop do object reference
@@ -124,6 +179,21 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
         `🎉 Đơn hàng ${data.order?.order_code || ''} (${Number(data.order?.final_amount || 0).toLocaleString()}đ) đã được ${data.completedBy.name} thanh toán thành công!`,
         { duration: 5000 }
       );
+    });
+
+    // Khách đặt món qua mã QR tại bàn (chuông báo âm thanh + toast + notification badge)
+    socket.on('pos:new_table_order', (data: ITableOrderNotification) => {
+      if (!data.storeId || data.storeId === storeId) {
+        playOrderNotificationSound();
+        setNewOrderAlert(data);
+        toast.success(
+          `🔔 BÀN ${data.tableNumber} ĐẶT MÓN! Đơn ${data.orderCode} (${Number(data.finalAmount || 0).toLocaleString()}đ - ${data.itemsCount} món)`,
+          {
+            duration: 9000,
+            description: `Khách: ${data.customerName || 'Tự phục vụ'} • Cách quán: ${Math.round(data.distanceMeters || 0)}m`,
+          }
+        );
+      }
     });
 
     socket.on('pos:error', (data: { message: string }) => {
@@ -334,10 +404,18 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
     [sessionCode, userId, userName]
   );
 
+  // Đóng thông báo đơn bàn mới
+  const dismissNewOrderAlert = useCallback(() => {
+    setNewOrderAlert(null);
+  }, []);
+
   return {
     cart,
     isConnected,
     activeStaff,
+    newOrderAlert,
+    dismissNewOrderAlert,
+    playOrderNotificationSound,
     addItem,
     updateQuantity,
     clearCart,

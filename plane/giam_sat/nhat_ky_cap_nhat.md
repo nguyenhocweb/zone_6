@@ -4,6 +4,59 @@
 
 ---
 
+### [2026-11-16 13:30] - Xử Lý Bảng Lương Động Theo Chấm Công + Check-Out Ca Làm & Chuông Báo Đơn QR Tại Bàn Màn Hình POS
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Xử lý triệt để bảng lương tính "giả lập" cứng 80h ở `user.service.ts` / `StaffSalaryTable.tsx`. Ăn khớp với dữ liệu chấm công thực tế (`attendances`), bổ sung chức năng Check-out hết ca làm việc và tính số giờ thực tế, chuyên cần, mức lương thực nhận.
+  2. Xử lý POS không có chuông/thông báo khi khách đặt món qua QR tại bàn: Frontend `useLivePos.ts` lắng nghe `pos:new_table_order`, phát âm thanh Web Audio API và hiển thị badge cảnh báo nổi bật trên `PosHeader.tsx`.
+  3. Cập nhật báo cáo thẩm định toàn diện từ góc nhìn Tech Lead & Senior Pro Max khắt khe.
+- **Nội dung hoàn thành:**
+  - **1. Backend Check-Out Ca Làm Việc:**
+    - Cập nhật model `AttendanceModel` (`be/src/modules/nhan_vien/attendance/models/attendance.model.ts`) bổ sung trường `working_hours?: number`.
+    - Thêm `CheckOutPayloadSchema` trong `attendance.schema.ts`.
+    - Viết mới `AttendanceCheckOutService` (`attendance.checkout.service.ts`): Xử lý tính toán `diffMs` giữa `check_in_time` và `check_out_time`, lưu `working_hours`, cập nhật trạng thái ca. Cung cấp API `getActive()` tra cứu ca đang làm.
+    - Viết `AttendanceCheckOutController` (`attendance.checkout.controller.ts`) và khai báo routes `POST /api/v1/attendance/check-out`, `GET /api/v1/attendance/active`.
+  - **2. Backend Tính Lương Động Theo Dữ Liệu Chấm Công:**
+    - Tái cấu trúc hàm `getStaffSalaries(month?, storeId?)` tại `be/src/modules/quan_ly/staff/services/user.service.ts`:
+      - Truy vấn bảng `attendances` theo khoảng thời gian tháng được chọn (`YYYY-MM`).
+      - Truy vấn bảng `weekly_schedules` để lấy tổng số ca được phân công theo lịch (`scheduled_shifts`).
+      - Tính toán: `actual_shifts_worked`, `actual_hours_worked` (cộng dồn `working_hours`), `completion_rate` (tỉ lệ chuyên cần %), `late_shifts_count`, và `actual_salary = round(actual_hours_worked * hourly_rate)`.
+      - Loại bỏ hoàn toàn công thức giả định cứng 80h.
+    - Cập nhật `user.controller.ts` tiếp nhận query `month` và `store_id`.
+  - **3. Frontend Check-Out & Giao Diện Bảng Lương Động:**
+    - `attendance.type.ts`, `attendance.service.ts`, `useAttendance.ts`: Bổ sung hook `useCheckOutShift`, `useActiveAttendance`.
+    - `CheckInDashboard.tsx`: Bổ sung khối "Ca Trực Hiện Tại" với bộ đếm thời gian thực (`calculateElapsed`) và nút "Check-out Hết Ca" xác nhận.
+    - `StaffSalaryTable.tsx`: Nâng cấp giao diện hiển thị bộ chọn tháng (`selectedMonth`), 3 thẻ KPI tổng quỹ lương/giờ công/tổng ca, các cột chi tiết ca phân công, ca đã làm, số giờ thực tế, chuyên cần % và lương thực nhận.
+  - **4. Frontend Chuông Báo & Cảnh Báo POS Thời Gian Thực:**
+    - `fe/src/features/pos/hook/useLivePos.ts`:
+      - Hàm `playOrderNotificationSound()` ứng dụng Web Audio API (chuông đôi tinh tế E6 1318.5Hz -> A6 1760Hz).
+      - Lắng nghe sự kiện Socket.io `pos:new_table_order`. Khi khách tại bàn quét QR đặt món, POS lập tức reo chuông, hiển thị toast thông báo chi tiết và lưu state `newOrderAlert`.
+      - Cung cấp hàm `dismissNewOrderAlert`.
+    - `fe/src/features/pos/component/PosHeader.tsx`: Hiển thị thanh cảnh báo phát sáng vàng Obsidian Gold với icon chuông lắc động (`FiBell`) và nút xem/tắt.
+    - `fe/src/app/pos/page.tsx`: Kết nối state `newOrderAlert` vào Header POS.
+- **Tệp thay đổi:**
+  - `be/src/modules/nhan_vien/attendance/models/attendance.model.ts`
+  - `be/src/modules/nhan_vien/attendance/schemas/attendance.schema.ts`
+  - `be/src/modules/nhan_vien/attendance/services/attendance.checkout.service.ts`
+  - `be/src/modules/nhan_vien/attendance/controllers/attendance.checkout.controller.ts`
+  - `be/src/modules/nhan_vien/attendance/routes/attendance.routes.ts`
+  - `be/src/modules/quan_ly/staff/services/user.service.ts`
+  - `be/src/modules/quan_ly/staff/controllers/user.controller.ts`
+  - `fe/src/features/nhan_vien/attendance/type/attendance.type.ts`
+  - `fe/src/features/nhan_vien/attendance/service/attendance.service.ts`
+  - `fe/src/features/nhan_vien/attendance/hook/useAttendance.ts`
+  - `fe/src/features/nhan_vien/attendance/component/CheckInDashboard.tsx`
+  - `fe/src/features/pho_ca_lam_lich/scheduling/service/scheduling.service.ts`
+  - `fe/src/features/quan_ly/salary/component/StaffSalaryTable.tsx`
+  - `fe/src/features/pos/hook/useLivePos.ts`
+  - `fe/src/features/pos/component/PosHeader.tsx`
+  - `fe/src/app/pos/page.tsx`
+- **Verification:**
+  - Backend: `.\be\node_modules\.bin\tsc -p be/tsconfig.json --noEmit` -> 0 lỗi.
+  - Frontend: `.\fe\node_modules\.bin\tsc -p fe/tsconfig.json --noEmit` -> 0 lỗi.
+
+---
+
 ### [2026-11-13 12:15] - Khắc Phục Lỗi Sập Màn Hình 'e.map is not a function' Tại Trang Gọi Món Tại Bàn (/order)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** "sao lỗ phần này" kèm ảnh chụp màn hình thông báo lỗi "Đã Xảy Ra Sự Cố Hiển Thị: e.map is not a function" tại URL `zone-6.vercel.app/order?token=bc1dfbf5b841de1004c939fc620b927f`.

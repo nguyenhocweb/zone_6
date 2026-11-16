@@ -24,6 +24,7 @@ export interface IAttendanceDoc extends Document {
   work_date: Date;
   check_in_time: Date;
   check_out_time?: Date;
+  working_hours?: number;
   photo_url: string;
   address?: string;
   location: IAttendanceLocation;
@@ -50,6 +51,7 @@ const AttendanceSchema = new Schema<IAttendanceDoc>(
     work_date: { type: Date, required: true, index: true },
     check_in_time: { type: Date, default: Date.now, required: true },
     check_out_time: { type: Date, default: null },
+    working_hours: { type: Number, default: 0 },
     photo_url: { type: String, required: true },
     address: { type: String, default: '' },
     location: {

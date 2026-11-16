@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkInShiftService,
+  checkOutShiftService,
+  getActiveAttendanceService,
   getSlotAttendanceService,
   getWeekAttendancesService,
   cancelCheckInService,
 } from "../service/attendance.service";
-import type { CheckInPayload } from "../type/attendance.type";
+import type { CheckInPayload, CheckOutPayload } from "../type/attendance.type";
 import { toast } from "sonner";
 
 export function useCheckInShift() {
@@ -17,6 +19,7 @@ export function useCheckInShift() {
       toast.success(res.message || "Điểm danh ca làm thành công!");
       // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: ["weeklySchedule"] });
+      queryClient.invalidateQueries({ queryKey: ["attendance", "active"] });
       queryClient.invalidateQueries({
         queryKey: ["scheduling", "attendance", "slot", {
           week_start_date: vars.week_start_date,
@@ -29,9 +32,37 @@ export function useCheckInShift() {
         queryKey: ["scheduling", "attendance", "week", vars.week_start_date],
       });
       queryClient.invalidateQueries({ queryKey: ["scheduling", "notifications"] });
+      queryClient.invalidateQueries({ queryKey: ["staffSalaries"] });
     },
     onError: (err: any) => {
       const msg = err.response?.data?.message || err.message || "Điểm danh ca làm thất bại!";
+      toast.error(msg);
+    },
+  });
+}
+
+export function useActiveAttendance() {
+  return useQuery({
+    queryKey: ["attendance", "active"],
+    queryFn: () => getActiveAttendanceService(),
+    staleTime: 30 * 1000,
+  });
+}
+
+export function useCheckOutShift() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload?: CheckOutPayload) => checkOutShiftService(payload),
+    onSuccess: (res) => {
+      toast.success(res.message || "Check-out ca làm việc thành công!");
+      queryClient.invalidateQueries({ queryKey: ["attendance", "active"] });
+      queryClient.invalidateQueries({ queryKey: ["weeklySchedule"] });
+      queryClient.invalidateQueries({ queryKey: ["scheduling", "attendance"] });
+      queryClient.invalidateQueries({ queryKey: ["staffSalaries"] });
+    },
+    onError: (err: any) => {
+      const msg = err.response?.data?.message || err.message || "Check-out ca làm thất bại!";
       toast.error(msg);
     },
   });

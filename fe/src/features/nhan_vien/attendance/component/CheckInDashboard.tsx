@@ -11,10 +11,12 @@ import {
   FaUserCheck,
   FaUsers,
   FaUserFriends,
+  FaClock,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useCheckinConfig } from "@/features/admin_he_thong/checkin-config/hook/useCheckinConfig";
-import { useCheckInShift, useSlotAttendance } from "../hook/useAttendance";
+import { useCheckInShift, useSlotAttendance, useActiveAttendance, useCheckOutShift } from "../hook/useAttendance";
 import { getWeeklyScheduleService, WeeklyScheduleData } from "@/features/pho_ca_lam_lich/scheduling/service/scheduling.service";
 import { getCurrentMonday, getWeekDatesInfo, getSlotWorkStatus } from "@/features/pho_ca_lam_lich/scheduling/util/scheduler-helpers";
 import { SlotAssignment } from "@/features/pho_ca_lam_lich/scheduling/type/scheduling.type";
@@ -154,6 +156,8 @@ export const CheckInDashboard: React.FC = () => {
   const queryClient = useQueryClient();
   const { data: storeConfig } = useCheckinConfig();
   const checkInMutation = useCheckInShift();
+  const { data: activeAttendance } = useActiveAttendance();
+  const checkOutMutation = useCheckOutShift();
 
   const isMountedRef = useRef<boolean>(true);
   const isStartingCameraRef = useRef<boolean>(false);
@@ -167,6 +171,16 @@ export const CheckInDashboard: React.FC = () => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const calculateElapsed = (checkInTimeStr?: string | Date): string => {
+    if (!checkInTimeStr) return "0 phút";
+    const start = new Date(checkInTimeStr).getTime();
+    const diffMs = Math.max(0, currentTime.getTime() - start);
+    const totalMin = Math.floor(diffMs / 60000);
+    const hours = Math.floor(totalMin / 60);
+    const mins = totalMin % 60;
+    return `${hours} giờ ${mins} phút`;
+  };
 
   // Camera States
   const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null);
@@ -734,7 +748,57 @@ export const CheckInDashboard: React.FC = () => {
   const displayAddress = locationAddress || storeConfig?.address || "1 Bau Tram 3 St P.Cẩm Lệ, TP.Đà Nẵng";
 
   return (
-    <div className="w-full max-w-2xl mx-auto pb-8 animate-fade-in">
+    <div className="w-full max-w-2xl mx-auto pb-8 animate-fade-in space-y-4">
+      {/* =========================================================================
+          BANNER CA ĐANG LÀM VIỆC & NÚT CHECK-OUT HẾT CA
+          ========================================================================= */}
+      {activeAttendance && !activeAttendance.check_out_time && (
+        <div className="bg-gradient-to-r from-[#182318] via-[#121B13] to-[#12141A] p-4 sm:p-5 rounded-3xl border-2 border-emerald-500/50 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fadeIn">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 text-xl shrink-0 shadow-lg shadow-emerald-500/10">
+              <FaClock />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                <h4 className="text-xs sm:text-sm font-black uppercase text-white tracking-wider">
+                  Bạn đang trong ca trực: Ca {activeAttendance.shift} ({activeAttendance.day})
+                </h4>
+              </div>
+              <p className="text-xs text-[#A0A8B8] mt-1">
+                Vào ca lúc: <strong className="text-emerald-300 font-mono">{formatTime(new Date(activeAttendance.check_in_time))}</strong> • 
+                Đã làm: <strong className="text-[#D4AF37] font-mono font-bold">{calculateElapsed(activeAttendance.check_in_time)}</strong>
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            disabled={checkOutMutation.isPending}
+            onClick={() => {
+              checkOutMutation.mutate({
+                attendance_id: activeAttendance._id || activeAttendance.id,
+                latitude: latitude || undefined,
+                longitude: longitude || undefined,
+              });
+            }}
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-red-950/50 cursor-pointer active:scale-95 transition disabled:opacity-50"
+          >
+            {checkOutMutation.isPending ? (
+              <>
+                <FaSpinner className="animate-spin text-sm" />
+                <span>Đang Check-out...</span>
+              </>
+            ) : (
+              <>
+                <FaSignOutAlt className="text-sm" />
+                <span>Check-out Hết Ca</span>
+              </>
+            )}
+          </button>
+        </div>
+      )}
+
       {/* KHUNG CAMERA VIEWPOINT CHÍNH - MỞ THẲNG CAMERA KHÔNG CHO LẤY ẢNH TỪ THIẾT BỊ */}
       <div className="relative w-full aspect-[3/4] sm:aspect-[4/3] rounded-3xl overflow-hidden bg-black border-2 border-[#D4AF37]/60 shadow-[0_0_40px_rgba(212,175,55,0.2)] flex items-center justify-center">
         {photoDataUrl ? (

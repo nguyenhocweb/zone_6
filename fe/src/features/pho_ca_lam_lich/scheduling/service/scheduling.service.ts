@@ -45,10 +45,16 @@ export interface StaffSalaryItem {
   name: string;
   position: string;
   hourly_rate: number;
-  target_shifts_per_week: number;
-  weekly_hours: number;
-  estimated_monthly_hours: number;
-  estimated_monthly_salary: number;
+  actual_shifts_worked: number;
+  actual_hours_worked: number;
+  actual_salary: number;
+  scheduled_shifts?: number;
+  completion_rate?: number;
+  late_shifts_count?: number;
+  target_shifts_per_week?: number;
+  weekly_hours?: number;
+  estimated_monthly_hours?: number;
+  estimated_monthly_salary?: number;
   role: string;
   role_label: string;
 }
@@ -146,9 +152,10 @@ export const autoAssignFromDbService = async (
 // =========================================================================
 // QUY TẮC 3: BẢNG LƯƠNG NHÂN SỰ (CHỈ QUẢN LÝ & TRƯỞNG CA)
 // =========================================================================
-export const getStaffSalariesService = async (): Promise<StaffSalaryItem[]> => {
+export const getStaffSalariesService = async (month?: string): Promise<StaffSalaryItem[]> => {
   const response = await axiosClient.get<{ success: boolean; data: StaffSalaryItem[] }>(
-    "/api/v1/users/salaries"
+    "/api/v1/users/salaries",
+    { params: month ? { month } : {} }
   );
   return response.data.data;
 };

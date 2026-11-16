@@ -65,6 +65,8 @@ export default function PosPage() {
   const {
     cart,
     isConnected,
+    newOrderAlert,
+    dismissNewOrderAlert,
     addItem,
     updateQuantity,
     clearCart,
@@ -310,6 +312,8 @@ export default function PosPage() {
         shiftData={shiftData}
         isConnected={isConnected}
         onOpenHistory={handleOpenHistory}
+        newOrderAlert={newOrderAlert}
+        onDismissNewOrderAlert={dismissNewOrderAlert}
       />
 
       {/* Main 2-Column POS Body */}

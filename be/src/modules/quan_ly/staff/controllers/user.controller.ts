@@ -22,12 +22,16 @@ export class UserController {
     }
   };
 
-  getStaffSalaries = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getStaffSalaries = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result = await this.service.getStaffSalaries();
+      const { month, store_id } = req.query;
+      const result = await this.service.getStaffSalaries(
+        month ? String(month) : undefined,
+        store_id ? String(store_id) : undefined
+      );
       res.status(200).json({
         success: true,
-        message: 'Lấy bảng lương nhân viên thành công',
+        message: 'Lấy bảng lương nhân viên thực tế thành công',
         data: result,
       });
     } catch (error) {

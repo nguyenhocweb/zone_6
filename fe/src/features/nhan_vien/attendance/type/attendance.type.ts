@@ -34,6 +34,13 @@ export interface CheckInPayload {
   partner_names?: string[];
 }
 
+export interface CheckOutPayload {
+  attendance_id?: string;
+  latitude?: number;
+  longitude?: number;
+  notes?: string;
+}
+
 export interface AttendanceRecord {
   _id?: string;
   id?: string;
@@ -47,6 +54,7 @@ export interface AttendanceRecord {
   work_date: string;
   check_in_time: string;
   check_out_time?: string | null;
+  working_hours?: number;
   photo_url: string;
   address?: string;
   location: {

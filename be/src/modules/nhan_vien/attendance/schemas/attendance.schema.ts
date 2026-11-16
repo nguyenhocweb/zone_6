@@ -33,3 +33,12 @@ export const GetAttendanceSlotQuerySchema = z.object({
 });
 
 export type GetAttendanceSlotQueryDto = z.infer<typeof GetAttendanceSlotQuerySchema>;
+
+export const CheckOutPayloadSchema = z.object({
+  attendance_id: z.string().optional(),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
+  notes: z.string().optional(),
+});
+
+export type CheckOutPayloadDto = z.infer<typeof CheckOutPayloadSchema>;

@@ -1,19 +1,29 @@
 'use client';
 
 import React from 'react';
-import { FiWifi, FiWifiOff, FiClock, FiMapPin, FiLayers, FiShield } from 'react-icons/fi';
+import { FiWifi, FiWifiOff, FiClock, FiMapPin, FiLayers, FiShield, FiBell, FiX } from 'react-icons/fi';
 import { IVerifyShiftData } from '../type/pos.type';
 
 interface PosHeaderProps {
   shiftData: IVerifyShiftData;
   isConnected: boolean;
   onOpenHistory: () => void;
+  newOrderAlert?: {
+    orderCode: string;
+    tableNumber: string;
+    finalAmount: number;
+    itemsCount: number;
+    customerName?: string;
+  } | null;
+  onDismissNewOrderAlert?: () => void;
 }
 
 export const PosHeader: React.FC<PosHeaderProps> = ({
   shiftData,
   isConnected,
   onOpenHistory,
+  newOrderAlert,
+  onDismissNewOrderAlert,
 }) => {
   return (
     <header className="bg-[#12141a] border-b border-[#212532] px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30 shadow-md">
@@ -52,6 +62,25 @@ export const PosHeader: React.FC<PosHeaderProps> = ({
 
       {/* Connection Status & Actions */}
       <div className="flex items-center gap-3">
+        {/* Chuông báo đơn QR tại bàn mới (Visual Pulse Alert) */}
+        {newOrderAlert && (
+          <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#d4af37]/20 border border-[#d4af37]/60 text-[#d4af37] flex items-center gap-2 animate-pulse shadow-lg shadow-[#d4af37]/10">
+            <FiBell className="w-4 h-4 text-[#d4af37] shrink-0 animate-bounce" />
+            <span className="truncate max-w-[200px] sm:max-w-[280px]">
+              Bàn {newOrderAlert.tableNumber}: +{Number(newOrderAlert.finalAmount).toLocaleString()}đ ({newOrderAlert.itemsCount} món)
+            </span>
+            {onDismissNewOrderAlert && (
+              <button
+                onClick={onDismissNewOrderAlert}
+                title="Đã xem"
+                className="p-1 rounded hover:bg-[#d4af37]/30 text-[#d4af37] hover:text-white transition-colors cursor-pointer"
+              >
+                <FiX className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        )}
+
         {/* Real-time Status Badge */}
         <div
           className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 border ${
