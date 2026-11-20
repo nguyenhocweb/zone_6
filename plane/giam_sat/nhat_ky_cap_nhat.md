@@ -4,6 +4,19 @@
 
 ---
 
+### [2026-11-20 22:38] - Khắc Phục Lỗi Modal VietQR Bị Đứng Yên Sau Khi Nhận Thanh Toán Thành Công
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Xử lý lỗi sau khi PayOS gửi webhook thành công và modal hiện "ĐÃ NHẬN THANH TOÁN! +5.000 VNĐ", modal lại bị đứng im ở dòng "Đang chuyển trang..." mà không tự động đóng hoàn tất đơn.
+- **Nội dung hoàn thành:**
+  - **Phát hiện nguyên nhân:** Trong `VietQrModal.tsx`, `setTimeout` tự động đóng (1500ms) được đặt bên trong `useEffect` lắng nghe sự kiện, kèm hàm dọn dẹp `return () => clearTimeout(timer)`. Khi `setIsPaid(true)` được gọi, component re-render làm kích hoạt hàm cleanup dọn dẹp timer trước khi nó kịp thực thi, khiến modal bị treo ở trạng thái thành công và các nút bấm bị `disabled`.
+  - **Tách riêng Effect tự động đóng:** Đưa luồng hẹn giờ 1.5s sang một `useEffect` độc lập kích hoạt khi `[isOpen, isPaid]`, đảm bảo timer được thực thi 100% không bị hủy giữa chừng.
+  - **Mở khóa nút bấm "Hoàn Tất & Đóng":** Khi đã nhận tiền thành công, đổi nút bấm thành "Hoàn Tất & Đóng" và nút X để thu ngân có thể bấm hoàn tất ngay lập tức mà không cần đợi đếm thời gian.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` toàn bộ Backend và Frontend đạt 0 lỗi.
+- **Tệp thay đổi:**
+  - `fe/src/features/pos/component/VietQrModal.tsx`
+
+---
+
 ### [2026-11-20 22:30] - Tích Hợp API PayOS CreatePaymentLink Khởi Tạo Giao Dịch Chính Thức Trên Máy Chủ PayOS
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Làm rõ lý do thanh toán thành công nhưng chưa nhận sự kiện trả về từ PayOS và khắc phục triệt để.

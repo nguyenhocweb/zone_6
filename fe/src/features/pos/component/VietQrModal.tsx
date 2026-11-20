@@ -101,14 +101,8 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
       toast.success(
         `🎉 PayOS: Đã nhận thanh toán ${Number(paymentSuccessEvent.amount || totalAmount).toLocaleString()}đ!`
       );
-
-      const timer = setTimeout(() => {
-        onConfirmSuccess(paymentSuccessEvent.order);
-      }, 1500);
-
-      return () => clearTimeout(timer);
     }
-  }, [isOpen, isPaid, isExpired, orderCode, paymentSuccessEvent, onConfirmSuccess, totalAmount]);
+  }, [isOpen, isPaid, isExpired, orderCode, paymentSuccessEvent, totalAmount, payosOrderCode]);
 
   // 2. Cơ chế dự phòng: Tự động kiểm tra trạng thái đơn hàng định kỳ 3s (Polling)
   useEffect(() => {
@@ -124,10 +118,6 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
           toast.success(
             `🎉 PayOS: Đã nhận thanh toán ${Number(status.finalAmount || totalAmount).toLocaleString()}đ!`
           );
-
-          setTimeout(() => {
-            onConfirmSuccess();
-          }, 1500);
         }
       } catch {
         // Dự phòng ngầm
@@ -135,7 +125,18 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isOpen, isPaid, isExpired, orderCode, onConfirmSuccess, totalAmount]);
+  }, [isOpen, isPaid, isExpired, orderCode, totalAmount]);
+
+  // 3. Tự động đóng modal và hoàn tất đơn hàng sau 1.5 giây khi thanh toán thành công
+  useEffect(() => {
+    if (!isOpen || !isPaid) return;
+
+    const timer = setTimeout(() => {
+      onConfirmSuccess();
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [isOpen, isPaid, onConfirmSuccess]);
 
   if (!isOpen) return null;
 
@@ -177,9 +178,8 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
           </div>
           <button
             type="button"
-            onClick={onClose}
-            disabled={isPaid}
-            className="w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 flex items-center justify-center transition cursor-pointer disabled:opacity-40"
+            onClick={isPaid ? () => onConfirmSuccess() : onClose}
+            className="w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 flex items-center justify-center transition cursor-pointer"
           >
             <FiX className="w-4 h-4" />
           </button>
@@ -317,11 +317,14 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
 
           <button
             type="button"
-            onClick={onClose}
-            disabled={isPaid}
-            className="py-2.5 px-5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] text-xs font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition cursor-pointer disabled:opacity-40"
+            onClick={isPaid ? () => onConfirmSuccess() : onClose}
+            className={`py-2.5 px-5 rounded-xl text-xs font-semibold transition cursor-pointer ${
+              isPaid
+                ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs'
+                : 'border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800'
+            }`}
           >
-            {isPaid ? 'Đang chuyển trang...' : 'Hủy Bỏ'}
+            {isPaid ? 'Hoàn Tất & Đóng' : 'Hủy Bỏ'}
           </button>
         </div>
       </div>
