@@ -4,6 +4,24 @@
 
 ---
 
+### [2026-11-20 17:45] - Tích Hợp Và Nạp Thông Tin Cổng Thanh Toán PayOS (MBBank VietQR - NGUYEN VAN NGUYEN) Vào Cơ Sở Dữ Liệu MongoDB Atlas
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Kết nối tài khoản PayOS (kết hợp Casso MBBank VietQR Official) với Client ID, API Key, Checksum Key và lưu kết nối vào cơ sở dữ liệu MongoDB Atlas.
+- **Nội dung hoàn thành:**
+  - Xác thực trực tiếp bộ khóa API với máy chủ PayOS qua HMAC-SHA256:
+    - `Client ID`: `b539f9c0-07e2-4abc-8faf-af6e2945e07c`
+    - `API Key`: `c0b18c07-d27d-4c15-8279-13a4d3917382`
+    - `Checksum Key`: `a683dfd5ebb6dc5e51ad7f18c6cbd3f86bda6ab063694e0a503b41132df543c3`
+  - Bóc tách thông tin tài khoản ngân hàng thụ hưởng liên kết chính thức:
+    - Ngân hàng: `MB` (Ngân hàng TMCP Quân Đội - MBBank)
+    - Số tài khoản VietQR Pro: `VQRQANTPI3912`
+    - Chủ tài khoản: `NGUYEN VAN NGUYEN`
+  - Đã nạp bản ghi vào collection `payos_configs` trên MongoDB Atlas (Database: `zone_6`) với cấu hình mặc định duy nhất (`is_default: true`, `is_active: true`).
+  - Hệ thống bán hàng Live POS (`/pos`) và Gọi món tại bàn QR (`/order`) tự động kích hoạt tạo mã VietQR động trực tiếp về tài khoản MBBank trên.
+- **Collection cập nhật:** `payos_configs` (ObjectId: `6b002441bd3c9fc2f905b4b9`)
+
+---
+
 ### [2026-11-20 16:40] - Tái Thiết Kế Toàn Diện Các Phân Hệ Còn Lại (Kho Vật Liệu, Sổ Tay Công Thức, Yêu Cầu Nhập Kho, Thu Mua PO, Nhà Cung Cấp, Uploader Lịch) Chuẩn Scandinavian Dual-Theme Warm Linen / Warm Espresso & 100% Icon Feather Xám Trung Tính
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Hoàn tất đồng bộ toàn diện tất cả các phân hệ và modal còn lại sang chuẩn Scandinavian Warm Linen (`#f7f4ee`) & Warm Espresso (`#141311`), loại bỏ triệt để mã màu đen pitch-black `#0B0C10`/`#12141A`/`#181B24`/`#161820` và vàng neon `#D4AF37`, chuẩn hóa 100% icon sang Feather `Fi*` màu xám trung tính (`text-stone-400 dark:text-stone-400`), thay thế toàn bộ hộp thoại xóa tự chế bằng `<ConfirmModal>` chuẩn hệ thống.
