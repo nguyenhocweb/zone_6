@@ -4,6 +4,20 @@
 
 ---
 
+### [2026-11-20 18:22] - Khắc Phục Lỗi React 19 "Expected static flag was missing" Trong VietQrModal
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Xử lý lỗi `Internal React error: Expected static flag was missing. Please notify the React team.` tại `PosView.tsx:353` (`VietQrModal`).
+- **Nội dung hoàn thành:**
+  - Phát hiện vi phạm nguyên tắc React Hooks (Rules of Hooks): `VietQrModal.tsx` gọi hook `useGetDefaultPayOSConfig()` sau điều kiện thoát sớm `if (!isOpen) return null;`, dẫn đến mất đồng bộ cây fiber của React khi `isOpen` thay đổi giữa các lượt render.
+  - Di chuyển lệnh gọi hook `const { data: defaultPayOS } = useGetDefaultPayOSConfig();` lên đầu component trước khi kiểm tra `if (!isOpen) return null;`.
+  - Cập nhật số tài khoản và chủ tài khoản mặc định đồng bộ sang `MB - VQRQANTPI3912 - NGUYEN VAN NGUYEN` trên cả `VietQrModal.tsx` và `TableVietQrModal.tsx`.
+  - Typecheck `tsc --noEmit` đạt 0 lỗi.
+- **Tệp thay đổi:**
+  - `fe/src/features/pos/component/VietQrModal.tsx`
+  - `fe/src/features/table-order/component/TableVietQrModal.tsx`
+
+---
+
 ### [2026-11-20 18:15] - Khắc Phục Cảnh Báo Turbopack Instant Navigation Segment Validation Trên Route /pos Và Chuẩn Hóa Cấu Trúc RSC
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Xử lý cảnh báo `Route "/pos": Could not validate that a segment in your UI has instant navigation. Dropped segment: src/app/pos/page.tsx`.
