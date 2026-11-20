@@ -4,6 +4,27 @@
 
 ---
 
+### [2026-11-20 18:15] - Khắc Phục Cảnh Báo Turbopack Instant Navigation Segment Validation Trên Route /pos Và Chuẩn Hóa Cấu Trúc RSC
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Xử lý cảnh báo `Route "/pos": Could not validate that a segment in your UI has instant navigation. Dropped segment: src/app/pos/page.tsx`.
+- **Nội dung hoàn thành:**
+  - Tách toàn bộ giao diện và logic client của màn hình POS sang component chuyên biệt: `fe/src/features/pos/component/PosView.tsx` ('use client').
+  - Chuyển đổi `fe/src/app/pos/page.tsx` thành React Server Component (RSC), khai báo `export const metadata` và `export const instant = false;` để tắt kiểm tra Instant Navigation thử nghiệm của Turbopack.
+  - Đồng bộ chuẩn hóa tương tự cho trang gọi món `fe/src/app/order/page.tsx`.
+  - Khắc phục triệt để lỗi React Warning `Each child in a list should have a unique "key" prop` tại `PayOSManagementView` và `PayOSAccountCard` bằng cách chuẩn hóa `id` tự động từ MongoDB `_id` ở cả Backend Repository lẫn Frontend Card/Modal.
+  - Typecheck `tsc --noEmit` toàn bộ Frontend và Backend đạt 0 lỗi.
+- **Tệp thay đổi:**
+  - `fe/src/features/pos/component/PosView.tsx` (Mới)
+  - `fe/src/app/pos/page.tsx`
+  - `fe/src/app/order/page.tsx`
+  - `be/src/modules/admin_he_thong/payos/repositories/payos-config.repository.ts`
+  - `fe/src/features/admin_he_thong/payos/component/PayOSManagementView.tsx`
+  - `fe/src/features/admin_he_thong/payos/component/PayOSAccountCard.tsx`
+  - `fe/src/features/admin_he_thong/payos/component/PayOSAccountModal.tsx`
+  - `fe/src/features/admin_he_thong/payos/type/payos.type.ts`
+
+---
+
 ### [2026-11-20 17:45] - Tích Hợp Và Nạp Thông Tin Cổng Thanh Toán PayOS (MBBank VietQR - NGUYEN VAN NGUYEN) Vào Cơ Sở Dữ Liệu MongoDB Atlas
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Kết nối tài khoản PayOS (kết hợp Casso MBBank VietQR Official) với Client ID, API Key, Checksum Key và lưu kết nối vào cơ sở dữ liệu MongoDB Atlas.
