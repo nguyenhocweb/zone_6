@@ -1,5 +1,6 @@
 export interface PayOSConfig {
-  id: string;
+  id?: string;
+  _id?: string;
   name: string;
   client_id: string;
   api_key: string;
@@ -15,7 +16,8 @@ export interface PayOSConfig {
 }
 
 export interface PayOSPublicConfig {
-  id: string;
+  id?: string;
+  _id?: string;
   name: string;
   bank_name: string;
   account_number: string;

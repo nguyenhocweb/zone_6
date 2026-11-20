@@ -114,9 +114,10 @@ export const PayOSAccountModal: React.FC<PayOSAccountModalProps> = ({
   };
 
   const onSubmit = (values: PayOSFormValues) => {
-    if (accountToEdit) {
+    const editId = accountToEdit?.id || (accountToEdit as any)?._id;
+    if (accountToEdit && editId) {
       updateMutation.mutate(
-        { id: accountToEdit.id, payload: values },
+        { id: editId, payload: values },
         {
           onSuccess: () => onClose(),
         }

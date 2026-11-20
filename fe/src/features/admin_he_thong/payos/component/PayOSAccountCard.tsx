@@ -33,13 +33,15 @@ export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEd
   const deleteMutation = useDeletePayOSConfig();
   const testMutation = useTestPayOSConfig();
 
+  const accountId = config.id || config._id || (config as any)._id || '';
+
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast.success(`Đã sao chép ${label}!`);
   };
 
   const handleSetDefault = () => {
-    setDefaultMutation.mutate(config.id);
+    if (accountId) setDefaultMutation.mutate(accountId);
   };
 
   const handleDelete = () => {
@@ -47,7 +49,7 @@ export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEd
   };
 
   const handleTest = () => {
-    testMutation.mutate({ id: config.id });
+    if (accountId) testMutation.mutate({ id: accountId });
   };
 
   return (
@@ -88,7 +90,7 @@ export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEd
 
           <div className="flex items-center gap-1 shrink-0">
             <button
-              onClick={() => onEdit(config)}
+              onClick={() => onEdit({ ...config, id: accountId })}
               className="w-8 h-8 rounded-xl bg-stone-50 dark:bg-[#25221e] hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] border border-stone-200 dark:border-stone-800 flex items-center justify-center transition cursor-pointer"
               title="Chỉnh sửa"
             >
@@ -214,7 +216,8 @@ export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEd
         isDestructive={true}
         isLoading={deleteMutation.isPending}
         onConfirm={() => {
-          deleteMutation.mutate(config.id, {
+          if (!accountId) return;
+          deleteMutation.mutate(accountId, {
             onSettled: () => setIsDeleteModalOpen(false),
           });
         }}

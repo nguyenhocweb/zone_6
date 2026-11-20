@@ -172,13 +172,17 @@ export const PayOSManagementView: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {configs.map((config) => (
-              <PayOSAccountCard
-                key={config.id}
-                config={config}
-                onEdit={handleOpenEditModal}
-              />
-            ))}
+            {configs.map((config, idx) => {
+              const accountId = config.id || config._id || (config as any)._id || `payos-${idx}`;
+              const normalizedConfig = { ...config, id: accountId };
+              return (
+                <PayOSAccountCard
+                  key={accountId}
+                  config={normalizedConfig}
+                  onEdit={handleOpenEditModal}
+                />
+              );
+            })}
           </div>
         )}
       </div>
