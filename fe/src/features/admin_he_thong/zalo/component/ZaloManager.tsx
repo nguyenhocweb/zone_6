@@ -16,29 +16,25 @@ import { useCheckinConfig } from '@/features/admin_he_thong/checkin-config/hook/
 import { useGetStores } from '@/features/admin_he_thong/store/hook/useGetStores';
 import type { ZaloChannelConfig, ZaloChannelType } from '../type/zalo.type';
 import {
-  FaQrcode,
-  FaSignOutAlt,
-  FaPaperPlane,
-  FaShieldAlt,
-  FaBroadcastTower,
-  FaUserCheck,
-  FaSync,
-  FaInfoCircle,
-  FaCheckCircle,
-  FaQuestionCircle,
-  FaSave,
-  FaCopy,
-  FaStore,
-  FaBuilding,
-  FaCamera,
-  FaBoxOpen,
-  FaCalendarAlt,
-  FaBullhorn,
-  FaToggleOn,
-  FaToggleOff,
-  FaCheck,
-  FaExternalLinkAlt,
-} from 'react-icons/fa';
+  FiRadio,
+  FiLogOut,
+  FiSend,
+  FiShield,
+  FiCheckCircle,
+  FiHelpCircle,
+  FiCheck,
+  FiCopy,
+  FiMapPin,
+  FiCamera,
+  FiBox,
+  FiCalendar,
+  FiBell,
+  FiToggleLeft,
+  FiToggleRight,
+  FiMaximize2,
+  FiInfo,
+  FiRefreshCw,
+} from 'react-icons/fi';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/features/shared/auth/hook/useAuth';
@@ -57,9 +53,7 @@ const CHANNEL_METADATA: Record<
   {
     title: string;
     icon: React.ReactNode;
-    color: string;
     badgeBg: string;
-    borderColor: string;
     description: string;
     suggestedIcon: string;
     channelNameRaw: string;
@@ -67,11 +61,9 @@ const CHANNEL_METADATA: Record<
   }
 > = {
   CHECKIN: {
-    title: 'Điểm Danh & Check-in Ca',
-    icon: <FaCamera className="text-emerald-400 text-lg" />,
-    color: 'text-emerald-400',
-    badgeBg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-    borderColor: 'border-emerald-500/30 hover:border-emerald-500/60',
+    title: 'Điểm danh & Check-in ca',
+    icon: <FiCamera className="w-4 h-4 text-stone-400 dark:text-stone-400" />,
+    badgeBg: 'bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-800',
     description: 'Bắn ảnh selfie có GPS, thông báo vào ca, đi muộn hoặc vắng mặt.',
     suggestedIcon: '📸',
     channelNameRaw: 'ĐIỂM DANH & CHECK-IN',
@@ -79,11 +71,9 @@ const CHANNEL_METADATA: Record<
       `📸 [ZONE SIX CHECK-IN]: Nhân viên [Nguyễn Văn A] đã check-in thành công ca Sáng (07:00 - 12:00) tại ${storeName}. Vị trí GPS: Hợp lệ.`,
   },
   MATERIAL: {
-    title: 'Kho & Nguyên Vật Liệu',
-    icon: <FaBoxOpen className="text-amber-400 text-lg" />,
-    color: 'text-amber-400',
-    badgeBg: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-    borderColor: 'border-amber-500/30 hover:border-amber-500/60',
+    title: 'Kho & Nguyên vật liệu',
+    icon: <FiBox className="w-4 h-4 text-stone-400 dark:text-stone-400" />,
+    badgeBg: 'bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-800',
     description: 'Cảnh báo hết đá, hết sữa tươi, siro cạn và đề xuất nhập kho gấp.',
     suggestedIcon: '📦',
     channelNameRaw: 'KHO & NGUYÊN VẬT LIỆU',
@@ -91,11 +81,9 @@ const CHANNEL_METADATA: Record<
       `⚠️ [CẢNH BÁO NGUYÊN LIỆU]: ${storeName} sắp hết hàng tồn quầy:\n- Sữa tươi thanh trùng: còn 2 hộp\n- Đá bi: còn 1 bao\nĐề nghị quản trị viên / kho trung tâm cấp hàng!`,
   },
   SCHEDULE: {
-    title: 'Đăng Ký Ca & Lịch Tuần',
-    icon: <FaCalendarAlt className="text-[#D4AF37] text-lg" />,
-    color: 'text-[#D4AF37]',
-    badgeBg: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/30',
-    borderColor: 'border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+    title: 'Đăng ký ca & Lịch tuần',
+    icon: <FiCalendar className="w-4 h-4 text-stone-400 dark:text-stone-400" />,
+    badgeBg: 'bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-800',
     description: 'Nhắc nhân sự nộp lịch trống, thông báo mở cổng và bắn bảng lịch tuần duyệt.',
     suggestedIcon: '📅',
     channelNameRaw: 'ĐĂNG KÝ CA & LỊCH TUẦN',
@@ -103,11 +91,9 @@ const CHANNEL_METADATA: Record<
       `🔔 [LỊCH LÀM VIỆC TUẦN MỚI]: Bảng phân ca làm việc tuần tới của ${storeName} đã được ban hành chính thức. Đề nghị toàn thể nhân sự kiểm tra ca trực cá nhân!`,
   },
   GENERAL: {
-    title: 'Thông Báo Chung & Khẩn Cấp',
-    icon: <FaBullhorn className="text-sky-400 text-lg" />,
-    color: 'text-sky-400',
-    badgeBg: 'bg-sky-500/10 text-sky-400 border-sky-500/30',
-    borderColor: 'border-sky-500/30 hover:border-sky-500/60',
+    title: 'Thông báo chung & Khẩn cấp',
+    icon: <FiBell className="w-4 h-4 text-stone-400 dark:text-stone-400" />,
+    badgeBg: 'bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-800',
     description: 'Phổ biến quy chế hoạt động, lịch họp quán và thông báo vận hành khẩn cấp.',
     suggestedIcon: '📢',
     channelNameRaw: 'THÔNG BÁO CHUNG & KHẨN CẤP',
@@ -127,7 +113,6 @@ export const ZaloManager: React.FC = () => {
   const { data: storeConfigData } = useCheckinConfig();
   const { data: storesResponse } = useGetStores({ is_active: true });
 
-  // Danh sách các cơ sở thực tế từ CSDL MongoDB Atlas (Mặc định 2 cơ sở)
   const storeList: StoreOption[] = useMemo(() => {
     if (storesResponse?.stores && storesResponse.stores.length > 0) {
       return storesResponse.stores.map((s) => ({
@@ -154,7 +139,6 @@ export const ZaloManager: React.FC = () => {
     return [];
   }, [storesResponse, storeConfigData]);
 
-  // Cơ sở đang chọn
   const [selectedStore, setSelectedStore] = useState<StoreOption>({
     id: '',
     code: 'Z6-CS01',
@@ -163,7 +147,6 @@ export const ZaloManager: React.FC = () => {
     address: '',
   });
 
-  // Cập nhật selectedStore khi storeList có dữ liệu từ Database
   useEffect(() => {
     if (storeList.length > 0) {
       if (!selectedStore.id || !storeList.some((s) => s.id === selectedStore.id)) {
@@ -193,28 +176,23 @@ export const ZaloManager: React.FC = () => {
     refetch: refetchChannels,
   } = useStoreZaloChannels(selectedStore.id, selectedStore.shortCode, isAdmin);
 
-  // State local cho 4 kênh của cơ sở đang chọn
   const [channels, setChannels] = useState<ZaloChannelConfig[]>([]);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [testingChannel, setTestingChannel] = useState<string | null>(null);
   const [showIdGuide, setShowIdGuide] = useState<boolean>(false);
 
-  // State cho phiên QR hiện tại
   const [activeQrId, setActiveQrId] = useState<string | null>(null);
   const [qrCountdown, setQrCountdown] = useState<number>(120);
   const { data: qrData } = useZaloQrStatus(activeQrId);
 
   const isReady = statusData?.status === 'ready';
 
-  // Lấy danh sách nhóm Zalo khi bot đã kết nối
   const { data: groupsData } = useZaloGroups(isAdmin && isReady);
 
-  // Khởi tạo hoặc đồng bộ local state khi remoteChannels thay đổi
   useEffect(() => {
     if (remoteChannels && remoteChannels.length > 0) {
       setChannels(remoteChannels);
     } else {
-      // Khởi tạo 4 kênh mặc định
       const defaults: ZaloChannelConfig[] = DEFAULT_CHANNEL_TYPES.map((type) => {
         const meta = CHANNEL_METADATA[type];
         const suggestedGroupName = `[Z6 - ${selectedStore.shortCode}] ${meta.suggestedIcon} ${meta.channelNameRaw}`;
@@ -234,7 +212,6 @@ export const ZaloManager: React.FC = () => {
     }
   }, [remoteChannels, selectedStore]);
 
-  // Đếm ngược QR
   useEffect(() => {
     if (!activeQrId) return;
     const interval = setInterval(() => {
@@ -251,7 +228,6 @@ export const ZaloManager: React.FC = () => {
     return () => clearInterval(interval);
   }, [activeQrId]);
 
-  // Xử lý khi quét mã thành công
   useEffect(() => {
     if (qrData?.status === 'confirmed') {
       toast.success('Đăng nhập Zalo thành công!');
@@ -260,7 +236,6 @@ export const ZaloManager: React.FC = () => {
     }
   }, [qrData?.status, refetchStatus]);
 
-  // Tự động redirect nếu không phải admin
   useEffect(() => {
     if (!isAuthLoading && !isAdmin) {
       router.replace('/schedule');
@@ -304,7 +279,6 @@ export const ZaloManager: React.FC = () => {
     }
   };
 
-  // Cập nhật giá trị trường của 1 kênh
   const handleUpdateChannelField = (
     channelType: ZaloChannelType,
     field: keyof ZaloChannelConfig,
@@ -320,17 +294,15 @@ export const ZaloManager: React.FC = () => {
     );
   };
 
-  // Sao chép tên nhóm quy chuẩn
   const handleCopySuggestedName = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
-    toast.success(`Đã sao chép tên nhóm chuẩn: "${text}"`);
+    toast.success(`Đã sao chép tên nhóm: "${text}"`);
     setTimeout(() => {
       setCopiedKey(null);
     }, 2000);
   };
 
-  // Lưu toàn bộ cấu hình 4 kênh của cơ sở
   const handleSaveStoreChannels = async () => {
     try {
       await updateChannelsMutation.mutateAsync({
@@ -350,7 +322,6 @@ export const ZaloManager: React.FC = () => {
     }
   };
 
-  // Gửi tin nhắn thử nghiệm vào 1 kênh cụ thể
   const handleTestChannel = async (channel: ZaloChannelConfig) => {
     if (!isReady) {
       toast.warning('Tài khoản Zalo Bot chưa kết nối. Vui lòng quét mã QR trước!');
@@ -372,8 +343,6 @@ export const ZaloManager: React.FC = () => {
         content: testContent,
       });
       toast.success(`Đã bắn tin thử nghiệm thành công vào nhóm [${channel.groupName || channel.targetId}]!`);
-
-      // Cập nhật lastSentAt tại chỗ
       handleUpdateChannelField(channel.channelType, 'lastSentAt', new Date().toISOString());
     } catch (err: any) {
       toast.error(err?.response?.data?.error?.message || 'Không thể gửi tin nhắn thử nghiệm tới nhóm này');
@@ -385,7 +354,7 @@ export const ZaloManager: React.FC = () => {
   if (isAuthLoading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-stone-300 border-t-stone-700 dark:border-stone-700 dark:border-t-stone-300 rounded-full animate-spin" />
       </div>
     );
   }
@@ -395,32 +364,32 @@ export const ZaloManager: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12">
+    <div className="space-y-6 max-w-7xl mx-auto pb-12 animate-fadeIn">
       {/* 1. Header Banner & Trạng Thái Hệ Thống */}
-      <div className="relative overflow-hidden rounded-2xl border border-[#212532] bg-[#12141A] p-6 shadow-xl">
+      <div className="rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1a17] p-6 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-2xl font-black shadow-lg shrink-0">
-              <FaBroadcastTower />
+            <div className="w-12 h-12 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center shrink-0">
+              <FiRadio className="w-5 h-5 text-stone-400 dark:text-stone-400" />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-lg font-black text-[#F4F5F8] tracking-wide">
-                  Trung Tâm Điều Hành Zalo Bot Đa Cơ Sở Zone Six
+                <h2 className="text-xl font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
+                  Điều hành Zalo Bot đa cơ sở
                 </h2>
                 {isReady ? (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    Đã Kết Nối (WebSocket Online)
+                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Đã kết nối (Online)
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                    <span className="w-2 h-2 rounded-full bg-amber-400" />
-                    Chưa Đăng Nhập
+                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                    Chưa đăng nhập
                   </span>
                 )}
               </div>
-              <p className="mt-1 text-xs text-[#8E95A5] leading-relaxed max-w-3xl">
+              <p className="mt-1 text-xs text-stone-500 dark:text-stone-400 leading-relaxed max-w-3xl">
                 Cấu hình hệ thống nhóm Zalo chuyên biệt theo từng cơ sở (Điểm danh, Kho nguyên liệu,
                 Lịch tuần, Thông báo chung). Tự động định tuyến tin nhắn, chống trễ ca và bắn thông
                 báo tức thì tới nhân sự chi nhánh.
@@ -437,32 +406,32 @@ export const ZaloManager: React.FC = () => {
                 toast.info('Đang làm mới trạng thái...');
               }}
               disabled={isStatusLoading || isChannelsLoading}
-              className="px-3.5 py-2 rounded-xl border border-[#212532] bg-[#181B24] text-xs font-semibold text-[#8E95A5] hover:text-[#D4AF37] hover:border-[#D4AF37]/40 transition flex items-center gap-2 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] text-xs font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition flex items-center gap-2 cursor-pointer"
             >
-              <FaSync className={isStatusLoading || isChannelsLoading ? 'animate-spin' : ''} />
-              Làm Mới
+              <FiRefreshCw className={`w-3.5 h-3.5 text-stone-400 dark:text-stone-400 ${isStatusLoading || isChannelsLoading ? 'animate-spin' : ''}`} />
+              Làm mới
             </button>
             {isReady && (
               <button
                 type="button"
                 onClick={handleLogout}
                 disabled={logoutMutation.isPending}
-                className="px-4 py-2 rounded-xl border border-red-500/30 bg-red-500/10 text-xs font-bold text-red-400 hover:bg-red-500/20 transition flex items-center gap-2 cursor-pointer"
+                className="px-3.5 py-2 rounded-xl border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/30 text-xs font-medium text-rose-700 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition flex items-center gap-2 cursor-pointer"
               >
-                <FaSignOutAlt />
-                Đăng Xuất
+                <FiLogOut className="w-3.5 h-3.5 text-rose-500 dark:text-rose-400" />
+                Đăng xuất
               </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* 2. Thanh Điều Hướng Chọn Cơ Sở (Store Switcher) */}
-      <div className="rounded-2xl border border-[#212532] bg-[#12141A] p-4 shadow-lg">
+      {/* 2. Thanh Điều Hướng Chọn Cơ Sở */}
+      <div className="rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1a17] p-4 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-[#E7CD80] uppercase tracking-wider">
-            <FaStore className="text-[#D4AF37] text-sm" />
-            <span>Chi Nhánh Đang Cấu Hình:</span>
+          <div className="flex items-center gap-2 text-xs font-medium text-stone-700 dark:text-stone-300">
+            <FiMapPin className="w-4 h-4 text-stone-400 dark:text-stone-400" />
+            <span>Chi nhánh đang cấu hình:</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
@@ -473,43 +442,43 @@ export const ZaloManager: React.FC = () => {
                   key={st.id}
                   type="button"
                   onClick={() => setSelectedStore(st)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 border cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition flex items-center gap-2 border cursor-pointer ${
                     isSelected
-                      ? 'gold-gradient-bg text-[#0B0C10] border-[#D4AF37] shadow-md shadow-[#D4AF37]/20 scale-[1.02]'
-                      : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:text-[#F4F5F8] hover:border-[#D4AF37]/40'
+                      ? 'bg-stone-900 text-white dark:bg-[#efe9de] dark:text-stone-900 border-stone-900 dark:border-[#efe9de] shadow-sm'
+                      : 'bg-stone-50 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-800 hover:text-stone-900 dark:hover:text-[#efe9de]'
                   }`}
                 >
                   <span
-                    className={`w-2 h-2 rounded-full ${isSelected ? 'bg-[#0B0C10]' : 'bg-emerald-400'}`}
+                    className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-white dark:bg-stone-900' : 'bg-emerald-500'}`}
                   />
                   <span>{st.shortCode}</span>
-                  <span className="opacity-70 text-[11px]">({st.code})</span>
+                  <span className="opacity-70 text-[10px] font-mono">({st.code})</span>
                 </button>
               );
             })}
           </div>
 
           <div className="text-right">
-            <span className="text-xs text-[#8E95A5]">Địa chỉ: </span>
-            <span className="text-xs font-medium text-[#F4F5F8]">{selectedStore.address}</span>
+            <span className="text-xs text-stone-400 dark:text-stone-500">Địa chỉ: </span>
+            <span className="text-xs font-medium text-stone-700 dark:text-stone-300">{selectedStore.address}</span>
           </div>
         </div>
       </div>
 
-      {/* 3. Khu Vực Chính: Cột Trái (Tài khoản) + Cột Phải (4 Kênh Nghiệp Vụ) */}
+      {/* 3. Khu Vực Chính: Cột Trái + Cột Phải */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* CỘT TRÁI: Quản Lý Phiên Zalo & Hướng Dẫn (4 Cột) */}
+        {/* CỘT TRÁI: Quản Lý Phiên Zalo & Hướng Dẫn */}
         <div className="lg:col-span-4 space-y-6">
           {/* Card Tài Khoản Zalo */}
-          <div className="rounded-2xl border border-[#212532] bg-[#12141A] p-5 shadow-xl">
-            <h3 className="text-xs font-bold text-[#E7CD80] uppercase tracking-wider flex items-center gap-2 mb-4">
-              <FaUserCheck className="text-[#D4AF37]" /> Tài Khoản Zalo Đăng Nhập
+          <div className="rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1a17] p-5 shadow-sm">
+            <h3 className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-2 mb-4">
+              <FiCheckCircle className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> Tài khoản Zalo đăng nhập
             </h3>
 
             {isReady ? (
               <div className="space-y-4">
-                <div className="p-3.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-full border-2 border-emerald-500/40 bg-[#181B24] flex items-center justify-center text-emerald-400 text-xl font-bold overflow-hidden shrink-0">
+                <div className="p-3.5 rounded-2xl border border-emerald-200 dark:border-emerald-800/40 bg-emerald-50/50 dark:bg-emerald-950/20 flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-full border border-emerald-300 dark:border-emerald-700 bg-white dark:bg-[#25221e] flex items-center justify-center text-emerald-700 dark:text-emerald-400 text-lg font-semibold overflow-hidden shrink-0">
                     {statusData.activeSession?.avatar ? (
                       <img
                         src={statusData.activeSession.avatar}
@@ -521,35 +490,35 @@ export const ZaloManager: React.FC = () => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-[#F4F5F8] truncate">
+                    <p className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] truncate">
                       {statusData.activeSession?.displayName || 'Tài Khoản Zalo Quán'}
                     </p>
-                    <p className="text-[11px] text-[#8E95A5] truncate font-mono mt-0.5">
+                    <p className="text-[11px] text-stone-400 dark:text-stone-500 truncate font-mono mt-0.5">
                       ID: {statusData.activeSession?.userId}
                     </p>
                     <div className="mt-1.5 flex items-center gap-1.5">
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-medium">
+                      <span className="text-[10px] px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-medium">
                         AES-256 Vault
                       </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-[#181B24] text-[#D4AF37] font-medium border border-[#D4AF37]/30">
+                      <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-medium">
                         Bot Active
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-[#212532] bg-[#0B0C10] p-3 text-xs space-y-1.5 text-[#8E95A5]">
+                <div className="rounded-2xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] p-3 text-xs space-y-1.5 text-stone-500 dark:text-stone-400">
                   <div className="flex justify-between">
                     <span>Phiên làm việc:</span>
-                    <span className="text-emerald-400 font-medium">Chung Toàn Chuỗi</span>
+                    <span className="text-stone-800 dark:text-stone-200 font-medium">Chung toàn chuỗi</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Độ trễ chống spam:</span>
-                    <span className="text-[#D4AF37] font-medium">3 giây / tin</span>
+                    <span className="text-stone-800 dark:text-stone-200 font-medium font-mono">3 giây / tin</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Cơ sở đang gán:</span>
-                    <span className="text-[#F4F5F8] font-bold">{selectedStore.code}</span>
+                    <span className="text-stone-900 dark:text-[#efe9de] font-semibold font-mono">{selectedStore.code}</span>
                   </div>
                 </div>
               </div>
@@ -557,27 +526,27 @@ export const ZaloManager: React.FC = () => {
               <div className="space-y-4">
                 {activeQrId ? (
                   qrData?.qrDataUrl || startQrMutation.data?.qrDataUrl ? (
-                    <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-[#D4AF37]/40 bg-[#0B0C10] text-center space-y-3">
-                      <div className="p-2.5 bg-white rounded-xl shadow-xl">
+                    <div className="flex flex-col items-center justify-center p-5 rounded-2xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] text-center space-y-3">
+                      <div className="p-2.5 bg-white rounded-2xl shadow-sm border border-stone-200">
                         <img
                           src={qrData?.qrDataUrl || startQrMutation.data?.qrDataUrl}
                           alt="Zalo QR Code"
-                          className="w-48 h-48 object-contain"
+                          className="w-48 h-48 object-contain rounded-xl"
                         />
                       </div>
 
                       <div className="space-y-1">
-                        <p className="text-xs font-bold text-[#D4AF37]">
+                        <p className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">
                           Mở Zalo trên điện thoại &gt; Quét mã QR
                         </p>
-                        <p className="text-[11px] text-[#8E95A5]">
+                        <p className="text-[11px] text-stone-500 dark:text-stone-400">
                           Hết hạn trong:{' '}
-                          <span className="font-mono text-emerald-400 font-bold">
+                          <span className="font-mono text-stone-900 dark:text-[#efe9de] font-semibold">
                             {qrCountdown}s
                           </span>
                         </p>
                         {qrData?.status === 'scanned' && (
-                          <p className="text-xs text-amber-400 font-bold animate-pulse mt-1">
+                          <p className="text-xs text-amber-600 dark:text-amber-400 font-medium animate-pulse mt-1">
                             Đã quét! Vui lòng ấn "Xác nhận" trên điện thoại...
                           </p>
                         )}
@@ -588,40 +557,40 @@ export const ZaloManager: React.FC = () => {
                           type="button"
                           onClick={handleStartLogin}
                           disabled={startQrMutation.isPending}
-                          className="px-3 py-1.5 rounded-lg border border-[#212532] bg-[#181B24] text-xs font-semibold text-[#8E95A5] hover:text-[#D4AF37] transition cursor-pointer"
+                          className="px-3 py-1.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#1c1a17] text-xs font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
                         >
-                          Tạo Lại
+                          Tạo lại
                         </button>
                         <button
                           type="button"
                           onClick={handleCancelQr}
-                          className="px-3 py-1.5 rounded-lg border border-red-500/30 bg-red-500/10 text-xs font-semibold text-red-400 hover:bg-red-500/20 transition cursor-pointer"
+                          className="px-3 py-1.5 rounded-xl border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/30 text-xs font-medium text-rose-700 dark:text-rose-400 hover:bg-rose-100 transition cursor-pointer"
                         >
                           Hủy
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center p-6 rounded-xl border border-[#D4AF37]/30 bg-[#0B0C10] text-center space-y-3">
-                      <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto" />
-                      <p className="text-xs font-bold text-[#E7CD80]">Đang tạo mã QR từ máy chủ Zalo...</p>
+                    <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] text-center space-y-3">
+                      <div className="w-6 h-6 border-2 border-stone-300 border-t-stone-700 dark:border-stone-700 dark:border-t-stone-300 rounded-full animate-spin mx-auto" />
+                      <p className="text-xs font-medium text-stone-600 dark:text-stone-400">Đang tạo mã QR từ máy chủ Zalo...</p>
                       <button
                         type="button"
                         onClick={handleCancelQr}
-                        className="px-3 py-1 rounded-lg border border-red-500/30 bg-red-500/10 text-xs text-red-400 cursor-pointer"
+                        className="px-3 py-1 rounded-xl border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/30 text-xs text-rose-700 dark:text-rose-400 cursor-pointer"
                       >
                         Hủy
                       </button>
                     </div>
                   )
                 ) : (
-                  <div className="flex flex-col items-center justify-center p-6 rounded-xl border border-dashed border-[#212532] bg-[#0B0C10] text-center space-y-3">
-                    <div className="w-12 h-12 rounded-full bg-[#181B24] border border-[#212532] flex items-center justify-center text-[#8E95A5] text-2xl">
-                      <FaQrcode />
+                  <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-dashed border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-[#25221e] text-center space-y-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 flex items-center justify-center text-stone-400 dark:text-stone-400">
+                      <FiMaximize2 className="w-5 h-5 text-stone-400 dark:text-stone-400" />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-xs font-bold text-[#F4F5F8]">Chưa kết nối tài khoản Zalo</p>
-                      <p className="text-[11px] text-[#8E95A5]">
+                      <p className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">Chưa kết nối tài khoản Zalo</p>
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400">
                         Đăng nhập để Bot có quyền gửi tin vào các nhóm chi nhánh.
                       </p>
                     </div>
@@ -630,10 +599,10 @@ export const ZaloManager: React.FC = () => {
                       type="button"
                       onClick={handleStartLogin}
                       disabled={startQrMutation.isPending}
-                      className="px-4 py-2 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs uppercase tracking-wider gold-glow-sm hover:scale-[1.02] transition shadow-md flex items-center gap-2 cursor-pointer"
+                      className="px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 font-medium text-xs shadow-sm transition flex items-center gap-2 cursor-pointer"
                     >
-                      <FaQrcode />
-                      {startQrMutation.isPending ? 'Đang Tạo...' : 'Quét Mã QR Đăng Nhập'}
+                      <FiMaximize2 className="w-3.5 h-3.5" />
+                      <span>{startQrMutation.isPending ? 'Đang tạo...' : 'Quét mã QR đăng nhập'}</span>
                     </button>
                   </div>
                 )}
@@ -642,11 +611,11 @@ export const ZaloManager: React.FC = () => {
           </div>
 
           {/* Card Quy Chuẩn Đặt Tên Nhóm Zalo */}
-          <div className="rounded-2xl border border-[#212532] bg-[#12141A] p-5 shadow-xl space-y-3">
-            <h4 className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-2">
-              <FaShieldAlt /> Quy Chuẩn Đặt Tên Nhóm Chi Nhánh
+          <div className="rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1a17] p-5 shadow-sm space-y-3">
+            <h4 className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-2">
+              <FiShield className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> Quy chuẩn đặt tên nhóm chi nhánh
             </h4>
-            <p className="text-xs text-[#8E95A5] leading-relaxed">
+            <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
               Mỗi cơ sở nên tạo đúng 4 nhóm Zalo tương ứng với 4 nghiệp vụ. Đặt tên theo chuẩn để nhân
               viên và quản lý không bị nhầm lẫn giữa các chi nhánh:
             </p>
@@ -658,23 +627,23 @@ export const ZaloManager: React.FC = () => {
                 return (
                   <div
                     key={type}
-                    className="p-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] flex items-center justify-between gap-2"
+                    className="p-2.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-between gap-2"
                   >
                     <div className="min-w-0">
-                      <span className="text-[10px] uppercase font-bold text-[#6D7588] block">
+                      <span className="text-[10px] uppercase font-medium text-stone-400 dark:text-stone-500 block">
                         {meta.title}
                       </span>
-                      <span className="font-mono text-[11px] text-[#F4F5F8] truncate block">
+                      <span className="font-mono text-[11px] text-stone-800 dark:text-stone-200 truncate block">
                         {suggested}
                       </span>
                     </div>
                     <button
                       type="button"
                       onClick={() => handleCopySuggestedName(suggested, `suggest_${type}`)}
-                      className="p-1.5 rounded-lg bg-[#181B24] border border-[#212532] text-xs text-[#8E95A5] hover:text-[#D4AF37] transition shrink-0 cursor-pointer"
+                      className="p-1.5 rounded-lg bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-700 text-stone-500 hover:text-stone-900 dark:hover:text-[#efe9de] transition shrink-0 cursor-pointer"
                       title="Sao chép tên này"
                     >
-                      {isCopied ? <FaCheck className="text-emerald-400" /> : <FaCopy />}
+                      {isCopied ? <FiCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <FiCopy className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />}
                     </button>
                   </div>
                 );
@@ -683,36 +652,36 @@ export const ZaloManager: React.FC = () => {
           </div>
 
           {/* Hướng Dẫn Lấy ID Nhóm */}
-          <div className="rounded-2xl border border-[#212532] bg-[#12141A] p-5 shadow-xl space-y-3">
+          <div className="rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1a17] p-5 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold text-[#E7CD80] uppercase tracking-wider flex items-center gap-2">
-                <FaQuestionCircle className="text-[#D4AF37]" /> Cách Lấy ID Nhóm (Grid)
+              <h4 className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-2">
+                <FiHelpCircle className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> Cách lấy ID nhóm (Grid)
               </h4>
               <button
                 type="button"
                 onClick={() => setShowIdGuide(!showIdGuide)}
-                className="text-[11px] text-[#D4AF37] underline cursor-pointer"
+                className="text-[11px] text-stone-600 dark:text-stone-400 underline cursor-pointer"
               >
                 {showIdGuide ? 'Ẩn bớt' : 'Xem chi tiết'}
               </button>
             </div>
 
             {showIdGuide && (
-              <div className="space-y-2 text-xs text-[#8E95A5] leading-relaxed pt-1 animate-fadeIn">
-                <div className="p-2 rounded-lg bg-[#0B0C10] border border-[#212532]">
-                  <strong className="text-white">Cách 1: Chọn từ danh sách Zalo</strong>
+              <div className="space-y-2 text-xs text-stone-500 dark:text-stone-400 leading-relaxed pt-1 animate-fadeIn">
+                <div className="p-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800">
+                  <strong className="text-stone-900 dark:text-[#efe9de]">Cách 1: Chọn từ danh sách Zalo</strong>
                   <p className="mt-0.5 text-[11px]">
                     Khi Bot đã đăng nhập, ở mỗi thẻ kênh bên phải có nút{' '}
-                    <span className="text-[#D4AF37] font-semibold">"Chọn từ nhóm đã tham gia"</span>,
+                    <span className="font-semibold text-stone-800 dark:text-stone-200">"Chọn từ nhóm đã tham gia"</span>,
                     chỉ cần click chọn là hệ thống tự điền ID!
                   </p>
                 </div>
-                <div className="p-2 rounded-lg bg-[#0B0C10] border border-[#212532]">
-                  <strong className="text-white">Cách 2: URL chat.zalo.me</strong>
+                <div className="p-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800">
+                  <strong className="text-stone-900 dark:text-[#efe9de]">Cách 2: URL chat.zalo.me</strong>
                   <p className="mt-0.5 text-[11px]">
                     Mở nhóm trên trình duyệt máy tính &gt; Nhìn link{' '}
-                    <code className="text-emerald-400 font-mono">chat.zalo.me/g/852749102...</code>.
-                    Dãy số sau chữ <code className="text-[#D4AF37]">/g/</code> chính là Grid ID.
+                    <code className="text-stone-800 dark:text-stone-200 font-mono">chat.zalo.me/g/852749102...</code>.
+                    Dãy số sau chữ <code className="font-mono font-semibold">/g/</code> chính là Grid ID.
                   </p>
                 </div>
               </div>
@@ -720,15 +689,15 @@ export const ZaloManager: React.FC = () => {
           </div>
         </div>
 
-        {/* CỘT PHẢI: Lưới 4 Thẻ Kênh Nghiệp Vụ Cho Cơ Sở (8 Cột) */}
+        {/* CỘT PHẢI: Lưới 4 Thẻ Kênh Nghiệp Vụ Cho Cơ Sở */}
         <div className="lg:col-span-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#212532] pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-200 dark:border-stone-800 pb-4">
             <div>
-              <h3 className="text-base font-bold text-[#F4F5F8] flex items-center gap-2">
-                <FaBuilding className="text-[#D4AF37]" />
-                Các Kênh Zalo Nghiệp Vụ - {selectedStore.name}
+              <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                <FiMapPin className="w-4 h-4 text-stone-400 dark:text-stone-400" />
+                Các kênh Zalo nghiệp vụ - {selectedStore.name}
               </h3>
-              <p className="text-xs text-[#8E95A5] mt-0.5">
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
                 Cấu hình định tuyến tin nhắn tự động theo từng nhóm nghiệp vụ riêng biệt
               </p>
             </div>
@@ -737,10 +706,10 @@ export const ZaloManager: React.FC = () => {
               type="button"
               onClick={handleSaveStoreChannels}
               disabled={updateChannelsMutation.isPending}
-              className="px-5 py-2.5 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs uppercase tracking-wider gold-glow-sm hover:scale-[1.02] transition shadow-md flex items-center gap-2 cursor-pointer self-start sm:self-center shrink-0"
+              className="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 font-medium text-xs shadow-sm transition flex items-center gap-2 cursor-pointer self-start sm:self-center shrink-0"
             >
-              <FaSave />
-              {updateChannelsMutation.isPending ? 'Đang Lưu...' : 'Lưu Cấu Hình Cơ Sở Này'}
+              <FiCheck className="w-4 h-4" />
+              <span>{updateChannelsMutation.isPending ? 'Đang lưu...' : 'Lưu cấu hình cơ sở này'}</span>
             </button>
           </div>
 
@@ -768,21 +737,21 @@ export const ZaloManager: React.FC = () => {
               return (
                 <div
                   key={channelType}
-                  className={`rounded-2xl border bg-[#12141A] p-5 shadow-xl transition space-y-4 flex flex-col justify-between ${
-                    channelConfig.isActive ? meta.borderColor : 'border-[#212532] opacity-75'
+                  className={`rounded-3xl border bg-white dark:bg-[#1c1a17] p-5 shadow-sm transition space-y-4 flex flex-col justify-between ${
+                    channelConfig.isActive ? 'border-stone-200/90 dark:border-stone-800' : 'border-stone-200/50 dark:border-stone-800/50 opacity-75'
                   }`}
                 >
                   {/* Card Header */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2.5">
-                        <div className="p-2 rounded-xl bg-[#181B24] border border-[#212532]">
+                        <div className="p-2 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800">
                           {meta.icon}
                         </div>
                         <div>
-                          <h4 className="text-sm font-bold text-[#F4F5F8]">{meta.title}</h4>
+                          <h4 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">{meta.title}</h4>
                           <span
-                            className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold border mt-0.5 ${meta.badgeBg}`}
+                            className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium border mt-0.5 ${meta.badgeBg}`}
                           >
                             {channelType}
                           </span>
@@ -795,44 +764,44 @@ export const ZaloManager: React.FC = () => {
                         onClick={() =>
                           handleUpdateChannelField(channelType, 'isActive', !channelConfig.isActive)
                         }
-                        className="text-2xl cursor-pointer transition text-[#8E95A5] hover:text-white"
+                        className="text-2xl cursor-pointer transition text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                         title={channelConfig.isActive ? 'Kênh đang BẬT' : 'Kênh đang TẮT'}
                       >
                         {channelConfig.isActive ? (
-                          <FaToggleOn className="text-emerald-400" />
+                          <FiToggleRight className="text-stone-900 dark:text-[#efe9de]" />
                         ) : (
-                          <FaToggleOff className="text-[#6D7588]" />
+                          <FiToggleLeft className="text-stone-300 dark:text-stone-600" />
                         )}
                       </button>
                     </div>
 
-                    <p className="text-[11px] text-[#8E95A5] leading-relaxed">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed">
                       {meta.description}
                     </p>
                   </div>
 
                   {/* Tên nhóm chuẩn đề xuất */}
-                  <div className="p-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] space-y-1">
-                    <div className="flex items-center justify-between text-[10px] text-[#8E95A5] font-semibold">
-                      <span>Tên Nhóm Gợi Ý Chuẩn:</span>
+                  <div className="p-2.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-1">
+                    <div className="flex items-center justify-between text-[10px] text-stone-400 dark:text-stone-500 font-medium">
+                      <span>Tên nhóm gợi ý:</span>
                       <button
                         type="button"
                         onClick={() => handleCopySuggestedName(suggestedName, `card_${channelType}`)}
-                        className="text-[#D4AF37] hover:underline flex items-center gap-1 cursor-pointer font-bold"
+                        className="text-stone-600 dark:text-stone-400 hover:underline flex items-center gap-1 cursor-pointer font-medium"
                       >
-                        {isCopied ? <FaCheck className="text-emerald-400" /> : <FaCopy />}
+                        {isCopied ? <FiCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> : <FiCopy className="w-3 h-3 text-stone-400 dark:text-stone-400" />}
                         {isCopied ? 'Đã copy' : 'Sao chép'}
                       </button>
                     </div>
-                    <p className="text-xs font-mono text-[#E7CD80] font-medium break-all select-all">
+                    <p className="text-xs font-mono text-stone-800 dark:text-stone-200 font-medium break-all select-all">
                       {suggestedName}
                     </p>
                   </div>
 
                   {/* ID Nhóm & Chọn Nhanh Từ Zalo */}
                   <div className="space-y-2">
-                    <label className="block text-xs font-semibold text-[#8E95A5] uppercase tracking-wider">
-                      ID Nhóm Zalo (Group ID / Grid)
+                    <label className="block text-xs font-medium text-stone-600 dark:text-stone-400">
+                      ID nhóm Zalo (Group ID / Grid)
                     </label>
 
                     <div className="flex gap-2">
@@ -844,15 +813,14 @@ export const ZaloManager: React.FC = () => {
                           handleUpdateChannelField(channelType, 'targetId', clean);
                         }}
                         placeholder="Ví dụ: 8974711845327448590"
-                        className="flex-1 px-3 py-2 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] focus:outline-none focus:border-[#D4AF37] font-mono"
+                        className="flex-1 px-3 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 font-mono"
                       />
                     </div>
 
-                    {/* Chọn nhanh từ các nhóm Zalo thực tế của bot */}
                     {isReady && groupsData && groupsData.length > 0 && (
                       <div className="pt-1">
                         <select
-                          className="w-full px-3 py-1.5 rounded-xl bg-[#181B24] border border-[#212532] text-xs text-[#8E95A5] focus:outline-none focus:border-[#D4AF37] cursor-pointer"
+                          className="w-full px-3 py-1.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-700 dark:text-stone-300 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 cursor-pointer"
                           value={channelConfig.targetId || ''}
                           onChange={(e) => {
                             const selectedId = e.target.value;
@@ -880,8 +848,8 @@ export const ZaloManager: React.FC = () => {
 
                   {/* Mẫu Tin Nhắn Tự Động */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-semibold text-[#8E95A5] uppercase tracking-wider">
-                      Mẫu Tin Nhắn Mặc Định
+                    <label className="block text-xs font-medium text-stone-600 dark:text-stone-400">
+                      Mẫu tin nhắn mặc định
                     </label>
                     <textarea
                       rows={3}
@@ -890,15 +858,15 @@ export const ZaloManager: React.FC = () => {
                         handleUpdateChannelField(channelType, 'defaultMessage', e.target.value)
                       }
                       placeholder="Nội dung mẫu tin nhắn tự động khi bắn vào nhóm này..."
-                      className="w-full px-3 py-2 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] focus:outline-none focus:border-[#D4AF37] resize-none leading-relaxed"
+                      className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 resize-none leading-relaxed"
                     />
                   </div>
 
-                  {/* Footer Card: Trạng thái gửi tin & Nút Gửi Test */}
-                  <div className="pt-3 border-t border-[#212532] flex items-center justify-between gap-2">
-                    <div className="text-[10px] text-[#6D7588]">
+                  {/* Footer Card */}
+                  <div className="pt-3 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between gap-2">
+                    <div className="text-[10px] text-stone-400 dark:text-stone-500">
                       {channelConfig.lastSentAt ? (
-                        <span className="text-emerald-400">
+                        <span className="text-emerald-600 dark:text-emerald-400">
                           Bắn tin lúc: {new Date(channelConfig.lastSentAt).toLocaleTimeString('vi-VN')}
                         </span>
                       ) : (
@@ -910,15 +878,15 @@ export const ZaloManager: React.FC = () => {
                       type="button"
                       onClick={() => handleTestChannel(channelConfig)}
                       disabled={isTesting || !isReady || !channelConfig.targetId?.trim()}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center gap-1.5 cursor-pointer ${
                         isReady && channelConfig.targetId?.trim()
-                          ? 'border border-[#D4AF37]/40 bg-[#D4AF37]/10 text-[#D4AF37] hover:bg-[#D4AF37]/20 active:scale-95'
-                          : 'border border-[#212532] bg-[#181B24] text-[#6D7588] cursor-not-allowed'
+                          ? 'border border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-[#25221e] text-stone-800 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-700'
+                          : 'border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] text-stone-400 cursor-not-allowed'
                       }`}
                       title="Gửi ngay 1 tin nhắn thử nghiệm vào nhóm Zalo này"
                     >
-                      <FaPaperPlane className={isTesting ? 'animate-bounce' : ''} />
-                      {isTesting ? 'Đang Gửi...' : 'Gửi Thử Nghiệm'}
+                      <FiSend className={`w-3.5 h-3.5 text-stone-400 dark:text-stone-400 ${isTesting ? 'animate-bounce' : ''}`} />
+                      <span>{isTesting ? 'Đang gửi...' : 'Gửi thử nghiệm'}</span>
                     </button>
                   </div>
                 </div>
@@ -927,9 +895,9 @@ export const ZaloManager: React.FC = () => {
           </div>
 
           {/* Thanh Lưu Tổng Thể Cuối Trang */}
-          <div className="rounded-2xl border border-[#212532] bg-[#12141A] p-5 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3 text-xs text-[#8E95A5]">
-              <FaInfoCircle className="text-[#D4AF37] text-lg shrink-0" />
+          <div className="rounded-3xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1a17] p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-xs text-stone-500 dark:text-stone-400">
+              <FiInfo className="w-4 h-4 text-stone-400 dark:text-stone-400 shrink-0" />
               <span>
                 Cấu hình sẽ được lưu vào MongoDB Atlas và áp dụng ngay lập tức cho các sự kiện
                 Điểm danh, Cảnh báo kho và Lịch tuần của chi nhánh <strong>{selectedStore.name}</strong>.
@@ -940,10 +908,10 @@ export const ZaloManager: React.FC = () => {
               type="button"
               onClick={handleSaveStoreChannels}
               disabled={updateChannelsMutation.isPending}
-              className="px-6 py-3 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs uppercase tracking-wider gold-glow-sm hover:scale-[1.02] transition shadow-lg flex items-center gap-2 cursor-pointer shrink-0"
+              className="px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 font-medium text-xs shadow-sm transition flex items-center gap-2 cursor-pointer shrink-0"
             >
-              <FaSave />
-              {updateChannelsMutation.isPending ? 'Đang Lưu Dữ Liệu...' : 'Lưu Cấu Hình Cơ Sở'}
+              <FiCheck className="w-4 h-4" />
+              <span>{updateChannelsMutation.isPending ? 'Đang lưu...' : 'Lưu cấu hình cơ sở'}</span>
             </button>
           </div>
         </div>
@@ -952,10 +920,10 @@ export const ZaloManager: React.FC = () => {
       {/* Modal xác nhận Đăng xuất Zalo */}
       <ConfirmModal
         isOpen={isLogoutConfirmOpen}
-        title="Đăng Xuất Tài Khoản Zalo Bot"
+        title="Đăng xuất tài khoản Zalo Bot"
         message="Bạn có chắc chắn muốn đăng xuất tài khoản Zalo này? Hệ thống sẽ tạm dừng gửi thông báo tự động cho đến khi có tài khoản mới được quét mã QR kết nối."
-        confirmLabel="Đăng Xuất Ngay"
-        cancelLabel="Hủy Bỏ"
+        confirmLabel="Đăng xuất"
+        cancelLabel="Hủy bỏ"
         isDestructive={true}
         isLoading={logoutMutation.isPending}
         onConfirm={handleConfirmLogout}

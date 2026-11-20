@@ -3,18 +3,19 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import {
-  FaBan,
-  FaCheck,
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaRegCircle,
-  FaSearch,
-  FaTimes,
-  FaTrashAlt,
-  FaUser,
-  FaUserCheck,
-  FaUserFriends,
-} from "react-icons/fa";
+  FiAlertCircle,
+  FiAlertTriangle,
+  FiCheck,
+  FiCheckCircle,
+  FiCircle,
+  FiSearch,
+  FiSlash,
+  FiTrash2,
+  FiUser,
+  FiUserCheck,
+  FiUsers,
+  FiX,
+} from "react-icons/fi";
 import {
   SlotAssignment,
   StaffRegistrationInput,
@@ -70,8 +71,7 @@ export const SlotEditModal: React.FC<Props> = ({
     }
   }
 
-  // Nếu prop registrations bị rỗng (ví dụ do cache hoặc tải lịch đã lưu trước đó),
-  // modal tự động gọi API lấy danh sách đăng ký ca tuần đó để đảm bảo không bao giờ bị rỗng 0 bạn
+  // Nếu prop registrations bị rỗng, tự động gọi API lấy danh sách đăng ký ca tuần đó
   useEffect(() => {
     if (!isOpen || (registrations && registrations.length > 0)) return;
     if (effectiveStartDate) {
@@ -163,74 +163,57 @@ export const SlotEditModal: React.FC<Props> = ({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 99999,
-      }}
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm animate-in fade-in duration-150"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
-        className="relative bg-[#12141A] border border-[#262B3A] rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col"
-        style={{
-          maxHeight: "85vh",
-          margin: "auto",
-        }}
+        className="relative bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[85vh] transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-4 bg-[#0B0C10] border-b border-[#212532] flex items-center justify-between">
+        <div className="p-4 sm:p-5 bg-stone-50/70 dark:bg-[#181614] border-b border-stone-100 dark:border-stone-800 flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-bold tracking-wider text-[#D4AF37] uppercase">
+            <span className="text-[11px] font-semibold tracking-wider text-stone-500 dark:text-stone-400 uppercase">
               Chỉnh Sửa Ca Làm Việc
             </span>
-            <h3 className="text-base font-black text-white flex items-center gap-2 mt-0.5 flex-wrap">
+            <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2 mt-0.5 flex-wrap">
               <span>{slot.day}</span>
               {dayFullDates?.[slot.day] && (
-                <span className="text-xs font-bold text-[#F5D77F] bg-[#181B24] px-2 py-0.5 rounded-md border border-[#D4AF37]/50 shadow-sm">
+                <span className="text-xs font-mono font-medium text-stone-700 dark:text-stone-300 bg-white dark:bg-[#25221e] px-2.5 py-0.5 rounded-lg border border-stone-200/80 dark:border-stone-700/60 shadow-xs">
                   {dayFullDates[slot.day]}
                 </span>
               )}
-              <span className="text-[#8E95A5]">•</span>
-              <span className="text-[#F5D77F]">Ca {slot.shift}</span>
-              <span className="text-[#8E95A5]">•</span>
-              <span className="text-emerald-400">{slot.role}</span>
+              <span className="text-stone-300 dark:text-stone-700">•</span>
+              <span className="text-stone-800 dark:text-stone-200">Ca {slot.shift}</span>
+              <span className="text-stone-300 dark:text-stone-700">•</span>
+              <span className="text-stone-600 dark:text-stone-400">{slot.role}</span>
             </h3>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-lg text-[#8E95A5] hover:text-white hover:bg-[#1C202C] transition"
+            className="p-2 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-[#25221e] transition cursor-pointer"
             title="Đóng modal"
           >
-            <FaTimes className="text-sm" />
+            <FiX className="text-base" />
           </button>
         </div>
 
         {/* Current State & Quick Action */}
-        <div className="p-4 bg-[#161922] border-b border-[#212532] flex items-center justify-between gap-3">
+        <div className="p-4 bg-stone-50/40 dark:bg-[#181614]/50 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#1C202C] border border-[#2E3447] flex items-center justify-center text-[#D4AF37]">
-              <FaUser className="text-sm" />
+            <div className="w-10 h-10 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-stone-400">
+              <FiUser className="text-base" />
             </div>
             <div>
-              <p className="text-xs text-[#8E95A5]">Nhân sự hiện tại:</p>
-              <p className="text-sm font-bold text-white">
+              <p className="text-xs text-stone-500 dark:text-stone-400">Nhân sự hiện tại:</p>
+              <p className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">
                 {slot.staff_name ? (
-                  <span className="text-[#F5D77F]">{slot.staff_name}</span>
+                  <span>{slot.staff_name}</span>
                 ) : (
-                  <span className="text-rose-400">[Đang để trống ca]</span>
+                  <span className="text-rose-600 dark:text-rose-400 font-medium">[Đang để trống ca]</span>
                 )}
               </p>
             </div>
@@ -241,12 +224,12 @@ export const SlotEditModal: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={handleModalToggleCheckIn}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition shadow-sm ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition cursor-pointer shadow-xs ${
                   slot.is_checked_in
-                    ? "border-emerald-500/80 bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300"
+                    ? "border-emerald-300 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300"
                     : canCheckInSlot
-                    ? "border-[#D4AF37]/50 bg-[#1F1A12] hover:bg-[#2A2314] text-[#F5D77F]"
-                    : "border-slate-800 bg-slate-900/60 text-slate-500 hover:bg-slate-800/80 cursor-not-allowed"
+                    ? "border-stone-300 dark:border-stone-700 bg-white dark:bg-[#25221e] hover:bg-stone-50 dark:hover:bg-stone-800 text-stone-800 dark:text-[#efe9de]"
+                    : "border-stone-200 dark:border-stone-800 bg-stone-100 dark:bg-[#141311] text-stone-400 dark:text-stone-500 cursor-not-allowed"
                 }`}
                 title={
                   slot.is_checked_in
@@ -260,12 +243,12 @@ export const SlotEditModal: React.FC<Props> = ({
               >
                 {slot.is_checked_in ? (
                   <>
-                    <FaCheckCircle className="text-emerald-400 text-xs" />
+                    <FiCheckCircle className="text-emerald-500 text-xs shrink-0" />
                     <span>Đã Check-in</span>
                   </>
                 ) : (
                   <>
-                    <FaRegCircle className={`text-xs ${canCheckInSlot ? "text-[#D4AF37]" : "text-slate-600"}`} />
+                    <FiCircle className="text-stone-400 text-xs shrink-0" />
                     <span>Tích Check-in</span>
                   </>
                 )}
@@ -276,10 +259,11 @@ export const SlotEditModal: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={handleClearSlot}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-800/80 bg-rose-950/60 hover:bg-rose-900 text-rose-300 text-xs font-bold transition shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50 dark:bg-rose-950/25 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-rose-700 dark:text-rose-300 text-xs font-medium transition cursor-pointer shadow-xs"
                 title="Xóa nhân sự này và đưa ca về trạng thái Ca Trống"
               >
-                <FaTrashAlt className="text-xs" /> Xóa khỏi ca
+                <FiTrash2 className="text-xs shrink-0" />
+                <span>Xóa khỏi ca</span>
               </button>
             )}
           </div>
@@ -287,8 +271,8 @@ export const SlotEditModal: React.FC<Props> = ({
 
         {/* Notice about Excluded staff */}
         {excludedSameShiftStaff.length > 0 && (
-          <div className="px-4 py-2.5 bg-[#1F1A12] border-b border-[#3E341B] flex items-center gap-2 text-xs text-[#E7CD80]">
-            <FaBan className="text-amber-400 shrink-0" />
+          <div className="px-4 py-2.5 bg-amber-50/70 dark:bg-amber-950/20 border-b border-amber-200/60 dark:border-amber-900/30 flex items-center gap-2 text-xs text-amber-800 dark:text-amber-300">
+            <FiSlash className="text-amber-600 dark:text-amber-400 shrink-0 text-xs" />
             <span>
               Đã tự động loại trừ <strong>{excludedSameShiftStaff.join(", ")}</strong> do đang xếp ở vị trí còn lại của cùng Ca {slot.shift}.
             </span>
@@ -296,15 +280,15 @@ export const SlotEditModal: React.FC<Props> = ({
         )}
 
         {/* Search input */}
-        <div className="px-4 pt-3 pb-2 bg-[#12141A]">
+        <div className="px-4 pt-3 pb-2 bg-white dark:bg-[#1c1a17]">
           <div className="relative">
-            <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#6A7387]" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-stone-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm nhanh tên nhân viên..."
-              className="w-full pl-8 pr-3 py-2 rounded-xl bg-[#0E1015] border border-[#262B3A] text-xs text-white placeholder-[#6A7387] focus:outline-none focus:border-[#D4AF37]/70"
+              className="w-full pl-8 pr-3 py-2 rounded-xl bg-stone-50 dark:bg-[#141311] border border-stone-200/80 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
             />
           </div>
         </div>
@@ -314,19 +298,20 @@ export const SlotEditModal: React.FC<Props> = ({
           {/* 1. Gợi ý hàng đầu (Đã đăng ký ca này) */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="font-extrabold text-[#D4AF37] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                <FaUserCheck className="text-[#D4AF37]" /> Gợi ý nhân viên đã đăng ký Ca {slot.shift} ({filteredSuggested.length})
+              <span className="font-semibold text-stone-900 dark:text-[#efe9de] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                <FiUserCheck className="text-stone-400 text-xs" />
+                <span>Gợi ý nhân viên đã đăng ký Ca {slot.shift} ({filteredSuggested.length})</span>
               </span>
-              <span className="text-[10px] text-[#8E95A5]">
+              <span className="text-[10px] text-stone-400">
                 Ưu tiên bạn đang thiếu ca
               </span>
             </div>
 
             {filteredSuggested.length === 0 ? (
-              <div className="p-4 rounded-xl border border-dashed border-[#262B3A] bg-[#0E1015] text-center text-[#8E95A5]">
-                <FaExclamationTriangle className="mx-auto mb-1 text-amber-500 text-base" />
+              <div className="p-4 rounded-2xl border border-dashed border-stone-200 dark:border-stone-800 bg-stone-50/50 dark:bg-[#141311]/50 text-center text-stone-500 dark:text-stone-400">
+                <FiAlertTriangle className="mx-auto mb-1 text-stone-400 text-base" />
                 <p>Không có nhân sự nào khác đăng ký ca này vào {slot.day}.</p>
-                <p className="text-[11px] text-[#6A7387] mt-0.5">
+                <p className="text-[11px] text-stone-400 mt-0.5">
                   Bạn có thể chọn từ danh sách tất cả nhân viên bên dưới.
                 </p>
               </div>
@@ -345,7 +330,7 @@ export const SlotEditModal: React.FC<Props> = ({
           </div>
 
           {/* 2. Danh sách tất cả nhân viên khác (dự phòng) */}
-          <div className="pt-2 border-t border-[#212532]">
+          <div className="pt-2 border-t border-stone-100 dark:border-stone-800">
             {(() => {
               const isOthersExpanded = showAllStaff !== null ? showAllStaff : filteredSuggested.length === 0;
               return (
@@ -353,10 +338,11 @@ export const SlotEditModal: React.FC<Props> = ({
                   <button
                     type="button"
                     onClick={() => setShowAllStaff(!isOthersExpanded)}
-                    className="w-full flex items-center justify-between py-2 text-xs font-bold text-[#8E95A5] hover:text-[#D4AF37] transition"
+                    className="w-full flex items-center justify-between py-2 text-xs font-medium text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] transition cursor-pointer"
                   >
                     <span className="flex items-center gap-1.5">
-                      <FaUserFriends /> Chọn từ nhân viên khác ({filteredOthers.length} bạn)
+                      <FiUsers className="text-stone-400 text-xs" />
+                      <span>Chọn từ nhân viên khác ({filteredOthers.length} bạn)</span>
                     </span>
                     <span>{isOthersExpanded ? "▲ Thu gọn" : "▼ Mở rộng"}</span>
                   </button>
@@ -364,7 +350,7 @@ export const SlotEditModal: React.FC<Props> = ({
                   {isOthersExpanded && (
                     <div className="mt-2 space-y-1.5 animate-in fade-in duration-150">
                       {filteredOthers.length === 0 ? (
-                        <p className="text-xs text-center text-[#6A7387] py-2">
+                        <p className="text-xs text-center text-stone-400 py-2">
                           Không có nhân viên nào khác trong hệ thống.
                         </p>
                       ) : (
@@ -387,18 +373,18 @@ export const SlotEditModal: React.FC<Props> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-3 bg-[#0B0C10] border-t border-[#212532] flex items-center justify-between">
+        <div className="p-3.5 bg-stone-50/70 dark:bg-[#181614] border-t border-stone-100 dark:border-stone-800 flex items-center justify-between">
           <button
             type="button"
             onClick={handleClearSlot}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#8E95A5] hover:text-rose-400 hover:bg-rose-950/30 transition"
+            className="px-3 py-1.5 rounded-xl text-xs font-medium text-stone-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition cursor-pointer"
           >
             Để trống ca
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg border border-[#2A2E3D] bg-[#181B24] hover:bg-[#212532] text-xs font-bold text-white transition"
+            className="px-4 py-1.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] hover:bg-stone-50 dark:hover:bg-stone-800 text-xs font-medium text-stone-800 dark:text-[#efe9de] transition cursor-pointer shadow-xs"
           >
             Đóng
           </button>
@@ -426,21 +412,23 @@ const CandidateRow: React.FC<CandidateRowProps> = ({
   return (
     <div
       onClick={onSelect}
-      className={`group flex items-center justify-between p-2.5 rounded-xl border transition cursor-pointer ${
+      className={`group flex items-center justify-between p-2.5 rounded-2xl border transition cursor-pointer ${
         isCurrent
-          ? "border-[#D4AF37] bg-[#221C0B]"
-          : "border-[#212532] bg-[#0E1015] hover:border-[#D4AF37]/50 hover:bg-[#181B24]"
+          ? "border-stone-900 dark:border-stone-400 bg-stone-100/70 dark:bg-[#25221e]"
+          : "border-stone-200/80 dark:border-stone-800/80 bg-stone-50/50 dark:bg-[#141311]/50 hover:border-stone-300 dark:hover:border-stone-700 hover:bg-stone-100/60 dark:hover:bg-[#25221e]/60"
       }`}
     >
       <div className="flex items-center gap-2.5 min-w-0">
-        <span className="w-6 h-6 rounded-lg bg-[#161922] border border-[#2E3447] text-[11px] font-bold text-[#8E95A5] flex items-center justify-center shrink-0">
+        <span className="w-6 h-6 rounded-lg bg-stone-100 dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 text-[11px] font-mono font-medium text-stone-500 dark:text-stone-400 flex items-center justify-center shrink-0">
           {candidate.stt}
         </span>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span
-              className={`font-bold truncate text-xs ${
-                isCurrent ? "text-[#F5D77F]" : "text-white group-hover:text-[#F5D77F]"
+              className={`font-medium truncate text-xs ${
+                isCurrent
+                  ? "text-stone-900 dark:text-[#efe9de] font-semibold"
+                  : "text-stone-800 dark:text-stone-200 group-hover:text-stone-900 dark:group-hover:text-white"
               }`}
             >
               {candidate.name}
@@ -448,12 +436,12 @@ const CandidateRow: React.FC<CandidateRowProps> = ({
 
             {/* Số ca đã xếp tuần này */}
             <span
-              className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+              className={`px-1.5 py-0.2 rounded-md text-[10px] font-medium ${
                 candidate.assignedShifts < 2
-                  ? "bg-rose-950 text-rose-300 border border-rose-800/80"
+                  ? "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 border border-rose-200/80 dark:border-rose-900/40"
                   : candidate.assignedShifts === 2
-                  ? "bg-emerald-950 text-emerald-300 border border-emerald-800/80"
-                  : "bg-amber-950 text-amber-300 border border-amber-800/80"
+                  ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-900/40"
+                  : "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-amber-900/40"
               }`}
               title="Số ca đã được xếp trong tuần"
             >
@@ -461,10 +449,10 @@ const CandidateRow: React.FC<CandidateRowProps> = ({
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-[#8E95A5]">
+          <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-stone-500 dark:text-stone-400">
             <span>ĐK: {candidate.registeredNote}</span>
             {candidate.assignedShiftToday && (
-              <span className="text-amber-400 font-medium">
+              <span className="text-amber-600 dark:text-amber-400 font-medium">
                 • ({candidate.assignedShiftToday})
               </span>
             )}
@@ -474,13 +462,14 @@ const CandidateRow: React.FC<CandidateRowProps> = ({
 
       <div className="shrink-0 ml-2">
         {isCurrent ? (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-[#D4AF37] text-[#0B0C10]">
-            <FaCheck className="text-[10px]" /> Đang chọn
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-medium bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-xs">
+            <FiCheck className="text-[10px]" />
+            <span>Đang chọn</span>
           </span>
         ) : (
           <button
             type="button"
-            className="px-2.5 py-1 rounded-lg text-[11px] font-bold border border-[#2E3447] bg-[#161922] group-hover:border-[#D4AF37]/70 group-hover:bg-[#D4AF37] group-hover:text-[#0B0C10] text-[#E7CD80] transition"
+            className="px-2.5 py-1 rounded-lg text-[11px] font-medium border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] group-hover:bg-stone-900 group-hover:text-stone-100 dark:group-hover:bg-stone-100 dark:group-hover:text-stone-900 text-stone-700 dark:text-stone-300 transition shadow-xs"
           >
             Chọn
           </button>

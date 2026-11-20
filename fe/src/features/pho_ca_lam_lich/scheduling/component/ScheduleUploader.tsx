@@ -4,12 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import {
-  FaCloudUploadAlt,
-  FaFileExcel,
-  FaGoogleDrive,
-  FaMagic,
-  FaSpinner,
-} from "react-icons/fa";
+  FiUploadCloud,
+  FiFileText,
+  FiZap,
+  FiLoader,
+  FiEye,
+  FiGlobe,
+  FiX,
+} from "react-icons/fi";
 
 interface Props {
   isLoading: boolean;
@@ -71,37 +73,39 @@ export const ScheduleUploader: React.FC<Props> = ({
   // Nếu không có quyền xếp lịch (nhân viên hoặc phó ca vật liệu) -> Hiển thị thông báo chế độ xem
   if (!canManageSchedule) {
     return (
-      <div className="bg-[#12141A] border border-[#D4AF37]/30 rounded-3xl p-6 shadow-xl mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 flex items-center justify-center text-xl text-[#D4AF37] shrink-0 shadow-inner">
-            👁️
+      <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-5 shadow-sm mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-sm text-stone-500 shrink-0">
+            <FiEye className="w-4 h-4 text-stone-400" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-black text-[#F4F5F8]">Chế Độ Xem Lịch Làm Việc (Read-Only)</span>
-              <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#1A1D28] text-[#E7CD80] border border-[#D4AF37]/40">
+              <span className="text-xs font-bold text-stone-900 dark:text-[#efe9de]">
+                Chế Độ Xem Lịch Làm Việc (Read-Only)
+              </span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60">
                 {userRoleLabel || "Nhân viên"}
               </span>
             </div>
-            <p className="text-xs text-[#8E95A5] mt-1">
+            <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
               Bạn đang xem bảng phân công ca tuần này. Quyền kích hoạt <strong>Auto xếp lịch</strong> và <strong>chỉnh sửa ca</strong> chỉ dành cho Quản lý, Trưởng ca và Phó ca làm lịch.
             </p>
           </div>
         </div>
-        <div className="text-xs text-[#D4AF37] bg-[#181B24] px-3.5 py-2 rounded-xl border border-[#D4AF37]/30 font-medium self-stretch md:self-auto text-center">
-          * Đăng ký ca làm của bạn tại tab <strong className="font-bold underline">"Đăng Ký Ca Làm"</strong>
+        <div className="text-[11px] text-stone-600 dark:text-stone-400 bg-stone-50 dark:bg-[#25221e] px-3.5 py-1.5 rounded-xl border border-stone-200/80 dark:border-stone-700/60 font-medium self-stretch md:self-auto text-center">
+          * Đăng ký ca làm của bạn tại tab <strong className="font-semibold underline">"Đăng Ký Ca Làm"</strong>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#12141A] border border-[#212532] rounded-3xl p-6 shadow-xl mb-8 transition-all">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+    <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-5 shadow-sm mb-6 transition-all">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-5">
         {/* Left: Drag & Drop Card */}
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="flex-1 w-full border-2 border-dashed border-[#D4AF37]/30 hover:border-[#D4AF37] bg-[#181B24]/70 hover:bg-[#181B24] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer transition group text-center"
+          className="flex-1 w-full border-2 border-dashed border-stone-300 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-500 bg-stone-50/60 hover:bg-stone-50 dark:bg-[#25221e]/40 dark:hover:bg-[#25221e]/80 rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer transition group text-center"
         >
           <input
             ref={fileInputRef}
@@ -110,88 +114,91 @@ export const ScheduleUploader: React.FC<Props> = ({
             onChange={handleFileChange}
             className="hidden"
           />
-          <div className="w-14 h-14 rounded-2xl bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center text-2xl mb-3 group-hover:scale-110 gold-glow-sm transition-transform">
-            {isLoading ? <FaSpinner className="animate-spin text-[#D4AF37]" /> : <FaCloudUploadAlt />}
+          <div className="w-12 h-12 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-xl mb-2 group-hover:scale-105 transition-transform">
+            {isLoading ? (
+              <FiLoader className="w-5 h-5 animate-spin text-stone-400" />
+            ) : (
+              <FiUploadCloud className="w-5 h-5 text-stone-400" />
+            )}
           </div>
-          <p className="text-sm font-bold text-[#F4F5F8]">
+          <p className="text-xs font-bold text-stone-900 dark:text-[#efe9de]">
             Kéo thả hoặc bấm để chọn file Excel đăng ký ca
           </p>
-          <p className="text-xs text-[#8E95A5] mt-1">
-            Định dạng tương thích: <code className="text-[#D4AF37]">FILE_MAU_DANG_KY_LICH_LAM_ZONE6_V2.xlsx</code>
+          <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+            Định dạng tương thích: <code className="font-mono text-stone-700 dark:text-stone-300">FILE_MAU_DANG_KY_LICH_LAM_ZONE6_V2.xlsx</code>
           </p>
         </div>
 
         {/* Right: Quick action buttons */}
-        <div className="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-64">
+        <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 w-full md:w-64">
           <button
             type="button"
             disabled={isLoading}
             onClick={onLoadSample}
-            className="flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl gold-gradient-bg hover:brightness-110 text-[#0B0C10] text-xs font-black shadow-lg gold-glow-sm transition disabled:opacity-50"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-stone-100 dark:text-stone-900 text-xs font-semibold shadow-xs transition disabled:opacity-50 cursor-pointer"
           >
-            <FaMagic className="text-sm" /> Dùng Mẫu Nhân Sự V2 (Zone 6)
+            <FiZap className="w-3.5 h-3.5 text-stone-400" />
+            <span>Dùng Mẫu Nhân Sự V2</span>
           </button>
 
           <button
             type="button"
             onClick={() => setIsDriveModalOpen(true)}
-            className="flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl border border-[#212532] bg-[#181B24] hover:bg-[#212532] hover:border-[#D4AF37]/40 text-[#E7CD80] text-xs font-bold transition"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2f2b26] text-stone-700 dark:text-stone-300 text-xs font-semibold transition cursor-pointer"
           >
-            <FaGoogleDrive className="text-emerald-400 text-sm" /> Nhập từ Google Drive
+            <FiGlobe className="w-3.5 h-3.5 text-stone-400" />
+            <span>Nhập từ Google Drive</span>
           </button>
         </div>
       </div>
 
-      {/* Google Drive Link Modal - Portal trực tiếp vào document.body để luôn ở giữa màn hình (viewport) */}
+      {/* Google Drive Link Modal */}
       {isDriveModalOpen &&
         mounted &&
         createPortal(
           <div
-            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 99999,
-            }}
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn"
             onClick={(e) => {
               if (e.target === e.currentTarget) setIsDriveModalOpen(false);
             }}
           >
-            <div className="w-full max-w-md rounded-2xl bg-[#12141A] border border-[#212532] p-6 shadow-2xl relative z-10 animate-in fade-in zoom-in-95 duration-150">
-              <div className="flex items-center gap-2.5 mb-3 text-[#D4AF37] font-bold text-base">
-                <FaGoogleDrive className="text-xl text-emerald-400" /> Nhập file từ Google Drive
+            <div className="w-full max-w-md rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 p-5 shadow-xl relative z-10 animate-fadeIn">
+              <div className="flex items-center justify-between pb-3 border-b border-stone-200/80 dark:border-stone-800 mb-3">
+                <div className="flex items-center gap-2 text-stone-900 dark:text-[#efe9de] font-bold text-sm">
+                  <FiGlobe className="w-4 h-4 text-stone-400" /> Nhập file từ Google Drive
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsDriveModalOpen(false)}
+                  className="w-7 h-7 flex items-center justify-center text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
+                >
+                  <FiX className="w-4 h-4 text-stone-400" />
+                </button>
               </div>
-              <p className="text-xs text-[#8E95A5] mb-4 leading-relaxed">
+
+              <p className="text-xs text-stone-500 dark:text-stone-400 mb-3 leading-relaxed">
                 Dán đường link chia sẻ Google Drive / Sheets (ở chế độ <em>"Bất kỳ ai có đường liên kết"</em>) để tự động đồng bộ:
               </p>
-              <form onSubmit={handleDriveSubmit} className="space-y-4">
+              <form onSubmit={handleDriveSubmit} className="space-y-3">
                 <input
                   type="url"
                   value={driveUrl}
                   onChange={(e) => setDriveUrl(e.target.value)}
                   placeholder="https://docs.google.com/spreadsheets/d/.../edit"
-                  className="w-full rounded-xl border border-[#212532] bg-[#0B0C10] px-4 py-2.5 text-xs text-[#F4F5F8] focus:outline-none focus:border-[#D4AF37] transition"
+                  className="w-full rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-50 dark:bg-[#25221e] px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 dark:focus:border-stone-500 transition"
                   autoFocus
                 />
-                <div className="flex justify-end gap-2.5">
+                <div className="flex justify-end gap-2 pt-1">
                   <button
                     type="button"
                     onClick={() => setIsDriveModalOpen(false)}
-                    className="rounded-xl px-4 py-2 text-xs font-semibold text-[#8E95A5] hover:bg-[#181B24] transition cursor-pointer"
+                    className="rounded-xl px-3.5 py-1.5 text-xs font-semibold text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
                   >
                     Hủy
                   </button>
                   <button
                     type="submit"
-                    className="rounded-xl gold-gradient-bg text-[#0B0C10] font-black px-4 py-2 text-xs transition shadow-md hover:brightness-110 cursor-pointer"
+                    className="rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-stone-100 dark:text-stone-900 font-semibold px-4 py-1.5 text-xs transition shadow-xs cursor-pointer"
                   >
                     Tải và Phân Bổ
                   </button>

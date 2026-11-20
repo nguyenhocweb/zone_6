@@ -1,9 +1,11 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
 @source "../**/*.{ts,tsx}";
 
 :root {
-  --background: #0b0c10;
-  --foreground: #f4f5f8;
+  --background: #f7f4ee;
+  --foreground: #1f1b16;
+  color-scheme: light;
   
   /* Zone 6 Luxury Gold Palette */
   --gold-50: #fdfcf7;
@@ -24,6 +26,12 @@
   --black-800: #212532; /* Border & Subtle Division */
   --black-700: #2c3242; /* Hover Surface */
   --black-600: #444b60; /* Muted Elements */
+}
+
+html.dark, :root.dark {
+  --background: #141311;
+  --foreground: #efe9de;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -89,10 +97,14 @@
 }
 
 /* =========================================================================
- * Zone 6 Obsidian & Gold Scrollbars
+ * Zone 6 Theme Adaptable Scrollbars
  * ========================================================================= */
-html, :root {
+html.dark {
   color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
 }
 
 /* Chrome, Edge, Safari WebKit */
@@ -101,24 +113,43 @@ html, :root {
   height: 6px;
 }
 
-::-webkit-scrollbar-track {
-  background: #0b0c10;
+html.dark ::-webkit-scrollbar-track {
+  background: #141311;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #212532;
+html.dark ::-webkit-scrollbar-thumb {
+  background: #25221e;
   border-radius: 9999px;
   border: 1px solid rgba(212, 175, 55, 0.25);
 }
 
-::-webkit-scrollbar-thumb:hover {
+html.dark ::-webkit-scrollbar-thumb:hover {
   background: #d4af37;
 }
 
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: #efe9df;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #d5cbbe;
+  border-radius: 9999px;
+  border: 1px solid rgba(168, 121, 30, 0.25);
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #a8791e;
+}
+
 /* Firefox & Standard W3C */
-* {
+html.dark * {
   scrollbar-width: thin;
-  scrollbar-color: #212532 #0b0c10;
+  scrollbar-color: #25221e #141311;
+}
+
+html:not(.dark) * {
+  scrollbar-width: thin;
+  scrollbar-color: #d5cbbe #efe9df;
 }
 
 /* Container-specific custom scrollbar */

@@ -2,15 +2,14 @@
 
 import React, { useState } from "react";
 import {
-  FaTimes,
-  FaFileAlt,
-  FaBuilding,
-  FaUser,
-  FaCalendarAlt,
-  FaCheck,
-  FaBan,
-  FaSpinner,
-} from "react-icons/fa";
+  FiX,
+  FiFileText,
+  FiHome,
+  FiUser,
+  FiCheck,
+  FiSlash,
+  FiLoader,
+} from "react-icons/fi";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useUpdateRequisitionStatus } from "../hook/usePurchaseRequisitions";
 import type { PurchaseRequisition } from "../type/requisition.type";
@@ -89,83 +88,84 @@ export const RequisitionDetailModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-3xl max-h-[90vh] bg-[#12141A] border border-[#212532] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
+      <div className="relative w-full max-w-3xl max-h-[90vh] bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl shadow-xl flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[#212532] bg-[#181B24]">
+        <div className="flex items-center justify-between p-5 border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#25221e]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-              <FaFileAlt className="text-lg" />
+            <div className="w-10 h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center text-sm shadow-xs shrink-0">
+              <FiFileText className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-black text-[#F4F5F8]">{requisition.code}</h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#212532] text-[#D4AF37]">
+                <h2 className="text-base font-bold text-stone-900 dark:text-[#efe9de] font-mono">{requisition.code}</h2>
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300">
                   {requisition.status}
                 </span>
               </div>
-              <p className="text-xs text-[#8E95A5] flex items-center gap-2 mt-0.5">
+              <p className="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-2 mt-0.5">
                 <span className="flex items-center gap-1">
-                  <FaBuilding className="text-[10px]" /> {requisition.store_name}
+                  <FiHome className="w-3 h-3 text-stone-400" /> {requisition.store_name}
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1">
-                  <FaUser className="text-[10px]" /> {requisition.creator_name} ({requisition.creator_role})
+                  <FiUser className="w-3 h-3 text-stone-400" /> {requisition.creator_name} ({requisition.creator_role})
                 </span>
               </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 text-[#8E95A5] hover:text-white rounded-xl hover:bg-[#212532] transition"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
           >
-            <FaTimes />
+            <FiX className="w-4 h-4 text-stone-400" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {requisition.notes && (
-            <div className="p-3.5 rounded-2xl bg-[#181B24] border border-[#212532] text-xs">
-              <span className="font-bold text-[#8E95A5]">Ghi chú:</span>{" "}
-              <span className="text-[#F4F5F8]">{requisition.notes}</span>
+            <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 text-xs">
+              <span className="font-semibold text-stone-500 dark:text-stone-400">Ghi chú:</span>{" "}
+              <span className="text-stone-900 dark:text-[#efe9de]">{requisition.notes}</span>
             </div>
           )}
 
           {requisition.rejection_reason && (
-            <div className="p-3.5 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-400">
-              <span className="font-bold">Lý do từ chối:</span> {requisition.rejection_reason}
+            <div className="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/60 text-xs text-rose-700 dark:text-rose-400">
+              <span className="font-semibold">Lý do từ chối:</span> {requisition.rejection_reason}
             </div>
           )}
 
           {/* Table */}
-          <div className="border border-[#212532] rounded-2xl overflow-hidden bg-[#181B24]">
+          <div className="border border-stone-200/80 dark:border-stone-800 rounded-2xl overflow-hidden bg-white dark:bg-[#1c1a17]">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#12141A] text-[#8E95A5] text-[11px] font-black uppercase tracking-wider border-b border-[#212532]">
+              <thead className="bg-stone-50 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 text-[11px] font-semibold uppercase tracking-wider border-b border-stone-200/80 dark:border-stone-800">
                 <tr>
-                  <th className="p-3.5">Mặt Hàng</th>
-                  <th className="p-3.5 text-center">ĐVT</th>
-                  <th className="p-3.5 text-center">Tồn / Min</th>
-                  <th className="p-3.5 text-center">SL Xin</th>
-                  <th className="p-3.5 text-center w-28">SL Duyệt</th>
-                  <th className="p-3.5 text-center">NCC Gợi Ý</th>
+                  <th className="p-3">Mặt Hàng</th>
+                  <th className="p-3 text-center">ĐVT</th>
+                  <th className="p-3 text-center">Tồn / Min</th>
+                  <th className="p-3 text-center">SL Xin</th>
+                  <th className="p-3 text-center w-28">SL Duyệt</th>
+                  <th className="p-3 text-center">NCC Gợi Ý</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#212532]">
+              <tbody className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
                 {requisition.items.map((item) => (
-                  <tr key={item.material_id} className="hover:bg-[#1E2330] transition">
-                    <td className="p-3.5">
-                      <div className="font-bold text-[#F4F5F8]">{item.material_name}</div>
-                      <div className="text-[10px] text-[#6D7588]">{item.material_code}</div>
+                  <tr key={item.material_id} className="hover:bg-stone-50/60 dark:hover:bg-[#25221e]/50 transition">
+                    <td className="p-3">
+                      <div className="font-semibold text-stone-900 dark:text-[#efe9de]">{item.material_name}</div>
+                      <div className="text-[10px] text-stone-400 font-mono">{item.material_code}</div>
                     </td>
-                    <td className="p-3.5 text-center text-[#8E95A5]">{item.unit}</td>
-                    <td className="p-3.5 text-center text-[#8E95A5]">
+                    <td className="p-3 text-center text-stone-500 dark:text-stone-400">{item.unit}</td>
+                    <td className="p-3 text-center text-stone-500 dark:text-stone-400 font-mono">
                       {item.current_stock} / {item.min_threshold}
                     </td>
-                    <td className="p-3.5 text-center font-bold text-amber-400">
+                    <td className="p-3 text-center font-mono font-semibold text-stone-900 dark:text-[#efe9de]">
                       {item.requested_quantity}
                     </td>
-                    <td className="p-3.5 text-center">
+                    <td className="p-3 text-center">
                       {isManagerOrAdmin && requisition.status === "PENDING" ? (
                         <input
                           type="number"
@@ -178,15 +178,15 @@ export const RequisitionDetailModal: React.FC<Props> = ({
                               [item.material_id]: parseFloat(e.target.value) || 0,
                             })
                           }
-                          className="w-20 bg-[#12141A] border border-[#212532] rounded-lg px-2 py-1 text-center font-bold text-emerald-400 focus:border-emerald-400 focus:outline-none"
+                          className="w-20 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-lg px-2 py-1 text-center font-mono font-semibold text-emerald-700 dark:text-emerald-400 focus:border-stone-400 dark:focus:border-stone-500 focus:outline-none"
                         />
                       ) : (
-                        <span className="font-bold text-emerald-400">
+                        <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">
                           {item.approved_quantity ?? item.requested_quantity}
                         </span>
                       )}
                     </td>
-                    <td className="p-3.5 text-center text-[11px] text-[#8E95A5]">
+                    <td className="p-3 text-center text-[11px] text-stone-500 dark:text-stone-400">
                       {item.suggested_supplier_name || "—"}
                     </td>
                   </tr>
@@ -197,8 +197,8 @@ export const RequisitionDetailModal: React.FC<Props> = ({
 
           {/* Reject Input Field */}
           {isRejecting && (
-            <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 space-y-3">
-              <label className="block text-xs font-bold text-red-400">
+            <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/60 space-y-3">
+              <label className="block text-xs font-semibold text-rose-700 dark:text-rose-400">
                 Nhập lý do từ chối yêu cầu nhập kho:
               </label>
               <input
@@ -206,13 +206,13 @@ export const RequisitionDetailModal: React.FC<Props> = ({
                 placeholder="VD: Quán vẫn còn tồn kho an toàn, chưa cần nhập thêm..."
                 value={rejectionReason}
                 onChange={(e) => setRejectionReason(e.target.value)}
-                className="w-full bg-[#12141A] border border-red-500/40 rounded-xl px-3 py-2 text-xs text-[#F4F5F8] focus:outline-none"
+                className="w-full bg-white dark:bg-[#1c1a17] border border-rose-300 dark:border-rose-700/70 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none"
               />
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsRejecting(false)}
-                  className="px-3 py-1.5 rounded-lg text-xs text-[#8E95A5] hover:text-white"
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 cursor-pointer"
                 >
                   Hủy bỏ
                 </button>
@@ -220,7 +220,7 @@ export const RequisitionDetailModal: React.FC<Props> = ({
                   type="button"
                   onClick={handleReject}
                   disabled={statusMutation.isPending}
-                  className="px-4 py-1.5 rounded-lg bg-red-500 hover:bg-red-400 text-white font-bold text-xs"
+                  className="px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs cursor-pointer shadow-xs"
                 >
                   Xác Nhận Từ Chối
                 </button>
@@ -230,11 +230,11 @@ export const RequisitionDetailModal: React.FC<Props> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-[#212532] bg-[#181B24] flex items-center justify-between">
+        <div className="p-4 border-t border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#25221e] flex items-center justify-between">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-[#8E95A5] hover:text-white hover:bg-[#212532] transition"
+            className="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-200/60 dark:hover:bg-stone-800 transition cursor-pointer"
           >
             Đóng
           </button>
@@ -244,18 +244,23 @@ export const RequisitionDetailModal: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={() => setIsRejecting(true)}
-                className="px-4 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 font-bold text-xs transition border border-red-500/40 flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-rose-50 dark:bg-rose-950/20 hover:bg-rose-100 text-rose-700 dark:text-rose-400 font-semibold text-xs transition border border-rose-200 dark:border-rose-800/60 flex items-center gap-1.5 cursor-pointer"
               >
-                <FaBan /> Từ Chối
+                <FiSlash className="w-3.5 h-3.5 text-stone-400" />
+                <span>Từ Chối</span>
               </button>
               <button
                 type="button"
                 onClick={handleApprove}
                 disabled={statusMutation.isPending}
-                className="px-6 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-500/20 flex items-center gap-1.5"
+                className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-stone-100 dark:text-stone-900 font-semibold text-xs transition shadow-xs flex items-center gap-1.5 cursor-pointer"
               >
-                {statusMutation.isPending ? <FaSpinner className="animate-spin" /> : <FaCheck />}
-                Phê Duyệt Số Lượng
+                {statusMutation.isPending ? (
+                  <FiLoader className="w-3.5 h-3.5 animate-spin text-stone-400" />
+                ) : (
+                  <FiCheck className="w-3.5 h-3.5 text-stone-400" />
+                )}
+                <span>Phê Duyệt Số Lượng</span>
               </button>
             </div>
           )}
@@ -264,4 +269,3 @@ export const RequisitionDetailModal: React.FC<Props> = ({
     </div>
   );
 };
-

@@ -4,24 +4,24 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  FaTimes,
-  FaCheckCircle,
-  FaSpinner,
-  FaPlus,
-  FaTrashAlt,
-  FaLock,
-  FaGlobe,
-  FaBoxOpen,
-  FaListOl,
-  FaLightbulb,
-  FaStore,
-  FaArrowRight,
-  FaArrowLeft,
-  FaCheck,
-  FaMapMarkerAlt,
-  FaCoffee,
-  FaFlask,
-} from "react-icons/fa";
+  FiX,
+  FiCheckCircle,
+  FiLoader,
+  FiPlus,
+  FiTrash2,
+  FiLock,
+  FiGlobe,
+  FiPackage,
+  FiList,
+  FiAlertCircle,
+  FiHome,
+  FiArrowRight,
+  FiArrowLeft,
+  FiCheck,
+  FiMapPin,
+  FiCoffee,
+  FiLayers,
+} from "react-icons/fi";
 import { recipeFormSchema, type RecipeFormValues } from "../schema/recipe.schema";
 import { useCreateRecipe } from "../hook/useCreateRecipe";
 import { useGetMaterials } from "../hook/useGetMaterials";
@@ -324,21 +324,21 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         stepNumber: 1,
         title: "Thông Tin Món",
         subtitle: "Tên, giá, size & bảo mật",
-        icon: FaCoffee,
+        icon: FiCoffee,
       },
       {
         id: "ingredients" as StepTab,
         stepNumber: 2,
         title: "Định Lượng (BOM)",
         subtitle: `${ingredientFields.length} vật liệu`,
-        icon: FaFlask,
+        icon: FiLayers,
       },
       {
         id: "steps" as StepTab,
         stepNumber: 3,
         title: "Quy Trình (SOP)",
         subtitle: `${stepFields.length} bước Barista`,
-        icon: FaListOl,
+        icon: FiList,
       },
     ];
 
@@ -349,7 +349,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         stepNumber: 4,
         title: "Cơ Sở Áp Dụng",
         subtitle: selectedStoreObj ? selectedStoreObj.store_code : "Chọn chi nhánh",
-        icon: FaStore,
+        icon: FiHome,
       });
     }
 
@@ -433,34 +433,34 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="relative w-full max-w-4xl my-8 bg-[#161820] border border-amber-500/30 rounded-3xl p-6 md:p-8 shadow-2xl shadow-amber-950/20 text-white animate-scale-up max-h-[92vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn overflow-y-auto">
+      <div className="relative w-full max-w-4xl my-8 bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl p-6 md:p-8 shadow-2xl text-stone-900 dark:text-[#efe9de] max-h-[92vh] flex flex-col z-10 animate-fadeIn">
         {/* Close Button */}
         <button
           onClick={onClose}
           disabled={createMutation.isPending}
-          className="absolute top-5 right-5 text-white/50 hover:text-white p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors z-10"
+          className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-[#2f2b26] text-stone-500 dark:text-stone-400 flex items-center justify-center transition cursor-pointer z-10"
         >
-          <FaTimes className="text-sm" />
+          <FiX className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60 uppercase tracking-wider">
               {hasMultipleStores ? "Quy Trình 4 Bước Chuẩn" : "Quy Trình 3 Bước Chuẩn"}
             </span>
           </div>
-          <h2 className="text-xl md:text-2xl font-bold text-white tracking-wide">
+          <h2 className="text-xl md:text-2xl font-bold text-stone-900 dark:text-[#efe9de] tracking-tight">
             Thêm Công Thức Pha Chế / Món Mới
           </h2>
-          <p className="text-xs text-white/50 mt-0.5">
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
             Thiết lập định lượng nguyên liệu và quy trình chuẩn SOP Zone 6
           </p>
         </div>
 
-        {/* Stepper: Nút Tròn Đánh Số & Đường Thẳng Nối Nhau - Tên Bước Nằm Ở Dưới */}
-        <div className="mb-6 px-4 py-3.5 bg-[#12141A] border border-white/10 rounded-2xl relative">
+        {/* Stepper */}
+        <div className="mb-6 px-4 py-3.5 bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 rounded-2xl relative">
           <div className="flex items-start justify-between relative">
             {stepItems.map((step, idx) => {
               const isCurrent = activeTab === step.id;
@@ -469,7 +469,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 (step.id === "ingredients" && (activeTab === "steps" || activeTab === "store")) ||
                 (step.id === "steps" && activeTab === "store");
 
-              // Đường thẳng nối giữa các nút tròn (được tô sáng khi bước trước đã xong)
+              // Đường thẳng nối giữa các nút tròn
               const isLinePassed =
                 (idx === 0 && activeTab !== "general") ||
                 (idx === 1 && (activeTab === "steps" || activeTab === "store")) ||
@@ -486,8 +486,8 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                       <div
                         className={`h-full transition-all duration-300 ${
                           isLinePassed
-                            ? "bg-gradient-to-r from-emerald-500 via-amber-500 to-amber-500"
-                            : "bg-white/10"
+                            ? "bg-emerald-600 dark:bg-emerald-500"
+                            : "bg-stone-200 dark:bg-stone-800"
                         }`}
                       />
                     </div>
@@ -503,37 +503,37 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                       }
                       setActiveTab(step.id);
                     }}
-                    className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-xs transition-all cursor-pointer ${
+                    className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all cursor-pointer ${
                       isCurrent
-                        ? "bg-amber-500 text-black shadow-lg shadow-amber-500/40 ring-4 ring-amber-500/25 scale-110"
+                        ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-sm ring-4 ring-stone-900/10 dark:ring-stone-100/15 scale-105"
                         : isCompleted
-                        ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/25 ring-4 ring-emerald-500/20 hover:scale-105"
-                        : "bg-[#161820] text-white/40 border-2 border-white/15 hover:border-white/30 hover:text-white/70"
+                        ? "bg-emerald-600 text-white shadow-xs ring-4 ring-emerald-500/15"
+                        : "bg-stone-100 dark:bg-[#1c1a17] text-stone-400 border border-stone-200/80 dark:border-stone-700/60 hover:text-stone-600 dark:hover:text-stone-200"
                     }`}
                   >
-                    {isCompleted ? <FaCheck className="text-xs stroke-[2]" /> : step.stepNumber}
+                    {isCompleted ? <FiCheck className="text-xs stroke-[2.5]" /> : step.stepNumber}
                   </button>
 
                   {/* Tên Bước Nằm Ở Dưới Nút Tròn */}
                   <div className="mt-2.5 text-center px-1 max-w-[130px]">
                     <span
-                      className={`block text-[10px] uppercase font-bold tracking-wider ${
+                      className={`block text-[10px] uppercase font-semibold tracking-wider ${
                         isCurrent
-                          ? "text-amber-400 font-extrabold"
+                          ? "text-stone-900 dark:text-[#efe9de] font-bold"
                           : isCompleted
-                          ? "text-emerald-400 font-semibold"
-                          : "text-white/40"
+                          ? "text-emerald-600 dark:text-emerald-400 font-medium"
+                          : "text-stone-400"
                       }`}
                     >
                       Bước {step.stepNumber}
                     </span>
                     <p
-                      className={`text-xs font-bold mt-0.5 leading-tight transition-colors ${
+                      className={`text-xs font-semibold mt-0.5 leading-tight transition-colors ${
                         isCurrent
-                          ? "text-white font-extrabold"
+                          ? "text-stone-900 dark:text-[#efe9de] font-bold"
                           : isCompleted
-                          ? "text-white/90"
-                          : "text-white/40"
+                          ? "text-stone-700 dark:text-stone-300"
+                          : "text-stone-400"
                       }`}
                     >
                       {step.title}
@@ -549,32 +549,32 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         <form onSubmit={handleSubmit(onSubmit)} className="overflow-y-auto pr-1 flex-1 space-y-5">
           {/* TAB 1: GENERAL INFO */}
           {activeTab === "general" && (
-            <div className="space-y-4 animate-fade-in">
-              {/* Type Selection (Important Security Requirement) */}
-              <div className="bg-[#12141A] border border-amber-500/20 rounded-2xl p-4">
-                <label className="block text-xs font-bold text-amber-400 mb-2 uppercase tracking-wider">
-                  Phân Loại Món & Quyền Xem (*)
+            <div className="space-y-4 animate-fadeIn">
+              {/* Type Selection */}
+              <div className="bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-2 uppercase tracking-wider">
+                  Phân Loại Món &amp; Quyền Xem <span className="text-rose-500">*</span>
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <label
                     className={`cursor-pointer border rounded-2xl p-3.5 flex items-start gap-3 transition-all ${
                       selectedType === "customer_product"
-                        ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300"
-                        : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                        ? "bg-white dark:bg-[#1c1a17] border-stone-900 dark:border-stone-100 text-stone-900 dark:text-[#efe9de] shadow-xs"
+                        : "bg-white dark:bg-[#1c1a17] border-stone-200/80 dark:border-stone-700/60 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-[#2e2a25]"
                     }`}
                   >
                     <input
                       type="radio"
                       value="customer_product"
                       {...register("type")}
-                      className="mt-1"
+                      className="mt-1 accent-stone-900 dark:accent-stone-100"
                     />
                     <div>
-                      <div className="flex items-center gap-1.5 font-bold text-sm text-white">
-                        <FaGlobe className="text-emerald-400" />
+                      <div className="flex items-center gap-1.5 font-bold text-sm text-stone-900 dark:text-[#efe9de]">
+                        <FiGlobe className="text-stone-400" />
                         <span>Món Bán Khách Hàng</span>
                       </div>
-                      <p className="text-[11px] text-white/50 mt-1 leading-snug">
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-1 leading-snug">
                         Khách xem được tên món, ảnh và giá niêm yết. Chỉ nhân viên mới xem được định lượng và công thức.
                       </p>
                     </div>
@@ -583,22 +583,22 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                   <label
                     className={`cursor-pointer border rounded-2xl p-3.5 flex items-start gap-3 transition-all ${
                       selectedType === "internal_prep"
-                        ? "bg-amber-500/15 border-amber-500/40 text-amber-300"
-                        : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                        ? "bg-white dark:bg-[#1c1a17] border-stone-900 dark:border-stone-100 text-stone-900 dark:text-[#efe9de] shadow-xs"
+                        : "bg-white dark:bg-[#1c1a17] border-stone-200/80 dark:border-stone-700/60 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-[#2e2a25]"
                     }`}
                   >
                     <input
                       type="radio"
                       value="internal_prep"
                       {...register("type")}
-                      className="mt-1"
+                      className="mt-1 accent-stone-900 dark:accent-stone-100"
                     />
                     <div>
-                      <div className="flex items-center gap-1.5 font-bold text-sm text-white">
-                        <FaLock className="text-amber-400" />
+                      <div className="flex items-center gap-1.5 font-bold text-sm text-stone-900 dark:text-[#efe9de]">
+                        <FiLock className="text-stone-400" />
                         <span>Sơ Chế Bán Thành Phẩm (Chỉ Nhân Viên)</span>
                       </div>
-                      <p className="text-[11px] text-white/50 mt-1 leading-snug">
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-1 leading-snug">
                         Vd: Nấu nước đường, ủ trà cốt, kem cheese macchiato. Khách hàng hoàn toàn không thấy món này.
                       </p>
                     </div>
@@ -609,29 +609,29 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
               {/* Basic Fields */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-semibold text-white/80 mb-1.5">
-                    Tên Món / Công Thức (*)
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">
+                    Tên Món / Công Thức <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
                     {...register("name")}
                     placeholder="Vd: Trà Dâu Tươi Zone 6, Cốt Trà Đen..."
-                    className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
+                    className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors"
                   />
                   {errors.name && (
-                    <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>
+                    <p className="text-rose-500 text-xs mt-1">{errors.name.message}</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-white/80 mb-1.5">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">
                     Mã Công Thức (Tùy chọn)
                   </label>
                   <input
                     type="text"
                     {...register("code")}
                     placeholder="Vd: REC-TD01"
-                    className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm font-mono text-amber-300 focus:outline-none focus:border-amber-400 transition-colors uppercase"
+                    className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs font-mono text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors uppercase"
                   />
                 </div>
               </div>
@@ -639,8 +639,8 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-semibold text-white/80">
-                      Danh Mục Món (*) <span className="text-[10px] text-amber-400/80 font-normal">(Bảng CSDL Riêng)</span>
+                    <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300">
+                      Danh Mục Món <span className="text-rose-500">*</span>
                     </label>
                     <button
                       type="button"
@@ -652,9 +652,9 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                           setValue("category_id", null);
                         }
                       }}
-                      className="text-[11px] text-amber-400 hover:text-amber-300 font-medium underline flex items-center gap-1 cursor-pointer"
+                      className="text-[11px] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] font-medium underline flex items-center gap-1 cursor-pointer"
                     >
-                      {isCustomCategory ? "← Chọn từ danh mục có sẵn" : "➕ Nhập danh mục mới"}
+                      {isCustomCategory ? "← Chọn từ danh mục có sẵn" : "+ Nhập danh mục mới"}
                     </button>
                   </div>
 
@@ -680,29 +680,29 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                             }
                           }
                         }}
-                        className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors cursor-pointer"
+                        className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors cursor-pointer"
                       >
-                        <option value="" className="bg-[#12141A] text-white/50">-- Chọn danh mục món trong hệ thống --</option>
+                        <option value="" className="bg-white dark:bg-[#1c1a17] text-stone-400">-- Chọn danh mục món trong hệ thống --</option>
                         {customerCategories.length > 0 && (
-                          <optgroup label="── Món Bán ──" className="bg-[#181B24] text-amber-400 font-semibold">
+                          <optgroup label="── Món Bán ──" className="bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 font-semibold">
                             {customerCategories.map((cat) => (
-                              <option key={cat._id || cat.id} value={cat.name} className="bg-[#12141A] text-white font-normal">
+                              <option key={cat._id || cat.id} value={cat.name} className="bg-white dark:bg-[#1c1a17] text-stone-900 dark:text-[#efe9de] font-normal">
                                 {cat.name}
                               </option>
                             ))}
                           </optgroup>
                         )}
                         {internalCategories.length > 0 && (
-                          <optgroup label="── Món Nội Bộ ──" className="bg-[#181B24] text-blue-400 font-semibold">
+                          <optgroup label="── Món Nội Bộ ──" className="bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 font-semibold">
                             {internalCategories.map((cat) => (
-                              <option key={cat._id || cat.id} value={cat.name} className="bg-[#12141A] text-white font-normal">
+                              <option key={cat._id || cat.id} value={cat.name} className="bg-white dark:bg-[#1c1a17] text-stone-900 dark:text-[#efe9de] font-normal">
                                 {cat.name}
                               </option>
                             ))}
                           </optgroup>
                         )}
-                        <option value="__custom__" className="bg-[#12141A] text-[#D4AF37] font-semibold">
-                          ➕ [Nhập tên danh mục mới nếu chưa có...]
+                        <option value="__custom__" className="bg-white dark:bg-[#1c1a17] text-stone-900 dark:text-[#efe9de] font-semibold">
+                          + [Nhập tên danh mục mới nếu chưa có...]
                         </option>
                       </select>
 
@@ -716,10 +716,10 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                               setValue("category", c.name, { shouldValidate: true });
                               setValue("category_id", c._id || c.id);
                             }}
-                            className={`px-2 py-0.5 rounded-lg text-[10px] font-medium border transition-all ${
+                            className={`px-2 py-0.5 rounded-lg text-[10px] font-medium border transition-all cursor-pointer ${
                               watch("category") === c.name
-                                ? "bg-amber-500 text-black border-amber-500 font-bold"
-                                : "bg-white/5 border-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                                ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent font-semibold shadow-xs"
+                                : "bg-stone-100 dark:bg-[#25221e] border-stone-200/80 dark:border-stone-700/60 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                             }`}
                           >
                             {c.name}
@@ -733,68 +733,68 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                         type="text"
                         {...register("category")}
                         placeholder="Vd: Nước ép tươi, Mocktail, Kem tuyết..."
-                        className="w-full bg-[#12141A] border border-amber-500/50 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
+                        className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors"
                         autoFocus
                       />
-                      <p className="text-[11px] text-white/50">
-                        💡 Tên này sẽ tự động được lưu thành 1 bản ghi mới trong bảng <span className="text-amber-300 font-mono">recipe_categories</span>.
+                      <p className="text-[11px] text-stone-400">
+                        * Tên này sẽ tự động được lưu thành 1 bản ghi mới trong bảng <span className="font-mono text-stone-600 dark:text-stone-300">recipe_categories</span>.
                       </p>
                     </div>
                   )}
 
                   {errors.category && (
-                    <p className="text-red-400 text-xs mt-1">{errors.category.message}</p>
+                    <p className="text-rose-500 text-xs mt-1">{errors.category.message}</p>
                   )}
                 </div>
 
                 {selectedType === "customer_product" && (
                   <div>
-                    <label className="block text-xs font-semibold text-white/80 mb-1.5">
-                      Giá Bán Niêm Yết (VNĐ) (*)
+                    <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">
+                      Giá Bán Niêm Yết (VNĐ) <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="number"
                       {...register("price", { valueAsNumber: true })}
                       placeholder="25000"
-                      className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm font-mono text-emerald-400 font-bold focus:outline-none focus:border-amber-400 transition-colors"
+                      className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs font-mono text-stone-900 dark:text-[#efe9de] font-bold focus:outline-none focus:border-stone-400 transition-colors"
                     />
                     {errors.price && (
-                      <p className="text-red-400 text-xs mt-1">{errors.price.message}</p>
+                      <p className="text-rose-500 text-xs mt-1">{errors.price.message}</p>
                     )}
                   </div>
                 )}
               </div>
 
               {/* KHỐI CẤU HÌNH NHIỆT ĐỘ PHỤC VỤ & CHỌN LY TRONG HỆ THỐNG */}
-              <div className="p-4 rounded-2xl bg-[#12141A] border border-amber-500/30 space-y-3.5 shadow-lg">
+              <div className="p-4 rounded-2xl bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 space-y-3.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <span>🌡️ Chế Độ Nhiệt Độ Món & Ly Phục Vụ (*)</span>
+                  <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                    Chế Độ Nhiệt Độ Món &amp; Ly Phục Vụ <span className="text-rose-500">*</span>
                   </label>
-                  <span className="text-[11px] text-white/50">Tự động liên kết ly trong kho vào định lượng</span>
+                  <span className="text-[11px] text-stone-400">Tự động liên kết ly trong kho vào định lượng</span>
                 </div>
 
                 {/* 3 Nút chọn chế độ nhiệt độ */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {[
-                    { value: "cold", label: "❄️ Phục Vụ Lạnh (Đá)", desc: "Món chỉ uống lạnh với đá" },
-                    { value: "hot", label: "🔥 Phục Vụ Nóng", desc: "Món chỉ uống nóng ấm" },
-                    { value: "both", label: "❄️🔥 Cả Lạnh & Nóng", desc: "Chế biến được cả 2 chế độ" },
+                    { value: "cold", label: "Phục Vụ Lạnh (Đá)", desc: "Món chỉ uống lạnh với đá" },
+                    { value: "hot", label: "Phục Vụ Nóng", desc: "Món chỉ uống nóng ấm" },
+                    { value: "both", label: "Cả Lạnh & Nóng", desc: "Chế biến được cả 2 chế độ" },
                   ].map((m) => (
                     <button
                       type="button"
                       key={m.value}
                       onClick={() => handleServingModeChange(m.value as any)}
-                      className={`p-2.5 rounded-xl border text-left transition select-none flex flex-col justify-between ${
+                      className={`p-2.5 rounded-xl border text-left transition select-none flex flex-col justify-between cursor-pointer ${
                         servingMode === m.value
-                          ? "bg-amber-500 text-black border-amber-500 font-bold shadow-md shadow-amber-500/20"
-                          : "bg-[#181B24] text-white/70 border-white/10 hover:border-white/20"
+                          ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent font-semibold shadow-xs"
+                          : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-50 dark:hover:bg-[#2e2a25]"
                       }`}
                     >
-                      <span className="text-xs font-bold">{m.label}</span>
+                      <span className="text-xs font-semibold">{m.label}</span>
                       <span
                         className={`text-[10px] mt-0.5 line-clamp-1 ${
-                          servingMode === m.value ? "text-black/80" : "text-white/40"
+                          servingMode === m.value ? "text-stone-300 dark:text-stone-700" : "text-stone-400"
                         }`}
                       >
                         {m.desc}
@@ -804,17 +804,17 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 </div>
 
                 {/* Dropdown chọn Ly từ kho */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-white/5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-stone-200/80 dark:border-stone-800">
                   {(servingMode === "cold" || servingMode === "both") && (
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-cyan-300 flex items-center gap-1">
-                        <span>❄️ Chọn Ly Phục Vụ Lạnh:</span>
-                        <span className="text-white/40 text-[10px]">({coldCups.length} loại ly lạnh trong kho)</span>
+                      <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 flex items-center gap-1">
+                        <span>Chọn Ly Phục Vụ Lạnh:</span>
+                        <span className="text-stone-400 text-[10px]">({coldCups.length} loại ly lạnh trong kho)</span>
                       </label>
                       <select
                         value={coldCupId || ""}
                         onChange={(e) => handleSelectColdCup(e.target.value)}
-                        className="w-full bg-[#181B24] border border-cyan-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400 font-medium"
+                        className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 font-medium cursor-pointer"
                       >
                         <option value="">-- Chọn Ly Lạnh Từ Kho --</option>
                         {coldCups.map((c) => (
@@ -824,21 +824,21 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                         ))}
                       </select>
                       {coldCupName && (
-                        <p className="text-[10px] text-cyan-400">Đã gán: {coldCupName}</p>
+                        <p className="text-[10px] text-emerald-600 dark:text-emerald-400">Đã gán: {coldCupName}</p>
                       )}
                     </div>
                   )}
 
                   {(servingMode === "hot" || servingMode === "both") && (
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-orange-300 flex items-center gap-1">
-                        <span>🔥 Chọn Ly Phục Vụ Nóng:</span>
-                        <span className="text-white/40 text-[10px]">({hotCups.length} loại ly nóng trong kho)</span>
+                      <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 flex items-center gap-1">
+                        <span>Chọn Ly Phục Vụ Nóng:</span>
+                        <span className="text-stone-400 text-[10px]">({hotCups.length} loại ly nóng trong kho)</span>
                       </label>
                       <select
                         value={hotCupId || ""}
                         onChange={(e) => handleSelectHotCup(e.target.value)}
-                        className="w-full bg-[#181B24] border border-orange-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-400 font-medium"
+                        className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 font-medium cursor-pointer"
                       >
                         <option value="">-- Chọn Ly Nóng Từ Kho --</option>
                         {hotCups.map((c) => (
@@ -848,67 +848,67 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                         ))}
                       </select>
                       {hotCupName && (
-                        <p className="text-[10px] text-orange-400">Đã gán: {hotCupName}</p>
+                        <p className="text-[10px] text-amber-600 dark:text-amber-400">Đã gán: {hotCupName}</p>
                       )}
                     </div>
                   )}
                 </div>
 
                 {/* Size món hiển thị */}
-                <div className="space-y-1 pt-2 border-t border-white/5">
+                <div className="space-y-1 pt-2 border-t border-stone-200/80 dark:border-stone-800">
                   <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-semibold text-white/80">
+                    <label className="text-[11px] font-semibold text-stone-700 dark:text-stone-300">
                       Size Món / Kích Thước Phục Vụ
                     </label>
-                    <span className="text-[10px] text-white/40">Tự động đồng bộ theo ly đã chọn</span>
+                    <span className="text-[10px] text-stone-400">Tự động đồng bộ theo ly đã chọn</span>
                   </div>
                   <input
                     type="text"
                     {...register("serving_size")}
                     placeholder="Vd: 1 ly 500ml, Size M (500ml), Size L (700ml)..."
-                    className="w-full bg-[#0B0C10] border border-white/10 rounded-xl px-3 py-2 text-xs text-amber-200 focus:outline-none focus:border-amber-400 font-mono"
+                    className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-white/80 mb-1.5">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">
                     Thời Gian Pha Chế / Hoàn Thành (Phút)
                   </label>
                   <input
                     type="number"
                     {...register("prep_time_minutes", { valueAsNumber: true })}
-                    className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
+                    className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-white/80 mb-1.5">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">
                     Hạn Sử Dụng
                   </label>
                   <input
                     type="text"
                     {...register("shelf_life")}
                     placeholder="Vd: Dùng trong ngày, 48 giờ ở tủ mát..."
-                    className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
+                    className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-white/80 mb-1.5">
-                  Mô Tả Hương Vị & Đặc Trưng
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">
+                  Mô Tả Hương Vị &amp; Đặc Trưng
                 </label>
                 <textarea
                   {...register("description")}
                   rows={2}
                   placeholder="Vị trà đậm thơm hòa quyện dâu tươi chua ngọt nhẹ nhàng..."
-                  className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors resize-none"
+                  className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors resize-none"
                 />
               </div>
 
-              {/* Link Ảnh Món / Tải từ máy tính lên Cloudinary folder zone_6/menu/{id món} */}
+              {/* Link Ảnh Món */}
               <div>
                 <RecipeImagePicker
                   value={watch("image_url")}
@@ -920,14 +920,14 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-white/80 mb-1.5">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">
                   Phương Pháp Bảo Quản
                 </label>
                 <input
                   type="text"
                   {...register("storage_method")}
                   placeholder="Vd: Bình kín đậy nắp, giữ mát ở nhiệt độ 2-5°C..."
-                  className="w-full bg-[#12141A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 transition-colors"
+                  className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors"
                 />
               </div>
             </div>
@@ -935,14 +935,14 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
           {/* TAB 2: INGREDIENTS (BOM) */}
           {activeTab === "ingredients" && (
-            <div className="space-y-4 animate-fade-in">
+            <div className="space-y-4 animate-fadeIn">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <FaBoxOpen className="text-amber-400" />
+                  <h3 className="text-sm font-bold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                    <FiPackage className="text-stone-400" />
                     <span>Danh Sách Nguyên Vật Liệu (Ly Nhựa, Trà, Siro, Đường...)</span>
                   </h3>
-                  <p className="text-xs text-white/50">
+                  <p className="text-xs text-stone-500 dark:text-stone-400">
                     Chọn nguyên liệu từ kho để tự động đồng bộ đơn vị và chi phí vốn
                   </p>
                 </div>
@@ -951,9 +951,9 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                     <button
                       type="button"
                       onClick={handleAddCupsToIngredients}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 text-xs font-semibold transition-all"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-[#2e2a25] border border-stone-200/80 dark:border-stone-700/60 text-stone-700 dark:text-stone-300 text-xs font-semibold transition cursor-pointer"
                     >
-                      <span>➕ Đưa Ly Đã Chọn Vào BOM</span>
+                      <span>+ Đưa Ly Đã Chọn Vào BOM</span>
                     </button>
                   )}
                   <button
@@ -968,18 +968,18 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                         notes: "",
                       })
                     }
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30 text-xs font-semibold transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 text-xs font-semibold transition cursor-pointer shadow-xs"
                   >
-                    <FaPlus className="text-xs" />
+                    <FiPlus className="text-xs" />
                     <span>Thêm Vật Liệu</span>
                   </button>
                 </div>
               </div>
 
               {ingredientFields.length === 0 ? (
-                <div className="bg-[#12141A] border border-dashed border-white/10 rounded-2xl p-8 text-center">
-                  <FaBoxOpen className="text-2xl text-white/30 mx-auto mb-2" />
-                  <p className="text-xs text-white/50">Chưa có nguyên vật liệu nào.</p>
+                <div className="bg-stone-50/70 dark:bg-[#25221e]/60 border border-dashed border-stone-300 dark:border-stone-700 rounded-2xl p-8 text-center">
+                  <FiPackage className="text-2xl text-stone-400 mx-auto mb-2" />
+                  <p className="text-xs text-stone-500 dark:text-stone-400">Chưa có nguyên vật liệu nào.</p>
                   <button
                     type="button"
                     onClick={() =>
@@ -992,7 +992,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                         notes: "",
                       })
                     }
-                    className="mt-3 text-xs text-amber-400 hover:underline"
+                    className="mt-3 text-xs text-stone-900 dark:text-[#efe9de] font-semibold hover:underline cursor-pointer"
                   >
                     + Nhấn vào đây để thêm thành phần đầu tiên
                   </button>
@@ -1002,34 +1002,34 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                   {ingredientFields.map((field, index) => (
                     <div
                       key={field.id}
-                      className="bg-[#12141A] border border-white/5 rounded-2xl p-3.5 space-y-3 relative group"
+                      className="bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 rounded-2xl p-3.5 space-y-3 relative group"
                     >
-                      <div className="flex items-center justify-between text-xs font-bold text-amber-400">
+                      <div className="flex items-center justify-between text-xs font-bold text-stone-900 dark:text-[#efe9de]">
                         <span>Nguyên vật liệu #{index + 1}</span>
                         <button
                           type="button"
                           onClick={() => removeIngredient(index)}
-                          className="text-red-400 hover:text-red-300 p-1"
+                          className="text-rose-500 hover:text-rose-600 p-1 cursor-pointer transition"
                         >
-                          <FaTrashAlt className="text-xs" />
+                          <FiTrash2 className="text-xs" />
                         </button>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-2.5">
                         {/* Chọn nhanh từ kho */}
                         <div className="md:col-span-2">
-                          <label className="block text-[11px] text-white/50 mb-1">
+                          <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">
                             Chọn nhanh từ kho hoặc nhập tên
                           </label>
                           {materialsData?.materials && materialsData.materials.length > 0 ? (
                             <select
                               onChange={(e) => handleSelectMaterial(index, e.target.value)}
-                              className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400 mb-1.5"
+                              className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 mb-1.5 cursor-pointer"
                             >
                               <option value="">-- Chọn vật tư trong kho --</option>
                               
                               {/* Nhóm Nguyên Liệu */}
-                              <optgroup label="🌿 NGUYÊN LIỆU PHA CHẾ">
+                              <optgroup label="NGUYÊN LIỆU PHA CHẾ">
                                 {materialsData.materials
                                   .filter((m) => m.category === "ingredient")
                                   .map((m) => (
@@ -1040,7 +1040,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                               </optgroup>
 
                               {/* Nhóm Topping */}
-                              <optgroup label="🍒 TOPPING & PHỤ GIA">
+                              <optgroup label="TOPPING & PHỤ GIA">
                                 {materialsData.materials
                                   .filter((m) => m.category === "topping")
                                   .map((m) => (
@@ -1051,7 +1051,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                               </optgroup>
 
                               {/* Nhóm Bao Bì */}
-                              <optgroup label="📦 BAO BÌ & LY NHỰA">
+                              <optgroup label="BAO BÌ & LY NHỰA">
                                 {materialsData.materials
                                   .filter((m) => m.category === "packaging")
                                   .map((m) => (
@@ -1066,13 +1066,13 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                             type="text"
                             {...register(`ingredients.${index}.material_name`)}
                             placeholder="Tên nguyên liệu / ly / nắp..."
-                            className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400"
+                            className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-[11px] text-white/50 mb-1">
-                            Định Lượng (*)
+                          <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">
+                            Định Lượng <span className="text-rose-500">*</span>
                           </label>
                           <input
                             type="number"
@@ -1080,26 +1080,26 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                             {...register(`ingredients.${index}.quantity`, {
                               valueAsNumber: true,
                             })}
-                            className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-amber-300 focus:border-amber-400"
+                            className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs font-mono font-bold text-stone-900 dark:text-[#efe9de] focus:border-stone-400"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-[11px] text-white/50 mb-1">
-                            Đơn Vị Tính (*)
+                          <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">
+                            Đơn Vị Tính <span className="text-rose-500">*</span>
                           </label>
                           <input
                             type="text"
                             {...register(`ingredients.${index}.unit`)}
                             placeholder="ml, g, cái, ly..."
-                            className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400"
+                            className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400"
                           />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                         <div>
-                          <label className="block text-[11px] text-white/50 mb-1">
+                          <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">
                             Chi Phí Vốn Ước Tính (VNĐ)
                           </label>
                           <input
@@ -1108,19 +1108,19 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                               valueAsNumber: true,
                             })}
                             placeholder="0"
-                            className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs font-mono text-white/80 focus:border-amber-400"
+                            className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs font-mono text-stone-800 dark:text-stone-200 focus:border-stone-400"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-[11px] text-white/50 mb-1">
+                          <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">
                             Ghi Chú Cho Barista
                           </label>
                           <input
                             type="text"
                             {...register(`ingredients.${index}.notes`)}
                             placeholder="Vd: Lắc cùng đá bi, rót nhẹ..."
-                            className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs text-white/70 focus:border-amber-400"
+                            className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-700 dark:text-stone-300 focus:border-stone-400"
                           />
                         </div>
                       </div>
@@ -1133,14 +1133,14 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
           {/* TAB 3: STEPS (SOP) */}
           {activeTab === "steps" && (
-            <div className="space-y-4 animate-fade-in">
+            <div className="space-y-4 animate-fadeIn">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <FaListOl className="text-amber-400" />
+                  <h3 className="text-sm font-bold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                    <FiList className="text-stone-400" />
                     <span>Quy Trình Các Bước Pha Chế (SOP)</span>
                   </h3>
-                  <p className="text-xs text-white/50">
+                  <p className="text-xs text-stone-500 dark:text-stone-400">
                     Hướng dẫn rõ ràng từng bước thao tác để nhân viên thực hiện chuẩn vị
                   </p>
                 </div>
@@ -1155,9 +1155,9 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                       tips: "",
                     })
                   }
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30 text-xs font-semibold transition-all"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 text-xs font-semibold transition cursor-pointer shadow-xs"
                 >
-                  <FaPlus className="text-xs" />
+                  <FiPlus className="text-xs" />
                   <span>Thêm Bước</span>
                 </button>
               </div>
@@ -1166,65 +1166,65 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 {stepFields.map((field, index) => (
                   <div
                     key={field.id}
-                    className="bg-[#12141A] border border-white/5 rounded-2xl p-4 space-y-3"
+                    className="bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 space-y-3"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 font-bold text-xs flex items-center justify-center">
+                        <span className="w-6 h-6 rounded-lg bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-xs flex items-center justify-center">
                           {index + 1}
                         </span>
                         <input
                           type="text"
                           {...register(`steps.${index}.title`)}
                           placeholder="Tiêu đề bước (Vd: Ủ cốt trà, Lắc cùng đá...)"
-                          className="bg-transparent border-b border-white/10 px-2 py-1 text-xs font-bold text-white focus:border-amber-400 focus:outline-none"
+                          className="bg-transparent border-b border-stone-300 dark:border-stone-700 px-2 py-1 text-xs font-bold text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none"
                         />
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1 text-xs text-white/50">
-                          <span>⏱ Giây:</span>
+                        <div className="flex items-center gap-1 text-xs text-stone-500 dark:text-stone-400">
+                          <span>Giây:</span>
                           <input
                             type="number"
                             {...register(`steps.${index}.duration_seconds`, {
                               valueAsNumber: true,
                             })}
-                            className="w-16 bg-[#161820] border border-white/10 rounded-lg px-2 py-1 text-xs text-center font-mono text-amber-300"
+                            className="w-16 bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-lg px-2 py-1 text-xs text-center font-mono text-stone-800 dark:text-stone-200"
                           />
                         </div>
                         {stepFields.length > 1 && (
                           <button
                             type="button"
                             onClick={() => removeStep(index)}
-                            className="text-red-400 hover:text-red-300 p-1"
+                            className="text-rose-500 hover:text-rose-600 p-1 cursor-pointer transition"
                           >
-                            <FaTrashAlt className="text-xs" />
+                            <FiTrash2 className="text-xs" />
                           </button>
                         )}
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11px] text-white/50 mb-1">
-                        Hướng Dẫn Chi Tiết Thao Tác (*)
+                      <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">
+                        Hướng Dẫn Chi Tiết Thao Tác <span className="text-rose-500">*</span>
                       </label>
                       <textarea
                         {...register(`steps.${index}.instruction`)}
                         rows={2}
                         placeholder="Mô tả cụ thể từng thao tác: rót nước sôi 90 độ, ngâm 15 phút, vớt túi trà..."
-                        className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400 resize-none"
+                        className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 resize-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] text-amber-400/80 mb-1 flex items-center gap-1">
-                        <FaLightbulb className="text-amber-400" />
+                      <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1 flex items-center gap-1">
+                        <FiAlertCircle className="text-stone-400" />
                         <span>Mẹo Barista (Tips)</span>
                       </label>
                       <input
                         type="text"
                         {...register(`steps.${index}.tips`)}
                         placeholder="Vd: Không vắt kiệt túi trà tránh bị đắng chát..."
-                        className="w-full bg-[#161820] border border-white/10 rounded-xl px-3 py-2 text-xs text-amber-200 focus:border-amber-400"
+                        className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-800 dark:text-stone-200 focus:border-stone-400"
                       />
                     </div>
                   </div>
@@ -1235,16 +1235,16 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
           {/* TAB 4: CHỌN CƠ SỞ ÁP DỤNG (Chỉ hiển thị khi hệ thống có từ 2 cơ sở trở lên) */}
           {activeTab === "store" && hasMultipleStores && (
-            <div className="space-y-5 animate-fade-in">
-              <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 rounded-2xl p-4 flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 flex items-center justify-center shrink-0 text-lg">
-                  <FaStore />
+            <div className="space-y-5 animate-fadeIn">
+              <div className="bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-stone-500 dark:text-stone-400 flex items-center justify-center shrink-0 text-base">
+                  <FiHome className="text-stone-400" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-amber-300">
+                  <h3 className="text-sm font-bold text-stone-900 dark:text-[#efe9de]">
                     Bước 4: Chọn Cơ Sở / Chi Nhánh Lưu Công Thức Món
                   </h3>
-                  <p className="text-xs text-white/70 mt-0.5 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-relaxed">
                     Mỗi chi nhánh Zone Six quản lý thực đơn và định mức kho độc lập. Vui lòng chọn cơ sở mà bạn muốn áp dụng công thức/món này.
                   </p>
                 </div>
@@ -1260,8 +1260,8 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                       onClick={() => setTargetStoreId(st.id)}
                       className={`p-5 rounded-2xl border transition-all cursor-pointer relative overflow-hidden group ${
                         isSelected
-                          ? "bg-gradient-to-br from-amber-500/15 via-[#161820] to-[#12141A] border-amber-400 ring-2 ring-amber-400/40 shadow-xl shadow-amber-950/40"
-                          : "bg-[#12141A] border-white/10 hover:border-white/20 hover:bg-white/5 opacity-80 hover:opacity-100"
+                          ? "bg-white dark:bg-[#1c1a17] border-stone-900 dark:border-stone-100 shadow-sm ring-1 ring-stone-900/10 dark:ring-stone-100/20"
+                          : "bg-white dark:bg-[#1c1a17] border-stone-200/80 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700"
                       }`}
                     >
                       {/* Top Row: Store Name & Code */}
@@ -1270,21 +1270,21 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                           <div
                             className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm ${
                               isSelected
-                                ? "bg-amber-500 text-black shadow-md shadow-amber-500/30"
-                                : "bg-white/5 text-white/50 border border-white/10"
+                                ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-xs"
+                                : "bg-stone-100 dark:bg-[#25221e] text-stone-400 border border-stone-200/80 dark:border-stone-700/60"
                             }`}
                           >
-                            <FaStore />
+                            <FiHome className="w-4 h-4 text-stone-400" />
                           </div>
                           <div>
                             <h4
-                              className={`text-sm font-extrabold transition-colors ${
-                                isSelected ? "text-amber-300" : "text-white group-hover:text-amber-200"
+                              className={`text-sm font-bold transition-colors ${
+                                isSelected ? "text-stone-900 dark:text-[#efe9de]" : "text-stone-800 dark:text-stone-200"
                               }`}
                             >
                               {st.store_name}
                             </h4>
-                            <span className="text-[10px] font-mono font-bold text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10 inline-block mt-0.5">
+                            <span className="text-[10px] font-mono font-bold text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-[#25221e] px-2 py-0.5 rounded border border-stone-200/80 dark:border-stone-700/60 inline-block mt-0.5">
                               {st.store_code}
                             </span>
                           </div>
@@ -1292,26 +1292,26 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
                         {/* Status Radio / Badge */}
                         {isSelected ? (
-                          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-500 text-black shadow-md shadow-amber-500/25 shrink-0">
-                            <FaCheck className="text-[10px]" />
+                          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-xs shrink-0">
+                            <FiCheck className="text-[10px]" />
                             <span>Đang Chọn</span>
                           </span>
                         ) : (
-                          <div className="w-5 h-5 rounded-full border-2 border-white/20 shrink-0 group-hover:border-white/40" />
+                          <div className="w-5 h-5 rounded-full border-2 border-stone-300 dark:border-stone-700 shrink-0 group-hover:border-stone-400" />
                         )}
                       </div>
 
                       {/* Address */}
-                      <div className="flex items-start gap-2 text-xs text-white/60 mt-3 pl-1">
-                        <FaMapMarkerAlt className="text-amber-400 shrink-0 mt-0.5" />
+                      <div className="flex items-start gap-2 text-xs text-stone-500 dark:text-stone-400 mt-3 pl-1">
+                        <FiMapPin className="text-stone-400 shrink-0 mt-0.5" />
                         <span className="line-clamp-2 leading-relaxed">{st.address}</span>
                       </div>
 
-                      {/* Selection Glow Indicator */}
+                      {/* Selection Indicator */}
                       {isSelected && (
-                        <div className="mt-4 pt-3 border-t border-amber-500/20 flex items-center justify-between text-[11px]">
-                          <span className="text-amber-300/80">Phân quyền chi nhánh</span>
-                          <span className="font-semibold text-amber-300">✓ Sẽ lưu vào cơ sở này</span>
+                        <div className="mt-4 pt-3 border-t border-stone-200/80 dark:border-stone-800 flex items-center justify-between text-[11px]">
+                          <span className="text-stone-500 dark:text-stone-400">Phân quyền chi nhánh</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400">✓ Sẽ lưu vào cơ sở này</span>
                         </div>
                       )}
                     </div>
@@ -1321,33 +1321,33 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
               {/* Confirmation Alert */}
               {targetStoreId && (
-                <div className="bg-[#12141A] border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-2 text-emerald-400">
-                    <FaCheckCircle className="text-base shrink-0" />
+                <div className="bg-stone-50 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                    <FiCheckCircle className="text-base shrink-0" />
                     <span>
                       Cơ sở lưu món:{" "}
-                      <strong className="text-white">
+                      <strong className="text-stone-900 dark:text-[#efe9de]">
                         {allowedStores.find((s) => s.id === targetStoreId)?.store_name}
                       </strong>
                     </span>
                   </div>
-                  <span className="text-white/40 text-[11px]">
-                    Bấm &quot;Hoàn Tất & Lưu Món&quot; bên dưới để tạo công thức
+                  <span className="text-stone-400 text-[11px]">
+                    Bấm &quot;Hoàn Tất &amp; Lưu Món&quot; bên dưới để tạo công thức
                   </span>
                 </div>
               )}
             </div>
           )}
 
-          {/* Form Actions (Chỉ hiển thị nút Lưu ở bước cuối cùng, bước 1 chỉ có nút Tiếp Tục) */}
-          <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3 mt-4">
+          {/* Form Actions */}
+          <div className="pt-4 border-t border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-3 mt-4">
             {/* Left Actions: Nút Hủy và Nút Quay Lại */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={onClose}
                 disabled={createMutation.isPending}
-                className="px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 font-medium text-xs transition-colors"
+                className="px-4 py-2 rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2e2a25] text-stone-700 dark:text-stone-300 font-semibold text-xs transition cursor-pointer"
               >
                 Hủy Bỏ
               </button>
@@ -1360,9 +1360,9 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                     else if (activeTab === "steps") setActiveTab("ingredients");
                     else if (activeTab === "ingredients") setActiveTab("general");
                   }}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-white/90 text-xs font-semibold transition-all hover:scale-[1.01]"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2e2a25] text-stone-700 dark:text-stone-300 text-xs font-semibold transition cursor-pointer"
                 >
-                  <FaArrowLeft className="text-[10px]" />
+                  <FiArrowLeft className="text-[10px]" />
                   <span>Quay Lại</span>
                 </button>
               )}
@@ -1370,7 +1370,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
 
             {/* Right Actions: Next hoặc Submit (Lưu) */}
             <div className="flex items-center gap-3">
-              {/* Bước 1: CHỈ CÓ NÚT NEXT, KHÔNG CÓ NÚT LƯU */}
+              {/* Bước 1: CHỈ CÓ NÚT NEXT */}
               {activeTab === "general" && (
                 <button
                   type="button"
@@ -1380,10 +1380,10 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                       setActiveTab("ingredients");
                     }
                   }}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs shadow-xs transition cursor-pointer"
                 >
                   <span>Tiếp Tục: Định Lượng (Bước 2)</span>
-                  <FaArrowRight className="text-xs" />
+                  <FiArrowRight className="text-xs" />
                 </button>
               )}
 
@@ -1392,73 +1392,71 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setActiveTab("steps")}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs shadow-xs transition cursor-pointer"
                 >
                   <span>Tiếp Tục: Quy Trình SOP (Bước 3)</span>
-                  <FaArrowRight className="text-xs" />
+                  <FiArrowRight className="text-xs" />
                 </button>
               )}
 
-              {/* Bước 3:
-                  - Nếu có từ 2 cơ sở trở lên -> Tiếp tục (Bước 4)
-                  - Nếu chỉ có 1 cơ sở -> Hoàn Tất & Lưu Món (Lưu tại Bước 3) */}
+              {/* Bước 3 */}
               {activeTab === "steps" && (
                 hasMultipleStores ? (
                   <button
                     type="button"
                     onClick={() => setActiveTab("store")}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="flex items-center gap-2 px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs shadow-xs transition cursor-pointer"
                   >
                     <span>Tiếp Tục: Chọn Cơ Sở (Bước 4)</span>
-                    <FaArrowRight className="text-xs" />
+                    <FiArrowRight className="text-xs" />
                   </button>
                 ) : (
                   <button
                     type="submit"
                     disabled={createMutation.isPending || isUploadingImage}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                    className="flex items-center gap-2 px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs shadow-xs transition disabled:opacity-50 cursor-pointer"
                   >
                     {isUploadingImage ? (
                       <>
-                        <FaSpinner className="animate-spin text-sm" />
+                        <FiLoader className="animate-spin text-sm" />
                         <span>Đang tải ảnh lên Cloudinary...</span>
                       </>
                     ) : createMutation.isPending ? (
                       <>
-                        <FaSpinner className="animate-spin text-sm" />
+                        <FiLoader className="animate-spin text-sm" />
                         <span>Đang lưu...</span>
                       </>
                     ) : (
                       <>
-                        <FaCheckCircle className="text-sm" />
-                        <span>Hoàn Tất & Lưu Món</span>
+                        <FiCheckCircle className="text-sm" />
+                        <span>Hoàn Tất &amp; Lưu Món</span>
                       </>
                     )}
                   </button>
                 )
               )}
 
-              {/* Bước 4 (Chỉ khi có từ 2 cơ sở trở lên): HOÀN TẤT & LƯU MÓN */}
+              {/* Bước 4 */}
               {activeTab === "store" && hasMultipleStores && (
                 <button
                   type="submit"
                   disabled={createMutation.isPending || isUploadingImage || !targetStoreId}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs shadow-xs transition disabled:opacity-50 cursor-pointer"
                 >
                   {isUploadingImage ? (
                     <>
-                      <FaSpinner className="animate-spin text-sm" />
+                      <FiLoader className="animate-spin text-sm" />
                       <span>Đang tải ảnh lên Cloudinary...</span>
                     </>
                   ) : createMutation.isPending ? (
                     <>
-                      <FaSpinner className="animate-spin text-sm" />
+                      <FiLoader className="animate-spin text-sm" />
                       <span>Đang lưu món...</span>
                     </>
                   ) : (
                     <>
-                      <FaCheckCircle className="text-sm" />
-                      <span>Hoàn Tất & Lưu Món</span>
+                      <FiCheckCircle className="text-sm" />
+                      <span>Hoàn Tất &amp; Lưu Món</span>
                     </>
                   )}
                 </button>

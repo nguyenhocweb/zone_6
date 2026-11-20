@@ -2,28 +2,20 @@
 
 import React, { useState, useMemo } from "react";
 import {
-  FaBoxes,
-  FaWarehouse,
-  FaPlus,
-  FaSearch,
-  FaExclamationTriangle,
-  FaCheckCircle,
-  FaSpinner,
-  FaCoffee,
-  FaBox,
-  FaWineBottle,
-  FaShieldAlt,
-  FaLayerGroup,
-  FaTable,
-  FaThLarge,
-  FaEdit,
-  FaTrashAlt,
-  FaClipboardCheck,
-  FaHistory,
-  FaTruckLoading,
-  FaFileAlt,
-  FaTruck,
-} from "react-icons/fa";
+  FiPackage,
+  FiHome,
+  FiPlus,
+  FiSearch,
+  FiAlertTriangle,
+  FiCheckCircle,
+  FiLoader,
+  FiCoffee,
+  FiBox,
+  FiFileText,
+  FiCheck,
+  FiClipboard,
+  FiClock,
+} from "react-icons/fi";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useGetMaterials } from "../hook/useGetMaterials";
 import { useUpdateMaterialStock } from "../hook/useUpdateMaterialStock";
@@ -70,7 +62,7 @@ export const MaterialsView: React.FC = () => {
     return ["admin_he_thong", "quan_ly"].includes(user.role);
   }, [user]);
 
-  // View Mode / Tabs: 'catalog' | 'inventory' | 'suppliers' | 'requisitions' | 'procurement'
+  // View Mode / Tabs
   const [activeTab, setActiveTab] = useState<
     "catalog" | "inventory" | "suppliers" | "requisitions" | "procurement"
   >("catalog");
@@ -94,7 +86,7 @@ export const MaterialsView: React.FC = () => {
   const [editingMaterial, setEditingMaterial] = useState<Material | null>(null);
   const [deletingMaterial, setDeletingMaterial] = useState<Material | null>(null);
 
-  // Kiểm kê kho modals state (Nhân viên trở lên đều có thể kiểm đếm)
+  // Kiểm kê kho modals state
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
   const [isAuditHistoryModalOpen, setIsAuditHistoryModalOpen] = useState(false);
 
@@ -144,48 +136,46 @@ export const MaterialsView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in text-white">
-      {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#161820] border border-white/10 rounded-3xl p-6 shadow-xl">
+    <div className="space-y-6">
+      {/* Top Header Card */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-6 shadow-sm">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-center gap-1.5">
-              <FaWarehouse className="text-amber-400" />
-              <span>Phân Hệ Quản Lý Kho & Vật Liệu Zone 6</span>
+            <span className="px-3 py-1 rounded-full text-[11px] font-medium bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 flex items-center gap-1.5">
+              <FiHome className="text-stone-400" />
+              <span>Phân Hệ Quản Lý Kho &amp; Vật Liệu</span>
             </span>
             {user && (
-              <span className="text-xs text-white/50">
-                Tài khoản: <strong className="text-white">{user.name || user.role}</strong>
+              <span className="text-xs text-stone-500 dark:text-stone-400">
+                Tài khoản: <strong className="text-stone-900 dark:text-stone-200 font-semibold">{user.name || user.role}</strong>
               </span>
             )}
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-wide">
-            Kho Vật Liệu & Tồn Kho Hiện Tại
+          <h1 className="text-xl md:text-2xl font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
+            Kho Vật Liệu &amp; Tồn Kho Hiện Tại
           </h1>
-          <p className="text-xs md:text-sm text-white/60 mt-1 max-w-2xl leading-relaxed">
-            Kiểm soát chi tiết số lượng tồn kho bao bì, ly nhựa, ống hút và nguyên vật liệu pha chế, cảnh báo thiếu hàng và điều chỉnh nhập xuất kho tức thời.
+          <p className="text-xs md:text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-2xl leading-relaxed">
+            Kiểm soát chi tiết số lượng tồn kho bao bì, ly nhựa, ống hút và nguyên vật liệu pha chế, cảnh báo thiếu hàng và điều chỉnh nhập xuất tức thời.
           </p>
         </div>
 
         {/* Action Buttons */}
         <div className="shrink-0 flex flex-wrap items-center gap-2.5">
-          {/* Nút Kiểm Kê Kho (Nhân viên trở lên đều có thể kiểm đếm) */}
           <button
             type="button"
             onClick={() => setIsAuditModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#D4AF37] to-[#B89628] hover:brightness-110 text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#D4AF37]/20 transition-all active:scale-95"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white font-semibold text-xs transition-all shadow-sm cursor-pointer"
           >
-            <FaClipboardCheck className="text-sm" />
+            <FiClipboard className="text-xs" />
             <span>Kiểm Kê Kho</span>
           </button>
 
-          {/* Nút Lịch Sử Kiểm Kho */}
           <button
             type="button"
             onClick={() => setIsAuditHistoryModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs border border-white/15 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-50 hover:bg-stone-100 dark:bg-[#25221e] dark:hover:bg-[#2d2924] text-stone-700 dark:text-stone-300 font-medium text-xs border border-stone-200/80 dark:border-stone-800 transition-all cursor-pointer"
           >
-            <FaHistory className="text-xs text-[#D4AF37]" />
+            <FiClock className="text-xs text-stone-400" />
             <span>Lịch Sử Kiểm Kho</span>
           </button>
 
@@ -193,9 +183,9 @@ export const MaterialsView: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsCreateMaterialOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-amber-500/20 border border-amber-500/40 hover:bg-amber-500/30 text-amber-300 font-bold text-xs uppercase tracking-wider transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-50 hover:bg-stone-100 dark:bg-[#25221e] dark:hover:bg-[#2d2924] border border-stone-200/80 dark:border-stone-800 text-stone-700 dark:text-stone-300 font-semibold text-xs transition-all cursor-pointer"
             >
-              <FaPlus className="text-sm" />
+              <FiPlus className="text-xs text-stone-400" />
               <span>Thêm Vật Liệu</span>
             </button>
           )}
@@ -210,64 +200,64 @@ export const MaterialsView: React.FC = () => {
 
       {/* Quick Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-[#161820] border border-white/10 rounded-2xl p-4">
-          <div className="flex items-center justify-between text-white/50 text-xs mb-1">
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs mb-1">
             <span>Tổng Vật Liệu Trong Kho</span>
-            <FaBoxes className="text-amber-400 text-sm" />
+            <FiPackage className="text-stone-400 text-sm" />
           </div>
-          <span className="text-2xl font-extrabold text-white">
+          <span className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] font-mono">
             {materialsData?.total || 0}
           </span>
-          <span className="text-[11px] text-white/40 block mt-0.5">mặt hàng quản lý</span>
+          <span className="text-[11px] text-stone-400 block mt-0.5 font-sans">mặt hàng quản lý</span>
         </div>
 
-        <div className="bg-[#161820] border border-amber-500/20 rounded-2xl p-4">
-          <div className="flex items-center justify-between text-white/50 text-xs mb-1">
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs mb-1">
             <span>Cảnh Báo Tồn Kho Thấp</span>
-            <FaExclamationTriangle className="text-amber-400 text-sm" />
+            <FiAlertTriangle className="text-amber-500 text-sm" />
           </div>
-          <span className="text-2xl font-extrabold text-amber-400">
+          <span className="text-2xl font-semibold text-amber-600 dark:text-amber-400 font-mono">
             {materialsData?.low_stock_count || 0}
           </span>
-          <span className="text-[11px] text-amber-400/60 block mt-0.5">dưới ngưỡng an toàn</span>
+          <span className="text-[11px] text-stone-400 block mt-0.5 font-sans">dưới ngưỡng an toàn</span>
         </div>
 
-        <div className="bg-[#161820] border border-white/10 rounded-2xl p-4">
-          <div className="flex items-center justify-between text-white/50 text-xs mb-1">
-            <span>Bao Bì & Ly Nhựa</span>
-            <FaBox className="text-blue-400 text-sm" />
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs mb-1">
+            <span>Bao Bì &amp; Ly Nhựa</span>
+            <FiBox className="text-stone-400 text-sm" />
           </div>
-          <span className="text-2xl font-extrabold text-blue-400">
+          <span className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] font-mono">
             {materials.filter((m) => m.category === "packaging").length}
           </span>
-          <span className="text-[11px] text-white/40 block mt-0.5">ly, nắp, ống hút, túi</span>
+          <span className="text-[11px] text-stone-400 block mt-0.5 font-sans">ly, nắp, ống hút, túi</span>
         </div>
 
-        <div className="bg-[#161820] border border-white/10 rounded-2xl p-4">
-          <div className="flex items-center justify-between text-white/50 text-xs mb-1">
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs mb-1">
             <span>Nguyên Liệu Pha Chế</span>
-            <FaCoffee className="text-emerald-400 text-sm" />
+            <FiCoffee className="text-stone-400 text-sm" />
           </div>
-          <span className="text-2xl font-extrabold text-emerald-400">
+          <span className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] font-mono">
             {materials.filter((m) => m.category === "ingredient" || m.category === "topping").length}
           </span>
-          <span className="text-[11px] text-white/40 block mt-0.5">trà, siro, đường, sữa</span>
+          <span className="text-[11px] text-stone-400 block mt-0.5 font-sans">trà, siro, đường, sữa</span>
         </div>
       </div>
 
-      {/* Tabs Switcher: Tinh gọn, không icon, chuẩn Obsidian & Gold */}
-      <div className="flex items-center border-b border-white/10 gap-1 sm:gap-2 overflow-x-auto scrollbar-none pb-px">
+      {/* Tabs Switcher: Clean Segmented Pills */}
+      <div className="flex items-center gap-1.5 p-1.5 bg-stone-100 dark:bg-[#25221e] rounded-2xl border border-stone-200/80 dark:border-stone-800 overflow-x-auto">
         <button
           type="button"
           onClick={() => setActiveTab("catalog")}
-          className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "catalog"
-              ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/5 rounded-t-xl"
-              : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
+              ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-sm"
+              : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
           }`}
         >
-          <span>Vật Liệu & Bao Bì</span>
-          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/10 text-white/70">
+          <span>Vật Liệu &amp; Bao Bì</span>
+          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
             {materialsData?.total || 0}
           </span>
         </button>
@@ -275,63 +265,60 @@ export const MaterialsView: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveTab("inventory")}
-          className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "inventory"
-              ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/5 rounded-t-xl"
-              : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
+              ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-sm"
+              : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
           }`}
         >
           <span>Tồn Kho Hiện Tại</span>
           {materialsData?.low_stock_count ? (
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-black">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
               {materialsData.low_stock_count} cần nhập
             </span>
           ) : (
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
               Ổn định
             </span>
           )}
         </button>
 
-        {/* Tab 3: Nhà Cung Cấp */}
         {canManageSuppliers && (
           <button
             type="button"
             onClick={() => setActiveTab("suppliers")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "suppliers"
-                ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/10 rounded-t-xl"
-                : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
+                ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-sm"
+                : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
             }`}
           >
             <span>Nhà Cung Cấp</span>
           </button>
         )}
 
-        {/* Tab 4: Yêu Cầu Nhập Kho Chi Nhánh (Phó ca vật liệu trở lên) */}
         {canManageRequisitions && (
           <button
             type="button"
             onClick={() => setActiveTab("requisitions")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "requisitions"
-                ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/10 rounded-t-xl"
-                : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
+                ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-sm"
+                : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
             }`}
           >
             <span>Yêu Cầu Nhập Kho</span>
           </button>
         )}
 
-        {/* Tab 5: Đơn Thu Mua PO (Chỉ Quản Lý & Admin) */}
         {canManageProcurement && (
           <button
             type="button"
             onClick={() => setActiveTab("procurement")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "procurement"
-                ? "border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/10 rounded-t-xl"
-                : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.02]"
+                ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-sm"
+                : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
             }`}
           >
             <span>Đơn Thu Mua PO</span>
@@ -339,88 +326,86 @@ export const MaterialsView: React.FC = () => {
         )}
       </div>
 
-      {/* Filter & Search Toolbar (Chỉ hiển thị khi ở tab catalog hoặc inventory) */}
+      {/* Filter & Search Toolbar */}
       {activeTab !== "suppliers" && activeTab !== "requisitions" && activeTab !== "procurement" && (
-      <div className="bg-[#161820] border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Search Input */}
-        <div className="relative w-full md:w-80">
-          <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 text-xs" />
-          <input
-            type="text"
-            value={materialSearch}
-            onChange={(e) => setMaterialSearch(e.target.value)}
-            placeholder="Tìm theo tên hoặc mã (vd: LY700, TRA...)"
-            className="w-full bg-[#12141A] border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amber-400 transition-colors"
-          />
-        </div>
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+          {/* Search Input */}
+          <div className="relative w-full md:w-80">
+            <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs" />
+            <input
+              type="text"
+              value={materialSearch}
+              onChange={(e) => setMaterialSearch(e.target.value)}
+              placeholder="Tìm theo tên hoặc mã (vd: LY700, TRA...)"
+              className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl pl-9 pr-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors"
+            />
+          </div>
 
-        {/* Category Filter Buttons */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-          {[
-            { key: "all", label: "Tất Cả" },
-            { key: "packaging", label: "Bao Bì & Ly" },
-            { key: "ingredient", label: "Nguyên Liệu" },
-            { key: "topping", label: "Topping" },
-          ].map((tab) => (
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            {[
+              { key: "all", label: "Tất Cả" },
+              { key: "packaging", label: "Bao Bì & Ly" },
+              { key: "ingredient", label: "Nguyên Liệu" },
+              { key: "topping", label: "Topping" },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => setMaterialCategory(tab.key)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                  materialCategory === tab.key
+                    ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-sm"
+                    : "bg-stone-50 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 border border-stone-200/80 dark:border-stone-800"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+
+            {/* Low Stock Toggle */}
             <button
-              key={tab.key}
               type="button"
-              onClick={() => setMaterialCategory(tab.key)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                materialCategory === tab.key
-                  ? "bg-amber-500 text-black shadow-md shadow-amber-500/20"
-                  : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+              onClick={() => setShowLowStockOnly(!showLowStockOnly)}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                showLowStockOnly
+                  ? "bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 font-semibold"
+                  : "bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
               }`}
             >
-              {tab.label}
+              <FiAlertTriangle className="text-[11px] text-stone-400" />
+              <span>Chỉ hiện sắp hết hàng</span>
             </button>
-          ))}
-
-          {/* Low Stock Toggle */}
-          <button
-            type="button"
-            onClick={() => setShowLowStockOnly(!showLowStockOnly)}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-              showLowStockOnly
-                ? "bg-amber-500/20 border border-amber-500/50 text-amber-300"
-                : "bg-white/5 border border-white/10 text-white/60 hover:text-white"
-            }`}
-          >
-            <FaExclamationTriangle className="text-[11px]" />
-            <span>Chỉ hiện sắp hết hàng</span>
-          </button>
+          </div>
         </div>
-      </div>
       )}
 
-      {/* ============================================================== */}
-      {/* TAB 1: DANH MỤC THẺ VẬT LIỆU (ẢNH 1) */}
-      {/* ============================================================== */}
+      {/* TAB 1: DANH MỤC THẺ VẬT LIỆU */}
       {activeTab === "catalog" && (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-6">
           {isLoading ? (
             <div className="py-20 flex flex-col items-center justify-center text-center">
-              <FaSpinner className="animate-spin text-3xl text-amber-400 mb-3" />
-              <p className="text-sm text-white/60">Đang nạp danh mục vật liệu kho...</p>
+              <FiLoader className="animate-spin text-3xl text-stone-400 mb-3" />
+              <p className="text-sm text-stone-500 dark:text-stone-400">Đang nạp danh mục vật liệu kho...</p>
             </div>
           ) : isError ? (
-            <div className="py-16 text-center bg-[#161820] border border-red-500/20 rounded-3xl p-8">
-              <FaExclamationTriangle className="text-3xl text-red-400 mx-auto mb-2" />
-              <p className="text-base font-bold text-white mb-1">Không thể tải dữ liệu kho</p>
-              <p className="text-xs text-white/50">Vui lòng kiểm tra lại kết nối và thử lại</p>
+            <div className="py-16 text-center bg-white dark:bg-[#1c1a17] border border-rose-200 dark:border-rose-800 rounded-3xl p-8 shadow-sm">
+              <FiAlertTriangle className="text-3xl text-rose-500 mx-auto mb-2" />
+              <p className="text-base font-semibold text-stone-900 dark:text-[#efe9de] mb-1">Không thể tải dữ liệu kho</p>
+              <p className="text-xs text-stone-500 dark:text-stone-400">Vui lòng kiểm tra lại kết nối và thử lại</p>
             </div>
           ) : displayedMaterials.length === 0 ? (
-            <div className="py-16 text-center bg-[#161820] border border-white/10 rounded-3xl p-8">
-              <FaBoxes className="text-4xl text-white/30 mx-auto mb-3" />
-              <h3 className="text-base font-bold text-white mb-1">Không tìm thấy vật liệu nào</h3>
-              <p className="text-xs text-white/50 max-w-sm mx-auto mb-4">
+            <div className="py-16 text-center bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-8 shadow-sm">
+              <FiPackage className="text-4xl text-stone-400 mx-auto mb-3" />
+              <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] mb-1">Không tìm thấy vật liệu nào</h3>
+              <p className="text-xs text-stone-500 dark:text-stone-400 max-w-sm mx-auto mb-4">
                 Thử thay đổi từ khóa tìm kiếm hoặc bấm thêm vật liệu mới vào hệ thống
               </p>
               {canManage && (
                 <button
                   type="button"
                   onClick={() => setIsCreateMaterialOpen(true)}
-                  className="px-5 py-2.5 rounded-xl bg-amber-500 text-black font-bold text-xs"
+                  className="px-5 py-2.5 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white font-semibold text-xs shadow-sm cursor-pointer"
                 >
                   + Thêm Vật Liệu Vào Kho
                 </button>
@@ -442,141 +427,123 @@ export const MaterialsView: React.FC = () => {
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* TAB 2: TỒN KHO HIỆN TẠI & BẢNG KIỂM KÊ (CHỨC NĂNG BÊN CẠNH) */}
-      {/* ============================================================== */}
+      {/* TAB 2: TỒN KHO HIỆN TẠI & BẢNG KIỂM KÊ */}
       {activeTab === "inventory" && (
-        <div className="space-y-4 animate-fade-in">
+        <div className="space-y-4">
           {/* Header Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#161820] border border-white/10 rounded-2xl p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 shadow-sm">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <FaTable className="text-amber-400" />
-                <span>Bảng Kiểm Kê & Số Lượng Tồn Kho Thực Tế</span>
+              <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                <FiFileText className="text-stone-400" />
+                <span>Bảng Kiểm Kê &amp; Số Lượng Tồn Kho Thực Tế</span>
               </h3>
-              <p className="text-xs text-white/50 mt-0.5">
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
                 Theo dõi chính xác số lượng tồn, ngưỡng tối thiểu và điều chỉnh nhanh (+ / -)
               </p>
             </div>
             <div className="text-right">
-              <span className="text-[11px] text-white/40 block">Tổng giá trị tồn kho ước tính:</span>
-              <span className="text-base font-extrabold text-amber-400 font-mono">
+              <span className="text-[11px] text-stone-500 dark:text-stone-400 block">Tổng giá trị tồn kho ước tính:</span>
+              <span className="text-base font-semibold text-stone-900 dark:text-[#efe9de] font-mono">
                 {totalInventoryValue.toLocaleString("vi-VN")} đ
               </span>
             </div>
           </div>
 
           {/* Table */}
-          <div className="border border-white/10 rounded-3xl overflow-hidden bg-[#161820] shadow-xl">
+          <div className="border border-stone-200/80 dark:border-stone-800 rounded-3xl overflow-hidden bg-white dark:bg-[#1c1a17] shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-white/5 border-b border-white/10 text-white/60 font-bold uppercase tracking-wider text-[11px]">
-                    <th className="py-3 px-4 w-12 text-center">STT</th>
-                    <th className="py-3 px-4">Mã</th>
-                    <th className="py-3 px-4">Tên Mặt Hàng</th>
-                    <th className="py-3 px-4">Phân Loại</th>
-                    <th className="py-3 px-4 text-center">Tồn Kho Hiện Tại</th>
-                    <th className="py-3 px-4 text-center">Ngưỡng Tối Thiểu</th>
-                    <th className="py-3 px-4 text-right">Đơn Giá Vốn</th>
-                    <th className="py-3 px-4 text-right">Thành Tiền Tồn</th>
-                    <th className="py-3 px-4 text-center">Trạng Thái</th>
+                  <tr className="bg-stone-50/70 dark:bg-[#181614] border-b border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 font-semibold uppercase tracking-wider text-[11px]">
+                    <th className="py-3 px-4 w-12 text-center border-r border-stone-200/60 dark:border-stone-800">STT</th>
+                    <th className="py-3 px-4 border-r border-stone-200/60 dark:border-stone-800">Mã</th>
+                    <th className="py-3 px-4 border-r border-stone-200/60 dark:border-stone-800">Tên Mặt Hàng</th>
+                    <th className="py-3 px-4 border-r border-stone-200/60 dark:border-stone-800">Phân Loại</th>
+                    <th className="py-3 px-4 text-center border-r border-stone-200/60 dark:border-stone-800">Tồn Kho Hiện Tại</th>
+                    <th className="py-3 px-4 text-center border-r border-stone-200/60 dark:border-stone-800">Ngưỡng Sàn</th>
+                    <th className="py-3 px-4 text-right border-r border-stone-200/60 dark:border-stone-800">Đơn Giá Vốn</th>
+                    <th className="py-3 px-4 text-right border-r border-stone-200/60 dark:border-stone-800">Thành Tiền Tồn</th>
+                    <th className="py-3 px-4 text-center border-r border-stone-200/60 dark:border-stone-800">Trạng Thái</th>
                     {canManage && <th className="py-3 px-4 text-center">Điều Chỉnh Nhanh</th>}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 text-white/80">
+                <tbody className="divide-y divide-stone-100 dark:divide-stone-800 text-stone-700 dark:text-stone-300">
                   {displayedMaterials.map((mat, idx) => {
                     const isLow = mat.quantity_in_stock <= mat.min_threshold;
                     const itemValue = (mat.quantity_in_stock || 0) * (mat.cost_per_unit || 0);
 
                     return (
-                      <tr key={mat._id || mat.id} className="hover:bg-white/[0.02] transition-colors">
-                        <td className="py-3 px-4 text-center text-white/40 font-mono">
+                      <tr key={mat._id || mat.id} className="hover:bg-stone-50/60 dark:hover:bg-[#25221e]/40 transition-colors">
+                        <td className="py-3 px-4 text-center text-stone-400 font-mono border-r border-stone-100 dark:border-stone-800">
                           {idx + 1}
                         </td>
-                        <td className="py-3 px-4 font-mono font-bold text-amber-300">
+                        <td className="py-3 px-4 font-mono font-semibold text-stone-900 dark:text-stone-100 border-r border-stone-100 dark:border-stone-800">
                           {mat.code}
                         </td>
-                        <td className="py-3 px-4">
-                          <div className="font-bold text-white">{mat.name}</div>
+                        <td className="py-3 px-4 border-r border-stone-100 dark:border-stone-800">
+                          <div className="font-semibold text-stone-900 dark:text-[#efe9de]">{mat.name}</div>
                           {mat.description && (
-                            <div className="text-[11px] text-white/40 truncate max-w-xs">
+                            <div className="text-[11px] text-stone-500 dark:text-stone-400 truncate max-w-xs">
                               {mat.description}
                             </div>
                           )}
                         </td>
-                        <td className="py-3 px-4">
+                        <td className="py-3 px-4 border-r border-stone-100 dark:border-stone-800">
                           {mat.category === "packaging" ? (
                             <div className="flex flex-col gap-0.5 items-start">
-                              <span className="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-blue-500/10 border border-blue-500/30 text-blue-400">
-                                Bao Bì & Ly
+                              <span className="px-2 py-0.5 rounded-lg text-[10px] font-medium bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                                Bao Bì &amp; Ly
                               </span>
-                              <span
-                                className={`text-[10px] font-bold ${
-                                  mat.temperature_mode === "cold"
-                                    ? "text-cyan-300"
-                                    : mat.temperature_mode === "hot"
-                                    ? "text-orange-300"
-                                    : "text-amber-300"
-                                }`}
-                              >
+                              <span className="text-[10px] text-stone-500 dark:text-stone-400">
                                 {mat.temperature_mode === "cold"
-                                  ? "❄️ Ly Lạnh"
+                                  ? "Ly Lạnh"
                                   : mat.temperature_mode === "hot"
-                                  ? "🔥 Ly Nóng"
-                                  : "❄️🔥 Đa Năng"}
+                                  ? "Ly Nóng"
+                                  : "Đa Năng"}
                               </span>
                             </div>
                           ) : mat.category === "topping" ? (
-                            <span className="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-purple-500/10 border border-purple-500/30 text-purple-400">
+                            <span className="px-2 py-0.5 rounded-lg text-[10px] font-medium bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
                               Topping
                             </span>
                           ) : (
                             <div className="flex flex-col gap-0.5 items-start">
-                              <span className="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                              <span className="px-2 py-0.5 rounded-lg text-[10px] font-medium bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                                 Nguyên Liệu
                               </span>
-                              <span
-                                className={`text-[10px] font-bold ${
-                                  mat.usage_scope === "customer_product"
-                                    ? "text-rose-300"
-                                    : mat.usage_scope === "internal_prep"
-                                    ? "text-indigo-300"
-                                    : "text-emerald-300"
-                                }`}
-                              >
+                              <span className="text-[10px] text-stone-500 dark:text-stone-400">
                                 {mat.usage_scope === "customer_product"
-                                  ? "🍹 Món Bán"
+                                  ? "Món Bán"
                                   : mat.usage_scope === "internal_prep"
-                                  ? "🏠 Nội Bộ"
-                                  : "🍹🏠 Cả Hai"}
+                                  ? "Nội Bộ"
+                                  : "Cả Hai"}
                               </span>
                             </div>
                           )}
                         </td>
-                        <td className="py-3 px-4 text-center font-bold font-mono text-sm">
-                          <span className={isLow ? "text-amber-400" : "text-emerald-400"}>
+                        <td className="py-3 px-4 text-center font-semibold font-mono text-xs border-r border-stone-100 dark:border-stone-800">
+                          <span className={isLow ? "text-amber-600 dark:text-amber-400" : "text-stone-900 dark:text-stone-100"}>
                             {mat.quantity_in_stock.toLocaleString("vi-VN")} {mat.unit}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-center text-white/50 font-mono">
+                        <td className="py-3 px-4 text-center text-stone-500 dark:text-stone-400 font-mono border-r border-stone-100 dark:border-stone-800">
                           {mat.min_threshold} {mat.unit}
                         </td>
-                        <td className="py-3 px-4 text-right font-mono text-white/70">
+                        <td className="py-3 px-4 text-right font-mono text-stone-600 dark:text-stone-300 border-r border-stone-100 dark:border-stone-800">
                           {mat.cost_per_unit.toLocaleString("vi-VN")} đ
                         </td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-white">
+                        <td className="py-3 px-4 text-right font-mono font-semibold text-stone-900 dark:text-[#efe9de] border-r border-stone-100 dark:border-stone-800">
                           {itemValue.toLocaleString("vi-VN")} đ
                         </td>
-                        <td className="py-3 px-4 text-center">
+                        <td className="py-3 px-4 text-center border-r border-stone-100 dark:border-stone-800">
                           {isLow ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/15 border border-amber-500/40 text-amber-300 animate-pulse">
-                              <FaExclamationTriangle className="text-[9px]" />
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300">
+                              <FiAlertTriangle className="text-[9px] text-stone-400" />
                               <span>Sắp Hết</span>
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                              <FaCheckCircle className="text-[9px]" />
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400">
+                              <FiCheckCircle className="text-[9px] text-stone-400" />
                               <span>An Toàn</span>
                             </span>
                           )}
@@ -588,7 +555,7 @@ export const MaterialsView: React.FC = () => {
                                 type="button"
                                 onClick={() => handleQuickAdjustStock(mat, -1)}
                                 disabled={stockMutation.isPending || mat.quantity_in_stock <= 0}
-                                className="w-6 h-6 rounded-lg bg-white/5 hover:bg-red-500/20 text-white/70 hover:text-red-400 font-bold flex items-center justify-center transition-colors disabled:opacity-30"
+                                className="w-6 h-6 rounded-lg bg-stone-100 dark:bg-[#25221e] hover:bg-rose-50 text-stone-600 hover:text-rose-600 dark:text-stone-300 dark:hover:text-rose-400 font-bold flex items-center justify-center transition-colors disabled:opacity-30 cursor-pointer"
                                 title="Xuất 1"
                               >
                                 -
@@ -597,7 +564,7 @@ export const MaterialsView: React.FC = () => {
                                 type="button"
                                 onClick={() => handleQuickAdjustStock(mat, 1)}
                                 disabled={stockMutation.isPending}
-                                className="w-6 h-6 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-white/70 hover:text-emerald-400 font-bold flex items-center justify-center transition-colors disabled:opacity-30"
+                                className="w-6 h-6 rounded-lg bg-stone-100 dark:bg-[#25221e] hover:bg-emerald-50 text-stone-600 hover:text-emerald-600 dark:text-stone-300 dark:hover:text-emerald-400 font-bold flex items-center justify-center transition-colors disabled:opacity-30 cursor-pointer"
                                 title="Nhập 1"
                               >
                                 +
@@ -606,7 +573,7 @@ export const MaterialsView: React.FC = () => {
                                 type="button"
                                 onClick={() => handleQuickAdjustStock(mat, 10)}
                                 disabled={stockMutation.isPending}
-                                className="px-1.5 h-6 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold text-[10px] flex items-center justify-center transition-colors disabled:opacity-30"
+                                className="px-1.5 h-6 rounded-lg bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 text-stone-700 dark:text-stone-300 font-bold text-[10px] flex items-center justify-center transition-colors disabled:opacity-30 cursor-pointer"
                                 title="Nhập nhanh +10"
                               >
                                 +10
@@ -624,20 +591,16 @@ export const MaterialsView: React.FC = () => {
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* TAB 3: NHÀ CUNG CẤP & NGUỒN HÀNG (CHỈ DÀNH CHO ADMIN & QUẢN LÝ) */}
-      {/* ============================================================== */}
+      {/* TAB 3: NHÀ CUNG CẤP & NGUỒN HÀNG */}
       {activeTab === "suppliers" && canManageSuppliers && (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-6">
           <SuppliersTable materials={materials} />
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* TAB 4: PHIẾU YÊU CẦU NHẬP KHO CHI NHÁNH                       */}
-      {/* ============================================================== */}
+      {/* TAB 4: PHIẾU YÊU CẦU NHẬP KHO CHI NHÁNH */}
       {activeTab === "requisitions" && canManageRequisitions && (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-6">
           <RequisitionListView
             selectedStoreId={selectedStoreId}
             storeName={storesData?.stores?.find((s) => s.id === selectedStoreId)?.store_name}
@@ -649,11 +612,9 @@ export const MaterialsView: React.FC = () => {
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* TAB 5: TRUNG TÂM THU MUA & ĐƠN PO GỘP ĐA CƠ SỞ (QUẢN LÝ & ADMIN) */}
-      {/* ============================================================== */}
+      {/* TAB 5: TRUNG TÂM THU MUA & ĐƠN PO GỘP ĐA CƠ SỞ */}
       {activeTab === "procurement" && canManageProcurement && (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-6">
           <ProcurementDashboard selectedStoreId={selectedStoreId} />
         </div>
       )}
@@ -677,7 +638,7 @@ export const MaterialsView: React.FC = () => {
         material={deletingMaterial}
       />
 
-      {/* Modal Kiểm Kê Kho (Nhân viên trở lên đều có thể kiểm kê) */}
+      {/* Modal Kiểm Kê Kho */}
       <InventoryAuditModal
         isOpen={isAuditModalOpen}
         onClose={() => setIsAuditModalOpen(false)}
@@ -685,7 +646,7 @@ export const MaterialsView: React.FC = () => {
         selectedStoreId={selectedStoreId}
       />
 
-      {/* Modal Lịch Sử Kiểm Kho (Từ cấp Phó ca trở lên có thể chỉnh sửa & đồng bộ tồn kho) */}
+      {/* Modal Lịch Sử Kiểm Kho */}
       <InventoryAuditHistoryModal
         isOpen={isAuditHistoryModalOpen}
         onClose={() => setIsAuditHistoryModalOpen(false)}

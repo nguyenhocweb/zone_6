@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { FaTimes, FaQrcode, FaDownload, FaCopy, FaCheck } from "react-icons/fa";
+import { FiX, FiMaximize2, FiDownload, FiCopy, FiCheck } from "react-icons/fi";
 import { toast } from "sonner";
 import type { StaffItem } from "../type/staff.type";
 
@@ -28,7 +28,7 @@ export const StaffQrModal: React.FC<StaffQrModalProps> = ({ staff, onClose }) =>
 
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
     staff.qr_code || `QR-${staff.user_code}`
-  )}&bgcolor=12141a&color=d4af37&margin=10`;
+  )}&bgcolor=ffffff&color=1c1917&margin=10`;
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(staff.qr_code || `QR-${staff.user_code}`);
@@ -50,29 +50,29 @@ export const StaffQrModal: React.FC<StaffQrModalProps> = ({ staff, onClose }) =>
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-[#0B0C10]/80 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-sm rounded-3xl bg-[#12141A] border border-[#212532] shadow-2xl p-6 space-y-5 animate-fadeIn z-10 text-center">
+      <div className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 shadow-2xl p-6 space-y-5 animate-fadeIn z-10 text-center">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#212532]">
-          <div className="flex items-center gap-2 text-[#D4AF37] font-black text-sm">
-            <FaQrcode />
-            <span>MÃ QR ĐIỂM DANH CA TRỰC</span>
+        <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
+          <div className="flex items-center gap-2 text-stone-900 dark:text-[#efe9de] font-semibold text-sm">
+            <FiMaximize2 className="w-4 h-4 text-stone-400 dark:text-stone-400" />
+            <span>Mã QR điểm danh ca trực</span>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-[#181B24] hover:bg-[#212532] text-[#8E95A5] hover:text-[#F4F5F8] flex items-center justify-center transition cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] flex items-center justify-center transition cursor-pointer"
           >
-            <FaTimes />
+            <FiX className="w-4 h-4 text-stone-400 dark:text-stone-400" />
           </button>
         </div>
 
         {/* QR Display */}
-        <div className="p-4 bg-[#0B0C10] rounded-2xl border border-[#212532] inline-block mx-auto shadow-inner">
+        <div className="p-3 bg-white rounded-2xl border border-stone-200 dark:border-stone-800 inline-block mx-auto shadow-sm">
           <img
             src={qrImageUrl}
             alt={`QR Code ${staff.name}`}
@@ -82,11 +82,11 @@ export const StaffQrModal: React.FC<StaffQrModalProps> = ({ staff, onClose }) =>
 
         {/* Staff details */}
         <div>
-          <div className="text-base font-black text-[#F4F5F8]">{staff.name}</div>
-          <div className="text-xs text-[#D4AF37] font-semibold mt-0.5">
+          <div className="text-base font-semibold text-stone-900 dark:text-[#efe9de]">{staff.name}</div>
+          <div className="text-xs text-stone-500 dark:text-stone-400 font-medium mt-0.5">
             {staff.role_label} • {staff.position || "Phục vụ"}
           </div>
-          <div className="text-[11px] text-[#6D7588] mt-1 font-mono">
+          <div className="text-[11px] text-stone-400 dark:text-stone-500 mt-1 font-mono">
             {staff.email}
           </div>
         </div>
@@ -96,19 +96,23 @@ export const StaffQrModal: React.FC<StaffQrModalProps> = ({ staff, onClose }) =>
           <button
             type="button"
             onClick={handleCopyCode}
-            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-[#212532] bg-[#181B24] hover:bg-[#212532] text-[#8E95A5] hover:text-[#F4F5F8] text-xs font-bold transition cursor-pointer"
+            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-medium transition cursor-pointer"
           >
-            {copied ? <FaCheck className="text-emerald-400" /> : <FaCopy />}
+            {copied ? (
+              <FiCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            ) : (
+              <FiCopy className="w-4 h-4 text-stone-400 dark:text-stone-400" />
+            )}
             <span>{copied ? "Đã chép" : "Sao chép mã"}</span>
           </button>
 
           <button
             type="button"
             onClick={handleDownloadQr}
-            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs transition shadow-md cursor-pointer hover:brightness-110"
+            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 font-medium text-xs transition shadow-sm cursor-pointer"
           >
-            <FaDownload />
-            <span>Tải Ảnh QR</span>
+            <FiDownload className="w-4 h-4 text-white/80 dark:text-stone-900/80" />
+            <span>Tải ảnh QR</span>
           </button>
         </div>
       </div>

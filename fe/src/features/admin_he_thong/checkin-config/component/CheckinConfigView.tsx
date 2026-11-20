@@ -2,23 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  FaMapMarkerAlt,
-  FaClock,
-  FaCrosshairs,
-  FaShieldAlt,
-  FaSave,
-  FaUndo,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaInfoCircle,
-  FaSpinner,
-  FaSlidersH,
-  FaCompass,
-  FaQrcode,
-  FaMobileAlt,
-  FaReceipt,
-  FaStore,
-} from "react-icons/fa";
+  FiMapPin,
+  FiClock,
+  FiCrosshair,
+  FiShield,
+  FiCheck,
+  FiX,
+  FiInfo,
+  FiSliders,
+  FiCompass,
+  FiMaximize2,
+  FiPercent,
+  FiRotateCcw,
+} from "react-icons/fi";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useCheckinConfig } from "../hook/useCheckinConfig";
 import { useUpdateCheckinConfig } from "../hook/useUpdateCheckinConfig";
@@ -112,7 +108,6 @@ export const CheckinConfigView: React.FC = () => {
     );
   };
 
-
   // Lấy vị trí GPS của Admin để điền vào tọa độ quán và tự động cập nhật địa chỉ
   const handleGetCurrentLocation = () => {
     if (!navigator.geolocation) {
@@ -199,7 +194,7 @@ export const CheckinConfigView: React.FC = () => {
           } else {
             toast.warning(`Quá xa! Bạn đang cách quán ${res.distance_meters}m (vượt bán kính ${geofenceRadius}m)`);
           }
-        } catch (err: any) {
+        } catch {
           toast.error("Lỗi khi kiểm tra khoảng cách");
         } finally {
           setIsTestingLocation(false);
@@ -284,21 +279,21 @@ export const CheckinConfigView: React.FC = () => {
   return (
     <div className="space-y-6 animate-fadeIn pb-16">
       {/* 1. HEADER BANNER */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#171926] via-[#121522] to-[#0D0F17] border border-[#262C3F] shadow-2xl relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-2xl shadow-md shrink-0">
-            <FaSlidersH />
+          <div className="w-12 h-12 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center shrink-0">
+            <FiSliders className="w-5 h-5 text-stone-400 dark:text-stone-400" />
           </div>
           <div>
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h2 className="text-xl font-black text-[#F4F5F8] tracking-tight">
-                Cấu Hình Check-in &amp; Định Vị Quán Zone 6
+              <h2 className="text-xl font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
+                Cấu hình check-in &amp; định vị cơ sở
               </h2>
-              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37]">
+              <span className="text-xs font-mono font-medium px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400">
                 {user?.role_label || "Admin Hệ Thống"}
               </span>
             </div>
-            <p className="text-xs text-[#8E95A5] mt-1">
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
               Thiết lập bán kính định vị GPS tại quán và khoảng thời gian cho phép điểm danh trước / sau ca làm việc.
             </p>
           </div>
@@ -309,31 +304,35 @@ export const CheckinConfigView: React.FC = () => {
           type="button"
           onClick={handleSubmit}
           disabled={updateMutation.isPending}
-          className="flex items-center gap-2 py-3 px-6 rounded-2xl gold-gradient-bg text-[#0B0C10] font-black text-xs shadow-lg transition hover:brightness-110 cursor-pointer shrink-0 disabled:opacity-50"
+          className="flex items-center gap-2 py-2.5 px-5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 font-medium text-xs shadow-sm transition cursor-pointer shrink-0 disabled:opacity-50"
         >
-          {updateMutation.isPending ? <FaSpinner className="animate-spin" /> : <FaSave />}
-          <span>{updateMutation.isPending ? "Đang lưu..." : "Lưu Cấu Hình"}</span>
+          {updateMutation.isPending ? (
+            <div className="w-4 h-4 border-2 border-stone-400 border-t-white dark:border-stone-500 dark:border-t-stone-900 rounded-full animate-spin" />
+          ) : (
+            <FiCheck className="w-4 h-4" />
+          )}
+          <span>{updateMutation.isPending ? "Đang lưu..." : "Lưu cấu hình"}</span>
         </button>
       </div>
 
-      {/* 1.5 BỘ CHỌN CHI NHÁNH ĐA CƠ SỞ (MULTI-STORE SWITCHER) */}
+      {/* 1.5 BỘ CHỌN CHI NHÁNH ĐA CƠ SỞ */}
       {stores.length > 0 && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#12141A] border border-[#212532] shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] text-lg shrink-0">
-              <FaStore />
+            <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center shrink-0">
+              <FiMapPin className="w-4 h-4 text-stone-400 dark:text-stone-400" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-white uppercase tracking-wider">
-                  Chọn Chi Nhánh Áp Dụng
+                <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">
+                  Chọn chi nhánh áp dụng
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 font-semibold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 border border-stone-200 dark:border-stone-800 font-medium">
                   {stores.length} Cơ sở
                 </span>
               </div>
-              <p className="text-[11px] text-[#8E95A5] mt-0.5">
-                Thiết lập GPS, ca làm việc và tỷ lệ Thuế VAT riêng biệt cho từng cơ sở trong chuỗi
+              <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+                Thiết lập GPS, ca làm việc và tỷ lệ thuế VAT riêng biệt cho từng cơ sở trong chuỗi
               </p>
             </div>
           </div>
@@ -342,10 +341,10 @@ export const CheckinConfigView: React.FC = () => {
             <select
               value={selectedStoreId}
               onChange={(e) => setSelectedStoreId(e.target.value)}
-              className="w-full sm:w-72 bg-[#181B24] border border-[#D4AF37]/40 text-[#D4AF37] text-xs font-bold rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#D4AF37] cursor-pointer shadow-inner"
+              className="w-full sm:w-72 bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-[#efe9de] text-xs font-medium rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 cursor-pointer shadow-sm"
             >
               {stores.map((s) => (
-                <option key={s.id} value={s.id} className="bg-[#12141A] text-white">
+                <option key={s.id} value={s.id} className="bg-white dark:bg-[#1c1a17] text-stone-900 dark:text-[#efe9de]">
                   {s.store_name} ({s.store_code || "Z6"})
                 </option>
               ))}
@@ -355,59 +354,56 @@ export const CheckinConfigView: React.FC = () => {
       )}
 
       {isLoading ? (
-        <div className="p-12 text-center text-xs text-[#8E95A5] rounded-3xl bg-[#12141A] border border-[#212532]">
+        <div className="p-12 text-center text-xs text-stone-500 dark:text-stone-400 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800">
           Đang tải thông tin cấu hình check-in Zone 6...
         </div>
       ) : isError ? (
-        <div className="p-8 text-center text-xs text-red-400 rounded-3xl bg-[#12141A] border border-red-500/30">
+        <div className="p-8 text-center text-xs text-rose-500 dark:text-rose-400 rounded-3xl bg-white dark:bg-[#1c1a17] border border-rose-200 dark:border-rose-900/50">
           Không thể tải cấu hình. Vui lòng tải lại trang!
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* =========================================================================
-             * THẺ 1: CẤU HÌNH ĐỊNH VỊ GPS VÀ KHOẢNG CÁCH QUÁN
-             * ========================================================================= */}
-            <div className="p-6 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-[#212532]">
+            {/* THẺ 1: CẤU HÌNH ĐỊNH VỊ GPS VÀ KHOẢNG CÁCH QUÁN */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-sm">
-                    <FaMapMarkerAlt />
+                  <div className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+                    <FiMapPin className="w-4 h-4 text-stone-400 dark:text-stone-400" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-black text-[#F4F5F8]">
-                      Khoảng Cách Định Vị Quán (GPS Geofence)
+                    <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">
+                      Khoảng cách định vị cơ sở (GPS Geofence)
                     </h3>
-                    <p className="text-[11px] text-[#8E95A5]">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400">
                       Tọa độ thực tế của quán và bán kính quét cho phép điểm danh
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold text-[#8E95A5]">Bắt buộc GPS:</span>
+                  <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Bắt buộc GPS:</span>
                   <button
                     type="button"
                     onClick={() => setIsGeofenceRequired(!isGeofenceRequired)}
                     className={`w-11 h-6 rounded-full transition-colors p-0.5 cursor-pointer flex items-center ${
-                      isGeofenceRequired ? "bg-[#D4AF37] justify-end" : "bg-[#212532] justify-start"
+                      isGeofenceRequired ? "bg-stone-900 dark:bg-[#efe9de] justify-end" : "bg-stone-200 dark:bg-stone-800 justify-start"
                     }`}
                   >
-                    <div className="w-5 h-5 rounded-full bg-[#0B0C10] shadow-md" />
+                    <div className="w-5 h-5 rounded-full bg-white dark:bg-[#141311] shadow-sm" />
                   </button>
                 </div>
               </div>
 
-
               {/* Tên cơ sở & Địa chỉ */}
               <div className="space-y-3">
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-[#F4F5F8]">Tên cơ sở / Quán</label>
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300">Tên cơ sở / Quán</label>
                   <input
                     type="text"
                     value={storeName}
                     onChange={(e) => setStoreName(e.target.value)}
-                    className="w-full py-2.5 px-3 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] focus:outline-none focus:border-[#D4AF37] transition font-bold"
+                    className="w-full py-2.5 px-3 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition font-medium"
                     placeholder="Zone Six Cafe & Lounge"
                     required
                   />
@@ -415,14 +411,13 @@ export const CheckinConfigView: React.FC = () => {
 
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                      <FaMapMarkerAlt className="text-[#D4AF37]" />
+                    <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                      <FiMapPin className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
                       <span>Địa chỉ cụ thể</span>
                     </label>
                     <div className="flex items-center gap-2">
                       {isLocating ? (
-                        <span className="text-[10px] text-[#D4AF37] flex items-center gap-1 animate-pulse font-medium">
-                          <FaSpinner className="animate-spin text-[10px]" />
+                        <span className="text-[10px] text-stone-500 dark:text-stone-400 flex items-center gap-1 animate-pulse font-medium">
                           Đang dò địa chỉ từ GPS...
                         </span>
                       ) : (
@@ -430,9 +425,9 @@ export const CheckinConfigView: React.FC = () => {
                           type="button"
                           onClick={handleResolveAddressFromGps}
                           title="Tự động cập nhật tên đường theo tọa độ GPS bên dưới"
-                          className="text-[11px] text-[#D4AF37] hover:underline flex items-center gap-1 cursor-pointer font-medium"
+                          className="text-[11px] text-stone-600 dark:text-stone-300 hover:underline flex items-center gap-1 cursor-pointer font-medium"
                         >
-                          <FaCrosshairs className="text-[10px]" />
+                          <FiCrosshair className="w-3 h-3 text-stone-400 dark:text-stone-400" />
                           <span>Lấy tên đường theo GPS</span>
                         </button>
                       )}
@@ -442,7 +437,7 @@ export const CheckinConfigView: React.FC = () => {
                     type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full py-2.5 px-3 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] focus:outline-none focus:border-[#D4AF37] transition"
+                    className="w-full py-2.5 px-3 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
                     placeholder="214 Lê Ninh, Phường Quán Bàu, TP Vinh"
                     required
                   />
@@ -450,43 +445,43 @@ export const CheckinConfigView: React.FC = () => {
               </div>
 
               {/* Tọa độ GPS */}
-              <div className="space-y-2 p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532]">
+              <div className="space-y-2 p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                    <FaCompass className="text-[#D4AF37]" />
-                    <span>Tọa độ GPS Quán (Latitude, Longitude)</span>
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                    <FiCompass className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
+                    <span>Tọa độ GPS (Latitude, Longitude)</span>
                   </label>
                   <button
                     type="button"
                     onClick={handleGetCurrentLocation}
                     disabled={isLocating}
-                    className="flex items-center gap-1.5 text-[11px] font-bold text-[#D4AF37] hover:underline cursor-pointer disabled:opacity-50"
+                    className="flex items-center gap-1.5 text-[11px] font-medium text-stone-700 dark:text-stone-300 hover:underline cursor-pointer disabled:opacity-50"
                   >
-                    {isLocating ? <FaSpinner className="animate-spin text-xs" /> : <FaCrosshairs className="text-xs" />}
-                    <span>{isLocating ? "Đang dò GPS..." : "Lấy vị trí hiện tại của tôi"}</span>
+                    <FiCrosshair className="w-3 h-3 text-stone-400 dark:text-stone-400" />
+                    <span>{isLocating ? "Đang dò GPS..." : "Lấy vị trí hiện tại"}</span>
                   </button>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 pt-1">
                   <div>
-                    <span className="text-[10px] text-[#6D7588] uppercase font-mono">Vĩ độ (Latitude)</span>
+                    <span className="text-[10px] text-stone-400 dark:text-stone-500 uppercase font-mono">Vĩ độ (Latitude)</span>
                     <input
                       type="number"
                       step="0.000001"
                       value={latitude}
                       onChange={(e) => setLatitude(Number(e.target.value))}
-                      className="w-full py-2 px-3 rounded-xl bg-[#12141A] border border-[#212532] text-xs text-[#F4F5F8] font-mono font-bold focus:outline-none focus:border-[#D4AF37] transition"
+                      className="w-full py-2 px-3 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-mono font-medium focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
                       required
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-[#6D7588] uppercase font-mono">Kinh độ (Longitude)</span>
+                    <span className="text-[10px] text-stone-400 dark:text-stone-500 uppercase font-mono">Kinh độ (Longitude)</span>
                     <input
                       type="number"
                       step="0.000001"
                       value={longitude}
                       onChange={(e) => setLongitude(Number(e.target.value))}
-                      className="w-full py-2 px-3 rounded-xl bg-[#12141A] border border-[#212532] text-xs text-[#F4F5F8] font-mono font-bold focus:outline-none focus:border-[#D4AF37] transition"
+                      className="w-full py-2 px-3 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-mono font-medium focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
                       required
                     />
                   </div>
@@ -496,10 +491,10 @@ export const CheckinConfigView: React.FC = () => {
               {/* Bán kính định vị cho phép */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-[#F4F5F8]">
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300">
                     Bán kính khoảng cách cho phép check-in
                   </label>
-                  <span className="text-xs font-mono font-black text-[#D4AF37]">
+                  <span className="text-xs font-mono font-semibold text-stone-900 dark:text-[#efe9de]">
                     {geofenceRadius} mét
                   </span>
                 </div>
@@ -511,7 +506,7 @@ export const CheckinConfigView: React.FC = () => {
                   step="10"
                   value={geofenceRadius}
                   onChange={(e) => setGeofenceRadius(Number(e.target.value))}
-                  className="w-full py-2 px-3 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] font-mono font-bold focus:outline-none focus:border-[#D4AF37] transition"
+                  className="w-full py-2 px-3 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-mono font-medium focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
                   required
                 />
 
@@ -522,36 +517,36 @@ export const CheckinConfigView: React.FC = () => {
                       key={preset}
                       type="button"
                       onClick={() => setGeofenceRadius(preset)}
-                      className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border transition cursor-pointer ${
+                      className={`text-[10px] font-medium px-2.5 py-1 rounded-lg border transition cursor-pointer ${
                         geofenceRadius === preset
-                          ? "border-[#D4AF37] bg-[#D4AF37]/20 text-[#D4AF37]"
-                          : "border-[#212532] bg-[#0B0C10] text-[#8E95A5] hover:text-[#F4F5F8]"
+                          ? "border-stone-900 bg-stone-900 text-white dark:border-[#efe9de] dark:bg-[#efe9de] dark:text-stone-900"
+                          : "border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                       }`}
                     >
                       {preset}m
                     </button>
                   ))}
                 </div>
-                <p className="text-[11px] text-[#6D7588]">
+                <p className="text-[11px] text-stone-400 dark:text-stone-500">
                   Nhân viên cần ở trong bán kính tối đa <strong>{geofenceRadius}m</strong> tính từ tâm tọa độ của quán để được tích điểm danh hợp lệ.
                 </p>
               </div>
 
               {/* Tiện ích Test GPS thực tế */}
-              <div className="p-3.5 rounded-2xl bg-[#181B24] border border-[#262C3F] space-y-2">
+              <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="text-xs font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                    <FaShieldAlt className="text-emerald-400" />
+                  <div className="text-xs font-medium text-stone-900 dark:text-[#efe9de] flex items-center gap-1.5">
+                    <FiShield className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
                     <span>Kiểm tra khoảng cách thực tế của bạn</span>
                   </div>
                   <button
                     type="button"
                     onClick={handleTestDistance}
                     disabled={isTestingLocation}
-                    className="py-1 px-3 rounded-lg border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] text-[11px] font-bold transition cursor-pointer flex items-center gap-1 disabled:opacity-50"
+                    className="py-1 px-3 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#1c1a17] text-stone-800 dark:text-stone-200 text-[11px] font-medium transition cursor-pointer flex items-center gap-1 disabled:opacity-50"
                   >
-                    {isTestingLocation ? <FaSpinner className="animate-spin text-xs" /> : <FaCrosshairs className="text-xs" />}
-                    <span>{isTestingLocation ? "Đang tính..." : "Test Ngay"}</span>
+                    <FiCrosshair className="w-3 h-3 text-stone-400 dark:text-stone-400" />
+                    <span>{isTestingLocation ? "Đang tính..." : "Test ngay"}</span>
                   </button>
                 </div>
 
@@ -559,14 +554,14 @@ export const CheckinConfigView: React.FC = () => {
                   <div
                     className={`p-2.5 rounded-xl border text-xs flex items-center gap-2 ${
                       currentTestDistance.isInside
-                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300"
-                        : "bg-red-500/10 border-red-500/30 text-red-300"
+                        ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300"
+                        : "bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800/40 text-rose-800 dark:text-rose-300"
                     }`}
                   >
                     {currentTestDistance.isInside ? (
-                      <FaCheckCircle className="text-emerald-400 shrink-0 text-sm" />
+                      <FiCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                     ) : (
-                      <FaTimesCircle className="text-red-400 shrink-0 text-sm" />
+                      <FiX className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
                     )}
                     <div>
                       <span>
@@ -574,8 +569,8 @@ export const CheckinConfigView: React.FC = () => {
                       </span>{" "}
                       <span>
                         {currentTestDistance.isInside
-                          ? `(Hợp lệ ✅ - Trong bán kính ${geofenceRadius}m)`
-                          : `(Không hợp lệ ❌ - Vượt quá bán kính ${geofenceRadius}m)`}
+                          ? `(Hợp lệ - Trong bán kính ${geofenceRadius}m)`
+                          : `(Không hợp lệ - Vượt quá bán kính ${geofenceRadius}m)`}
                       </span>
                     </div>
                   </div>
@@ -583,47 +578,45 @@ export const CheckinConfigView: React.FC = () => {
               </div>
             </div>
 
-            {/* =========================================================================
-             * THẺ 2: CẤU HÌNH THỜI GIAN CHECK-IN TRƯỚC VÀ SAU CA
-             * ========================================================================= */}
-            <div className="p-6 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-[#212532]">
+            {/* THẺ 2: CẤU HÌNH THỜI GIAN CHECK-IN TRƯỚC VÀ SAU CA */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-sm">
-                    <FaClock />
+                  <div className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+                    <FiClock className="w-4 h-4 text-stone-400 dark:text-stone-400" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-black text-[#F4F5F8]">
-                      Thời Gian Cho Phép Check-in (Time Window)
+                    <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">
+                      Thời gian cho phép check-in (Time Window)
                     </h3>
-                    <p className="text-[11px] text-[#8E95A5]">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400">
                       Quy định khoảng thời gian tầm trước và sau giờ vào ca
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold text-[#8E95A5]">Chặn nghiêm ngặt:</span>
+                  <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Chặn nghiêm ngặt:</span>
                   <button
                     type="button"
                     onClick={() => setIsTimeWindowStrict(!isTimeWindowStrict)}
                     className={`w-11 h-6 rounded-full transition-colors p-0.5 cursor-pointer flex items-center ${
-                      isTimeWindowStrict ? "bg-[#D4AF37] justify-end" : "bg-[#212532] justify-start"
+                      isTimeWindowStrict ? "bg-stone-900 dark:bg-[#efe9de] justify-end" : "bg-stone-200 dark:bg-stone-800 justify-start"
                     }`}
                   >
-                    <div className="w-5 h-5 rounded-full bg-[#0B0C10] shadow-md" />
+                    <div className="w-5 h-5 rounded-full bg-white dark:bg-[#141311] shadow-sm" />
                   </button>
                 </div>
               </div>
 
-              {/* 1. Trước khi vào ca */}
-              <div className="space-y-2 p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532]">
+              {/* Trước khi vào ca */}
+              <div className="space-y-2 p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
                     <span>Cho phép check-in TRƯỚC giờ vào ca tối đa</span>
                   </label>
-                  <span className="text-xs font-mono font-black text-emerald-400">
+                  <span className="text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400">
                     {allowedBeforeMinutes} phút
                   </span>
                 </div>
@@ -635,7 +628,7 @@ export const CheckinConfigView: React.FC = () => {
                   step="5"
                   value={allowedBeforeMinutes}
                   onChange={(e) => setAllowedBeforeMinutes(Number(e.target.value))}
-                  className="w-full py-2 px-3 rounded-xl bg-[#12141A] border border-[#212532] text-xs text-[#F4F5F8] font-mono font-bold focus:outline-none focus:border-[#D4AF37] transition"
+                  className="w-full py-2 px-3 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-mono font-medium focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
                   required
                 />
 
@@ -645,33 +638,33 @@ export const CheckinConfigView: React.FC = () => {
                       key={preset}
                       type="button"
                       onClick={() => setAllowedBeforeMinutes(preset)}
-                      className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border transition cursor-pointer ${
+                      className={`text-[10px] font-medium px-2.5 py-1 rounded-lg border transition cursor-pointer ${
                         allowedBeforeMinutes === preset
-                          ? "border-emerald-500 bg-emerald-500/20 text-emerald-400"
-                          : "border-[#212532] bg-[#12141A] text-[#8E95A5] hover:text-[#F4F5F8]"
+                          ? "border-emerald-600 bg-emerald-600 text-white dark:border-emerald-400 dark:bg-emerald-500/20 dark:text-emerald-300"
+                          : "border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                       }`}
                     >
                       {preset} phút
                     </button>
                   ))}
                 </div>
-                <p className="text-[11px] text-[#6D7588]">
+                <p className="text-[11px] text-stone-400 dark:text-stone-500">
                   Ví dụ: Ca 07:00, cho phép check-in sớm từ{" "}
-                  <strong className="text-emerald-400 font-mono">
+                  <strong className="text-emerald-700 dark:text-emerald-400 font-mono">
                     {formatMinutesToTime(7 * 60 - allowedBeforeMinutes)}
                   </strong>
                   .
                 </p>
               </div>
 
-              {/* 2. Sau khi vào ca */}
-              <div className="space-y-2 p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532]">
+              {/* Sau khi vào ca */}
+              <div className="space-y-2 p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
                     <span>Cho phép check-in SAU giờ vào ca tối đa</span>
                   </label>
-                  <span className="text-xs font-mono font-black text-amber-400">
+                  <span className="text-xs font-mono font-semibold text-amber-700 dark:text-amber-400">
                     {allowedAfterMinutes} phút
                   </span>
                 </div>
@@ -683,7 +676,7 @@ export const CheckinConfigView: React.FC = () => {
                   step="5"
                   value={allowedAfterMinutes}
                   onChange={(e) => setAllowedAfterMinutes(Number(e.target.value))}
-                  className="w-full py-2 px-3 rounded-xl bg-[#12141A] border border-[#212532] text-xs text-[#F4F5F8] font-mono font-bold focus:outline-none focus:border-[#D4AF37] transition"
+                  className="w-full py-2 px-3 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-mono font-medium focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
                   required
                 />
 
@@ -693,44 +686,43 @@ export const CheckinConfigView: React.FC = () => {
                       key={preset}
                       type="button"
                       onClick={() => setAllowedAfterMinutes(preset)}
-                      className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border transition cursor-pointer ${
+                      className={`text-[10px] font-medium px-2.5 py-1 rounded-lg border transition cursor-pointer ${
                         allowedAfterMinutes === preset
-                          ? "border-amber-500 bg-amber-500/20 text-amber-400"
-                          : "border-[#212532] bg-[#12141A] text-[#8E95A5] hover:text-[#F4F5F8]"
+                          ? "border-amber-600 bg-amber-600 text-white dark:border-amber-400 dark:bg-amber-500/20 dark:text-amber-300"
+                          : "border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                       }`}
                     >
                       {preset} phút
                     </button>
                   ))}
                 </div>
-                <p className="text-[11px] text-[#6D7588]">
+                <p className="text-[11px] text-stone-400 dark:text-stone-500">
                   Hạn chót cho phép check-in ca 07:00 là{" "}
-                  <strong className="text-amber-400 font-mono">
+                  <strong className="text-amber-700 dark:text-amber-400 font-mono">
                     {formatMinutesToTime(7 * 60 + allowedAfterMinutes)}
                   </strong>
                   . Sau mốc này hệ thống sẽ cảnh báo trễ/quá giờ.
                 </p>
               </div>
 
-              {/* 3. Mô phỏng trực quan Dòng thời gian ca làm (Interactive Timeline) */}
-              <div className="p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-3">
+              {/* Interactive Timeline Visualizer */}
+              <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="text-xs font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                    <FaInfoCircle className="text-[#D4AF37]" />
+                  <div className="text-xs font-medium text-stone-900 dark:text-[#efe9de] flex items-center gap-1.5">
+                    <FiInfo className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
                     <span>Mô phỏng khung giờ check-in thực tế:</span>
                   </div>
 
-                  {/* Chọn ca mẫu */}
                   <div className="flex items-center gap-1">
                     {(["sang", "chieu", "toi"] as const).map((key) => (
                       <button
                         key={key}
                         type="button"
                         onClick={() => setSampleShift(key)}
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-md transition cursor-pointer ${
+                        className={`text-[10px] font-medium px-2 py-0.5 rounded-md transition cursor-pointer ${
                           sampleShift === key
-                            ? "gold-gradient-bg text-[#0B0C10]"
-                            : "bg-[#181B24] text-[#8E95A5] hover:text-[#F4F5F8]"
+                            ? "bg-stone-900 text-white dark:bg-[#efe9de] dark:text-stone-900"
+                            : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-800"
                         }`}
                       >
                         {key === "sang" ? "Ca Sáng" : key === "chieu" ? "Ca Chiều" : "Ca Tối"}
@@ -739,90 +731,71 @@ export const CheckinConfigView: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Timeline Card */}
-                <div className="p-3 rounded-xl bg-[#12141A] border border-[#212532] space-y-2">
-                  <div className="flex items-center justify-between text-xs font-mono font-bold">
-                    <div className="text-emerald-400 flex flex-col items-start">
-                      <span className="text-[10px] text-[#8E95A5] font-sans">Bắt đầu mở:</span>
+                <div className="p-3 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono font-medium">
+                    <div className="text-emerald-700 dark:text-emerald-400 flex flex-col items-start">
+                      <span className="text-[10px] text-stone-400 dark:text-stone-500 font-sans">Bắt đầu mở:</span>
                       <span>{earliestCheckinTime}</span>
-                      <span className="text-[9px] text-emerald-400/80 font-sans">(-{allowedBeforeMinutes}p)</span>
+                      <span className="text-[9px] opacity-80 font-sans">(-{allowedBeforeMinutes}p)</span>
                     </div>
 
-                    <div className="text-[#D4AF37] flex flex-col items-center">
-                      <span className="text-[10px] text-[#8E95A5] font-sans">Giờ vào ca:</span>
-                      <span className="text-sm font-black">{shiftTimes.start}</span>
-                      <span className="text-[9px] text-[#D4AF37]/80 font-sans">{shiftTimes.name}</span>
+                    <div className="text-stone-900 dark:text-[#efe9de] flex flex-col items-center">
+                      <span className="text-[10px] text-stone-400 dark:text-stone-500 font-sans">Giờ vào ca:</span>
+                      <span className="text-sm font-semibold">{shiftTimes.start}</span>
+                      <span className="text-[9px] text-stone-500 dark:text-stone-400 font-sans">{shiftTimes.name}</span>
                     </div>
 
-                    <div className="text-amber-400 flex flex-col items-end">
-                      <span className="text-[10px] text-[#8E95A5] font-sans">Đóng check-in:</span>
+                    <div className="text-amber-700 dark:text-amber-400 flex flex-col items-end">
+                      <span className="text-[10px] text-stone-400 dark:text-stone-500 font-sans">Đóng check-in:</span>
                       <span>{latestCheckinTime}</span>
-                      <span className="text-[9px] text-amber-400/80 font-sans">(+{allowedAfterMinutes}p)</span>
+                      <span className="text-[9px] opacity-80 font-sans">(+{allowedAfterMinutes}p)</span>
                     </div>
                   </div>
 
                   {/* Progress Bar Visualizer */}
-                  <div className="h-3 rounded-full bg-[#0B0C10] border border-[#212532] flex overflow-hidden">
-                    <div
-                      style={{ width: "35%" }}
-                      className="h-full bg-gradient-to-r from-emerald-500/30 to-emerald-500 flex items-center justify-center text-[8px] font-bold text-black"
-                      title="Khung giờ check-in sớm"
-                    />
-                    <div
-                      style={{ width: "5%" }}
-                      className="h-full bg-[#D4AF37]"
-                      title="Thời điểm chính xác vào ca"
-                    />
-                    <div
-                      style={{ width: "35%" }}
-                      className="h-full bg-gradient-to-r from-amber-500 to-amber-500/30 flex items-center justify-center text-[8px] font-bold text-black"
-                      title="Khung giờ check-in trễ được phép"
-                    />
-                    <div
-                      style={{ width: "25%" }}
-                      className="h-full bg-red-500/20"
-                      title="Quá hạn check-in"
-                    />
+                  <div className="h-2 rounded-full bg-stone-100 dark:bg-stone-800 flex overflow-hidden">
+                    <div style={{ width: "35%" }} className="h-full bg-emerald-500" title="Khung giờ check-in sớm" />
+                    <div style={{ width: "5%" }} className="h-full bg-stone-900 dark:bg-[#efe9de]" title="Giờ vào ca" />
+                    <div style={{ width: "35%" }} className="h-full bg-amber-500" title="Check-in trễ cho phép" />
+                    <div style={{ width: "25%" }} className="h-full bg-rose-400/30" title="Quá hạn check-in" />
                   </div>
 
-                  <div className="text-[11px] text-[#8E95A5] text-center pt-1">
+                  <div className="text-[11px] text-stone-500 dark:text-stone-400 text-center pt-1">
                     Nhân viên ca {shiftTimes.name} ({shiftTimes.start}) được phép check-in từ{" "}
-                    <strong className="text-emerald-400 font-mono">{earliestCheckinTime}</strong> đến{" "}
-                    <strong className="text-amber-400 font-mono">{latestCheckinTime}</strong>.
+                    <strong className="text-emerald-700 dark:text-emerald-400 font-mono">{earliestCheckinTime}</strong> đến{" "}
+                    <strong className="text-amber-700 dark:text-amber-400 font-mono">{latestCheckinTime}</strong>.
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* =========================================================================
-             * THẺ 3: CẤU HÌNH GỌI MÓN TẠI BÀN & ĐỊNH VỊ GPS CHỐNG TROLL (TABLE QR & ANTI-TROLL)
-             * ========================================================================= */}
-            <div className="lg:col-span-2 p-6 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-6">
-              <div className="flex items-center justify-between pb-3 border-b border-[#212532]">
+            {/* THẺ 3: CẤU HÌNH GỌI MÓN TẠI BÀN & ĐỊNH VỊ GPS CHỐNG TROLL */}
+            <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-6">
+              <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] text-sm">
-                    <FaQrcode />
+                  <div className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+                    <FiMaximize2 className="w-4 h-4 text-stone-400 dark:text-stone-400" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-black text-[#F4F5F8]">
-                      Cấu Hình Gọi Món Tại Bàn & Geofence GPS Chống Troll Từ Xa
+                    <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">
+                      Cấu hình gọi món tại bàn &amp; Geofence GPS chống troll từ xa
                     </h3>
-                    <p className="text-[11px] text-[#8E95A5]">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400">
                       Kiểm soát luồng gọi món (Tại quầy vs Tại bàn) và giới hạn khách phải ngồi thực tế tại quán mới mở được menu
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-[#8E95A5]">Chống Troll GPS:</span>
+                  <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Chống troll GPS:</span>
                   <button
                     type="button"
                     onClick={() => setIsTableGeofenceStrict(!isTableGeofenceStrict)}
                     className={`w-11 h-6 rounded-full transition-colors relative p-0.5 cursor-pointer ${
-                      isTableGeofenceStrict ? "bg-[#D4AF37]" : "bg-[#212532]"
+                      isTableGeofenceStrict ? "bg-stone-900 dark:bg-[#efe9de]" : "bg-stone-200 dark:bg-stone-800"
                     }`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full bg-[#0B0C10] shadow-md transition-transform ${
+                      className={`w-5 h-5 rounded-full bg-white dark:bg-[#141311] shadow-sm transition-transform ${
                         isTableGeofenceStrict ? "translate-x-5" : "translate-x-0"
                       }`}
                     />
@@ -832,8 +805,8 @@ export const CheckinConfigView: React.FC = () => {
 
               {/* Lựa chọn Chế độ Gọi Món */}
               <div className="space-y-3">
-                <label className="text-xs font-bold text-[#F4F5F8] block">
-                  Chế Độ Vận Hành Gọi Món (Ordering Mode)
+                <label className="text-xs font-medium text-stone-700 dark:text-stone-300 block">
+                  Chế độ vận hành gọi món (Ordering Mode)
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {/* HYBRID */}
@@ -841,18 +814,18 @@ export const CheckinConfigView: React.FC = () => {
                     onClick={() => setOrderingMode("HYBRID")}
                     className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                       orderingMode === "HYBRID"
-                        ? "border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg shadow-[#D4AF37]/5"
-                        : "border-[#212532] bg-[#0B0C10] hover:border-[#353B4F]"
+                        ? "border-stone-900 dark:border-[#efe9de] bg-stone-50 dark:bg-[#25221e] shadow-sm"
+                        : "border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1a17] hover:border-stone-300 dark:hover:border-stone-700"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-black text-[#F4F5F8]">⚡ Song Hành (Hybrid)</span>
-                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "HYBRID" ? "bg-[#D4AF37] border-[#D4AF37]" : "border-[#4A5164]"}`} />
+                      <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">Song hành (Hybrid)</span>
+                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "HYBRID" ? "bg-stone-900 border-stone-900 dark:bg-[#efe9de] dark:border-[#efe9de]" : "border-stone-300 dark:border-stone-700"}`} />
                     </div>
-                    <p className="text-[11px] text-[#8E95A5] leading-relaxed">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed">
                       Cả nhân viên thu ngân gọi tại quầy POS và khách tự quét QR gọi tại bàn đều hoạt động song song.
                     </p>
-                    <span className="text-[10px] text-[#D4AF37] font-semibold mt-2 inline-block">Khuyên dùng cho Zone 6</span>
+                    <span className="text-[10px] text-stone-600 dark:text-stone-400 font-medium mt-2 inline-block">Khuyên dùng cho Zone 6</span>
                   </div>
 
                   {/* STAFF_ONLY */}
@@ -860,18 +833,18 @@ export const CheckinConfigView: React.FC = () => {
                     onClick={() => setOrderingMode("STAFF_ONLY")}
                     className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                       orderingMode === "STAFF_ONLY"
-                        ? "border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg shadow-[#D4AF37]/5"
-                        : "border-[#212532] bg-[#0B0C10] hover:border-[#353B4F]"
+                        ? "border-stone-900 dark:border-[#efe9de] bg-stone-50 dark:bg-[#25221e] shadow-sm"
+                        : "border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1a17] hover:border-stone-300 dark:hover:border-stone-700"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-black text-[#F4F5F8]">🏢 Chỉ Quầy Thu Ngân (Staff Only)</span>
-                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "STAFF_ONLY" ? "bg-[#D4AF37] border-[#D4AF37]" : "border-[#4A5164]"}`} />
+                      <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">Chỉ quầy thu ngân (Staff Only)</span>
+                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "STAFF_ONLY" ? "bg-stone-900 border-stone-900 dark:bg-[#efe9de] dark:border-[#efe9de]" : "border-stone-300 dark:border-stone-700"}`} />
                     </div>
-                    <p className="text-[11px] text-[#8E95A5] leading-relaxed">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed">
                       Chỉ cho phép nhân viên thu ngân tạo đơn tại POS. Khi khách quét mã QR sẽ nhận được thông báo vui lòng tới quầy.
                     </p>
-                    <span className="text-[10px] text-[#8E95A5] font-semibold mt-2 inline-block">Dùng cho khung giờ cao điểm</span>
+                    <span className="text-[10px] text-stone-400 dark:text-stone-500 font-medium mt-2 inline-block">Dùng cho khung giờ cao điểm</span>
                   </div>
 
                   {/* CUSTOMER_SELF_ORDER */}
@@ -879,34 +852,34 @@ export const CheckinConfigView: React.FC = () => {
                     onClick={() => setOrderingMode("CUSTOMER_SELF_ORDER")}
                     className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                       orderingMode === "CUSTOMER_SELF_ORDER"
-                        ? "border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg shadow-[#D4AF37]/5"
-                        : "border-[#212532] bg-[#0B0C10] hover:border-[#353B4F]"
+                        ? "border-stone-900 dark:border-[#efe9de] bg-stone-50 dark:bg-[#25221e] shadow-sm"
+                        : "border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1a17] hover:border-stone-300 dark:hover:border-stone-700"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-black text-[#F4F5F8]">📱 Tự Phục Vụ Tại Bàn (Self Order)</span>
-                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "CUSTOMER_SELF_ORDER" ? "bg-[#D4AF37] border-[#D4AF37]" : "border-[#4A5164]"}`} />
+                      <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">Tự phục vụ tại bàn (Self Order)</span>
+                      <span className={`w-3 h-3 rounded-full border ${orderingMode === "CUSTOMER_SELF_ORDER" ? "bg-stone-900 border-stone-900 dark:bg-[#efe9de] dark:border-[#efe9de]" : "border-stone-300 dark:border-stone-700"}`} />
                     </div>
-                    <p className="text-[11px] text-[#8E95A5] leading-relaxed">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed">
                       Khuyến khích khách quét QR tại bàn để tự xem menu và thanh toán VietQR động, giảm tải nhân sự phục vụ.
                     </p>
-                    <span className="text-[10px] text-[#8E95A5] font-semibold mt-2 inline-block">Mô hình Smart Cafe</span>
+                    <span className="text-[10px] text-stone-400 dark:text-stone-500 font-medium mt-2 inline-block">Mô hình Smart Cafe</span>
                   </div>
                 </div>
               </div>
 
               {/* Bán Kính Định Vị Chống Troll */}
-              <div className="p-4 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-3">
+              <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <span className="text-xs font-bold text-[#F4F5F8]">Bán Kính Geofence Quét QR Bàn:</span>
-                    <p className="text-[11px] text-[#8E95A5]">
+                    <span className="text-xs font-medium text-stone-900 dark:text-[#efe9de]">Bán kính Geofence quét QR bàn:</span>
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400">
                       Khoảng cách tối đa từ điện thoại khách đến tâm quán Zone Six để mở được giao diện gọi món
                     </p>
                   </div>
-                  <div className="flex items-baseline gap-1 text-[#D4AF37]">
-                    <span className="text-xl font-mono font-black">{tableGeofenceRadius}</span>
-                    <span className="text-xs font-sans">mét</span>
+                  <div className="flex items-baseline gap-1 text-stone-900 dark:text-[#efe9de]">
+                    <span className="text-xl font-mono font-semibold">{tableGeofenceRadius}</span>
+                    <span className="text-xs font-sans text-stone-500 dark:text-stone-400">mét</span>
                   </div>
                 </div>
 
@@ -917,7 +890,7 @@ export const CheckinConfigView: React.FC = () => {
                   step="5"
                   value={tableGeofenceRadius}
                   onChange={(e) => setTableGeofenceRadius(Number(e.target.value))}
-                  className="w-full h-1.5 bg-[#181B24] rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
+                  className="w-full h-1.5 bg-stone-200 dark:bg-stone-700 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-[#efe9de]"
                 />
 
                 <div className="flex items-center gap-2 pt-1">
@@ -926,51 +899,49 @@ export const CheckinConfigView: React.FC = () => {
                       key={preset}
                       type="button"
                       onClick={() => setTableGeofenceRadius(preset)}
-                      className={`px-3 py-1 rounded-lg border text-xs font-mono font-bold transition cursor-pointer ${
+                      className={`px-3 py-1 rounded-lg border text-xs font-mono font-medium transition cursor-pointer ${
                         tableGeofenceRadius === preset
-                          ? "border-[#D4AF37] bg-[#D4AF37]/20 text-[#D4AF37]"
-                          : "border-[#212532] bg-[#12141A] text-[#8E95A5] hover:text-[#F4F5F8]"
+                          ? "border-stone-900 bg-stone-900 text-white dark:border-[#efe9de] dark:bg-[#efe9de] dark:text-stone-900"
+                          : "border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                       }`}
                     >
                       {preset}m
                     </button>
                   ))}
-                  <span className="text-[11px] text-[#6D7588] italic ml-auto">
-                    {isTableGeofenceStrict ? "🛡️ Bắt buộc bật GPS & trong bán kính" : "⚠️ Cảnh báo nếu ở ngoài"}
+                  <span className="text-[11px] text-stone-400 dark:text-stone-500 ml-auto">
+                    {isTableGeofenceStrict ? "Bắt buộc bật GPS & trong bán kính" : "Cảnh báo nếu ở ngoài"}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* =========================================================================
-             * THẺ 4: CẤU HÌNH THUẾ VAT & PHẠM VI ÁP DỤNG THEO CA LÀM VIỆC
-             * ========================================================================= */}
-            <div className="lg:col-span-2 p-6 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl space-y-6">
-              <div className="flex items-center justify-between pb-3 border-b border-[#212532]">
+            {/* THẺ 4: CẤU HÌNH THUẾ VAT & PHẠM VI ÁP DỤNG THEO CA LÀM VIỆC */}
+            <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-6">
+              <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] text-sm">
-                    <FaReceipt />
+                  <div className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+                    <FiPercent className="w-4 h-4 text-stone-400 dark:text-stone-400" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-black text-[#F4F5F8]">
-                      Cấu Hình Thuế VAT &amp; Phạm Vi Áp Dụng Theo Ca
+                    <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">
+                      Cấu hình thuế VAT &amp; phạm vi áp dụng theo ca
                     </h3>
-                    <p className="text-[11px] text-[#8E95A5]">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400">
                       Thiết lập tỉ lệ phần trăm thuế VAT và lựa chọn ca làm việc áp dụng thuế (hoặc áp dụng tất cả các ca)
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-[#8E95A5]">Tính Thuế VAT:</span>
+                  <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Tính thuế VAT:</span>
                   <button
                     type="button"
                     onClick={() => setVatEnabled(!vatEnabled)}
                     className={`w-11 h-6 rounded-full transition-colors relative p-0.5 cursor-pointer ${
-                      vatEnabled ? "bg-[#D4AF37]" : "bg-[#212532]"
+                      vatEnabled ? "bg-stone-900 dark:bg-[#efe9de]" : "bg-stone-200 dark:bg-stone-800"
                     }`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full bg-[#0B0C10] shadow-md transition-transform ${
+                      className={`w-5 h-5 rounded-full bg-white dark:bg-[#141311] shadow-sm transition-transform ${
                         vatEnabled ? "translate-x-5" : "translate-x-0"
                       }`}
                     />
@@ -979,14 +950,14 @@ export const CheckinConfigView: React.FC = () => {
               </div>
 
               {vatEnabled && (
-                <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="space-y-6 animate-fadeIn">
                   {/* Mức Thuế VAT (%) */}
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <label className="text-xs font-bold text-[#F4F5F8]">
-                        Tỉ Lệ Thuế VAT (%):
+                      <label className="text-xs font-medium text-stone-700 dark:text-stone-300">
+                        Tỉ lệ thuế VAT (%):
                       </label>
-                      <span className="text-base font-black text-[#D4AF37] font-mono">
+                      <span className="text-base font-semibold text-stone-900 dark:text-[#efe9de] font-mono">
                         {vatRate}%
                       </span>
                     </div>
@@ -999,7 +970,7 @@ export const CheckinConfigView: React.FC = () => {
                         step={1}
                         value={vatRate}
                         onChange={(e) => setVatRate(Math.max(0, Math.min(100, Number(e.target.value))))}
-                        className="w-24 px-3 py-2 rounded-xl border border-[#212532] bg-[#0E1015] text-[#F4F5F8] text-sm font-bold text-center focus:outline-none focus:border-[#D4AF37]"
+                        className="w-24 px-3 py-2 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] text-sm font-medium text-center focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
                       />
                       <div className="flex items-center gap-1.5">
                         {[0, 5, 8, 10].map((rate) => (
@@ -1007,26 +978,26 @@ export const CheckinConfigView: React.FC = () => {
                             key={rate}
                             type="button"
                             onClick={() => setVatRate(rate)}
-                            className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition cursor-pointer ${
+                            className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-medium transition cursor-pointer ${
                               vatRate === rate
-                                ? "border-[#D4AF37] bg-[#D4AF37]/20 text-[#D4AF37]"
-                                : "border-[#212532] bg-[#12141A] text-[#8E95A5] hover:text-[#F4F5F8]"
+                                ? "border-stone-900 bg-stone-900 text-white dark:border-[#efe9de] dark:bg-[#efe9de] dark:text-stone-900"
+                                : "border-stone-200 dark:border-stone-800 bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                             }`}
                           >
                             {rate}%
                           </button>
                         ))}
                       </div>
-                      <span className="text-xs text-[#8E95A5] italic">
+                      <span className="text-xs text-stone-400 dark:text-stone-500">
                         (Mức thuế hiện hành thông dụng: 8% hoặc 10%)
                       </span>
                     </div>
                   </div>
 
                   {/* Chế độ Áp Dụng: ALL hay SPECIFIC_SHIFTS */}
-                  <div className="space-y-3 pt-4 border-t border-[#212532]">
-                    <label className="text-xs font-bold text-[#F4F5F8] block">
-                      Phạm Vi Ca Làm Việc Áp Dụng Thuế:
+                  <div className="space-y-3 pt-4 border-t border-stone-100 dark:border-stone-800">
+                    <label className="text-xs font-medium text-stone-700 dark:text-stone-300 block">
+                      Phạm vi ca làm việc áp dụng thuế:
                     </label>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1034,27 +1005,27 @@ export const CheckinConfigView: React.FC = () => {
                         onClick={() => setVatApplyMode("ALL")}
                         className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                           vatApplyMode === "ALL"
-                            ? "bg-[#D4AF37]/10 border-[#D4AF37] text-white shadow-md shadow-[#D4AF37]/5"
-                            : "bg-[#0E1015] border-[#212532] text-[#8E95A5] hover:border-[#2C3242]"
+                            ? "bg-stone-50 dark:bg-[#25221e] border-stone-900 dark:border-[#efe9de] shadow-sm"
+                            : "bg-white dark:bg-[#1c1a17] border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:border-stone-300 dark:hover:border-stone-700"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs font-bold text-white flex items-center gap-2">
-                            <span>🌐 Áp Dụng Tất Cả Các Ca (All)</span>
+                          <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                            <span>Áp dụng tất cả các ca (All)</span>
                           </span>
                           <div
                             className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                               vatApplyMode === "ALL"
-                                ? "border-[#D4AF37] bg-[#D4AF37]"
-                                : "border-[#4A5162]"
+                                ? "border-stone-900 bg-stone-900 dark:border-[#efe9de] dark:bg-[#efe9de]"
+                                : "border-stone-300 dark:border-stone-700"
                             }`}
                           >
                             {vatApplyMode === "ALL" && (
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#0B0C10]" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-white dark:bg-[#1c1a17]" />
                             )}
                           </div>
                         </div>
-                        <p className="text-[11px] text-[#8E95A5]">
+                        <p className="text-[11px] text-stone-500 dark:text-stone-400">
                           Mọi đơn hàng thanh toán trong bất kỳ ca nào đều tự động cộng thuế VAT.
                         </p>
                       </div>
@@ -1063,27 +1034,27 @@ export const CheckinConfigView: React.FC = () => {
                         onClick={() => setVatApplyMode("SPECIFIC_SHIFTS")}
                         className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                           vatApplyMode === "SPECIFIC_SHIFTS"
-                            ? "bg-[#D4AF37]/10 border-[#D4AF37] text-white shadow-md shadow-[#D4AF37]/5"
-                            : "bg-[#0E1015] border-[#212532] text-[#8E95A5] hover:border-[#2C3242]"
+                            ? "bg-stone-50 dark:bg-[#25221e] border-stone-900 dark:border-[#efe9de] shadow-sm"
+                            : "bg-white dark:bg-[#1c1a17] border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:border-stone-300 dark:hover:border-stone-700"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs font-bold text-white flex items-center gap-2">
-                            <span>⏱️ Chỉ Áp Dụng Cho Ca Được Chọn</span>
+                          <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                            <span>Chỉ áp dụng cho ca được chọn</span>
                           </span>
                           <div
                             className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                               vatApplyMode === "SPECIFIC_SHIFTS"
-                                ? "border-[#D4AF37] bg-[#D4AF37]"
-                                : "border-[#4A5162]"
+                                ? "border-stone-900 bg-stone-900 dark:border-[#efe9de] dark:bg-[#efe9de]"
+                                : "border-stone-300 dark:border-stone-700"
                             }`}
                           >
                             {vatApplyMode === "SPECIFIC_SHIFTS" && (
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#0B0C10]" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-white dark:bg-[#1c1a17]" />
                             )}
                           </div>
                         </div>
-                        <p className="text-[11px] text-[#8E95A5]">
+                        <p className="text-[11px] text-stone-500 dark:text-stone-400">
                           Chỉ tính thuế VAT khi ca trực hiện tại thuộc danh sách ca được tích chọn bên dưới.
                         </p>
                       </div>
@@ -1091,9 +1062,9 @@ export const CheckinConfigView: React.FC = () => {
 
                     {/* Danh sách các ca làm việc để chọn (nếu chọn SPECIFIC_SHIFTS) */}
                     {vatApplyMode === "SPECIFIC_SHIFTS" && (
-                      <div className="mt-3 p-4 rounded-2xl bg-[#0E1015] border border-[#212532] space-y-3 animate-in fade-in duration-150">
+                      <div className="mt-3 p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-[#F4F5F8]">
+                          <span className="text-xs font-medium text-stone-900 dark:text-[#efe9de]">
                             Chọn các ca áp dụng thuế VAT:
                           </span>
                           <div className="flex items-center gap-2">
@@ -1106,19 +1077,19 @@ export const CheckinConfigView: React.FC = () => {
                                     : ["Ca Sáng", "Ca Chiều", "Ca Tối", "Ca Khuya"];
                                 setVatAppliedShifts(allNames);
                               }}
-                              className="text-[10px] text-[#D4AF37] hover:underline font-semibold cursor-pointer"
+                              className="text-[10px] text-stone-600 dark:text-stone-300 hover:underline font-medium cursor-pointer"
                             >
                               Chọn tất cả
                             </button>
-                            <span className="text-white/20 text-[10px]">|</span>
+                            <span className="text-stone-300 dark:text-stone-700 text-[10px]">|</span>
                             <button
                               type="button"
                               onClick={() => setVatAppliedShifts([])}
-                              className="text-[10px] text-[#8E95A5] hover:text-white hover:underline font-semibold cursor-pointer"
+                              className="text-[10px] text-stone-500 hover:text-stone-900 dark:hover:text-[#efe9de] hover:underline font-medium cursor-pointer"
                             >
                               Bỏ chọn
                             </button>
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#D4AF37]/15 text-[#D4AF37]">
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
                               Đã chọn: {vatAppliedShifts.length} ca
                             </span>
                           </div>
@@ -1133,17 +1104,17 @@ export const CheckinConfigView: React.FC = () => {
                                   key={shiftName}
                                   type="button"
                                   onClick={() => handleToggleShift(shiftName)}
-                                  className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+                                  className={`px-3.5 py-2 rounded-xl border text-xs font-medium transition flex items-center gap-2 cursor-pointer ${
                                     isChecked
-                                      ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white"
-                                      : "bg-[#12141A] border-[#212532] text-[#8E95A5] hover:text-white"
+                                      ? "bg-white dark:bg-[#1c1a17] border-stone-900 dark:border-[#efe9de] text-stone-900 dark:text-[#efe9de] shadow-sm"
+                                      : "bg-white/60 dark:bg-[#1c1a17]/60 border-stone-200 dark:border-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-[#efe9de]"
                                   }`}
                                 >
                                   <span
                                     className={`w-3.5 h-3.5 rounded flex items-center justify-center border text-[9px] ${
                                       isChecked
-                                        ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10]"
-                                        : "border-[#4A5162]"
+                                        ? "bg-stone-900 border-stone-900 text-white dark:bg-[#efe9de] dark:border-[#efe9de] dark:text-stone-900"
+                                        : "border-stone-300 dark:border-stone-700"
                                     }`}
                                   >
                                     {isChecked ? "✓" : ""}
@@ -1165,29 +1136,29 @@ export const CheckinConfigView: React.FC = () => {
                                   key={shift.id || shift._id || shift.shift_code}
                                   type="button"
                                   onClick={() => handleToggleShift(sName)}
-                                  className={`p-3 rounded-xl border text-xs font-bold transition flex items-center justify-between text-left cursor-pointer ${
+                                  className={`p-3 rounded-xl border text-xs font-medium transition flex items-center justify-between text-left cursor-pointer ${
                                     isChecked
-                                      ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white"
-                                      : "bg-[#12141A] border-[#212532] text-[#8E95A5] hover:text-white"
+                                      ? "bg-white dark:bg-[#1c1a17] border-stone-900 dark:border-[#efe9de] text-stone-900 dark:text-[#efe9de] shadow-sm"
+                                      : "bg-white/60 dark:bg-[#1c1a17]/60 border-stone-200 dark:border-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-[#efe9de]"
                                   }`}
                                 >
                                   <div>
                                     <div className="flex items-center gap-2">
                                       <span
                                         className="w-2.5 h-2.5 rounded-full shrink-0"
-                                        style={{ backgroundColor: shift.color || "#D4AF37" }}
+                                        style={{ backgroundColor: shift.color || "#a8a29e" }}
                                       />
-                                      <span className="font-bold text-white">{sName}</span>
+                                      <span className="font-medium text-stone-900 dark:text-[#efe9de]">{sName}</span>
                                     </div>
-                                    <span className="text-[10px] text-[#8E95A5] font-mono mt-0.5 block">
+                                    <span className="text-[10px] text-stone-400 dark:text-stone-500 font-mono mt-0.5 block">
                                       {shift.start_time} - {shift.end_time}
                                     </span>
                                   </div>
                                   <span
                                     className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ${
                                       isChecked
-                                        ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10] font-black"
-                                        : "border-[#4A5162]"
+                                        ? "bg-stone-900 border-stone-900 text-white dark:bg-[#efe9de] dark:border-[#efe9de] dark:text-stone-900 font-bold"
+                                        : "border-stone-300 dark:border-stone-700"
                                     }`}
                                   >
                                     {isChecked ? "✓" : ""}
@@ -1206,13 +1177,13 @@ export const CheckinConfigView: React.FC = () => {
           </div>
 
           {/* Form Actions Footer */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-3xl bg-[#12141A] border border-[#212532]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm">
             <button
               type="button"
               onClick={handleResetDefaults}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#212532] bg-[#0B0C10] hover:bg-[#181B24] text-[#8E95A5] hover:text-[#F4F5F8] text-xs font-bold transition cursor-pointer"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-400 text-xs font-medium transition cursor-pointer"
             >
-              <FaUndo className="text-xs" />
+              <FiRotateCcw className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
               <span>Khôi phục mặc định Zone 6</span>
             </button>
 
@@ -1220,10 +1191,14 @@ export const CheckinConfigView: React.FC = () => {
               <button
                 type="submit"
                 disabled={updateMutation.isPending}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 py-3 px-7 rounded-2xl gold-gradient-bg text-[#0B0C10] font-black text-xs shadow-lg transition hover:brightness-110 cursor-pointer disabled:opacity-50"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-6 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 font-medium text-xs shadow-sm transition cursor-pointer disabled:opacity-50"
               >
-                {updateMutation.isPending ? <FaSpinner className="animate-spin" /> : <FaSave />}
-                <span>{updateMutation.isPending ? "Đang lưu cấu hình..." : "Lưu Thay Đổi Cấu Hình"}</span>
+                {updateMutation.isPending ? (
+                  <div className="w-4 h-4 border-2 border-stone-400 border-t-white dark:border-stone-500 dark:border-t-stone-900 rounded-full animate-spin" />
+                ) : (
+                  <FiCheck className="w-4 h-4" />
+                )}
+                <span>{updateMutation.isPending ? "Đang lưu cấu hình..." : "Lưu thay đổi cấu hình"}</span>
               </button>
             </div>
           </div>

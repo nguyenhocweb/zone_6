@@ -2,17 +2,18 @@
 
 import React, { useMemo, useState } from "react";
 import {
-  FaCheckCircle,
-  FaClock,
-  FaExclamationTriangle,
-  FaFileExcel,
-  FaLock,
-  FaLockOpen,
-  FaMagic,
-  FaSearch,
-  FaSpinner,
-  FaUsers,
-} from "react-icons/fa";
+  FiCheckCircle,
+  FiClock,
+  FiAlertTriangle,
+  FiFileText,
+  FiLock,
+  FiUnlock,
+  FiZap,
+  FiSearch,
+  FiLoader,
+  FiUsers,
+  FiEdit3,
+} from "react-icons/fi";
 import {
   type RegistrationWeekCard,
   type ShiftRegistrationItem,
@@ -51,7 +52,6 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Helper đếm số ca của 1 nhân viên
   const countStaffShifts = (item: ShiftRegistrationItem): number => {
     let count = 0;
     DAYS_HEADER.forEach((d) => {
@@ -67,18 +67,16 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
     return count;
   };
 
-  // Lọc theo tìm kiếm
   const filteredRegistrations = useMemo(() => {
     if (!searchTerm.trim()) return registrations;
     const term = searchTerm.toLowerCase().trim();
     return registrations.filter((r) => r.user_name.toLowerCase().includes(term));
   }, [registrations, searchTerm]);
 
-  // Thống kê nhanh
   const stats = useMemo(() => {
     const totalStaff = registrations.length;
     let totalShifts = 0;
-    let qualifiedStaff = 0; // >= 4 ca
+    let qualifiedStaff = 0;
 
     registrations.forEach((r) => {
       const count = countStaffShifts(r);
@@ -94,12 +92,11 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
     };
   }, [registrations]);
 
-  // Render tag ca làm việc
   const renderShiftTags = (value: string) => {
     const raw = (value || "Off").trim();
     if (raw.toLowerCase() === "off") {
       return (
-        <span className="text-[11px] font-medium text-[#555C6E] italic">
+        <span className="text-[11px] font-medium text-stone-400 dark:text-stone-500 italic">
           Off
         </span>
       );
@@ -107,7 +104,7 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
 
     if (raw.toLowerCase() === "cả ngày") {
       return (
-        <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-950/70 text-emerald-300 border border-emerald-500/50">
+        <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
           Cả ngày
         </span>
       );
@@ -117,21 +114,19 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
     return (
       <div className="flex flex-wrap items-center justify-center gap-1">
         {shifts.map((s, idx) => {
-          let badgeClass = "bg-[#1C202C] text-[#8E95A5] border-[#2E3547]";
+          let badgeClass = "bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border-stone-200/80 dark:border-stone-800";
           const lower = s.toLowerCase();
           if (lower.includes("sáng")) {
-            badgeClass = "bg-amber-950/40 text-amber-300 border-amber-600/40";
+            badgeClass = "bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800";
           } else if (lower.includes("chiều")) {
-            badgeClass = "bg-orange-950/40 text-orange-300 border-orange-600/40";
+            badgeClass = "bg-orange-50 dark:bg-orange-950/30 text-orange-800 dark:text-orange-300 border-orange-200 dark:border-orange-800";
           } else if (lower.includes("tối")) {
-            badgeClass = "bg-[#251F0D] text-[#F5D77F] border-[#D4AF37]/50";
-          } else if (lower.includes("khuya")) {
-            badgeClass = "bg-indigo-950/40 text-indigo-300 border-indigo-600/40";
+            badgeClass = "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-800 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800";
           }
           return (
             <span
               key={idx}
-              className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeClass}`}
+              className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-medium border ${badgeClass}`}
             >
               {s}
             </span>
@@ -141,47 +136,45 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
     );
   };
 
-  // Quy tắc nghiệp vụ: Bắt buộc khóa trước 28 tiếng trước khi tuần làm việc bắt đầu (Thứ 2 00:00)
   const isWeekMandatoryLocked = useMemo(() => {
     if (!weekCard?.week_start_date) return false;
     const parts = weekCard.week_start_date.split("-").map(Number);
     if (parts.length < 3 || isNaN(parts[0])) return false;
     const monday = new Date(parts[0], parts[1] - 1, parts[2], 0, 0, 0, 0);
-    // Hạn chót: Thứ 2 00:00 trừ 28 tiếng
     const deadline = new Date(monday.getTime() - 28 * 60 * 60 * 1000);
     return new Date().getTime() >= deadline.getTime();
   }, [weekCard]);
 
   return (
     <div className="space-y-6">
-      {/* 1. Header Toolbar Quản Lý: Trạng Thái Tuần, Nút Khóa / Mở & Tự Động Xếp Lịch */}
-      <div className="p-6 rounded-3xl bg-[#12141A] border border-[#212532] shadow-xl flex flex-col lg:flex-row items-center justify-between gap-4">
+      {/* 1. Header Toolbar Quản Lý */}
+      <div className="p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h3 className="text-base font-black gold-gradient-text uppercase tracking-wide">
-              Danh Sách Nhân Viên Đăng Ký Ca (Mẫu File Đăng Ký V2)
+            <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
+              Danh Sách Nhân Viên Đăng Ký Ca
             </h3>
             <span
-              className={`text-xs font-black px-2.5 py-0.5 rounded-full border ${
+              className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
                 isWeekMandatoryLocked
-                  ? "bg-rose-950/80 text-rose-300 border-rose-500/50"
+                  ? "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800"
                   : weekCard.is_currently_open
-                  ? "bg-emerald-950 text-emerald-300 border-emerald-500/50"
-                  : "bg-rose-950 text-rose-300 border-rose-500/50"
+                  ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
+                  : "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800"
               }`}
             >
               {isWeekMandatoryLocked
-                ? "🔴 ĐÃ KHÓA (BẮT BUỘC TRƯỚC 28H)"
+                ? "ĐÃ KHÓA (TRƯỚC 28H)"
                 : weekCard.is_currently_open
-                ? "🟢 ĐANG MỞ ĐĂNG KÝ"
-                : "🔴 ĐÃ KHÓA ĐĂNG KÝ"}
+                ? "ĐANG MỞ ĐĂNG KÝ"
+                : "ĐÃ KHÓA ĐĂNG KÝ"}
             </span>
-            <span className="text-xs font-bold text-[#E7CD80] bg-[#181B24] px-2.5 py-0.5 rounded-lg border border-[#212532]">
+            <span className="text-xs font-medium text-stone-600 dark:text-stone-400 bg-stone-100 dark:bg-[#25221e] px-2.5 py-0.5 rounded-lg border border-stone-200/80 dark:border-stone-800 font-mono">
               Tuần: {weekCard.week_range}
             </span>
           </div>
-          <p className="text-xs text-[#8E95A5] mt-1.5">
-            Dành cho Quản lý &amp; Trưởng ca: Tổng hợp toàn bộ nguyện vọng ca của nhân sự theo định dạng biểu mẫu Zone Six V2.
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-1.5">
+            Dành cho Quản lý &amp; Trưởng ca: Tổng hợp toàn bộ nguyện vọng ca của nhân sự theo định dạng biểu mẫu Zone Six.
           </p>
         </div>
 
@@ -190,45 +183,45 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
           {/* Nút Khóa / Mở nhanh đợt */}
           {isWeekMandatoryLocked ? (
             <div
-              className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-black bg-[#1A1012] text-rose-300 border border-rose-900/60 cursor-not-allowed opacity-90 shadow-sm"
-              title="Tuần này bắt buộc phải khóa trước 28 tiếng trước ngày bắt đầu làm việc. Đã qua thời gian quy định, không được phép mở khóa."
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 border border-stone-200/80 dark:border-stone-800 cursor-not-allowed opacity-90 shadow-sm"
+              title="Tuần này bắt buộc phải khóa trước 28 tiếng. Đã qua thời gian quy định, không được phép mở khóa."
             >
-              <FaLock className="text-xs text-rose-400" />
+              <FiLock className="text-xs text-stone-400" />
               <span>Đã Khóa (Bắt Buộc Trước 28h)</span>
             </div>
           ) : (
             <button
               type="button"
               onClick={onToggleLock}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-black border transition cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${
                 weekCard.is_open
-                  ? "bg-rose-950/30 hover:bg-rose-950/60 text-rose-300 border-rose-600/40"
-                  : "bg-emerald-950/30 hover:bg-emerald-950/60 text-emerald-300 border-emerald-600/40"
+                  ? "bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800"
+                  : "bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:hover:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
               }`}
               title={weekCard.is_open ? "Bấm để khóa không nhận thêm đăng ký" : "Bấm để mở lại đợt đăng ký"}
             >
               {weekCard.is_open ? (
                 <>
-                  <FaLock className="text-xs" />
+                  <FiLock className="text-xs text-stone-400" />
                   <span>Khóa Đợt Này</span>
                 </>
               ) : (
                 <>
-                  <FaLockOpen className="text-xs" />
+                  <FiUnlock className="text-xs text-stone-400" />
                   <span>Mở Lại Đợt Này</span>
                 </>
               )}
             </button>
           )}
 
-          {/* Cấu hình hẹn giờ đóng (chỉ khả dụng khi chưa đến mốc bắt buộc khóa 28h) */}
+          {/* Cấu hình hẹn giờ đóng */}
           {!isWeekMandatoryLocked && (
             <button
               type="button"
               onClick={onOpenConfigModal}
-              className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#181B24] hover:bg-[#222736] text-[#E7CD80] border border-[#212532] transition cursor-pointer"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium bg-stone-50 hover:bg-stone-100 dark:bg-[#25221e] dark:hover:bg-[#2d2924] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-800 transition cursor-pointer"
             >
-              <FaClock className="text-xs text-[#D4AF37]" />
+              <FiClock className="text-xs text-stone-400" />
               <span>Hẹn Giờ Đóng</span>
             </button>
           )}
@@ -237,10 +230,10 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
           <button
             type="button"
             onClick={onSwitchToMyRegistration}
-            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#1C202E] hover:bg-[#262C3E] text-[#F4F5F8] border border-[#3A4156] transition cursor-pointer"
-            title="Mở ma trận cá nhân để Quản lý / Trưởng ca tự đăng ký ca sẵn sàng đi làm"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium bg-stone-50 hover:bg-stone-100 dark:bg-[#25221e] dark:hover:bg-[#2d2924] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-800 transition cursor-pointer"
           >
-            <span>✍️ Đăng Ký Ca Cho Tôi</span>
+            <FiEdit3 className="text-xs text-stone-400" />
+            <span>Tự Đăng Ký Ca</span>
           </button>
 
           {/* Nút Auto xếp lịch từ DB */}
@@ -248,17 +241,17 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
             type="button"
             onClick={onAutoSchedule}
             disabled={isAutoScheduling || registrations.length === 0}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black gold-gradient-bg hover:brightness-110 text-[#0B0C10] shadow-lg gold-glow-sm transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white shadow-sm transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isAutoScheduling ? (
               <>
-                <FaSpinner className="animate-spin text-sm" />
-                <span>Đang Auto Xếp Lịch...</span>
+                <FiLoader className="animate-spin text-sm" />
+                <span>Đang Xếp Lịch...</span>
               </>
             ) : (
               <>
-                <FaMagic className="text-xs" />
-                <span>Tự Động Xếp Lịch Từ DS Này</span>
+                <FiZap className="text-xs" />
+                <span>Tự Động Xếp Lịch</span>
               </>
             )}
           </button>
@@ -267,99 +260,99 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
 
       {/* 2. Thống Kê Nhanh (KPIs) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532] flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] font-bold uppercase text-[#6D7588]">Tổng nhân viên đã nộp</div>
-            <div className="text-lg font-black text-[#F4F5F8] mt-0.5">{stats.totalStaff} người</div>
+            <div className="text-[10px] font-semibold uppercase text-stone-500 dark:text-stone-400 tracking-wider">Tổng nhân viên đã nộp</div>
+            <div className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">{stats.totalStaff} <span className="text-xs font-normal text-stone-400">người</span></div>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-[#181B24] text-[#D4AF37] border border-[#212532] flex items-center justify-center text-sm shrink-0">
-            <FaUsers />
+          <div className="w-9 h-9 rounded-xl bg-stone-100 dark:bg-[#25221e] text-stone-400 border border-stone-200/80 dark:border-stone-800 flex items-center justify-center text-sm shrink-0">
+            <FiUsers />
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532] flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] font-bold uppercase text-[#6D7588]">Tổng ca đăng ký</div>
-            <div className="text-lg font-black text-[#D4AF37] mt-0.5">{stats.totalShifts} ca</div>
+            <div className="text-[10px] font-semibold uppercase text-stone-500 dark:text-stone-400 tracking-wider">Tổng ca đăng ký</div>
+            <div className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">{stats.totalShifts} <span className="text-xs font-normal text-stone-400">ca</span></div>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-[#201A09] text-[#F5D77F] border border-[#D4AF37]/40 flex items-center justify-center text-sm shrink-0">
-            <FaClock />
+          <div className="w-9 h-9 rounded-xl bg-stone-100 dark:bg-[#25221e] text-stone-400 border border-stone-200/80 dark:border-stone-800 flex items-center justify-center text-sm shrink-0">
+            <FiClock />
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532] flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] font-bold uppercase text-[#6D7588]">Đạt chuẩn (≥ 4 ca)</div>
-            <div className="text-lg font-black text-emerald-400 mt-0.5">{stats.qualifiedStaff} người</div>
+            <div className="text-[10px] font-semibold uppercase text-stone-500 dark:text-stone-400 tracking-wider">Đạt chuẩn (≥ 4 ca)</div>
+            <div className="text-lg font-semibold text-emerald-600 dark:text-emerald-400 mt-1 font-mono">{stats.qualifiedStaff} <span className="text-xs font-normal text-stone-400">người</span></div>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-emerald-950/60 text-emerald-300 border border-emerald-600/40 flex items-center justify-center text-sm shrink-0">
-            <FaCheckCircle />
+          <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-stone-400 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-sm shrink-0">
+            <FiCheckCircle />
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532] flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] font-bold uppercase text-[#6D7588]">Tỷ lệ hoàn thành</div>
-            <div className="text-lg font-black text-[#E7CD80] mt-0.5">{stats.qualifiedPercent}%</div>
+            <div className="text-[10px] font-semibold uppercase text-stone-500 dark:text-stone-400 tracking-wider">Tỷ lệ hoàn thành</div>
+            <div className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">{stats.qualifiedPercent}%</div>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-[#1A1810] text-[#E7CD80] border border-[#D4AF37]/30 flex items-center justify-center text-sm shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-stone-100 dark:bg-[#25221e] text-stone-400 border border-stone-200/80 dark:border-stone-800 flex items-center justify-center text-xs font-mono font-bold shrink-0">
             %
           </div>
         </div>
       </div>
 
-      {/* 3. Ô Tìm Kiếm & Bảng Danh Sách Nhân Viên Đăng Ký */}
-      <div className="rounded-3xl bg-[#12141A] border border-[#212532] shadow-2xl overflow-hidden">
+      {/* 3. Bảng Danh Sách */}
+      <div className="rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm overflow-hidden">
         {/* Thanh tìm kiếm */}
-        <div className="p-4 border-b border-[#212532] bg-[#0E1015] flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-4 border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-80">
-            <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-[#6D7588]" />
+            <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-stone-400" />
             <input
               type="text"
               placeholder="Tìm theo tên nhân viên..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-[#181B24] border border-[#212532] rounded-xl pl-9 pr-3.5 py-2 text-xs text-[#F4F5F8] placeholder-[#555C6E] focus:outline-none focus:border-[#D4AF37] transition"
+              className="w-full bg-white dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl pl-9 pr-3.5 py-2 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition"
             />
           </div>
 
-          <div className="text-xs text-[#8E95A5]">
-            Hiển thị <strong className="text-[#D4AF37]">{filteredRegistrations.length}</strong> / {registrations.length} nhân sự đã nộp
+          <div className="text-xs text-stone-500 dark:text-stone-400 font-medium">
+            Hiển thị <strong className="text-stone-900 dark:text-stone-200">{filteredRegistrations.length}</strong> / {registrations.length} nhân sự đã nộp
           </div>
         </div>
 
         {/* Loading state */}
         {isLoading ? (
           <div className="py-16 flex flex-col items-center justify-center gap-3">
-            <div className="w-8 h-8 border-3 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
-            <span className="text-xs text-[#D4AF37] font-semibold">Đang tải danh sách đăng ký tuần {weekCard.week_range}...</span>
+            <FiLoader className="w-6 h-6 text-stone-400 animate-spin" />
+            <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">Đang tải danh sách đăng ký tuần {weekCard.week_range}...</span>
           </div>
         ) : filteredRegistrations.length === 0 ? (
-          <div className="py-16 text-center text-[#8E95A5] space-y-2">
-            <div className="text-3xl text-[#555C6E]">📂</div>
-            <div className="text-sm font-bold text-[#F4F5F8]">Chưa có nhân viên nào đăng ký ca cho tuần này</div>
-            <p className="text-xs max-w-md mx-auto text-[#6D7588]">
-              Khi nhân viên vào mục Đăng Ký Ca Làm và gửi bản đăng ký, dữ liệu sẽ tự động xuất hiện tại bảng này theo định dạng mẫu V2.
+          <div className="py-16 text-center text-stone-500 dark:text-stone-400 space-y-2">
+            <FiFileText className="text-3xl text-stone-400 mx-auto" />
+            <div className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">Chưa có nhân viên nào đăng ký ca cho tuần này</div>
+            <p className="text-xs max-w-md mx-auto text-stone-400 dark:text-stone-500">
+              Khi nhân viên vào mục Đăng Ký Ca Làm và gửi bản đăng ký, dữ liệu sẽ tự động xuất hiện tại bảng này.
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse min-w-[960px]">
               <thead>
-                <tr className="bg-[#0B0C10] border-b border-[#212532] text-[11px] font-black uppercase text-[#D4AF37] tracking-wider">
-                  <th className="px-3 py-3 text-center w-12 border-r border-[#212532]">STT</th>
-                  <th className="px-4 py-3 min-w-[160px] border-r border-[#212532]">Họ Tên</th>
+                <tr className="bg-stone-50/70 dark:bg-[#181614] border-b border-stone-200/80 dark:border-stone-800 text-[11px] font-semibold uppercase text-stone-600 dark:text-stone-400 tracking-wider">
+                  <th className="px-3 py-3 text-center w-12 border-r border-stone-200/60 dark:border-stone-800">STT</th>
+                  <th className="px-4 py-3 min-w-[160px] border-r border-stone-200/60 dark:border-stone-800">Họ Tên</th>
                   {DAYS_HEADER.map((d) => (
-                    <th key={d.key} className="px-2 py-3 text-center min-w-[100px] border-r border-[#212532]">
+                    <th key={d.key} className="px-2 py-3 text-center min-w-[100px] border-r border-stone-200/60 dark:border-stone-800">
                       {d.label}
                     </th>
                   ))}
-                  <th className="px-3 py-3 text-center w-20 border-r border-[#212532]">Tổng Ca</th>
+                  <th className="px-3 py-3 text-center w-20 border-r border-stone-200/60 dark:border-stone-800">Tổng Ca</th>
                   <th className="px-3 py-3 text-center w-28">Trạng Thái</th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-[#212532]">
+              <tbody className="divide-y divide-stone-100 dark:divide-stone-800">
                 {filteredRegistrations.map((item, idx) => {
                   const shiftCount = countStaffShifts(item);
                   const isQualified = shiftCount >= 4;
@@ -367,13 +360,13 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
                   return (
                     <tr
                       key={item._id || idx}
-                      className="hover:bg-[#181B24]/50 transition-colors"
+                      className="hover:bg-stone-50/80 dark:hover:bg-[#25221e]/50 transition-colors"
                     >
-                      <td className="px-3 py-3 text-center text-[#6D7588] font-mono border-r border-[#212532]">
+                      <td className="px-3 py-3 text-center text-stone-400 font-mono border-r border-stone-100 dark:border-stone-800">
                         {idx + 1}
                       </td>
 
-                      <td className="px-4 py-3 font-black text-[#F4F5F8] border-r border-[#212532]">
+                      <td className="px-4 py-3 font-semibold text-stone-900 dark:text-[#efe9de] border-r border-stone-100 dark:border-stone-800">
                         <div className="truncate max-w-[180px]" title={item.user_name}>
                           {item.user_name}
                         </div>
@@ -385,7 +378,7 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
                         return (
                           <td
                             key={d.key}
-                            className="px-2 py-2 text-center border-r border-[#212532] bg-[#0E1015]/40"
+                            className="px-2 py-2 text-center border-r border-stone-100 dark:border-stone-800"
                           >
                             {renderShiftTags(val)}
                           </td>
@@ -393,8 +386,8 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
                       })}
 
                       {/* Tổng ca */}
-                      <td className="px-3 py-3 text-center font-black border-r border-[#212532]">
-                        <span className={`text-xs ${isQualified ? "text-[#D4AF37]" : "text-amber-400"}`}>
+                      <td className="px-3 py-3 text-center font-semibold font-mono border-r border-stone-100 dark:border-stone-800">
+                        <span className={`text-xs ${isQualified ? "text-stone-900 dark:text-stone-200" : "text-amber-600 dark:text-amber-400"}`}>
                           {shiftCount} ca
                         </span>
                       </td>
@@ -402,12 +395,12 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
                       {/* Trạng thái đạt chuẩn >= 4 ca */}
                       <td className="px-3 py-3 text-center">
                         {isQualified ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-600/50">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                             ✓ Đạt
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-950/80 text-amber-300 border border-amber-600/50">
-                            ⚠️ &lt; 4 ca
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                            &lt; 4 ca
                           </span>
                         )}
                       </td>

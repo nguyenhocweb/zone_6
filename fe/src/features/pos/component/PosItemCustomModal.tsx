@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiX, FiCheck, FiPlus, FiShoppingBag, FiCoffee } from 'react-icons/fi';
 
 export interface IPosSellableTopping {
@@ -53,7 +53,6 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
 
   const basePrice = Number(recipe.price ?? recipe.selling_price ?? 0);
   const isDefaultL = recipe.serving_size?.includes('L');
-  // Nếu món gốc là M mà chọn L -> +5.000đ; Nếu món gốc là L mà chọn M -> -5.000đ
   const sizeSurcharge = selectedSize === 'L' && !isDefaultL ? 5000 : selectedSize === 'M' && isDefaultL ? -5000 : 0;
   const currentBasePrice = Math.max(0, basePrice + sizeSurcharge);
 
@@ -110,75 +109,76 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-[#12141a] border border-[#212532] rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[90vh] transition-colors">
         {/* Header Modal */}
-        <div className="p-4 border-b border-[#212532] flex items-center justify-between bg-[#181b24]/60">
+        <div className="p-4 sm:p-5 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between bg-stone-50/70 dark:bg-[#181614]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#d4af37]/15 text-[#d4af37] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-stone-400 flex items-center justify-center">
               <FiCoffee className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-[10px] uppercase font-bold text-[#a0a5b5] bg-[#12141a] px-2 py-0.5 rounded border border-[#212532]">
+                <span className="text-[10px] uppercase font-mono font-medium text-stone-600 dark:text-stone-300 bg-stone-100 dark:bg-[#25221e] px-2 py-0.5 rounded-md border border-stone-200/80 dark:border-stone-700/60">
                   {recipe.category || 'MÓN'}
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60 font-medium">
                   Size {selectedSize}
                 </span>
                 {recipe.serving_mode && (
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/30 font-semibold">
+                  <span className="text-[10px] px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border border-stone-200/80 dark:border-stone-700/60">
                     {recipe.serving_mode === 'cold' ? 'Lạnh' : recipe.serving_mode === 'hot' ? 'Nóng' : 'Nóng / Lạnh'}
                   </span>
                 )}
               </div>
-              <h3 className="text-base font-bold text-white leading-tight mt-1">
+              <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] leading-tight mt-1">
                 {recipe.name}
               </h3>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-[#181b24] hover:bg-[#212532] text-[#a0a5b5] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 flex items-center justify-center transition cursor-pointer"
           >
-            <FiX className="w-5 h-5" />
+            <FiX className="w-4 h-4" />
           </button>
         </div>
 
         {/* Nội dung Tùy chọn (Scrollable) */}
-        <div className="p-5 overflow-y-auto space-y-5 flex-1 divide-y divide-[#212532]/60">
+        <div className="p-5 overflow-y-auto space-y-5 flex-1 divide-y divide-stone-100 dark:divide-stone-800/80">
           {/* 0. Chọn Kích Thước (Size) */}
           <div className="space-y-2.5 pt-1">
-            <label className="text-xs font-bold text-white flex items-center justify-between">
-              <span>📏 KÍCH THƯỚC (SIZE)</span>
-              <span className="text-[11px] font-bold text-[#d4af37]">Size {selectedSize}</span>
+            <label className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center justify-between">
+              <span>KÍCH THƯỚC (SIZE)</span>
+              <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400">Size {selectedSize}</span>
             </label>
             <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
                 onClick={() => setSelectedSize('M')}
-                className={`p-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-between ${
+                className={`p-3 rounded-2xl border text-xs font-medium transition cursor-pointer flex items-center justify-between shadow-xs ${
                   selectedSize === 'M'
-                    ? 'bg-[#d4af37] text-[#0b0c10] border-[#d4af37] shadow-md shadow-[#d4af37]/20 font-black'
-                    : 'bg-[#181b24] text-[#a0a5b5] hover:text-white border-[#212532] hover:bg-[#212532]'
+                    ? 'bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100'
+                    : 'bg-stone-50 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-stone-800'
                 }`}
               >
                 <span>Size Vừa (M)</span>
-                <span className={`text-[11px] font-mono ${selectedSize === 'M' ? 'text-[#0b0c10]' : 'text-[#6c7280]'}`}>
+                <span className={`text-[11px] font-mono ${selectedSize === 'M' ? 'opacity-80' : 'text-stone-400'}`}>
                   {isDefaultL ? '-5.000đ' : 'Tiêu chuẩn'}
                 </span>
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedSize('L')}
-                className={`p-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-between ${
+                className={`p-3 rounded-2xl border text-xs font-medium transition cursor-pointer flex items-center justify-between shadow-xs ${
                   selectedSize === 'L'
-                    ? 'bg-[#d4af37] text-[#0b0c10] border-[#d4af37] shadow-md shadow-[#d4af37]/20 font-black'
-                    : 'bg-[#181b24] text-[#a0a5b5] hover:text-white border-[#212532] hover:bg-[#212532]'
+                    ? 'bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100'
+                    : 'bg-stone-50 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-stone-800'
                 }`}
               >
                 <span>Size Lớn (L)</span>
-                <span className={`text-[11px] font-mono ${selectedSize === 'L' ? 'text-[#0b0c10]' : 'text-[#d4af37]'}`}>
+                <span className={`text-[11px] font-mono ${selectedSize === 'L' ? 'opacity-80' : 'text-stone-500'}`}>
                   {isDefaultL ? 'Tiêu chuẩn' : '+5.000đ'}
                 </span>
               </button>
@@ -187,10 +187,10 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
 
           {/* 1. Mức Đá (Nếu không phải món chỉ uống nóng) */}
           {recipe.serving_mode !== 'hot' && (
-            <div className="space-y-2.5 pt-1">
-              <label className="text-xs font-bold text-white flex items-center justify-between">
-                <span>🧊 MỨC ĐÁ</span>
-                <span className="text-[11px] font-normal text-[#d4af37]">{iceLevel}</span>
+            <div className="space-y-2.5 pt-4">
+              <label className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center justify-between">
+                <span>MỨC ĐÁ</span>
+                <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">{iceLevel}</span>
               </label>
               <div className="grid grid-cols-4 gap-2">
                 {['100% Đá', '70% Đá', '50% Đá', 'Không Đá'].map((lvl) => (
@@ -198,10 +198,10 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
                     key={lvl}
                     type="button"
                     onClick={() => setIceLevel(lvl)}
-                    className={`py-2 px-1 text-xs rounded-xl font-medium border transition-all cursor-pointer text-center ${
+                    className={`py-2 px-1.5 rounded-xl border text-[11px] font-medium transition cursor-pointer text-center ${
                       iceLevel === lvl
-                        ? 'bg-[#d4af37] text-[#0b0c10] border-[#d4af37] font-bold shadow-md shadow-[#d4af37]/20'
-                        : 'bg-[#181b24] text-[#a0a5b5] hover:text-white border-[#212532] hover:bg-[#212532]'
+                        ? 'bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100'
+                        : 'bg-stone-50 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-stone-800'
                     }`}
                   >
                     {lvl}
@@ -213,141 +213,116 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
 
           {/* 2. Mức Đường */}
           <div className="space-y-2.5 pt-4">
-            <label className="text-xs font-bold text-white flex items-center justify-between">
-              <span>🍯 MỨC ĐƯỜNG</span>
-              <span className="text-[11px] font-normal text-[#d4af37]">{sugarLevel}</span>
+            <label className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center justify-between">
+              <span>MỨC ĐƯỜNG</span>
+              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">{sugarLevel}</span>
             </label>
-            <div className="grid grid-cols-5 gap-1.5">
-              {['100% Đường', '70% Đường', '50% Đường', '30% Đường', '0% Đường'].map((lvl) => (
+            <div className="grid grid-cols-4 gap-2">
+              {['100% Đường', '70% Đường', '50% Đường', 'Không Đường'].map((lvl) => (
                 <button
                   key={lvl}
                   type="button"
                   onClick={() => setSugarLevel(lvl)}
-                  className={`py-2 px-1 text-[11px] rounded-xl font-medium border transition-all cursor-pointer text-center ${
+                  className={`py-2 px-1.5 rounded-xl border text-[11px] font-medium transition cursor-pointer text-center ${
                     sugarLevel === lvl
-                      ? 'bg-[#d4af37] text-[#0b0c10] border-[#d4af37] font-bold shadow-md shadow-[#d4af37]/20'
-                      : 'bg-[#181b24] text-[#a0a5b5] hover:text-white border-[#212532] hover:bg-[#212532]'
+                      ? 'bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100'
+                      : 'bg-stone-50 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-stone-800'
                   }`}
                 >
-                  {lvl.replace(' Đường', '')}
+                  {lvl}
                 </button>
               ))}
             </div>
           </div>
 
           {/* 3. Thêm Topping Thật Từ Database */}
-          <div className="space-y-2.5 pt-4">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                <span>🧋 THÊM TOPPING</span>
-                <span className="text-[10px] text-[#a0a5b5] font-normal">(Chọn nhiều loại)</span>
+          {availableToppings && availableToppings.length > 0 && (
+            <div className="space-y-2.5 pt-4">
+              <label className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center justify-between">
+                <span>THÊM TOPPING ({availableToppings.length} loại)</span>
+                {selectedToppings.length > 0 && (
+                  <span className="text-[11px] font-mono text-stone-600 dark:text-stone-300">
+                    +{toppingTotal.toLocaleString()}đ ({selectedToppings.length} loại)
+                  </span>
+                )}
               </label>
-              {selectedToppings.length > 0 && (
-                <span className="text-xs font-extrabold text-[#d4af37]">
-                  +{toppingTotal.toLocaleString()}đ
-                </span>
-              )}
-            </div>
 
-            {availableToppings.length === 0 ? (
-              <p className="text-xs text-[#6c7280] italic">
-                Chưa có topping bán kèm nào trong cơ sở này.
-              </p>
-            ) : (
-              <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+              <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
                 {availableToppings.map((top) => {
                   const isChecked = selectedToppings.some(
                     (t) => (t.id || (t as any)._id || t.name) === (top.id || (top as any)._id || top.name)
                   );
-                  const price = Number(top.selling_price || 0);
-
                   return (
-                    <div
+                    <button
                       key={top.id || (top as any)._id || top.name}
+                      type="button"
                       onClick={() => handleToggleTopping(top)}
-                      className={`p-2.5 rounded-xl border flex items-center justify-between transition-all cursor-pointer select-none ${
+                      className={`p-2.5 rounded-xl border text-left text-xs font-medium transition cursor-pointer flex items-center justify-between ${
                         isChecked
-                          ? 'bg-[#d4af37]/10 border-[#d4af37] text-white shadow-sm'
-                          : 'bg-[#181b24] border-[#212532] text-[#a0a5b5] hover:border-[#2f3546] hover:text-white'
+                          ? 'bg-stone-100 dark:bg-[#25221e] border-stone-900 dark:border-stone-300 text-stone-900 dark:text-[#efe9de]'
+                          : 'bg-stone-50/50 dark:bg-[#141311] border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-[#25221e]'
                       }`}
                     >
-                      <div className="flex items-center gap-2.5">
-                        <div
-                          className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${
-                            isChecked
-                              ? 'bg-[#d4af37] border-[#d4af37] text-[#0b0c10]'
-                              : 'border-[#444b60] bg-transparent'
-                          }`}
-                        >
-                          {isChecked && <FiCheck className="w-3 h-3 font-extrabold" />}
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-white leading-tight">
-                            {top.name}
-                          </p>
-                          {top.portion_unit && (
-                            <span className="text-[10px] text-[#a0a5b5]">
-                              Khẩu phần: {top.portion_unit}
-                            </span>
-                          )}
-                        </div>
+                      <div className="min-w-0 pr-1">
+                        <span className="block truncate font-medium text-stone-900 dark:text-[#efe9de]">{top.name}</span>
+                        <span className="text-[10px] text-stone-500 font-mono">+{Number(top.selling_price).toLocaleString()}đ</span>
                       </div>
-
-                      <span className="text-xs font-extrabold text-[#d4af37]">
-                        +{price.toLocaleString()}đ
-                      </span>
-                    </div>
+                      <div
+                        className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
+                          isChecked
+                            ? 'bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100'
+                            : 'border-stone-300 dark:border-stone-700'
+                        }`}
+                      >
+                        {isChecked && <FiCheck className="w-3 h-3" />}
+                      </div>
+                    </button>
                   );
                 })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* 4. Ghi Chú Đặc Biệt */}
-          <div className="space-y-2 pt-4">
-            <label className="text-xs font-bold text-white block">
-              📝 GHI CHÚ ĐẶC BIỆT
+          {/* 4. Ghi Chú Riêng Của Khách */}
+          <div className="space-y-1.5 pt-4">
+            <label className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">
+              GHI CHÚ PHA CHẾ
             </label>
             <input
               type="text"
               value={extraNote}
               onChange={(e) => setExtraNote(e.target.value)}
-              placeholder="VD: Ít sữa, mang đi, để đá riêng..."
-              className="w-full bg-[#181b24] border border-[#212532] rounded-xl px-3 py-2 text-xs text-white placeholder-[#6c7280] focus:outline-none focus:border-[#d4af37]"
+              placeholder="VD: Ít ngọt, nhiều sữa, tách đá riêng..."
+              className="w-full bg-stone-50 dark:bg-[#141311] border border-stone-200/80 dark:border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
             />
           </div>
         </div>
 
-        {/* Footer Xác Nhận & Tổng Tiền */}
-        <div className="p-4 border-t border-[#212532] bg-[#181b24]/90 flex items-center justify-between gap-4">
+        {/* Footer: Tổng Tiền & Nút Thêm Vào Giỏ */}
+        <div className="p-4 sm:p-5 border-t border-stone-100 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] flex items-center justify-between gap-3">
           <div>
-            <span className="text-[10px] text-[#a0a5b5] block">ĐƠN GIÁ MÓN NÀY:</span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-lg font-black text-[#d4af37]">
-                {finalUnitPrice.toLocaleString()}đ
-              </span>
-              {toppingTotal > 0 && (
-                <span className="text-xs text-[#a0a5b5] line-through">
-                  {basePrice.toLocaleString()}đ
-                </span>
-              )}
-            </div>
+            <span className="text-[10px] text-stone-400 uppercase font-medium block">
+              Tổng đơn giá
+            </span>
+            <span className="text-base font-semibold text-stone-900 dark:text-[#efe9de]">
+              {finalUnitPrice.toLocaleString()} VNĐ
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-[#212532] bg-[#12141a] hover:bg-[#181b24] text-xs font-bold text-[#a0a5b5] hover:text-white transition-colors cursor-pointer"
+              className="py-2.5 px-4 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] text-xs font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition cursor-pointer"
             >
               Hủy
             </button>
             <button
               type="button"
               onClick={handleAddToCart}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b58d22] text-[#0b0c10] text-xs font-black flex items-center gap-2 shadow-lg shadow-[#d4af37]/20 hover:brightness-110 active:scale-97 transition-all cursor-pointer"
+              className="py-2.5 px-5 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold shadow-xs transition cursor-pointer flex items-center gap-2"
             >
-              <FiShoppingBag className="w-4 h-4 font-bold" />
+              <FiShoppingBag className="w-3.5 h-3.5" />
               <span>Thêm Vào Giỏ</span>
             </button>
           </div>
@@ -356,4 +331,3 @@ export const PosItemCustomModal: React.FC<PosItemCustomModalProps> = ({
     </div>
   );
 };
-

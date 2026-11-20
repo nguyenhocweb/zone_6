@@ -4,20 +4,21 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import {
-  FaBell,
-  FaExclamationTriangle,
-  FaFire,
-  FaCheckCircle,
-  FaTimes,
-  FaUserCheck,
-  FaUserPlus,
-  FaCalendarAlt,
-  FaClock,
-  FaSyncAlt,
-  FaCheckDouble,
-  FaTable,
-  FaThLarge,
-} from "react-icons/fa";
+  FiBell,
+  FiAlertTriangle,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiX,
+  FiUserPlus,
+  FiCalendar,
+  FiClock,
+  FiRefreshCw,
+  FiCheckSquare,
+  FiGrid,
+  FiList,
+  FiUser,
+  FiCheck,
+} from "react-icons/fi";
 import { useScheduleNotifications } from "../hook/useScheduleNotifications";
 import {
   NotificationSeverity,
@@ -48,11 +49,17 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
   const queryClient = useQueryClient();
 
   const [mounted, setMounted] = useState(false);
+  const [selectedSeverity, setSelectedSeverity] = useState<NotificationSeverity | "all">("all");
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
+  const [isProcessingAction, setIsProcessingAction] = useState<string | null>(null);
+
+  const userRole = user?.role || "nhan_vien";
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Khóa cuộn trang khi mở modal
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -64,6 +71,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
     };
   }, [isOpen]);
 
+  // Đóng modal bằng phím Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -74,13 +82,6 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Khóa cứng role theo tài khoản đăng nhập: mỗi role chỉ xem dữ liệu trong Table của chính mình
-  const userRole = user?.role || "nhan_vien";
-  const [selectedSeverity, setSelectedSeverity] = useState<NotificationSeverity | "all">("all");
-  // Mặc định giao diện dạng Thẻ (Cards) theo feedback trực quan dễ nhìn
-  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
-  const [isProcessingAction, setIsProcessingAction] = useState<string | null>(null);
-
   const {
     notifications,
     stats,
@@ -89,20 +90,17 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
     refetch,
     markAsRead,
     markAllAsRead,
-    dismiss,
   } = useScheduleNotifications({
     target_role: userRole,
   });
 
   if (!isOpen || !mounted) return null;
 
-  // Lọc theo severity đang chọn
   const filteredNotifications = notifications.filter((item) => {
     if (selectedSeverity === "all") return true;
     return item.severity === selectedSeverity;
   });
 
-  // Tích check-in nhanh trực tiếp từ thông báo hết ca
   const handleQuickCheckIn = async (item: ScheduleNotification) => {
     try {
       setIsProcessingAction(item._id);
@@ -156,41 +154,31 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
   return createPortal(
     <div
       id="notification-center-modal-overlay"
-      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-fadeIn"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 99999,
-      }}
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-5 bg-black/60 dark:bg-black/80 backdrop-blur-sm animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-[#0D0F17] border border-[#262A3B] rounded-3xl shadow-2xl overflow-hidden my-auto mx-auto"
+        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl shadow-2xl overflow-hidden my-auto mx-auto transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* =========================================================================
-         * 1. MODAL HEADER
-         * ========================================================================= */}
-        <div className="p-4 sm:p-5 border-b border-[#1E2332] bg-[#121522] flex items-center justify-between shrink-0 gap-3">
+        {/* 1. MODAL HEADER */}
+        <div className="p-4 sm:p-5 border-b border-stone-100 dark:border-stone-800/80 bg-stone-50/50 dark:bg-[#181614] flex items-center justify-between shrink-0 gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg shadow-inner shrink-0">
-              <FaBell />
+            <div className="w-10 h-10 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center shrink-0">
+              <FiBell className="text-lg text-stone-400 dark:text-stone-400" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-base font-black text-[#F4F5F8] truncate">
-                Trung Tâm Thông Báo
-              </h3>
-              <p className="text-xs text-[#8E95A5] mt-0.5 truncate">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] truncate">
+                  Trung Tâm Thông Báo
+                </h3>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60">
+                  {currentRoleMeta.label}
+                </span>
+              </div>
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 truncate">
                 Theo dõi ca trống cần bổ sung &amp; nhắc nhở điểm danh ca làm
               </p>
             </div>
@@ -198,30 +186,30 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
 
           <div className="flex items-center gap-2 shrink-0">
             {/* Chuyển chế độ xem Cards / Table */}
-            <div className="flex items-center bg-[#171B26] border border-[#262A3B] rounded-xl p-0.5 text-xs">
+            <div className="flex items-center bg-stone-100 dark:bg-[#141311] border border-stone-200/80 dark:border-stone-800/80 rounded-xl p-0.5 text-xs">
               <button
                 type="button"
                 onClick={() => setViewMode("cards")}
-                className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition cursor-pointer ${
+                className={`px-2.5 py-1.5 rounded-lg font-medium flex items-center gap-1.5 transition cursor-pointer ${
                   viewMode === "cards"
-                    ? "bg-[#D4AF37] text-[#0B0C10] shadow-sm"
-                    : "text-[#8E95A5] hover:text-[#F4F5F8]"
+                    ? "bg-white dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] shadow-xs border border-stone-200/60 dark:border-stone-700/70"
+                    : "text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 border border-transparent"
                 }`}
               >
-                <FaThLarge />
-                <span>Thẻ Cards</span>
+                <FiGrid className="text-stone-400 text-xs" />
+                <span className="hidden sm:inline">Thẻ Cards</span>
               </button>
               <button
                 type="button"
                 onClick={() => setViewMode("table")}
-                className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition cursor-pointer ${
+                className={`px-2.5 py-1.5 rounded-lg font-medium flex items-center gap-1.5 transition cursor-pointer ${
                   viewMode === "table"
-                    ? "bg-[#D4AF37] text-[#0B0C10] shadow-sm"
-                    : "text-[#8E95A5] hover:text-[#F4F5F8]"
+                    ? "bg-white dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] shadow-xs border border-stone-200/60 dark:border-stone-700/70"
+                    : "text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 border border-transparent"
                 }`}
               >
-                <FaTable />
-                <span>Bảng Table</span>
+                <FiList className="text-stone-400 text-xs" />
+                <span className="hidden sm:inline">Bảng Table</span>
               </button>
             </div>
 
@@ -230,263 +218,287 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               onClick={() => refetch()}
               disabled={isRefetching}
               title="Quét và làm mới dữ liệu"
-              className="p-2.5 rounded-xl border border-[#262A3B] bg-[#171B26] text-[#A0A8B8] hover:text-[#F4F5F8] hover:bg-[#1E2332] transition cursor-pointer"
+              className="p-2 rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] transition cursor-pointer disabled:opacity-50"
             >
-              <FaSyncAlt className={`text-xs ${isRefetching ? "animate-spin" : ""}`} />
+              <FiRefreshCw className={`text-xs ${isRefetching ? "animate-spin" : ""}`} />
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="p-2.5 rounded-xl border border-[#262A3B] bg-[#171B26] text-[#A0A8B8] hover:text-red-400 hover:bg-[#1E2332] transition cursor-pointer"
+              className="p-2 rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] transition cursor-pointer"
             >
-              <FaTimes className="text-sm" />
+              <FiX className="text-sm" />
             </button>
           </div>
         </div>
 
-        {/* =========================================================================
-         * 3. THANH LỌC MỨC ĐỘ THÔNG BÁO (Tất cả, Gấp, Cao, Trung bình, Thấp)
-         * ========================================================================= */}
-        <div className="p-3 bg-[#111420] border-b border-[#1E2332] flex items-center justify-between flex-wrap gap-2 shrink-0">
+        {/* 2. THANH LỌC MỨC ĐỘ THÔNG BÁO: Thiết kế tối giản, êm ái */}
+        <div className="p-2.5 sm:p-3 bg-stone-100/80 dark:bg-[#181614] border-b border-stone-200/80 dark:border-stone-800/90 flex items-center justify-between flex-wrap gap-2 shrink-0">
           <div className="flex items-center flex-wrap gap-1.5 text-xs">
-            {/* Tất cả */}
             <button
               type="button"
               onClick={() => setSelectedSeverity("all")}
-              className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-xl font-medium transition flex items-center gap-1.5 cursor-pointer ${
                 selectedSeverity === "all"
-                  ? "bg-[#D4AF37] text-[#0B0C10] shadow-md"
-                  : "bg-[#171B26] text-[#8E95A5] hover:text-[#F4F5F8] border border-[#262A3B]"
+                  ? "bg-white dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] shadow-xs border border-stone-200/80 dark:border-stone-700/80"
+                  : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 border border-transparent"
               }`}
             >
               <span>Tất cả</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-black">
+              <span
+                className={`text-[10px] font-mono px-1.5 py-0.2 rounded-md ${
+                  selectedSeverity === "all"
+                    ? "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300"
+                    : "bg-stone-200/60 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400"
+                }`}
+              >
                 {stats.total}
               </span>
             </button>
 
-            {/* Gấp (Urgent) */}
             <button
               type="button"
               onClick={() => setSelectedSeverity("urgent")}
-              className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-xl font-medium transition flex items-center gap-1.5 cursor-pointer ${
                 selectedSeverity === "urgent"
-                  ? "bg-red-500 text-white shadow-lg shadow-red-500/30"
-                  : "bg-[#1E1114] text-red-400 hover:bg-red-950/40 border border-red-500/40"
+                  ? "bg-white dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] shadow-xs border border-stone-200/80 dark:border-stone-700/80"
+                  : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 border border-transparent"
               }`}
             >
-              <FaFire className="text-xs" />
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block shrink-0" />
+              <FiAlertTriangle className="text-stone-400 text-xs" />
               <span>Gấp</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/30 font-black">
+              <span
+                className={`text-[10px] font-mono px-1.5 py-0.2 rounded-md ${
+                  selectedSeverity === "urgent"
+                    ? "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300"
+                    : "bg-stone-200/60 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400"
+                }`}
+              >
                 {stats.urgent_count}
               </span>
             </button>
 
-            {/* Cao (High) */}
             <button
               type="button"
               onClick={() => setSelectedSeverity("high")}
-              className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-xl font-medium transition flex items-center gap-1.5 cursor-pointer ${
                 selectedSeverity === "high"
-                  ? "bg-amber-500 text-[#0B0C10] shadow-lg shadow-amber-500/30"
-                  : "bg-[#1E1810] text-amber-400 hover:bg-amber-950/40 border border-amber-500/40"
+                  ? "bg-white dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] shadow-xs border border-stone-200/80 dark:border-stone-700/80"
+                  : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 border border-transparent"
               }`}
             >
-              <FaExclamationTriangle className="text-xs" />
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block shrink-0" />
+              <FiAlertCircle className="text-stone-400 text-xs" />
               <span>Cao</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-black">
+              <span
+                className={`text-[10px] font-mono px-1.5 py-0.2 rounded-md ${
+                  selectedSeverity === "high"
+                    ? "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300"
+                    : "bg-stone-200/60 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400"
+                }`}
+              >
                 {stats.high_count}
               </span>
             </button>
 
-            {/* Trung bình (Medium) */}
             <button
               type="button"
               onClick={() => setSelectedSeverity("medium")}
-              className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-xl font-medium transition flex items-center gap-1.5 cursor-pointer ${
                 selectedSeverity === "medium"
-                  ? "bg-sky-500 text-white shadow-lg shadow-sky-500/30"
-                  : "bg-[#101724] text-sky-400 hover:bg-sky-950/40 border border-sky-500/40"
+                  ? "bg-white dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] shadow-xs border border-stone-200/80 dark:border-stone-700/80"
+                  : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 border border-transparent"
               }`}
             >
-              <FaClock className="text-xs" />
+              <span className="w-1.5 h-1.5 rounded-full bg-stone-400 inline-block shrink-0" />
+              <FiClock className="text-stone-400 text-xs" />
               <span>Trung bình</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/30 font-black">
+              <span
+                className={`text-[10px] font-mono px-1.5 py-0.2 rounded-md ${
+                  selectedSeverity === "medium"
+                    ? "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300"
+                    : "bg-stone-200/60 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400"
+                }`}
+              >
                 {stats.medium_count}
               </span>
             </button>
 
-            {/* Thấp (Low) */}
             <button
               type="button"
               onClick={() => setSelectedSeverity("low")}
-              className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-xl font-medium transition flex items-center gap-1.5 cursor-pointer ${
                 selectedSeverity === "low"
-                  ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30"
-                  : "bg-[#101D17] text-emerald-400 hover:bg-emerald-950/40 border border-emerald-500/40"
+                  ? "bg-white dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] shadow-xs border border-stone-200/80 dark:border-stone-700/80"
+                  : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 border border-transparent"
               }`}
             >
-              <FaCheckCircle className="text-xs" />
+              <span className="w-1.5 h-1.5 rounded-full bg-stone-400 inline-block shrink-0" />
+              <FiCheckCircle className="text-stone-400 text-xs" />
               <span>Thấp</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/30 font-black">
+              <span
+                className={`text-[10px] font-mono px-1.5 py-0.2 rounded-md ${
+                  selectedSeverity === "low"
+                    ? "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300"
+                    : "bg-stone-200/60 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400"
+                }`}
+              >
                 {stats.low_count}
               </span>
             </button>
           </div>
 
-          {/* Đánh dấu đã đọc tất cả */}
           {stats.unread > 0 && (
             <button
               type="button"
               onClick={() => markAllAsRead(userRole)}
-              className="text-xs font-bold text-[#D4AF37] hover:text-[#E7CD80] flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 transition cursor-pointer"
+              className="text-xs font-medium text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1.5 px-2.5 py-1 rounded-xl border border-stone-200 dark:border-stone-700/70 bg-white dark:bg-[#25221e] hover:bg-stone-50 dark:hover:bg-stone-800 transition cursor-pointer shadow-xs ml-auto"
             >
-              <FaCheckDouble className="text-xs" />
+              <FiCheckSquare className="text-stone-400 text-xs" />
               <span>Đã đọc tất cả ({stats.unread})</span>
             </button>
           )}
         </div>
 
-        {/* =========================================================================
-         * 4. NỘI DUNG THÔNG BÁO: CHẾ ĐỘ THẺ (CARDS) HOẶC BẢNG (TABLE)
-         * ========================================================================= */}
+        {/* 3. NỘI DUNG THÔNG BÁO */}
         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
           {isLoading ? (
             <div className="py-16 flex flex-col items-center justify-center gap-3">
-              <div className="w-8 h-8 border-3 border-amber-400 border-t-transparent rounded-full animate-spin" />
-              <span className="text-xs text-[#8E95A5]">
-                Đang tải dữ liệu từ {currentRoleMeta.collection}...
+              <div className="w-8 h-8 border-2 border-stone-300 dark:border-stone-700 border-t-stone-800 dark:border-t-stone-300 rounded-full animate-spin" />
+              <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">
+                Đang tải dữ liệu...
               </span>
             </div>
           ) : filteredNotifications.length === 0 ? (
             <div className="py-16 text-center space-y-3">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-2xl flex items-center justify-center mx-auto shadow-inner">
-                <FaCheckCircle />
+              <div className="w-14 h-14 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-stone-400 flex items-center justify-center mx-auto">
+                <FiCheck className="text-2xl text-stone-400 dark:text-stone-400" />
               </div>
-              <h4 className="text-sm font-bold text-[#F4F5F8]">
+              <h4 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">
                 Không có thông báo nào cần xử lý
               </h4>
-              <p className="text-xs text-[#6D7588] max-w-sm mx-auto">
+              <p className="text-xs text-stone-500 dark:text-stone-400 max-w-sm mx-auto">
                 {selectedSeverity === "all"
-                  ? `Toàn bộ ca làm và cảnh báo trong bảng ${currentRoleMeta.label} đã được hoàn tất gọn gàng.`
+                  ? `Toàn bộ ca làm và cảnh báo trong bảng ${currentRoleMeta.label} đã được xử lý hoàn tất.`
                   : `Không có thông báo mức độ "${selectedSeverity.toUpperCase()}".`}
               </p>
             </div>
           ) : viewMode === "cards" ? (
-            /* =========================================================================
-             * 🗂️ GIAO DIỆN DẠNG THẺ (CARDS) - ĐƠN GIẢN, DỄ NHÌN, ĐẦY ĐỦ ID
-             * ========================================================================= */
             <div className="space-y-3">
               {filteredNotifications.map((item) => {
                 const isUrgent = item.severity === "urgent";
                 const isHigh = item.severity === "high";
-                const isMedium = item.severity === "medium";
 
-                // Border trái màu sắc đại diện mức độ khẩn cấp
-                const borderAccent = isUrgent
-                  ? "border-l-4 border-l-red-500"
+                const severityLabel = isUrgent
+                  ? "Khẩn cấp"
                   : isHigh
-                  ? "border-l-4 border-l-amber-500"
-                  : isMedium
-                  ? "border-l-4 border-l-sky-500"
-                  : "border-l-4 border-l-emerald-500";
+                  ? "Ưu tiên cao"
+                  : item.severity === "medium"
+                  ? "Trung bình"
+                  : "Thông thường";
+
+                const dotColor = isUrgent
+                  ? "bg-red-500"
+                  : isHigh
+                  ? "bg-amber-500"
+                  : "bg-stone-400";
 
                 return (
                   <div
                     key={item._id}
-                    className={`p-4 rounded-2xl bg-[#131622] hover:bg-[#161A28] border border-[#23283A] transition-all shadow-md ${borderAccent} ${
-                      !item.is_read ? "ring-1 ring-[#D4AF37]/30" : ""
+                    className={`p-4 rounded-2xl bg-white dark:bg-[#1c1a17] hover:border-stone-300 dark:hover:border-stone-700/90 border border-stone-200/80 dark:border-stone-800 transition shadow-sm space-y-2.5 ${
+                      !item.is_read ? "ring-1 ring-stone-400/40 dark:ring-stone-600/40" : ""
                     }`}
                   >
                     {/* DÒNG 1: CA/NGÀY + BADGE MỚI */}
-                    <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-white/5">
-                      <div className="text-xs font-semibold text-[#8E95A5] flex items-center gap-1.5">
-                        <FaCalendarAlt className="text-[10px] text-[#D4AF37]" />
+                    <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-stone-100 dark:border-stone-800/80">
+                      <div className="text-xs font-medium text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
+                        <FiCalendar className="text-xs text-stone-400" />
                         <span>
                           {item.day} • Ca {item.shift} ({item.week_start_date})
                         </span>
                       </div>
 
-                      {!item.is_read && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                          Mới
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60">
+                          <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
+                          {severityLabel}
                         </span>
-                      )}
+
+                        {!item.is_read && (
+                          <span className="inline-flex items-center text-[10px] font-medium text-stone-700 dark:text-stone-300 bg-stone-200/70 dark:bg-stone-800 px-2 py-0.5 rounded">
+                            Mới
+                          </span>
+                        )}
+                      </div>
                     </div>
 
-                    {/* DÒNG 2: TIÊU ĐỀ & NỘI DUNG RÕ RÀNG */}
-                    <div className="mt-2.5">
-                      <h4 className="text-sm font-bold text-[#F4F5F8] leading-snug">
+                    {/* DÒNG 2: TIÊU ĐỀ & NỘI DUNG */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] leading-snug">
                         {item.title}
                       </h4>
-                      <p className="text-xs text-[#A0A8B8] mt-1 leading-relaxed">
+                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-0.5 leading-relaxed">
                         {item.message}
                       </p>
                     </div>
 
-                    {/* DÒNG 3: NHÂN SỰ GẮN VỚI ID + HẠN CA + NÚT THAO TÁC */}
-                    <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between flex-wrap gap-2 text-xs">
+                    {/* DÒNG 3: NHÂN SỰ + HẠN CA + THAO TÁC */}
+                    <div className="pt-2 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between flex-wrap gap-2 text-xs">
                       <div className="flex items-center gap-2 flex-wrap">
-                        {/* Nhân sự có kèm ID rõ ràng */}
                         {item.staff_name ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#181D2B] border border-[#262C3F] text-[#F4F5F8] font-semibold text-xs">
-                            <FaUserCheck className="text-amber-400 text-[11px]" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-stone-800 dark:text-[#efe9de] text-xs font-medium">
+                            <FiUser className="text-stone-400 text-xs" />
                             <span>
                               Nhân sự: <strong>{item.staff_name}</strong>
                             </span>
                             {item.user_code && (
-                              <span className="text-[10px] font-mono text-amber-300 bg-amber-500/20 px-1 rounded border border-amber-500/30">
+                              <span className="text-[10px] font-mono text-stone-500 bg-stone-200/60 dark:bg-stone-800 px-1 py-0.2 rounded">
                                 {item.user_code}
                               </span>
                             )}
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-950/20 border border-red-500/30 text-red-300 font-semibold text-xs">
-                            <FaExclamationTriangle className="text-red-400 text-[11px]" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-stone-700 dark:text-stone-300 text-xs font-medium">
+                            <FiAlertTriangle className="text-stone-400 text-xs" />
                             <span>Ca trống cần bổ sung</span>
                           </span>
                         )}
 
-                        {/* Thời hạn còn lại */}
                         {item.hours_until_shift !== null &&
                           item.hours_until_shift !== undefined && (
-                            <span className="text-xs font-semibold text-rose-400 flex items-center gap-1">
-                              <FaClock className="text-[10px]" />
+                            <span className="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1">
+                              <FiClock className="text-stone-400 text-xs" />
                               <span>Còn ~{item.hours_until_shift}h nữa</span>
                             </span>
                           )}
                       </div>
 
-                      {/* Các nút hành động nhanh */}
                       <div className="flex items-center gap-1.5 ml-auto">
-                        {/* Nút điểm danh nhanh nếu là hết ca chưa checkin */}
                         {item.type === "UNCHECKED_EXPIRED_SHIFT" && (
                           <button
                             type="button"
                             onClick={() => handleQuickCheckIn(item)}
                             disabled={isProcessingAction === item._id}
-                            className="px-3 py-1.5 rounded-xl border border-amber-500/50 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-50"
+                            className="px-3 py-1.5 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 text-xs font-medium transition cursor-pointer hover:opacity-90 flex items-center gap-1.5 shadow-xs disabled:opacity-50"
                           >
-                            <FaUserCheck className="text-xs" />
+                            <FiCheck className="text-stone-400 dark:text-stone-500 text-xs" />
                             <span>
-                              {isProcessingAction === item._id
-                                ? "Đang lưu..."
-                                : "Tích Check-in"}
+                              {isProcessingAction === item._id ? "Đang lưu..." : "Tích Check-in"}
                             </span>
                           </button>
                         )}
 
-                        {/* Nút xếp ca ngay nếu là ca trống */}
                         {(item.type === "EMPTY_SLOT_1_DAY" ||
                           item.type === "EMPTY_SLOT_2_DAYS" ||
                           item.type === "EMPTY_SLOT_UPCOMING") && (
                           <button
                             type="button"
                             onClick={() => handleAssignSlot(item)}
-                            className="px-3 py-1.5 rounded-xl border border-red-500/50 bg-red-600/30 hover:bg-red-600/40 text-red-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+                            className="px-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700/70 bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-900 dark:text-[#efe9de] text-xs font-medium transition cursor-pointer flex items-center gap-1.5 shadow-xs"
                           >
-                            <FaUserPlus className="text-xs" />
+                            <FiUserPlus className="text-stone-400 text-xs" />
                             <span>Xếp Ca Ngay</span>
                           </button>
                         )}
@@ -497,102 +509,90 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               })}
             </div>
           ) : (
-            /* =========================================================================
-             * 📋 GIAO DIỆN DẠNG BẢNG (TABLE) - TRỰC QUAN RÕ RÀNG
-             * ========================================================================= */
-            <div className="overflow-x-auto rounded-2xl border border-[#212536] bg-[#0E1018]">
+            <div className="overflow-x-auto rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1c1a17]">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="border-b border-[#212536] bg-[#141724] text-[#8E95A5] font-black uppercase text-[10px] tracking-wider">
-                    <th className="py-3 px-3">Mức độ</th>
-                    <th className="py-3 px-3">Ca / Thứ</th>
-                    <th className="py-3 px-3">Tiêu đề &amp; Chi tiết thông báo</th>
-                    <th className="py-3 px-3">Nhân sự</th>
-                    <th className="py-3 px-3">Hạn ca</th>
-                    <th className="py-3 px-3 text-right">Thao tác</th>
+                  <tr className="border-b border-stone-100 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e]/80 text-stone-500 dark:text-stone-400 font-medium uppercase text-[10px] tracking-wider">
+                    <th className="py-2.5 px-3">Mức độ</th>
+                    <th className="py-2.5 px-3">Ca / Thứ</th>
+                    <th className="py-2.5 px-3">Tiêu đề &amp; Chi tiết thông báo</th>
+                    <th className="py-2.5 px-3">Nhân sự</th>
+                    <th className="py-2.5 px-3">Hạn ca</th>
+                    <th className="py-2.5 px-3 text-right">Thao tác</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1B1E2C]">
+                <tbody className="divide-y divide-stone-100 dark:divide-stone-800/60">
                   {filteredNotifications.map((item) => {
                     const isUrgent = item.severity === "urgent";
                     const isHigh = item.severity === "high";
-                    const isMedium = item.severity === "medium";
-
-                    const badgeStyle = isUrgent
-                      ? "bg-red-500/20 text-red-400 border-red-500/50"
-                      : isHigh
-                      ? "bg-amber-500/20 text-amber-300 border-amber-500/50"
-                      : isMedium
-                      ? "bg-sky-500/20 text-sky-300 border-sky-500/50"
-                      : "bg-emerald-500/20 text-emerald-300 border-emerald-500/50";
 
                     const badgeLabel = isUrgent
-                      ? "🚨 GẤP"
+                      ? "Khẩn cấp"
                       : isHigh
-                      ? "⚠️ CAO"
-                      : isMedium
-                      ? "🕒 TRUNG BÌNH"
-                      : "✅ THẤP";
+                      ? "Ưu tiên cao"
+                      : item.severity === "medium"
+                      ? "Trung bình"
+                      : "Thông thường";
+
+                    const dotColor = isUrgent
+                      ? "bg-red-500"
+                      : isHigh
+                      ? "bg-amber-500"
+                      : "bg-stone-400";
 
                     return (
                       <tr
                         key={item._id}
-                        className={`hover:bg-[#151825] transition ${
-                          !item.is_read ? "bg-amber-500/5" : ""
+                        className={`hover:bg-stone-50/70 dark:hover:bg-[#25221e]/50 transition ${
+                          !item.is_read ? "bg-stone-100/40 dark:bg-[#25221e]/30" : ""
                         }`}
                       >
-                        {/* 1. Mức độ */}
-                        <td className="py-3 px-3 shrink-0 whitespace-nowrap">
-                          <span
-                            className={`inline-block text-[10px] font-black px-2 py-0.5 rounded-full border ${badgeStyle}`}
-                          >
+                        <td className="py-2.5 px-3 shrink-0 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60">
+                            <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
                             {badgeLabel}
                           </span>
                         </td>
 
-                        {/* 3. Ca / Thứ */}
-                        <td className="py-3 px-3 whitespace-nowrap font-bold text-[#F4F5F8]">
+                        <td className="py-2.5 px-3 whitespace-nowrap font-medium text-stone-900 dark:text-[#efe9de]">
                           <div>{item.day}</div>
-                          <div className="text-[10px] text-[#D4AF37]">
+                          <div className="text-[10px] text-stone-500 dark:text-stone-400">
                             Ca {item.shift} • {item.role_in_slot || "All"}
                           </div>
                         </td>
 
-                        {/* 4. Tiêu đề & Nội dung */}
-                        <td className="py-3 px-3 max-w-md">
-                          <div className="font-bold text-[#F4F5F8] leading-tight">
+                        <td className="py-2.5 px-3 max-w-md">
+                          <div className="font-semibold text-stone-900 dark:text-[#efe9de] leading-tight">
                             {item.title}
                           </div>
-                          <div className="text-[11px] text-[#8E95A5] mt-0.5 leading-snug">
+                          <div className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5 leading-snug">
                             {item.message}
                           </div>
                         </td>
 
-                        {/* 5. Nhân sự */}
-                        <td className="py-3 px-3 whitespace-nowrap">
+                        <td className="py-2.5 px-3 whitespace-nowrap">
                           {item.staff_name ? (
                             <div>
-                              <span className="font-bold text-[#E7CD80]">
+                              <span className="font-medium text-stone-900 dark:text-[#efe9de]">
                                 {item.staff_name}
                               </span>
                               {item.user_code && (
-                                <div className="text-[10px] font-mono text-[#8E95A5]">
+                                <div className="text-[10px] font-mono text-stone-500">
                                   Mã: {item.user_code}
                                 </div>
                               )}
                             </div>
                           ) : (
-                            <span className="text-red-400 font-bold italic">
-                              [Chưa có]
+                            <span className="text-stone-400 italic">
+                              [Chưa phân bổ]
                             </span>
                           )}
                         </td>
 
-                        {/* 6. Hạn ca */}
-                        <td className="py-3 px-3 whitespace-nowrap text-[#8E95A5]">
+                        <td className="py-2.5 px-3 whitespace-nowrap text-stone-500 dark:text-stone-400">
                           {item.hours_until_shift !== null &&
                           item.hours_until_shift !== undefined ? (
-                            <span className="text-red-400 font-bold">
+                            <span className="font-medium text-stone-700 dark:text-stone-300">
                               ~{item.hours_until_shift}h nữa
                             </span>
                           ) : (
@@ -600,19 +600,16 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                           )}
                         </td>
 
-                        {/* 7. Thao tác */}
-                        <td className="py-3 px-3 text-right whitespace-nowrap">
+                        <td className="py-2.5 px-3 text-right whitespace-nowrap">
                           <div className="flex items-center justify-end gap-1.5">
                             {item.type === "UNCHECKED_EXPIRED_SHIFT" && (
                               <button
                                 type="button"
                                 onClick={() => handleQuickCheckIn(item)}
                                 disabled={isProcessingAction === item._id}
-                                className="px-2.5 py-1 rounded-lg border border-amber-500/40 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 text-[11px] font-bold transition cursor-pointer"
+                                className="px-2.5 py-1 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 text-[11px] font-medium transition cursor-pointer hover:opacity-90"
                               >
-                                {isProcessingAction === item._id
-                                  ? "Đang lưu..."
-                                  : "Tích Check-in"}
+                                {isProcessingAction === item._id ? "Đang lưu..." : "Tích Check-in"}
                               </button>
                             )}
 
@@ -622,7 +619,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                               <button
                                 type="button"
                                 onClick={() => handleAssignSlot(item)}
-                                className="px-2.5 py-1 rounded-lg border border-red-500/50 bg-red-600/30 text-red-200 hover:bg-red-600/40 text-[11px] font-black transition cursor-pointer"
+                                className="px-2.5 py-1 rounded-xl border border-stone-200 dark:border-stone-700/70 bg-stone-100 dark:bg-[#25221e] text-stone-900 dark:text-[#efe9de] hover:bg-stone-200 dark:hover:bg-stone-800 text-[11px] font-medium transition cursor-pointer"
                               >
                                 Xếp Ca
                               </button>
@@ -638,21 +635,19 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
           )}
         </div>
 
-        {/* =========================================================================
-         * 5. MODAL FOOTER
-         * ========================================================================= */}
-        <div className="p-3.5 border-t border-[#1E2332] bg-[#121522] flex items-center justify-between text-xs text-[#8E95A5] shrink-0 flex-wrap gap-2">
+        {/* 4. MODAL FOOTER */}
+        <div className="p-3.5 border-t border-stone-100 dark:border-stone-800/80 bg-stone-50/50 dark:bg-[#181614] flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 shrink-0 flex-wrap gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-stone-400 inline-block" />
             <span>
-              Bảng dữ liệu: <strong className="text-[#F4F5F8]">{currentRoleMeta.label}</strong>
+              Bảng dữ liệu: <strong className="font-medium text-stone-700 dark:text-stone-300">{currentRoleMeta.label}</strong>
             </span>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl border border-[#262A3B] bg-[#171B26] text-[#F4F5F8] hover:bg-[#1E2332] font-bold transition cursor-pointer"
+            className="px-4 py-1.5 rounded-xl border border-stone-200 dark:border-stone-700/70 bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-800 dark:text-[#efe9de] font-medium transition cursor-pointer text-xs"
           >
             Đóng
           </button>

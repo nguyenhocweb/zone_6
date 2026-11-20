@@ -102,6 +102,7 @@ be/src/
 - Trạng thái công việc mỗi phiên làm việc được lưu tại [`.agents/session_state.json`](./session_state.json).
 - Toàn bộ quy chuẩn chi tiết của Backend Express được lưu tại [`.agents/rules/backend_express_rules.md`](./rules/backend_express_rules.md).
 - Toàn bộ quy chuẩn cơ sở dữ liệu Prisma MongoDB đa file & Seed Pipeline được lưu tại [`.agents/rules/prisma_mongo_database_rules.md`](./rules/prisma_mongo_database_rules.md).
+- Toàn bộ quy chuẩn Landing Page (nhiều ảnh mộc mạc, ít chữ, bố cục sáng tạo thoát ly khuôn mẫu AI, hiệu ứng mềm mại) được lưu tại [`.agents/rules/landing_design_rules.md`](./rules/landing_design_rules.md).
 
 ---
 

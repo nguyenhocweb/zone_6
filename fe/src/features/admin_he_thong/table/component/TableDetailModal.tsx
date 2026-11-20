@@ -2,20 +2,20 @@
 
 import React, { useState } from 'react';
 import {
-  FaTimes,
-  FaChair,
-  FaQrcode,
-  FaEdit,
-  FaTrash,
-  FaCheckCircle,
-  FaUsers,
-  FaLayerGroup,
-  FaExternalLinkAlt,
-  FaCopy,
-  FaCheck,
-  FaTools,
-  FaClock,
-} from 'react-icons/fa';
+  FiX,
+  FiGrid,
+  FiEdit2,
+  FiTrash2,
+  FiCheckCircle,
+  FiUsers,
+  FiLayers,
+  FiExternalLink,
+  FiCopy,
+  FiCheck,
+  FiTool,
+  FiClock,
+  FiMaximize2,
+} from 'react-icons/fi';
 import { TableItem } from '../type/table.type';
 import { toast } from 'sonner';
 
@@ -80,7 +80,7 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
   const orderUrl = `${origin}/order?token=${table.qr_token}`;
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
     orderUrl
-  )}&bgcolor=12141a&color=d4af37&margin=5`;
+  )}&bgcolor=ffffff&color=141311&margin=4`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(orderUrl);
@@ -94,65 +94,60 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
     AVAILABLE: {
       label: 'Đang Trống',
       desc: 'Bàn sẵn sàng đón khách mới',
-      badgeClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-      dotClass: 'bg-emerald-400',
-      icon: <FaCheckCircle />,
+      badgeClass: 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800',
+      dotClass: 'bg-emerald-500',
     },
     OCCUPIED: {
       label: 'Đang Có Khách',
       desc: 'Khách đang ngồi dùng đồ uống/dịch vụ',
-      badgeClass: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-      dotClass: 'bg-amber-400',
-      icon: <FaUsers />,
+      badgeClass: 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800',
+      dotClass: 'bg-amber-500',
     },
     RESERVED: {
       label: 'Đã Đặt Trước',
       desc: 'Khách đã giữ chỗ cho khung giờ sắp tới',
-      badgeClass: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
-      dotClass: 'bg-blue-400',
-      icon: <FaClock />,
+      badgeClass: 'bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400 border-sky-300 dark:border-sky-800',
+      dotClass: 'bg-sky-500',
     },
     MAINTENANCE: {
       label: 'Đang Bảo Trì',
       desc: 'Tạm ngưng phục vụ để sửa chữa / dọn dẹp',
-      badgeClass: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
-      dotClass: 'bg-rose-400',
-      icon: <FaTools />,
+      badgeClass: 'bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800',
+      dotClass: 'bg-rose-500',
     },
   }[table.status] || {
     label: table.status,
     desc: '',
-    badgeClass: 'bg-gray-500/15 text-gray-400 border-gray-500/30',
-    dotClass: 'bg-gray-400',
-    icon: <FaChair />,
+    badgeClass: 'bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-700',
+    dotClass: 'bg-stone-400',
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="bg-[#12141A] border border-[#212532] hover:border-[#D4AF37]/40 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-200"
+        className="bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-5 border-b border-[#212532] bg-gradient-to-r from-[#171926] to-[#12141A] flex items-center justify-between gap-3">
+        <div className="p-5 border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#25221e]/40 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] text-xl shadow-md shrink-0">
-              <FaChair />
+            <div className="w-11 h-11 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-stone-400 text-lg shadow-sm shrink-0">
+              <FiGrid className="w-5 h-5 text-stone-400" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-black text-white uppercase tracking-tight">
+                <h2 className="text-xl font-bold text-stone-900 dark:text-[#efe9de] uppercase tracking-tight">
                   {displayName}
                 </h2>
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-[#181B24] text-[#D4AF37] border border-[#212532] flex items-center gap-1">
-                  <FaLayerGroup className="text-[9px]" />
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60 flex items-center gap-1">
+                  <FiLayers className="w-3 h-3 text-stone-400" />
                   <span>{table.zone_name}</span>
                 </span>
               </div>
-              <div className="flex items-center gap-2 mt-0.5 text-xs text-[#8E95A5]">
+              <div className="flex items-center gap-2 mt-0.5 text-xs text-stone-500 dark:text-stone-400">
                 <span>Sức chứa: <strong>{table.capacity || 4} chỗ ngồi</strong></span>
               </div>
             </div>
@@ -160,34 +155,34 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-[#181B24] text-[#8E95A5] hover:text-white border border-[#212532] hover:border-white/20 flex items-center justify-center text-sm transition cursor-pointer"
+            className="w-8 h-8 rounded-full bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] flex items-center justify-center text-sm transition cursor-pointer"
           >
-            <FaTimes />
+            <FiX className="w-4 h-4" />
           </button>
         </div>
 
         {/* Modal Body */}
         <div className="p-6 overflow-y-auto space-y-6">
           {/* 1. Trạng thái hiện tại & Chuyển đổi nhanh 4 trạng thái */}
-          <div className="p-4 rounded-2xl bg-[#0E1015] border border-[#212532] space-y-3">
+          <div className="p-4 rounded-2xl bg-stone-50/60 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#8E95A5] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
                 Trạng Thái Bàn:
               </span>
               <span
-                className={`px-2.5 py-0.5 rounded-full text-xs font-extrabold border flex items-center gap-1.5 ${statusConfig.badgeClass}`}
+                className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 ${statusConfig.badgeClass}`}
               >
                 <span className={`w-2 h-2 rounded-full ${statusConfig.dotClass}`} />
                 {statusConfig.label}
               </span>
             </div>
 
-            <p className="text-[11px] text-[#6D7588]">{statusConfig.desc}</p>
+            <p className="text-[11px] text-stone-500 dark:text-stone-400">{statusConfig.desc}</p>
 
             {/* Cảnh báo nếu không trong ca trực */}
             {!canChangeStatus && (
-              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] flex items-center gap-2">
-                <FaClock className="text-amber-400 shrink-0 text-xs" />
+              <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/60 text-amber-700 dark:text-amber-300 text-[11px] flex items-center gap-2">
+                <FiClock className="text-stone-400 shrink-0 text-xs" />
                 <span>
                   {shiftReason ||
                     'Bạn hiện không trong ca trực. Cần điểm danh Check-in Camera & GPS để cập nhật trạng thái bàn.'}
@@ -195,20 +190,20 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               </div>
             )}
 
-            {/* 4 Nút Chọn Trạng Thái Lớn */}
+            {/* 4 Nút Chọn Trạng Thái */}
             <div className="grid grid-cols-2 gap-2 pt-1">
               {/* Trống */}
               <button
                 type="button"
                 onClick={() => handleSelectStatus('AVAILABLE')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
+                className={`p-2.5 rounded-xl border text-xs font-semibold transition flex items-center justify-center gap-2 ${
                   table.status === 'AVAILABLE'
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500 shadow-sm ring-1 ring-emerald-500/40'
-                    : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-emerald-500/40 hover:text-emerald-400'
+                    ? 'bg-emerald-100/70 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-400 dark:border-emerald-700 shadow-sm'
+                    : 'bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:border-emerald-300'
                 } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                 title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 <span>Trống</span>
               </button>
 
@@ -216,14 +211,14 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleSelectStatus('OCCUPIED')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
+                className={`p-2.5 rounded-xl border text-xs font-semibold transition flex items-center justify-center gap-2 ${
                   table.status === 'OCCUPIED'
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-500 shadow-sm ring-1 ring-amber-500/40'
-                    : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-amber-500/40 hover:text-amber-400'
+                    ? 'bg-amber-100/70 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-400 dark:border-amber-700 shadow-sm'
+                    : 'bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:border-amber-300'
                 } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                 title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
                 <span>Có Khách</span>
               </button>
 
@@ -231,14 +226,14 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleSelectStatus('RESERVED')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
+                className={`p-2.5 rounded-xl border text-xs font-semibold transition flex items-center justify-center gap-2 ${
                   table.status === 'RESERVED'
-                    ? 'bg-blue-500/20 text-blue-300 border-blue-500 shadow-sm ring-1 ring-blue-500/40'
-                    : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-blue-500/40 hover:text-blue-400'
+                    ? 'bg-sky-100/70 dark:bg-sky-950/40 text-sky-800 dark:text-sky-300 border-sky-400 dark:border-sky-700 shadow-sm'
+                    : 'bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:border-sky-300'
                 } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                 title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
-                <span className="w-2 h-2 rounded-full bg-blue-400" />
+                <span className="w-2 h-2 rounded-full bg-sky-500" />
                 <span>Đã Đặt Trước</span>
               </button>
 
@@ -246,33 +241,33 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleSelectStatus('MAINTENANCE')}
-                className={`p-2.5 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 ${
+                className={`p-2.5 rounded-xl border text-xs font-semibold transition flex items-center justify-center gap-2 ${
                   table.status === 'MAINTENANCE'
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-500 shadow-sm ring-1 ring-rose-500/40'
-                    : 'bg-[#181B24] text-[#8E95A5] border-[#212532] hover:border-rose-500/40 hover:text-rose-400'
+                    ? 'bg-rose-100/70 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-400 dark:border-rose-700 shadow-sm'
+                    : 'bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:border-rose-300'
                 } ${!canChangeStatus ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                 title={!canChangeStatus ? 'Cần check-in vào ca để thao tác' : undefined}
               >
-                <span className="w-2 h-2 rounded-full bg-rose-400" />
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
                 <span>Đang Bảo Trì</span>
               </button>
             </div>
           </div>
 
           {/* 2. QR Code Gọi Món Tại Bàn (Standee Mica) */}
-          <div className="p-4 rounded-2xl bg-[#0E1015] border border-[#212532] space-y-3">
+          <div className="p-4 rounded-2xl bg-stone-50/60 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#8E95A5] uppercase tracking-wider flex items-center gap-1.5">
-                <FaQrcode className="text-[#D4AF37]" />
+              <span className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-1.5">
+                <FiGrid className="w-3.5 h-3.5 text-stone-400" />
                 <span>Mã QR Gọi Món Tại Bàn:</span>
               </span>
-              <span className="text-[10px] font-bold text-[#D4AF37] px-2 py-0.5 rounded-md bg-[#D4AF37]/10 border border-[#D4AF37]/30">
+              <span className="text-[10px] font-semibold text-stone-600 dark:text-stone-300 px-2 py-0.5 rounded-md bg-stone-200/70 dark:bg-stone-700/50 border border-stone-300 dark:border-stone-600">
                 Standee Mica
               </span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-xl bg-[#12141A] border border-[#D4AF37]/30 p-1.5 shrink-0 shadow-inner flex items-center justify-center">
+              <div className="w-20 h-20 rounded-xl bg-white border border-stone-200 dark:border-stone-700 p-1.5 shrink-0 shadow-sm flex items-center justify-center">
                 <img
                   src={qrImageUrl}
                   alt={displayName}
@@ -281,8 +276,8 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
               </div>
 
               <div className="flex-1 space-y-2">
-                <p className="text-[11px] text-[#8E95A5] leading-relaxed">
-                  Khách quét mã này tại bàn để tự xem menu và đặt món. Hệ thống tự động khóa Geofence GPS chống troll.
+                <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed">
+                  Khách quét mã này tại bàn để tự xem menu và đặt món. Hệ thống tự động khóa Geofence GPS chống spam đơn từ xa.
                 </p>
 
                 <div className="flex items-center gap-2 flex-wrap">
@@ -292,18 +287,18 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
                       onClose();
                       onOpenQrPrint(table);
                     }}
-                    className="py-1.5 px-3 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                    className="py-1.5 px-3 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 font-semibold text-xs hover:bg-stone-800 dark:hover:bg-white transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                   >
-                    <FaQrcode className="text-xs" />
+                    <FiGrid className="w-3.5 h-3.5 text-stone-300 dark:text-stone-600" />
                     <span>In Standee Mica</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={handleCopyLink}
-                    className="py-1.5 px-3 rounded-xl bg-[#181B24] text-[#F4F5F8] border border-[#212532] hover:border-[#D4AF37]/40 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                    className="py-1.5 px-3 rounded-xl bg-stone-100 dark:bg-[#1c1a17] text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700/60 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer"
                   >
-                    {copied ? <FaCheck className="text-emerald-400" /> : <FaCopy className="text-xs" />}
+                    {copied ? <FiCheck className="w-3.5 h-3.5 text-stone-500" /> : <FiCopy className="w-3.5 h-3.5 text-stone-400" />}
                     <span>{copied ? 'Đã chép link' : 'Sao chép link'}</span>
                   </button>
 
@@ -311,10 +306,10 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
                     href={orderUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="p-2 rounded-xl bg-[#181B24] text-[#8E95A5] hover:text-[#D4AF37] border border-[#212532] transition cursor-pointer"
+                    className="p-2 rounded-xl bg-stone-100 dark:bg-[#1c1a17] text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] border border-stone-200/80 dark:border-stone-700/60 transition cursor-pointer"
                     title="Mở xem trang gọi món khách hàng"
                   >
-                    <FaExternalLinkAlt className="text-xs" />
+                    <FiExternalLink className="w-3.5 h-3.5 text-stone-400" />
                   </a>
                 </div>
               </div>
@@ -323,7 +318,7 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 border-t border-[#212532] bg-[#0E1015] flex items-center justify-between gap-3">
+        <div className="p-4 border-t border-stone-200/80 dark:border-stone-800 bg-stone-50/50 dark:bg-[#25221e]/30 flex items-center justify-between gap-3">
           {canEditOrDelete ? (
             <>
               <button
@@ -332,9 +327,9 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
                   onClose();
                   onDelete(table);
                 }}
-                className="py-2.5 px-4 rounded-xl bg-red-950/20 text-red-400 border border-red-500/30 hover:bg-red-950/40 hover:border-red-500/60 transition text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                className="py-2 px-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/60 hover:bg-rose-100 dark:hover:bg-rose-950/40 transition text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
               >
-                <FaTrash className="text-xs" />
+                <FiTrash2 className="w-3.5 h-3.5 text-rose-500" />
                 <span>Xóa Bàn Này</span>
               </button>
 
@@ -345,16 +340,16 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
                     onClose();
                     onEdit(table);
                   }}
-                  className="py-2.5 px-4 rounded-xl bg-[#181B24] text-white border border-[#212532] hover:border-[#D4AF37]/50 transition text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                  className="py-2 px-3.5 rounded-xl bg-stone-100 dark:bg-[#1c1a17] text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-200 dark:hover:bg-[#25221e] transition text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
                 >
-                  <FaEdit className="text-xs text-[#D4AF37]" />
+                  <FiEdit2 className="w-3.5 h-3.5 text-stone-400" />
                   <span>Chỉnh Sửa</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={onClose}
-                  className="py-2.5 px-5 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 transition cursor-pointer shadow-md"
+                  className="py-2 px-5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 font-semibold text-xs hover:bg-stone-800 dark:hover:bg-white transition cursor-pointer shadow-sm"
                 >
                   Hoàn Tất
                 </button>
@@ -362,13 +357,13 @@ export const TableDetailModal: React.FC<TableDetailModalProps> = ({
             </>
           ) : (
             <>
-              <div className="text-[11px] text-[#8E95A5]">
+              <div className="text-[11px] text-stone-500 dark:text-stone-400">
                 Nhân viên có quyền cập nhật trạng thái bàn phục vụ khách.
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="py-2.5 px-6 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 transition cursor-pointer shadow-md"
+                className="py-2 px-6 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 font-semibold text-xs hover:bg-stone-800 dark:hover:bg-white transition cursor-pointer shadow-sm"
               >
                 Đóng
               </button>

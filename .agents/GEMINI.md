@@ -15,6 +15,7 @@ Refer to:
   - Bảng Tiến Độ & Nhật Ký Giám Sát (Bắt buộc cập nhật khi code): [plane/giam_sat/](../plane/giam_sat/README.md)
 - Backend Node.js Rules: [.agents/rules/backend_express_rules.md](./rules/backend_express_rules.md)
 - Next.js Rules: [.agents/rules/nextjs_app_router_rules.md](./rules/nextjs_app_router_rules.md)
+- Landing Design Rules (Editorial, Imagery & Soft Motion): [.agents/rules/landing_design_rules.md](./rules/landing_design_rules.md)
 - Database Schema: [.agents/DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md)
 - Prisma & Seed Rules: [.agents/rules/prisma_mongo_database_rules.md](./rules/prisma_mongo_database_rules.md)
 - React Query Registry: [.agents/REACT_QUERY_REGISTRY.md](./REACT_QUERY_REGISTRY.md)

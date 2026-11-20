@@ -247,12 +247,12 @@ export default function PosPage() {
   // Trạng thái đang tải xác thực
   if (isAuthLoading || isVerifying) {
     return (
-      <div className="min-h-[85vh] flex flex-col items-center justify-center bg-[#0b0c10] text-[#a0a5b5] p-6">
-        <FiRefreshCw className="w-10 h-10 animate-spin text-[#d4af37] mb-4" />
-        <p className="text-sm font-semibold text-white">
+      <div className="min-h-[85vh] flex flex-col items-center justify-center bg-stone-50 dark:bg-[#141311] text-stone-500 dark:text-stone-400 p-6">
+        <FiRefreshCw className="w-10 h-10 animate-spin text-stone-400 dark:text-stone-400 mb-4" />
+        <p className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">
           Đang kiểm tra ca trực & trạng thái điểm danh...
         </p>
-        <p className="text-xs text-[#6c7280] mt-1">
+        <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
           Hệ thống đối chiếu lịch ca và định vị GPS thực tế
         </p>
       </div>
@@ -262,19 +262,19 @@ export default function PosPage() {
   // Trạng thái BỊ CHẶN TRUY CẬP (Shift Gatekeeper Blocked)
   if (verifyError || !shiftData) {
     return (
-      <div className="min-h-[85vh] flex flex-col items-center justify-center bg-[#0b0c10] p-6">
-        <div className="w-full max-w-md bg-[#12141a] border border-[#212532] rounded-3xl p-8 text-center shadow-2xl shadow-red-500/5">
-          <div className="w-16 h-16 rounded-2xl bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-red-500/10">
+      <div className="min-h-[85vh] flex flex-col items-center justify-center bg-stone-50 dark:bg-[#141311] p-6">
+        <div className="w-full max-w-md bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-8 text-center shadow-lg shadow-stone-200/50 dark:shadow-none">
+          <div className="w-16 h-16 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-700 text-stone-500 dark:text-stone-400 flex items-center justify-center mx-auto mb-5">
             <FiLock className="w-8 h-8" />
           </div>
 
-          <h2 className="text-xl font-extrabold text-white mb-2">
+          <h2 className="text-xl font-bold text-stone-900 dark:text-[#efe9de] mb-2">
             Truy Cập POS Bị Khóa
           </h2>
 
-          <div className="p-4 rounded-xl bg-[#181b24] border border-[#212532] text-xs text-[#a0a5b5] text-left space-y-2 mb-6">
-            <div className="flex items-start gap-2 text-amber-300">
-              <FiAlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-600 dark:text-stone-300 text-left space-y-2 mb-6">
+            <div className="flex items-start gap-2 text-stone-600 dark:text-stone-300">
+              <FiAlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-stone-400" />
               <span>{verifyError}</span>
             </div>
           </div>
@@ -282,17 +282,17 @@ export default function PosPage() {
           <div className="space-y-3">
             <Link
               href="/checkin"
-              className="w-full py-3.5 px-4 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#d4af37] to-[#b58d22] text-[#0b0c10] hover:shadow-lg hover:shadow-[#d4af37]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-xl text-xs font-semibold bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-white transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
             >
-              <FiCamera className="w-4 h-4" />
+              <FiCamera className="w-4 h-4 text-stone-300 dark:text-stone-600" />
               <span>ĐIỂM DANH CHECK-IN NGAY</span>
             </Link>
 
             <button
               onClick={checkShiftAccess}
-              className="w-full py-3 px-4 rounded-xl text-xs font-semibold bg-[#181b24] hover:bg-[#212532] text-white border border-[#212532] transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 px-4 rounded-xl text-xs font-semibold bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2f2b26] text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700/60 transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
-              <FiRefreshCw className="w-3.5 h-3.5 text-[#d4af37]" />
+              <FiRefreshCw className="w-3.5 h-3.5 text-stone-400" />
               <span>Thử kiểm tra lại</span>
             </button>
           </div>
@@ -306,7 +306,7 @@ export default function PosPage() {
   const effectiveOrderCode = orderCodePreview || 'Z6-POS-ORDER';
 
   return (
-    <div className="flex flex-col h-[calc(100vh-65px)] overflow-hidden bg-[#0b0c10]">
+    <div className="flex flex-col h-[calc(100vh-65px)] overflow-hidden bg-stone-50 dark:bg-[#141311]">
       {/* Header POS */}
       <PosHeader
         shiftData={shiftData}
@@ -377,28 +377,28 @@ export default function PosPage() {
         title="Xác Nhận Thu TIỀN MẶT"
         message={
           <div className="space-y-3.5">
-            <p className="text-sm text-[#a0a5b5]">
+            <p className="text-sm text-stone-600 dark:text-stone-300">
               Xác nhận thu tiền mặt từ khách hàng cho đơn{' '}
-              <span className="text-[#d4af37] font-bold">{effectiveOrderCode}</span>:
+              <span className="text-stone-900 dark:text-[#efe9de] font-semibold">{effectiveOrderCode}</span>:
             </p>
-            <div className="p-4 rounded-2xl bg-[#181b24] border border-[#d4af37]/30 flex items-center justify-between shadow-inner">
+            <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-between">
               <div>
-                <span className="text-xs text-[#a0a5b5] uppercase font-bold tracking-wider block">
+                <span className="text-xs text-stone-500 dark:text-stone-400 uppercase font-semibold tracking-wider block">
                   Tổng tiền cần thu:
                 </span>
                 {vatInfo.isApplied && vatInfo.amount > 0 && (
-                  <span className="text-[10px] text-amber-300 font-semibold block mt-0.5">
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 font-medium block mt-0.5">
                     (Đã gồm VAT {vatInfo.rate}%: +{vatInfo.amount.toLocaleString()}đ)
                   </span>
                 )}
               </div>
-              <span className="text-2xl font-black text-[#d4af37]">
+              <span className="text-2xl font-bold text-stone-900 dark:text-[#efe9de]">
                 {effectiveFinalTotal.toLocaleString()} VNĐ
               </span>
             </div>
-            <div className="text-xs text-[#8e95a5] flex justify-between items-center px-1">
-              <span>Bàn phục vụ: <strong className="text-white">{cart?.tableNumber || 'Mang về / Tại quầy'}</strong></span>
-              <span>Khách hàng: <strong className="text-white">{cart?.customerName || 'Khách lẻ'}</strong></span>
+            <div className="text-xs text-stone-500 dark:text-stone-400 flex justify-between items-center px-1">
+              <span>Bàn phục vụ: <strong className="text-stone-800 dark:text-stone-200">{cart?.tableNumber || 'Mang về / Tại quầy'}</strong></span>
+              <span>Khách hàng: <strong className="text-stone-800 dark:text-stone-200">{cart?.customerName || 'Khách lẻ'}</strong></span>
             </div>
           </div>
         }

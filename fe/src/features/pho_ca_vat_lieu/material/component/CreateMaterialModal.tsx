@@ -4,13 +4,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  FaBox,
-  FaTimes,
-  FaCheckCircle,
-  FaSpinner,
-  FaDollarSign,
-  FaLayerGroup,
-} from "react-icons/fa";
+  FiPackage,
+  FiX,
+  FiCheck,
+  FiLoader,
+  FiDollarSign,
+  FiLayers,
+} from "react-icons/fi";
 import { materialFormSchema, type MaterialFormValues } from "../schema/material.schema";
 import { useCreateMaterial } from "../hook/useCreateMaterial";
 
@@ -88,25 +88,32 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#12141A] border border-[#D4AF37]/40 w-full max-w-xl rounded-3xl p-6 sm:p-8 shadow-2xl relative my-8 animate-scale-up">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+
+      {/* Modal Dialog */}
+      <div className="relative w-full max-w-xl bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl shadow-2xl p-6 sm:p-8 z-10 animate-fadeIn text-stone-900 dark:text-[#efe9de] max-h-[90vh] overflow-y-auto custom-scrollbar">
         <button
           onClick={onClose}
           type="button"
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8] flex items-center justify-center transition"
+          className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-[#2f2b26] text-stone-500 dark:text-stone-400 flex items-center justify-center transition cursor-pointer"
         >
-          <FaTimes className="text-sm" />
+          <FiX className="w-4 h-4" />
         </button>
 
         <div className="flex items-center gap-3.5 mb-6">
-          <div className="w-12 h-12 rounded-2xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-xl font-bold shadow-lg shadow-[#D4AF37]/20">
-            <FaBox />
+          <div className="w-11 h-11 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-stone-500 dark:text-stone-400 shrink-0">
+            <FiPackage className="w-5 h-5 text-stone-400" />
           </div>
           <div>
-            <h3 className="text-xl font-black text-[#F4F5F8] tracking-wide">
+            <h3 className="text-lg font-bold text-stone-900 dark:text-[#efe9de] tracking-tight">
               Thêm Nguyên Vật Liệu Mới
             </h3>
-            <p className="text-xs text-[#8E95A5]">
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
               Quản lý bao bì, ly nhựa và nguyên liệu pha chế cho quầy bar
             </p>
           </div>
@@ -115,21 +122,21 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Phân loại vật liệu */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1.5">
-              <FaLayerGroup className="text-xs" /> Phân Loại Danh Mục <span className="text-red-400">*</span>
+            <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-1.5">
+              <FiLayers className="text-stone-400 text-xs" /> Phân Loại Danh Mục <span className="text-rose-500">*</span>
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { value: "packaging", label: "📦 Bao Bì & Ly Nhựa" },
-                { value: "ingredient", label: "🌿 Nguyên Liệu Pha Chế" },
-                { value: "topping", label: "🍒 Topping & Phụ Gia" },
+                { value: "packaging", label: "Bao Bì & Ly Nhựa" },
+                { value: "ingredient", label: "Nguyên Liệu Pha Chế" },
+                { value: "topping", label: "Topping & Phụ Gia" },
               ].map((cat) => (
                 <label
                   key={cat.value}
-                  className={`p-2.5 rounded-xl border text-xs font-bold cursor-pointer text-center transition select-none ${
+                  className={`p-2.5 rounded-xl border text-xs font-semibold cursor-pointer text-center transition select-none ${
                     selectedCategory === cat.value
-                      ? "bg-[#D4AF37] text-black border-[#D4AF37] shadow"
-                      : "bg-[#181B24] text-white/70 border-white/10 hover:border-white/20"
+                      ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent shadow-xs"
+                      : "bg-stone-50 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-[#2e2a25]"
                   }`}
                 >
                   <input
@@ -144,26 +151,26 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
             </div>
           </div>
 
-          {/* Thuộc tính của ly/bao bì: Nhiệt độ & Kích cỡ (Hình 1) */}
+          {/* Thuộc tính của ly/bao bì */}
           {selectedCategory === "packaging" && (
-            <div className="space-y-3 animate-fade-in">
+            <div className="space-y-3 animate-fadeIn">
               {/* Nhiệt độ ly */}
-              <div className="p-2.5 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 space-y-1.5">
-                <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1.5">
-                  <span>🌡️ Loại Ly / Nhiệt Độ</span>
+              <div className="p-3 rounded-2xl bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 space-y-1.5">
+                <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                  Loại Ly / Nhiệt Độ
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { value: "cold", label: "❄️ Ly Lạnh" },
-                    { value: "hot", label: "🔥 Ly Nóng" },
-                    { value: "both", label: "❄️🔥 Cả Hai" },
+                    { value: "cold", label: "Ly Lạnh" },
+                    { value: "hot", label: "Ly Nóng" },
+                    { value: "both", label: "Cả Hai" },
                   ].map((m) => (
                     <label
                       key={m.value}
-                      className={`py-2 px-2 rounded-xl border text-xs font-bold cursor-pointer text-center transition select-none flex items-center justify-center ${
+                      className={`py-2 px-2 rounded-xl border text-xs font-semibold cursor-pointer text-center transition select-none flex items-center justify-center ${
                         selectedTempMode === m.value
-                          ? "bg-[#D4AF37] text-black border-[#D4AF37] shadow"
-                          : "bg-[#0B0C10] text-white/70 border-white/10 hover:border-white/20"
+                          ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent shadow-xs"
+                          : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-[#25221e]"
                       }`}
                     >
                       <input
@@ -178,13 +185,13 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
                 </div>
               </div>
 
-              {/* Thuộc tính kích cỡ ly (vd ly size gì đó... - Hình 1) */}
-              <div className="p-2.5 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 space-y-2">
+              {/* Thuộc tính kích cỡ ly */}
+              <div className="p-3 rounded-2xl bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1.5">
-                    <span>📏 Kích Cỡ / Dung Tích Ly (Size)</span>
+                  <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                    Kích Cỡ / Dung Tích Ly (Size)
                   </label>
-                  <span className="text-[10px] text-white/50">Chọn hoặc tự gõ kích cỡ</span>
+                  <span className="text-[10px] text-stone-400">Chọn hoặc tự gõ</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {[
@@ -197,10 +204,10 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
                       key={sizeOpt}
                       type="button"
                       onClick={() => setValue("cup_size", sizeOpt)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition cursor-pointer ${
                         watch("cup_size") === sizeOpt
-                          ? "bg-[#D4AF37] text-black border-[#D4AF37]"
-                          : "bg-[#0B0C10] text-white/70 border-white/10 hover:border-white/20"
+                          ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent"
+                          : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-[#25221e]"
                       }`}
                     >
                       {sizeOpt}
@@ -210,30 +217,30 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
                 <input
                   {...register("cup_size")}
                   placeholder="Gõ tự do kích cỡ (VD: 500ml, 700ml, Size L...)"
-                  className="w-full px-3 py-1.5 rounded-xl bg-[#0B0C10] border border-white/10 text-xs text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none"
                 />
               </div>
             </div>
           )}
 
-          {/* Phạm vi sử dụng nguyên liệu pha chế (Gọn gàng) */}
+          {/* Phạm vi sử dụng nguyên liệu pha chế */}
           {selectedCategory === "ingredient" && (
-            <div className="p-2.5 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 space-y-1.5 animate-fade-in">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1.5">
-                <span>🧪 Phạm Vi Sử Dụng</span>
+            <div className="p-3 rounded-2xl bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 space-y-1.5 animate-fadeIn">
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                Phạm Vi Sử Dụng
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { value: "customer_product", label: "🍹 Món Bán" },
-                  { value: "internal_prep", label: "🏠 Nội Bộ" },
-                  { value: "both", label: "🍹🏠 Cả Hai" },
+                  { value: "customer_product", label: "Món Bán" },
+                  { value: "internal_prep", label: "Nội Bộ" },
+                  { value: "both", label: "Cả Hai" },
                 ].map((item) => (
                   <label
                     key={item.value}
-                    className={`py-2 px-2 rounded-xl border text-xs font-bold cursor-pointer text-center transition select-none flex items-center justify-center ${
+                    className={`py-2 px-2 rounded-xl border text-xs font-semibold cursor-pointer text-center transition select-none flex items-center justify-center ${
                       selectedUsageScope === item.value
-                        ? "bg-[#D4AF37] text-black border-[#D4AF37] shadow"
-                        : "bg-[#0B0C10] text-white/70 border-white/10 hover:border-white/20"
+                        ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent shadow-xs"
+                        : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-[#25221e]"
                     }`}
                   >
                     <input
@@ -249,26 +256,26 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
             </div>
           )}
 
-          {/* Cấu hình cách thức bán ra & giá bán topping (Hình 2) */}
+          {/* Cấu hình cách thức bán ra & giá bán topping */}
           {selectedCategory === "topping" && (
-            <div className="p-3 rounded-2xl bg-[#181B24] border border-[#D4AF37]/40 space-y-2.5 animate-fade-in">
+            <div className="p-3 rounded-2xl bg-stone-50/70 dark:bg-[#25221e]/60 border border-stone-200/80 dark:border-stone-800 space-y-2.5 animate-fadeIn">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1.5">
-                  <span>🍨 Cấu Hình Topping Bán Ra (Table Riêng)</span>
+                <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                  Cấu Hình Topping Bán Ra
                 </label>
-                <span className="text-[10px] text-emerald-400 font-medium">Tự động đồng bộ bảng Topping Bán Ra</span>
+                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Tự động đồng bộ bảng Topping</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Cách thức bán ra (1 miếng, 1 vá...) */}
+                {/* Cách thức bán ra */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-white/80">
-                    Cách Thức Bán Ra (Khẩu phần) <span className="text-red-400">*</span>
+                  <label className="text-[11px] font-semibold text-stone-700 dark:text-stone-300">
+                    Cách Thức Bán Ra (Khẩu phần) <span className="text-rose-500">*</span>
                   </label>
                   <input
                     {...register("portion_unit")}
                     placeholder="VD: 1 vá, 1 miếng, 1 muỗng, 1 viên..."
-                    className="w-full px-3 py-2 rounded-xl bg-[#0B0C10] border border-white/10 text-xs text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none"
                   />
                   <div className="flex flex-wrap gap-1">
                     {["1 vá", "1 miếng", "1 muỗng", "1 viên", "1 phần", "2 miếng"].map((p) => (
@@ -276,10 +283,10 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
                         key={p}
                         type="button"
                         onClick={() => setValue("portion_unit", p)}
-                        className={`px-2 py-0.5 rounded text-[10px] font-medium border transition ${
+                        className={`px-2 py-0.5 rounded text-[10px] font-medium border transition cursor-pointer ${
                           watch("portion_unit") === p
-                            ? "bg-[#D4AF37] text-black border-[#D4AF37]"
-                            : "bg-[#0B0C10] text-white/60 border-white/10 hover:border-white/20"
+                            ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent"
+                            : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60"
                         }`}
                       >
                         {p}
@@ -290,14 +297,14 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
 
                 {/* Giá bán ra cho khách */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-white/80">
-                    Giá Bán Ra Khách (VNĐ) <span className="text-red-400">*</span>
+                  <label className="text-[11px] font-semibold text-stone-700 dark:text-stone-300">
+                    Giá Bán Ra Khách (VNĐ) <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="number"
                     {...register("selling_price", { valueAsNumber: true })}
                     placeholder="VD: 5000"
-                    className="w-full px-3 py-2 rounded-xl bg-[#0B0C10] border border-white/10 text-xs text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none font-mono"
                   />
                   <div className="flex flex-wrap gap-1">
                     {[5000, 7000, 10000, 12000, 15000].map((pr) => (
@@ -305,10 +312,10 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
                         key={pr}
                         type="button"
                         onClick={() => setValue("selling_price", pr)}
-                        className={`px-2 py-0.5 rounded text-[10px] font-medium border transition ${
+                        className={`px-2 py-0.5 rounded text-[10px] font-medium border transition cursor-pointer ${
                           watch("selling_price") === pr
-                            ? "bg-[#D4AF37] text-black border-[#D4AF37]"
-                            : "bg-[#0B0C10] text-white/60 border-white/10 hover:border-white/20"
+                            ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent"
+                            : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60"
                         }`}
                       >
                         {pr.toLocaleString()}đ
@@ -317,34 +324,30 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
                   </div>
                 </div>
               </div>
-
-              <p className="text-[10px] text-white/40 italic">
-                * Dữ liệu này sẽ tự động lưu vào Bảng CSDL riêng biệt (sellable_toppings) phục vụ thêm topping vào món khi order.
-              </p>
             </div>
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-2 space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                Tên Vật Liệu <span className="text-red-400">*</span>
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                Tên Vật Liệu <span className="text-rose-500">*</span>
               </label>
               <input
                 {...register("name")}
                 placeholder="VD: Ly nhựa PP 700ml hoặc Trà Đen Lộc Phát"
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none"
               />
-              {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
+              {errors.name && <p className="text-xs text-rose-500">{errors.name.message}</p>}
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
                 Mã Vật Liệu
               </label>
               <input
                 {...register("code")}
                 placeholder="Tự sinh (MAT-...)"
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] uppercase focus:border-[#D4AF37] focus:outline-none font-mono"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] uppercase focus:border-stone-400 focus:outline-none font-mono"
               />
             </div>
           </div>
@@ -352,17 +355,17 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                  Đơn Vị Tính <span className="text-red-400">*</span>
+                <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                  Đơn Vị Tính <span className="text-rose-500">*</span>
                 </label>
-                <span className="text-[10px] text-white/40">Gõ tự do</span>
+                <span className="text-[10px] text-stone-400">Gõ tự do</span>
               </div>
               <input
                 type="text"
                 list="create-unit-suggestions"
                 {...register("unit")}
                 placeholder="Thùng, Cây, Lốc, Cái, Kg, Lít..."
-                className="w-full px-3 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none font-medium"
+                className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none font-medium"
               />
               <datalist id="create-unit-suggestions">
                 <option value="Thùng" />
@@ -391,86 +394,86 @@ export const CreateMaterialModal: React.FC<CreateMaterialModalProps> = ({
                     key={u}
                     type="button"
                     onClick={() => setValue("unit", u, { shouldValidate: true })}
-                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium transition-all ${
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium transition cursor-pointer ${
                       currentUnit === u
-                        ? "bg-[#D4AF37] text-black font-bold"
-                        : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
+                        ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900"
+                        : "bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
                     }`}
                   >
                     {u}
                   </button>
                 ))}
               </div>
-              {errors.unit && <p className="text-xs text-red-400">{errors.unit.message}</p>}
+              {errors.unit && <p className="text-xs text-rose-500">{errors.unit.message}</p>}
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1">
-                <FaDollarSign className="text-xs" /> Giá Vốn (VNĐ)
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-1">
+                <FiDollarSign className="text-stone-400 text-xs" /> Giá Vốn (VNĐ)
               </label>
               <input
                 type="number"
                 {...register("cost_per_unit", { valueAsNumber: true })}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none font-mono"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none font-mono"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
                 Tồn Kho Ban Đầu
               </label>
               <input
                 type="number"
                 {...register("quantity_in_stock", { valueAsNumber: true })}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none font-mono"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none font-mono"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#8E95A5]">Ngưỡng Cảnh Báo Tối Thiểu</label>
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300">Ngưỡng Cảnh Báo Tối Thiểu</label>
               <input
                 type="number"
                 {...register("min_threshold", { valueAsNumber: true })}
                 placeholder="10"
-                className="w-full px-4 py-2 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none font-mono"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none font-mono"
               />
-              <span className="text-[10px] text-white/40">Hệ thống sẽ báo động khi tồn kho chạm mức này</span>
+              <span className="text-[10px] text-stone-400">Hệ thống sẽ báo động khi tồn kho chạm mức này</span>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#8E95A5]">Ghi Chú Quy Cách / Hãng</label>
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300">Ghi Chú Quy Cách / Hãng</label>
               <input
                 {...register("description")}
                 placeholder="VD: Cây 50 ly, hoặc Hộp 1kg Berrino..."
-                className="w-full px-4 py-2 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#212532]">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-stone-200/80 dark:border-stone-800">
             <button
               type="button"
               onClick={onClose}
               disabled={createMutation.isPending}
-              className="px-5 py-2.5 rounded-xl border border-[#212532] bg-[#181B24] hover:bg-[#212532] text-[#8E95A5] hover:text-[#F4F5F8] text-xs font-bold transition disabled:opacity-50"
+              className="px-4 py-2 rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2e2a25] text-stone-700 dark:text-stone-300 font-semibold text-xs transition cursor-pointer disabled:opacity-50"
             >
               Hủy Bỏ
             </button>
             <button
               type="submit"
               disabled={createMutation.isPending}
-              className="px-6 py-2.5 rounded-xl gold-gradient-bg text-[#0B0C10] text-xs font-black hover:brightness-110 active:scale-95 transition flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg shadow-[#D4AF37]/20"
+              className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs transition flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-xs"
             >
               {createMutation.isPending ? (
                 <>
-                  <FaSpinner className="animate-spin text-xs" />
+                  <FiLoader className="animate-spin text-xs" />
                   <span>Đang thêm...</span>
                 </>
               ) : (
                 <>
-                  <FaCheckCircle className="text-xs" />
+                  <FiCheck className="text-xs" />
                   <span>Thêm Vào Kho</span>
                 </>
               )}

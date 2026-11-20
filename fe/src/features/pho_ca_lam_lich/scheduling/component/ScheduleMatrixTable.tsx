@@ -3,21 +3,18 @@
 import React, { useState } from "react";
 import { toast } from "sonner";
 import {
-  FaCalendarAlt,
-  FaCheckCircle,
-  FaEdit,
-  FaExclamationCircle,
-  FaFileDownload,
-  FaFileExcel,
-  FaLock,
-  FaPlus,
-  FaRegCircle,
-  FaSave,
-  FaSpinner,
-  FaTimes,
-  FaUserTimes,
-  FaCamera,
-} from "react-icons/fa";
+  FiCalendar,
+  FiCheckCircle,
+  FiCircle,
+  FiLock,
+  FiPlus,
+  FiX,
+  FiAlertCircle,
+  FiDownload,
+  FiFileText,
+  FiSave,
+  FiEye,
+} from "react-icons/fi";
 import {
   SlotAssignment,
   StaffRegistrationInput,
@@ -61,14 +58,12 @@ const DAYS_ORDER = [
 
 interface ShiftGroupConfig {
   shiftTitle: string;
-  badgeColor: string;
   roles: { role: string; label: string }[];
 }
 
 const SHIFT_GROUPS: ShiftGroupConfig[] = [
   {
     shiftTitle: "CA SÁNG (07:00 - 12:30)",
-    badgeColor: "bg-[#201A09] text-[#F3E4B5] border-[#D4AF37]/40",
     roles: [
       { role: "Pha chế", label: "Pha chế" },
       { role: "Giữ xe", label: "Giữ xe" },
@@ -76,7 +71,6 @@ const SHIFT_GROUPS: ShiftGroupConfig[] = [
   },
   {
     shiftTitle: "CA CHIỀU (12:30 - 17:30)",
-    badgeColor: "bg-[#261E0A] text-[#E7CD80] border-[#D4AF37]/50",
     roles: [
       { role: "Pha chế", label: "Pha chế" },
       { role: "Giữ xe", label: "Giữ xe" },
@@ -84,7 +78,6 @@ const SHIFT_GROUPS: ShiftGroupConfig[] = [
   },
   {
     shiftTitle: "CA TỐI (17:30 - 23:00)",
-    badgeColor: "bg-[#2D230B] text-[#D4AF37] border-[#D4AF37]/60",
     roles: [
       { role: "Pha chế", label: "Pha chế" },
       { role: "Giữ xe", label: "Giữ xe (Linh hoạt)" },
@@ -92,7 +85,6 @@ const SHIFT_GROUPS: ShiftGroupConfig[] = [
   },
   {
     shiftTitle: "CA KHUYA (23:00 - 07:00)",
-    badgeColor: "bg-[#35280B] text-[#F5D77F] border-[#D4AF37]/80",
     roles: [{ role: "All", label: "All (Pha chế & Xe)" }],
   },
 ];
@@ -249,92 +241,102 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
   };
 
   return (
-    <div className="bg-[#12141A] border border-[#212532] rounded-3xl shadow-2xl overflow-hidden mb-8">
-      {/* Table Header Top Bar */}
-      <div className="p-5 border-b border-[#212532] bg-[#0B0C10] flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl shadow-sm overflow-hidden mb-8 transition-colors">
+      {/* Table Header Top Bar: Mộc mạc, ấm cúng */}
+      <div className="p-5 border-b border-stone-100 dark:border-stone-800 bg-stone-50/50 dark:bg-[#181614] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h2 className="text-base font-black gold-gradient-text tracking-wide uppercase">
-              Bảng Phân Công Lịch Làm Việc (Zone Six Signature)
+            <h2 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
+              Bảng Phân Công Lịch Làm Việc
             </h2>
             {weekRange && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-[#201A09] text-[#F3E4B5] border border-[#D4AF37]/50 shadow-sm">
-                <FaCalendarAlt className="text-[#D4AF37] text-[11px]" />
-                {weekRange}
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-mono bg-stone-100 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60">
+                <FiCalendar className="text-stone-400 text-xs" />
+                <span>{weekRange}</span>
               </span>
             )}
             {readOnly && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-[#161922] text-[#E7CD80] border border-[#D4AF37]/40 shadow-sm">
-                👁️ Chế Độ Chỉ Xem (Read-Only)
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-medium bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border border-stone-200/80 dark:border-stone-700/60">
+                <FiEye className="text-stone-400 text-xs" />
+                <span>Chế độ chỉ xem</span>
               </span>
             )}
           </div>
-          <p className="text-xs text-[#8E95A5] mt-1">
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
             {weekRange ? `Lịch công tác ${weekRange}. ` : ""}
             {readOnly
-              ? "Chế độ xem lịch làm việc. Để chỉnh sửa phân công ca làm việc hoặc auto xếp lịch, cần tài khoản Trưởng ca, Quản lý hoặc Phó ca làm lịch."
-              : "Tự động chống trùng lặp. Nhấp vào ô bất kỳ để chỉnh sửa hoặc xóa nhân sự với gợi ý thông minh."}
+              ? "Chế độ xem lịch làm việc. Để chỉnh sửa phân công ca làm việc, cần tài khoản Trưởng ca, Quản lý hoặc Phó ca làm lịch."
+              : "Tự động chống trùng lặp. Nhấp vào ô bất kỳ để chỉnh sửa hoặc phân công nhân sự."}
           </p>
         </div>
 
-        {/* Legend */}
-        <div className="flex flex-wrap items-center gap-3 text-xs">
+        {/* Legend: Tối giản, thanh lịch, icon xám */}
+        <div className="flex flex-wrap items-center gap-2.5 text-xs text-stone-500 dark:text-stone-400">
           {isHigherRole ? (
-            <span className="flex items-center gap-1.5 font-bold text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-500/40 shadow-sm">
-              <FaCheckCircle className="text-emerald-400 text-xs" /> Tích vào ô để Check-in / Bỏ check-in
+            <span className="flex items-center gap-1.5 font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded-md border border-emerald-200/70 dark:border-emerald-800/40">
+              <FiCheckCircle className="text-emerald-500 text-xs" /> Tích vào ô để Check-in
             </span>
           ) : userRole === "pho_ca_lam_lich" ? (
-            <span className="flex items-center gap-1.5 font-medium text-[#8E95A5]">
-              (Phó ca làm lịch: Chế độ xếp ca không hiển thị tích)
+            <span className="flex items-center gap-1.5 font-medium text-stone-400">
+              (Phó ca: Chế độ xếp ca không hiển thị tích)
             </span>
           ) : (
-            <span className="flex items-center gap-1.5 font-medium text-emerald-400">
-              <FaCheckCircle className="text-emerald-400 text-xs" /> Đã điểm danh (Check-in)
+            <span className="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400">
+              <FiCheckCircle className="text-emerald-500 text-xs" /> Đã điểm danh
             </span>
           )}
-          <span className="flex items-center gap-1.5 font-semibold text-[#D4AF37]">
-            <span className="w-3.5 h-3.5 rounded bg-[#181B24] border border-[#D4AF37] inline-block" /> Đã xếp ca
+
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded bg-stone-200 dark:bg-stone-700 inline-block border border-stone-300 dark:border-stone-600" />
+            <span>Đã xếp</span>
           </span>
-          <span className="flex items-center gap-1.5 font-bold text-rose-400">
-            <span className="w-3.5 h-3.5 rounded bg-rose-600 inline-block" /> Ca trống (Tô đỏ)
+
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded bg-rose-200 dark:bg-rose-950 inline-block border border-rose-300 dark:border-rose-900" />
+            <span>Ca trống</span>
           </span>
-          <span className="flex items-center gap-1.5 font-medium text-[#8E95A5]">
-            <span className="w-3.5 h-3.5 rounded bg-[#141722] border border-dashed border-[#262B3A] inline-block" /> Ca tối 1 người
+
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded bg-stone-100 dark:bg-[#141311] inline-block border border-dashed border-stone-300 dark:border-stone-700" />
+            <span>Chế độ 1 người</span>
           </span>
-          <span className="flex items-center gap-1.5 font-medium text-[#656D82]">
-            <FaLock className="text-xs text-[#656D82]" /> Đang/Đã qua: Khóa sửa
+
+          <span className="flex items-center gap-1.5">
+            <FiLock className="text-stone-400 text-xs" />
+            <span>Đã khóa</span>
           </span>
         </div>
       </div>
 
-      {/* Main Table */}
+      {/* Main Table: Bảng xếp lịch thanh thoát */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-[#F4F5F8] border-collapse">
+        <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-[#0B0C10] border-b border-[#212532] text-xs font-black uppercase tracking-wider text-[#D4AF37]">
-              <th className="px-5 py-4 w-48 border-r border-[#212532]">
+            <tr className="bg-stone-50 dark:bg-[#181614] border-b border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-300 font-medium">
+              <th className="px-4 py-3.5 w-44 border-r border-stone-200/80 dark:border-stone-800">
                 <div className="flex flex-col">
-                  <span>Vị Trí / Ca</span>
-                  <span className="text-[10px] normal-case font-medium text-[#8E95A5] mt-0.5">
-                    Zone Six Signature
+                  <span className="font-semibold text-stone-900 dark:text-[#efe9de]">Vị Trí / Ca</span>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 font-normal mt-0.5">
+                    Zone Six Đà Nẵng
                   </span>
                 </div>
               </th>
+
               {DAYS_ORDER.map((day) => {
                 const shortDate = dayDates?.[day];
                 const fullDate = dayFullDates?.[day];
                 return (
                   <th
                     key={day}
-                    className="px-3 py-3 text-center min-w-[130px] border-r border-[#212532] last:border-r-0"
+                    className="px-2.5 py-3 text-center min-w-[125px] border-r border-stone-200/80 dark:border-stone-800 last:border-r-0"
                     title={fullDate ? `${day}, ngày ${fullDate}` : day}
                   >
                     <div className="flex flex-col items-center justify-center gap-1">
-                      <span className="text-xs font-black tracking-wider text-[#F5D77F] uppercase">
+                      <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">
                         {day}
                       </span>
                       {shortDate && (
-                        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-[#1A1D27] text-[#E7CD80] border border-[#D4AF37]/40 shadow-inner tracking-tight">
+                        <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border border-stone-200/80 dark:border-stone-700/60">
                           {shortDate}
                         </span>
                       )}
@@ -345,18 +347,16 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-[#212532]">
+          <tbody className="divide-y divide-stone-100 dark:divide-stone-800/80">
             {SHIFT_GROUPS.map((group, groupIdx) => (
               <React.Fragment key={groupIdx}>
                 {/* Shift Group Header Separator */}
-                <tr className="bg-[#151821] border-y border-[#212532]">
+                <tr className="bg-stone-100/60 dark:bg-[#141311] border-y border-stone-200/80 dark:border-stone-800">
                   <td
                     colSpan={8}
-                    className="px-5 py-2 text-xs font-black tracking-wider"
+                    className="px-4 py-1.5 text-xs font-medium"
                   >
-                    <span
-                      className={`inline-block px-3.5 py-1 rounded-full border text-[11px] font-black ${group.badgeColor}`}
-                    >
+                    <span className="inline-block px-2.5 py-0.5 rounded-lg text-[11px] font-semibold bg-white dark:bg-[#25221e] text-stone-800 dark:text-[#efe9de] border border-stone-200/80 dark:border-stone-700/70 shadow-xs">
                       {group.shiftTitle}
                     </span>
                   </td>
@@ -366,9 +366,9 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
                 {group.roles.map((r, roleIdx) => (
                   <tr
                     key={roleIdx}
-                    className="hover:bg-[#181B24]/40 transition-colors"
+                    className="hover:bg-stone-50/50 dark:hover:bg-[#1f1d19]/40 transition-colors"
                   >
-                    <td className="px-5 py-3 font-bold text-[#E7CD80] text-xs border-r border-[#212532] bg-[#0E1015]">
+                    <td className="px-4 py-3 font-medium text-stone-700 dark:text-stone-300 text-xs border-r border-stone-200/80 dark:border-stone-800 bg-stone-50/30 dark:bg-[#181614]/30">
                       {r.label}
                     </td>
 
@@ -387,21 +387,21 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
                         return (
                           <td
                             key={day}
-                            className="px-3 py-3 text-center border-r border-[#212532] text-xs text-[#444B60]"
+                            className="px-2.5 py-2.5 text-center border-r border-stone-200/80 dark:border-stone-800 text-xs text-stone-400"
                           >
                             —
                           </td>
                         );
                       }
 
-                      // 1. Chế độ ca tối 1 người (ô 2 màu trắng/xám tối không xếp)
+                      // 1. Chế độ ca tối 1 người (ô mờ không xếp)
                       if (slot.is_disabled) {
                         return (
                           <td
                             key={day}
-                            className="px-3 py-3 text-center border-r border-[#212532] bg-[#0E1016]/80 select-none"
+                            className="px-2.5 py-2.5 text-center border-r border-stone-200/80 dark:border-stone-800 bg-stone-50/40 dark:bg-[#141311]/40 select-none"
                           >
-                            <span className="inline-flex items-center justify-center px-2 py-1 rounded-lg text-[11px] font-medium text-[#656D82] border border-dashed border-[#262B3A] bg-[#141722]/50 tracking-tight">
+                            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[10px] text-stone-400 dark:text-stone-500 border border-dashed border-stone-200 dark:border-stone-800">
                               Chế độ 1 người
                             </span>
                           </td>
@@ -410,38 +410,37 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
 
                       const workStatus = getSlotWorkStatus(effectiveStartDate, day, shiftKey);
                       const canEdit = !readOnly && workStatus.canEdit;
-                      const showCheckmark = isHigherRole && workStatus.hasWorkedOrCheckedIn;
 
-                      // 2. Ca trống thiếu người: TÔ ĐỎ CẢNH BÁO + Click để chọn (nếu chưa tới ca)
+                      // 2. Ca trống: Nhẹ nhàng, không gắt mắt
                       if (slot.is_empty || !slot.staff_name) {
                         return (
                           <td
                             key={day}
                             onClick={() => handleSlotClick(slot, day, shiftKey)}
-                            className={`px-3 py-3 text-center border-r border-[#212532] bg-rose-600/95 text-white font-extrabold transition relative group ${
+                            className={`px-2.5 py-2 text-center border-r border-stone-200/80 dark:border-stone-800 bg-rose-50/70 hover:bg-rose-100/80 dark:bg-rose-950/20 dark:hover:bg-rose-950/35 transition relative group ${
                               !canEdit
                                 ? "cursor-not-allowed opacity-75"
                                 : readOnly
                                 ? "cursor-default"
-                                : "cursor-pointer hover:bg-rose-500"
+                                : "cursor-pointer"
                             }`}
                             title={
                               !workStatus.canEdit
-                                ? `Ca trống (${day} - Ca ${shiftKey}): Ca đang diễn ra hoặc đã kết thúc - Không thể điều chỉnh lịch!`
+                                ? `Ca trống (${day} - Ca ${shiftKey}): Đang diễn ra hoặc đã qua`
                                 : readOnly
                                 ? "Ca trống"
-                                : "Ca trống! Nhấp chuột để phân công nhân viên"
+                                : "Ca trống! Bấm để xếp nhân sự"
                             }
                           >
-                            <div className="flex items-center justify-center gap-1.5 text-xs py-0.5">
+                            <div className="flex items-center justify-center gap-1.5 text-xs text-rose-700 dark:text-rose-300 font-medium py-1">
                               {!workStatus.canEdit ? (
-                                <FaLock className="text-[10px] text-white/80" />
+                                <FiLock className="text-xs text-stone-400" />
                               ) : (
-                                <FaExclamationCircle className="text-[11px]" />
+                                <FiAlertCircle className="text-xs text-rose-500 dark:text-rose-400" />
                               )}
-                              <span>[Ca Trống]</span>
+                              <span>Trống ca</span>
                               {canEdit && (
-                                <FaPlus className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity ml-1 bg-white/20 p-0.5 rounded" />
+                                <FiPlus className="text-xs opacity-0 group-hover:opacity-100 transition-opacity ml-0.5" />
                               )}
                             </div>
                           </td>
@@ -452,81 +451,80 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
                       const currentSlotKey = `${day}_${shiftKey}_${r.role}`;
                       const isCheckingThis = checkingSlotKey === currentSlotKey;
 
-                      // 3. Đã xếp nhân sự hợp lệ: Huy hiệu vàng gold trên nền obsidian + Click chỉnh sửa / Xóa (nếu ca chưa tới)
+                      // 3. Đã xếp nhân sự: Thẻ card sang trọng, ấm áp
                       return (
                         <td
                           key={day}
                           onClick={() => handleSlotClick(slot, day, shiftKey)}
-                          className={`px-2 py-2 text-center border-r border-[#212532] transition group relative ${
-                            !canEdit ? "cursor-not-allowed" : readOnly ? "cursor-default" : "cursor-pointer hover:bg-[#1C202E]/80"
+                          className={`px-2 py-2 text-center border-r border-stone-200/80 dark:border-stone-800 transition group relative ${
+                            !canEdit ? "cursor-not-allowed" : readOnly ? "cursor-default" : "cursor-pointer hover:bg-stone-50 dark:hover:bg-[#1f1d19]"
                           }`}
                           title={
                             !workStatus.canEdit
-                              ? `Nhân sự: ${slot.staff_name} (Ca đang diễn ra hoặc đã kết thúc - Không thể điều chỉnh lịch)`
+                              ? `Nhân sự: ${slot.staff_name} (Ca đã qua/đang diễn ra)`
                               : readOnly
                               ? `Nhân sự: ${slot.staff_name}`
-                              : "Nhấp để đổi nhân sự hoặc chỉnh sửa"
+                              : "Bấm để đổi nhân sự hoặc chỉnh sửa"
                           }
                         >
-                          <div className={`inline-flex items-center justify-between gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-black bg-[#181B24] text-[#F5D77F] border shadow-md transition w-full max-w-[145px] ${
-                            isCheckedIn
-                              ? "border-emerald-500/80 bg-[#101E17] shadow-[0_0_12px_rgba(16,185,129,0.25)] text-emerald-300"
-                              : "border-[#D4AF37]/50"
-                          } ${
-                            canEdit ? "group-hover:bg-[#202534] group-hover:border-[#D4AF37]" : "opacity-90"
-                          }`}>
+                          <div
+                            className={`inline-flex items-center justify-between gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-medium border shadow-xs transition w-full max-w-[145px] ${
+                              isCheckedIn
+                                ? "bg-emerald-50/70 border-emerald-300 dark:bg-emerald-950/25 dark:border-emerald-800/60 text-emerald-900 dark:text-emerald-200"
+                                : "bg-white dark:bg-[#25221e] border-stone-200 dark:border-stone-700/70 text-stone-900 dark:text-[#efe9de]"
+                            } ${canEdit ? "group-hover:border-stone-400 dark:group-hover:border-stone-600" : "opacity-90"}`}
+                          >
                             <span className="inline-flex items-center gap-1.5 truncate">
-                              {/* TẤT CẢ CÁC ROLE ĐỀU CÓ CHỨC NĂNG CHECK-IN BẰNG CAMERA TRỰC TIẾP */}
                               {isCheckingThis ? (
-                                <FaSpinner className="text-[11px] text-[#D4AF37] animate-spin shrink-0" />
+                                <div className="w-3 h-3 rounded-full border-2 border-stone-400 border-t-transparent animate-spin shrink-0" />
                               ) : isCheckedIn ? (
                                 <button
                                   type="button"
                                   onClick={(e) => handleSlotCheckIn(e, slot, day, shiftKey)}
-                                  className="p-0.5 -ml-0.5 rounded-md hover:bg-emerald-900/60 text-emerald-400 hover:text-emerald-300 transition-all hover:scale-125 active:scale-90 shrink-0 focus:outline-none"
-                                  title={`Đã điểm danh! Bấm để hủy tích check-in cho ${slot.staff_name}`}
+                                  className="p-0.5 -ml-0.5 rounded text-emerald-600 dark:text-emerald-400 hover:scale-115 transition shrink-0"
+                                  title={`Đã điểm danh! Bấm để hủy tích cho ${slot.staff_name}`}
                                 >
-                                  <FaCheckCircle className="text-[13px] text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                                  <FiCheckCircle className="text-xs" />
                                 </button>
                               ) : (
                                 <button
                                   type="button"
                                   onClick={(e) => handleSlotCheckIn(e, slot, day, shiftKey)}
-                                  className="p-0.5 -ml-0.5 rounded-md text-[#8E95A5] hover:text-emerald-400 hover:bg-[#202534] transition-all hover:scale-125 active:scale-90 shrink-0 focus:outline-none"
-                                  title={`Bấm để tích check-in hộ cho ${slot.staff_name} (không cần chụp ảnh)`}
+                                  className="p-0.5 -ml-0.5 rounded text-stone-400 hover:text-emerald-500 hover:scale-115 transition shrink-0"
+                                  title={`Bấm để tích check-in hộ cho ${slot.staff_name}`}
                                 >
-                                  <FaRegCircle className="text-[12px]" />
+                                  <FiCircle className="text-xs" />
                                 </button>
                               )}
                               <span className="truncate">{slot.staff_name}</span>
                             </span>
 
-                            {/* Nút xóa nhanh khi hover (chỉ khi có quyền và ca chưa tới giờ làm) */}
+                            {/* Nút xóa nhanh khi hover (chỉ khi có quyền và ca chưa tới) */}
                             {canEdit && (
                               <button
                                 type="button"
                                 onClick={(e) => handleQuickDelete(e, slot, day, shiftKey)}
-                                className="opacity-0 group-hover:opacity-100 hover:text-rose-400 text-[#8E95A5] p-1 rounded hover:bg-rose-950/40 transition shrink-0"
+                                className="opacity-0 group-hover:opacity-100 hover:text-rose-600 text-stone-400 p-0.5 rounded transition shrink-0"
                                 title="Xóa nhân sự khỏi ca này"
                               >
-                                <FaTimes className="text-[10px]" />
+                                <FiX className="text-xs" />
                               </button>
                             )}
 
-                            {/* Trạng thái khóa đối với ca đang diễn ra hoặc đã kết thúc */}
+                            {/* Trạng thái khóa */}
                             {!workStatus.canEdit && (
                               <span
                                 className="shrink-0 text-[10px]"
                                 title={
                                   workStatus.isInProgress
-                                    ? "Ca đang diễn ra - Khóa điều chỉnh lịch"
-                                    : "Ca đã kết thúc - Khóa điều chỉnh lịch"
+                                    ? "Ca đang diễn ra"
+                                    : "Ca đã kết thúc"
                                 }
                               >
                                 {workStatus.isInProgress ? (
-                                  <span className="w-2 h-2 rounded-full bg-amber-400 inline-block animate-pulse" />
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block animate-pulse" />
                                 ) : (
-                                  <FaLock className="text-[9px] text-[#8E95A5]" />
+                                  <FiLock className="text-[10px] text-stone-400" />
                                 )}
                               </span>
                             )}
@@ -542,35 +540,28 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
         </table>
       </div>
 
-      {/* BOTTOM ACTION BAR: SAVE / UPDATE BUTTON, EXPORT XLSX BUTTON & INTERACTIVE HINTS */}
-      <div className="p-4 bg-[#0B0C10] border-t border-[#212532] flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-xs text-[#8E95A5]">
-          <span className="inline-block w-2 h-2 rounded-full bg-[#D4AF37]" />
+      {/* BOTTOM ACTION BAR: Lưu lịch & Xuất Excel */}
+      <div className="p-4 bg-stone-50/50 dark:bg-[#181614] border-t border-stone-100 dark:border-stone-800 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 text-stone-500 dark:text-stone-400">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-stone-400" />
           <span>
-            <strong>Gợi ý:</strong> Nhấp vào ô bất kỳ để chỉnh sửa hoặc xóa nhân sự. Gợi ý sẽ tự động lọc những bạn đăng ký ca và loại trừ người đã làm cùng ca!
+            Nhấp vào ô bất kỳ để xếp nhân sự. Hệ thống tự động lọc người đăng ký và tránh trùng ca.
           </span>
         </div>
 
-        {/* Action Buttons Phía Dưới Bảng Theo Yêu Cầu */}
-        <div className="flex items-center gap-3 shrink-0 flex-wrap justify-end">
-          {/* Nút Lưu Lịch (Lần đầu) hoặc Cập Nhật Lịch Làm Việc (khi đã lưu lần đầu) */}
+        <div className="flex items-center gap-2.5 shrink-0 flex-wrap justify-end">
           {canManageSchedule && onSaveSchedule && (
             <button
               type="button"
               disabled={isSaving}
               onClick={onSaveSchedule}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black shadow-lg transition active:scale-95 disabled:opacity-50 ${
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium transition cursor-pointer shadow-xs disabled:opacity-50 ${
                 hasSavedSchedule
-                  ? "border border-emerald-500/80 bg-[#0E1E17] hover:bg-[#142B20] text-emerald-300 shadow-emerald-950/40 hover:border-emerald-400"
-                  : "border border-[#D4AF37]/80 bg-[#1F190B] hover:bg-[#2A220F] text-[#F5D77F] gold-glow-sm hover:border-[#D4AF37]"
+                  ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 hover:opacity-90"
+                  : "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 hover:opacity-90"
               }`}
-              title={
-                hasSavedSchedule
-                  ? "Cập nhật các thay đổi mới nhất (pass ca, nhận ca trống...) vào CSDL"
-                  : "Lưu lịch làm việc chính thức lần đầu vào CSDL (bắt buộc trước 24h tính từ ngày bắt đầu tuần)"
-              }
             >
-              <FaSave className={`text-sm ${hasSavedSchedule ? "text-emerald-400" : "text-[#D4AF37]"}`} />
+              <FiSave className="text-xs" />
               <span>
                 {isSaving
                   ? "Đang lưu..."
@@ -581,17 +572,16 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
             </button>
           )}
 
-          {/* Nút Xuất File Excel Phía Dưới Bảng */}
           {onExportExcel && (
             <button
               type="button"
               disabled={isExporting}
               onClick={onExportExcel}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl gold-gradient-bg text-[#0B0C10] text-xs font-black shadow-lg gold-glow hover:brightness-110 transition disabled:opacity-50 active:scale-95"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-stone-200 dark:border-stone-700/70 bg-white dark:bg-[#25221e] hover:bg-stone-50 dark:hover:bg-stone-800 text-stone-800 dark:text-[#efe9de] text-xs font-medium transition cursor-pointer shadow-xs disabled:opacity-50"
             >
-              <FaFileExcel className="text-sm text-[#0B0C10]" />
-              <span>{isExporting ? "Đang xuất Excel..." : "Xuất File Lịch Làm Việc (.xlsx)"}</span>
-              <FaFileDownload className="text-xs text-[#0B0C10]/80" />
+              <FiFileText className="text-xs text-stone-400" />
+              <span>{isExporting ? "Đang xuất..." : "Xuất File Excel (.xlsx)"}</span>
+              <FiDownload className="text-xs text-stone-400" />
             </button>
           )}
         </div>

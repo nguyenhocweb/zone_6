@@ -3,22 +3,21 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
-  FaIdCard,
-  FaUser,
-  FaPhoneAlt,
-  FaBriefcase,
-  FaMoneyBillWave,
-  FaLock,
-  FaSave,
-  FaShieldAlt,
-  FaQrcode,
-  FaCrown,
-  FaKey,
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa";
+  FiUser,
+  FiPhone,
+  FiBriefcase,
+  FiDollarSign,
+  FiLock,
+  FiKey,
+  FiEye,
+  FiEyeOff,
+  FiShield,
+  FiCheck,
+  FiSave,
+  FiHash,
+  FiMail,
+  FiArrowLeft,
+} from "react-icons/fi";
 import { useAuth } from "../hook/useAuth";
 import { ROLE_BADGE_MAP } from "../type/auth.type";
 
@@ -52,21 +51,17 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
 
   if (!user) {
     return (
-      <div className="py-20 text-center text-[#8E95A5]">
+      <div className="py-20 text-center text-stone-500">
         Vui lòng đăng nhập để xem thông tin hồ sơ cá nhân.
       </div>
     );
   }
 
-  const roleBadge = ROLE_BADGE_MAP[user.role] || {
+  const badgeInfo = ROLE_BADGE_MAP[user.role] || {
     label: user.role_label || user.role,
-    bg: "bg-[#181B24]",
-    border: "border-[#212532]",
-    text: "text-[#D4AF37]",
-    icon: "👤",
   };
 
-  // 1. Xử lý Cập Nhật Thông Tin Cá Nhân (Luồng 1)
+  // 1. Xử lý Cập Nhật Thông Tin Cá Nhân
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
@@ -86,7 +81,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
     }
   };
 
-  // 2. Xử lý Đổi Mật Khẩu (Luồng 2 - Riêng Biệt)
+  // 2. Xử lý Đổi Mật Khẩu
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -103,7 +98,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast.error("Mật khẩu mới và nhập lại mật khẩu không khớp nhau!");
+      toast.error("Mật khẩu mới và xác nhận mật khẩu không khớp!");
       return;
     }
     if (oldPassword === newPassword) {
@@ -128,34 +123,25 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
     }
   };
 
-  // Các cờ validation hỗ trợ giao diện trực quan
-  const isLengthValid = newPassword.length >= 6;
-  const isMatchValid = confirmPassword.length > 0 && newPassword === confirmPassword;
-  const isDuplicateOld = newPassword.length > 0 && oldPassword.length > 0 && oldPassword === newPassword;
-
   return (
-    <div className="space-y-6 animate-fadeIn pb-12">
-      {/* =========================================================================
-       * 1. TOP HEADER BANNER TRANG HỒ SƠ CÁ NHÂN
-       * ========================================================================= */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#161926] via-[#12141F] to-[#0D0F17] border border-[#262C3F] shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="flex items-center gap-4 z-10">
-          <div className="w-14 h-14 rounded-2xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-2xl shadow-xl gold-glow-sm shrink-0">
-            <FaIdCard />
+    <div className="space-y-6 pb-12 transition-colors">
+      {/* 1. Header Banner: Tối giản, thanh lịch, icon xám */}
+      <div className="p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-colors">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center shrink-0">
+            <FiUser className="text-xl text-stone-400 dark:text-stone-400" />
           </div>
           <div>
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h2 className="text-xl font-black text-[#F4F5F8] tracking-tight">
+              <h1 className="text-xl font-semibold tracking-tight text-stone-900 dark:text-stone-100">
                 Hồ Sơ Thông Tin Cá Nhân
-              </h2>
-              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-[#D4AF37]">
+              </h1>
+              <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700">
                 {user.user_code}
               </span>
             </div>
-            <p className="text-xs text-[#8E95A5] mt-1">
-              Quản lý danh tính, phân quyền vai trò &amp; bảo mật tài khoản tại Zone 6 Lounge &amp; Cafe
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+              Quản lý danh tính, phân quyền vai trò và bảo mật tài khoản Zone Six.
             </p>
           </div>
         </div>
@@ -164,90 +150,90 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
           <button
             type="button"
             onClick={onBackToSchedule}
-            className="px-4 py-2 rounded-xl border border-[#262A3B] bg-[#171B26] text-xs font-bold text-[#F4F5F8] hover:bg-[#1E2332] transition cursor-pointer z-10"
+            className="px-4 py-2 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 text-xs font-medium text-stone-700 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-700 transition cursor-pointer inline-flex items-center gap-1.5"
           >
-            ← Quay lại Xếp Lịch
+            <FiArrowLeft className="text-stone-400" />
+            <span>Quay lại Xếp Lịch</span>
           </button>
         )}
       </div>
 
-      {/* =========================================================================
-       * 2. MAIN GRID: THẺ ĐỊNH DANH (DIGITAL ID CARD) & BIỂU MẪU CHỈNH SỬA
-       * ========================================================================= */}
+      {/* 2. Main Grid: Cột Trái (Thẻ Nhân Sự Số) & Cột Phải (Form Cập Nhật & Đổi MK) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* CỘT TRÁI (5 CỘT): THẺ ĐIỆN TỬ DIGITAL ID CARD SIGNATURE */}
+        {/* CỘT TRÁI (5 Cột): Thẻ Nhân Sự Số & Quyền Hạn */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="p-6 rounded-3xl bg-gradient-to-br from-[#1A1F30] via-[#121524] to-[#0A0C13] border-2 border-[#D4AF37]/40 shadow-2xl relative overflow-hidden group">
-            {/* Background effects */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-
-            {/* Header Thẻ: Zone 6 Lounge & Cafe Logo */}
-            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+          {/* Thẻ Số Nhân Viên Zone Six */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-5 transition-colors">
+            {/* Header Thẻ */}
+            <div className="flex items-center justify-between pb-4 border-b border-stone-100 dark:border-stone-800/80">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-xs font-black shadow-sm">
-                  <FaCrown />
+                <div className="w-7 h-7 rounded-lg bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 text-xs font-semibold flex items-center justify-center">
+                  Z6
                 </div>
-                <span className="font-black text-sm tracking-wider gold-gradient-text uppercase">
-                  ZONE 6 LOUNGE &amp; CAFE
+                <span className="font-semibold text-xs tracking-wider uppercase text-stone-900 dark:text-stone-100">
+                  Zone Six Đà Nẵng
                 </span>
               </div>
-              <span className="text-[10px] uppercase font-bold tracking-widest text-[#D4AF37]/80">
-                STAFF ID
+              <span className="text-[10px] tracking-widest text-stone-400 uppercase font-medium">
+                Thẻ nhân sự
               </span>
             </div>
 
-            {/* Avatar & Thông tin chính */}
-            <div className="mt-5 flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-[#171B28] border-2 border-[#D4AF37] flex items-center justify-center text-3xl shadow-xl shrink-0">
-                {roleBadge.icon}
+            {/* Avatar & Thông tin cơ bản */}
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center shrink-0">
+                <FiUser className="text-2xl text-stone-400 dark:text-stone-400" />
               </div>
               <div className="min-w-0">
-                <h3 className="text-lg font-black text-[#F4F5F8] tracking-tight truncate">
+                <h2 className="text-base font-semibold text-stone-900 dark:text-stone-100 truncate">
                   {user.name}
-                </h3>
+                </h2>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span
-                    className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${roleBadge.bg} ${roleBadge.border} ${roleBadge.text}`}
-                  >
-                    {roleBadge.label}
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700">
+                    {badgeInfo.label}
                   </span>
-                  <span className="text-xs text-[#A0A8B8] truncate">
+                  <span className="text-xs text-stone-500 dark:text-stone-400 truncate">
                     {user.position || "Nhân sự quán"}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Thông số ID & Lương giờ */}
-            <div className="mt-6 pt-4 border-t border-white/10 space-y-2.5 text-xs">
+            {/* Chi tiết thông số (Icons đều xám trung tính) */}
+            <div className="pt-2 border-t border-stone-100 dark:border-stone-800/80 space-y-2.5 text-xs">
               <div className="flex items-center justify-between">
-                <span className="text-[#8E95A5]">Mã nhân viên:</span>
-                <span className="font-mono text-[#D4AF37] font-black tracking-wider text-sm bg-black/30 px-2 py-0.5 rounded border border-[#D4AF37]/30">
+                <span className="text-stone-500 flex items-center gap-1.5">
+                  <FiHash className="text-stone-400" /> Mã nhân viên
+                </span>
+                <span className="font-mono text-stone-900 dark:text-stone-100 font-medium">
                   {user.user_code}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-[#8E95A5]">Email công tác:</span>
-                <span className="text-[#F4F5F8] font-medium truncate max-w-[200px]" title={user.email}>
+                <span className="text-stone-500 flex items-center gap-1.5">
+                  <FiMail className="text-stone-400" /> Email công tác
+                </span>
+                <span className="text-stone-900 dark:text-stone-100 font-medium truncate max-w-[190px]" title={user.email}>
                   {user.email}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-[#8E95A5]">Số điện thoại:</span>
-                <span className="text-[#F4F5F8] font-medium font-mono">
+                <span className="text-stone-500 flex items-center gap-1.5">
+                  <FiPhone className="text-stone-400" /> Số điện thoại
+                </span>
+                <span className="text-stone-900 dark:text-stone-100 font-mono">
                   {user.phone || "Chưa cập nhật"}
                 </span>
               </div>
 
               {user.hourly_rate !== undefined && (
                 <div className="flex items-center justify-between pt-1">
-                  <span className="text-[#8E95A5] flex items-center gap-1">
-                    <FaMoneyBillWave className="text-[#D4AF37]" /> Mức lương cơ sở:
+                  <span className="text-stone-500 flex items-center gap-1.5">
+                    <FiDollarSign className="text-stone-400" /> Mức lương cơ sở
                   </span>
-                  <span className="text-sm font-black text-[#D4AF37]">
+                  <span className="text-stone-900 dark:text-stone-100 font-mono font-medium">
                     {user.hourly_rate.toLocaleString("vi-VN")} đ/h
                   </span>
                 </div>
@@ -255,90 +241,87 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
             </div>
 
             {/* Khối Mã QR cá nhân */}
-            <div className="mt-5 p-3 rounded-2xl bg-[#0B0D14] border border-[#212638] flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0">
-                  <FaQrcode className="text-2xl text-black" />
+            <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white p-1 border border-stone-200 flex items-center justify-center shrink-0">
+                  <span className="text-xs font-mono font-bold text-stone-900">QR</span>
                 </div>
                 <div>
-                  <div className="text-[11px] font-bold text-[#F4F5F8]">Mã định danh QR</div>
-                  <div className="text-[10px] font-mono text-[#D4AF37]">
+                  <div className="text-xs font-medium text-stone-900 dark:text-stone-100">Mã định danh QR</div>
+                  <div className="text-[11px] font-mono text-stone-500">
                     {user.qr_code || `QR-${user.user_code}`}
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
-                Xác thực Zone 6
+              <span className="text-[10px] text-stone-600 dark:text-stone-400 px-2 py-0.5 rounded bg-stone-200/70 dark:bg-stone-800">
+                Hợp lệ
               </span>
             </div>
           </div>
 
-          {/* Khối Quyền hạn vai trò */}
-          <div className="p-5 rounded-3xl bg-[#11131C] border border-[#212638] space-y-3">
-            <h4 className="text-xs font-black uppercase text-[#D4AF37] tracking-wider flex items-center gap-2">
-              <FaShieldAlt className="text-amber-400" />
-              <span>Phân quyền &amp; Vai trò hệ thống</span>
-            </h4>
-            <div className="space-y-2 text-xs text-[#8E95A5]">
-              <div className="flex items-center justify-between py-1 border-b border-white/5">
-                <span>Cấp bậc phân quyền:</span>
-                <span className="font-bold text-amber-300">Cấp {user.role_level || 3}</span>
+          {/* Khối Phân Quyền Vai Trò */}
+          <div className="p-5 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 space-y-3 transition-colors">
+            <h3 className="text-xs font-medium uppercase tracking-wider text-stone-600 dark:text-stone-400 flex items-center gap-2">
+              <FiShield className="text-stone-400" />
+              <span>Phân quyền &amp; Vai trò</span>
+            </h3>
+            <div className="space-y-2 text-xs text-stone-500">
+              <div className="flex items-center justify-between py-1 border-b border-stone-100 dark:border-stone-800/80">
+                <span>Cấp bậc phân quyền</span>
+                <span className="font-medium text-stone-900 dark:text-stone-100">
+                  Cấp {user.role_level || 1}
+                </span>
               </div>
               <div className="flex items-center justify-between py-1">
-                <span>Tên vai trò:</span>
-                <span className="font-bold text-[#F4F5F8]">{roleBadge.label}</span>
+                <span>Tên vai trò</span>
+                <span className="font-medium text-stone-900 dark:text-stone-100">
+                  {badgeInfo.label}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* CỘT PHẢI (7 CỘT): 2 LUỒNG RIÊNG BIỆT (THÔNG TIN CÁ NHÂN & ĐỔI MẬT KHẨU) */}
+        {/* CỘT PHẢI (7 Cột): Form Cập Nhật Thông Tin & Form Đổi Mật Khẩu */}
         <div className="lg:col-span-7 space-y-6">
-          {/* =========================================================================
-           * LUỒNG 1: BIỂU MẪU CẬP NHẬT THÔNG TIN CÁ NHÂN
-           * ========================================================================= */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#12141E] border border-[#24293D] shadow-2xl space-y-6">
-            <div className="border-b border-white/10 pb-4 flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-black text-[#F4F5F8] flex items-center gap-2">
-                  <FaUser className="text-[#D4AF37]" />
-                  <span>Cập Nhật Thông Tin Cá Nhân</span>
-                </h3>
-                <p className="text-xs text-[#8E95A5] mt-1">
-                  Thông tin hiển thị trên bảng xếp lịch và danh sách nhân sự Zone 6
-                </p>
-              </div>
-              <span className="text-[10px] font-bold px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                Đồng bộ 100%
-              </span>
+          {/* Form 1: Cập Nhật Thông Tin Cá Nhân */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-6 transition-colors">
+            <div className="border-b border-stone-100 dark:border-stone-800/80 pb-4">
+              <h2 className="text-base font-semibold text-stone-900 dark:text-stone-100 flex items-center gap-2">
+                <FiUser className="text-stone-400" />
+                <span>Cập Nhật Thông Tin Cá Nhân</span>
+              </h2>
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                Thông tin hiển thị trên bảng xếp lịch và danh sách nhân sự Zone Six.
+              </p>
             </div>
 
-            <form onSubmit={handleSaveProfile} className="space-y-5">
+            <form onSubmit={handleSaveProfile} className="space-y-4">
               {/* Họ và tên */}
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-[#C4CAD4] flex items-center justify-between">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <FaUser className="text-[#D4AF37]" />
+                    <FiUser className="text-stone-400" />
                     <span>Họ và tên nhân viên</span>
-                    <span className="text-red-400">*</span>
+                    <span className="text-red-500">*</span>
                   </span>
-                  <span className="text-[11px] text-[#6D7588]">Tên hiển thị trên bảng lịch</span>
+                  <span className="text-[11px] text-stone-400">Hiển thị trên bảng lịch</span>
                 </label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Nhập đầy đủ họ và tên..."
-                  className="w-full px-4 py-3 rounded-2xl bg-[#161928] border border-[#2B3148] text-[#F4F5F8] text-xs font-semibold focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition"
+                  placeholder="Nhập họ và tên..."
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs sm:text-sm focus:outline-none focus:border-stone-400 dark:focus:border-stone-500 transition"
                 />
               </div>
 
               {/* 2 Cột: Số điện thoại & Vị trí công tác */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#C4CAD4] flex items-center gap-1.5">
-                    <FaPhoneAlt className="text-[#D4AF37]" />
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                    <FiPhone className="text-stone-400" />
                     <span>Số điện thoại liên hệ</span>
                   </label>
                   <input
@@ -346,36 +329,36 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="VD: 0988000002"
-                    className="w-full px-4 py-3 rounded-2xl bg-[#161928] border border-[#2B3148] text-[#F4F5F8] text-xs font-semibold focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs sm:text-sm font-mono focus:outline-none focus:border-stone-400 dark:focus:border-stone-500 transition"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#C4CAD4] flex items-center gap-1.5">
-                    <FaBriefcase className="text-[#D4AF37]" />
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                    <FiBriefcase className="text-stone-400" />
                     <span>Vị trí công tác</span>
                   </label>
                   <input
                     type="text"
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
-                    placeholder="VD: Trưởng ca trực, Pha chế..."
-                    className="w-full px-4 py-3 rounded-2xl bg-[#161928] border border-[#2B3148] text-[#F4F5F8] text-xs font-semibold focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition"
+                    placeholder="VD: Trưởng ca, Pha chế..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs sm:text-sm focus:outline-none focus:border-stone-400 dark:focus:border-stone-500 transition"
                   />
                 </div>
               </div>
 
-              {/* Thông tin hệ thống không thể sửa (Readonly) */}
-              <div className="p-4 rounded-2xl bg-[#0D0F17] border border-[#1E2336] grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[#8E95A5]">
+              {/* Thông tin hệ thống cố định */}
+              <div className="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <span className="block text-[11px] text-[#6D7588] mb-0.5">Email tài khoản (Cố định):</span>
-                  <span className="font-semibold text-[#F4F5F8] truncate block" title={user.email}>
+                  <span className="block text-[11px] text-stone-400 mb-0.5">Email tài khoản (Cố định)</span>
+                  <span className="font-medium text-stone-900 dark:text-stone-100 truncate block">
                     {user.email}
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[11px] text-[#6D7588] mb-0.5">Mã nhân viên (Hệ thống):</span>
-                  <span className="font-mono font-bold text-[#D4AF37] block">
+                  <span className="block text-[11px] text-stone-400 mb-0.5">Mã nhân viên (Hệ thống)</span>
+                  <span className="font-mono font-medium text-stone-900 dark:text-stone-100 block">
                     {user.user_code}
                   </span>
                 </div>
@@ -386,160 +369,93 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
                 <button
                   type="submit"
                   disabled={isSubmittingProfile || !name.trim()}
-                  className="px-6 py-3 rounded-2xl gold-gradient-bg text-[#0B0C10] font-black text-xs flex items-center gap-2 hover:brightness-110 transition cursor-pointer shadow-xl gold-glow-sm disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 text-xs font-medium flex items-center gap-2 hover:opacity-90 active:scale-95 transition cursor-pointer disabled:opacity-50"
                 >
-                  <FaSave className="text-sm" />
-                  <span>{isSubmittingProfile ? "Đang lưu thông tin..." : "Lưu Thông Tin Hồ Sơ"}</span>
+                  <FiSave className="text-sm text-stone-400 dark:text-stone-500" />
+                  <span>{isSubmittingProfile ? "Đang lưu..." : "Lưu thông tin"}</span>
                 </button>
               </div>
             </form>
           </div>
 
-          {/* =========================================================================
-           * LUỒNG 2: BIỂU MẪU ĐỔI MẬT KHẨU RIÊNG BIỆT (MẬT KHẨU CŨ, MỚI, NHẬP LẠI)
-           * ========================================================================= */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#12141E] border border-[#24293D] shadow-2xl space-y-6">
-            <div className="border-b border-white/10 pb-4 flex items-center justify-between">
+          {/* Form 2: Đổi Mật Khẩu */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-6 transition-colors">
+            <div className="border-b border-stone-100 dark:border-stone-800/80 pb-4 flex items-center justify-between">
               <div>
-                <h3 className="text-base font-black text-[#F4F5F8] flex items-center gap-2">
-                  <FaKey className="text-[#D4AF37]" />
+                <h2 className="text-base font-semibold text-stone-900 dark:text-stone-100 flex items-center gap-2">
+                  <FiLock className="text-stone-400" />
                   <span>Đổi Mật Khẩu Đăng Nhập</span>
-                </h3>
-                <p className="text-xs text-[#8E95A5] mt-1">
-                  Nhập mật khẩu hiện tại, thiết lập mật khẩu mới và xác nhận để đổi mật khẩu tài khoản
+                </h2>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                  Nhập mật khẩu hiện tại và thiết lập mật khẩu mới an toàn.
                 </p>
               </div>
-
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#2B3148] bg-[#161928] text-xs font-bold text-[#D4AF37] hover:border-[#D4AF37]/50 hover:bg-[#1E2336] transition cursor-pointer"
+                className="text-xs text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1.5 cursor-pointer"
               >
-                {showPassword ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
-                <span>{showPassword ? "Ẩn Mật Khẩu" : "Hiện Mật Khẩu"}</span>
+                {showPassword ? <FiEyeOff className="text-stone-400" /> : <FiEye className="text-stone-400" />}
+                <span>{showPassword ? "Ẩn" : "Hiện"}</span>
               </button>
             </div>
 
             <form onSubmit={handleChangePassword} className="space-y-4">
-              {/* 1. Mật khẩu cũ (Hiện tại) */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#C4CAD4] flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <FaLock className="text-amber-400" />
-                    <span>Mật khẩu cũ (Hiện tại)</span>
-                    <span className="text-red-400">*</span>
-                  </span>
-                  <span className="text-[11px] text-[#6D7588]">Mật khẩu bạn đang dùng</span>
+                <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                  <FiLock className="text-stone-400" />
+                  <span>Mật khẩu hiện tại</span>
                 </label>
                 <input
                   type={showPassword ? "text" : "password"}
                   required
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
-                  placeholder="Nhập mật khẩu hiện tại của bạn..."
-                  className="w-full px-4 py-3 rounded-2xl bg-[#161928] border border-[#2B3148] text-[#F4F5F8] text-xs font-semibold focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition font-mono"
+                  placeholder="Nhập mật khẩu cũ..."
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs sm:text-sm font-mono focus:outline-none focus:border-stone-400 dark:focus:border-stone-500 transition"
                 />
               </div>
 
-              {/* 2. Mật khẩu mới */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#C4CAD4] flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <FaKey className="text-[#D4AF37]" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                    <FiKey className="text-stone-400" />
                     <span>Mật khẩu mới</span>
-                    <span className="text-red-400">*</span>
-                  </span>
-                  <span className={`text-[11px] font-semibold ${
-                    newPassword.length === 0
-                      ? "text-[#6D7588]"
-                      : isLengthValid
-                      ? "text-emerald-400"
-                      : "text-amber-400"
-                  }`}>
-                    {newPassword.length === 0
-                      ? "Tối thiểu 6 ký tự"
-                      : isLengthValid
-                      ? "✓ Đủ độ dài (≥ 6 ký tự)"
-                      : "Thiếu độ dài (< 6 ký tự)"}
-                  </span>
-                </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)..."
-                  className={`w-full px-4 py-3 rounded-2xl bg-[#161928] border text-[#F4F5F8] text-xs font-semibold focus:outline-none focus:ring-1 transition font-mono ${
-                    isDuplicateOld
-                      ? "border-red-500/80 focus:border-red-500 focus:ring-red-500"
-                      : "border-[#2B3148] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
-                  }`}
-                />
-                {isDuplicateOld && (
-                  <p className="text-[11px] text-red-400 flex items-center gap-1">
-                    <FaExclamationTriangle className="text-[10px]" />
-                    <span>Mật khẩu mới không được trùng với mật khẩu cũ hiện tại</span>
-                  </p>
-                )}
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Tối thiểu 6 ký tự..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs sm:text-sm font-mono focus:outline-none focus:border-stone-400 dark:focus:border-stone-500 transition"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                    <FiKey className="text-stone-400" />
+                    <span>Xác nhận mật khẩu</span>
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Nhập lại mật khẩu..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs sm:text-sm font-mono focus:outline-none focus:border-stone-400 dark:focus:border-stone-500 transition"
+                  />
+                </div>
               </div>
 
-              {/* 3. Nhập lại mật khẩu mới */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#C4CAD4] flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <FaShieldAlt className="text-cyan-400" />
-                    <span>Nhập lại mật khẩu mới</span>
-                    <span className="text-red-400">*</span>
-                  </span>
-                  {confirmPassword.length > 0 && (
-                    <span className={`text-[11px] font-semibold flex items-center gap-1 ${
-                      isMatchValid ? "text-emerald-400" : "text-red-400"
-                    }`}>
-                      {isMatchValid ? (
-                        <>
-                          <FaCheckCircle className="text-[10px]" />
-                          <span>Mật khẩu trùng khớp</span>
-                        </>
-                      ) : (
-                        <>
-                          <FaExclamationTriangle className="text-[10px]" />
-                          <span>Chưa trùng khớp</span>
-                        </>
-                      )}
-                    </span>
-                  )}
-                </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Nhập lại chính xác mật khẩu mới bên trên..."
-                  className={`w-full px-4 py-3 rounded-2xl bg-[#161928] border text-[#F4F5F8] text-xs font-semibold focus:outline-none focus:ring-1 transition font-mono ${
-                    confirmPassword.length > 0 && !isMatchValid
-                      ? "border-red-500/80 focus:border-red-500 focus:ring-red-500"
-                      : "border-[#2B3148] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
-                  }`}
-                />
-              </div>
-
-              {/* Nút Submit Đổi Mật Khẩu */}
               <div className="pt-2 flex items-center justify-end">
                 <button
                   type="submit"
-                  disabled={
-                    isChangingPassword ||
-                    !oldPassword.trim() ||
-                    !newPassword.trim() ||
-                    !confirmPassword.trim() ||
-                    !isLengthValid ||
-                    !isMatchValid ||
-                    isDuplicateOld
-                  }
-                  className="px-6 py-3 rounded-2xl border border-amber-500/50 bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 text-[#0B0C10] font-black text-xs flex items-center gap-2 hover:brightness-110 transition cursor-pointer shadow-xl gold-glow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={isChangingPassword || !newPassword || newPassword.length < 6}
+                  className="px-5 py-2.5 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 text-xs font-medium flex items-center gap-2 hover:opacity-90 active:scale-95 transition cursor-pointer disabled:opacity-50"
                 >
-                  <FaKey className="text-sm" />
-                  <span>{isChangingPassword ? "Đang cập nhật mật khẩu..." : "Xác Nhận Đổi Mật Khẩu"}</span>
+                  <FiKey className="text-sm text-stone-400 dark:text-stone-500" />
+                  <span>{isChangingPassword ? "Đang cập nhật..." : "Đổi mật khẩu"}</span>
                 </button>
               </div>
             </form>

@@ -2,18 +2,20 @@
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
-  FaCamera,
-  FaCheckCircle,
-  FaMapMarkerAlt,
-  FaSpinner,
-  FaSyncAlt,
-  FaRedo,
-  FaUserCheck,
-  FaUsers,
-  FaUserFriends,
-  FaClock,
-  FaSignOutAlt,
-} from "react-icons/fa";
+  FiCamera,
+  FiCheckCircle,
+  FiCheck,
+  FiMapPin,
+  FiClock,
+  FiRotateCcw,
+  FiRefreshCw,
+  FiUsers,
+  FiUser,
+  FiLogOut,
+  FiAlertCircle,
+  FiInfo,
+  FiUserCheck,
+} from "react-icons/fi";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useCheckinConfig } from "@/features/admin_he_thong/checkin-config/hook/useCheckinConfig";
 import { useCheckInShift, useSlotAttendance, useActiveAttendance, useCheckOutShift } from "../hook/useAttendance";
@@ -359,7 +361,7 @@ export const CheckInDashboard: React.FC = () => {
     }
   }, [isCameraActive]);
 
-  // KHỞI ĐỘNG CAMERA TRỰC TIẾP TRÊN TRANG (Xử lý chặt chẽ chống xung đột StrictMode)
+  // KHỞI ĐỘNG CAMERA TRỰC TIẾP TRÊN TRANG
   const startCamera = async (overrideFacing?: "user" | "environment") => {
     if (isStartingCameraRef.current) return;
     isStartingCameraRef.current = true;
@@ -610,7 +612,6 @@ export const CheckInDashboard: React.FC = () => {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
       }
     } else {
-      // Giả lập khuôn mặt nếu chạy test hoặc camera đang chiếm dụng
       canvas.width = 960;
       canvas.height = 720;
       const grad = context.createLinearGradient(0, 0, 0, 720);
@@ -621,7 +622,6 @@ export const CheckInDashboard: React.FC = () => {
       context.fillRect(0, 0, canvas.width, canvas.height);
 
       if (isGroupCheckIn && effectivePartnerNames.length > 0) {
-        // Vẽ 2 avatar nếu chụp chung
         context.fillStyle = "#374151";
         context.beginPath();
         context.arc(360, 300, 100, 0, Math.PI * 2);
@@ -671,7 +671,7 @@ export const CheckInDashboard: React.FC = () => {
     startCamera();
   };
 
-  // Gửi Check-in vào Backend (Hỗ trợ cả đơn lẻ và Chụp Chung 2 người)
+  // Gửi Check-in vào Backend
   const handleSubmitCheckIn = () => {
     if (!photoDataUrl) {
       toast.error("Vui lòng chụp ảnh khuôn mặt trước khi xác nhận điểm danh!");
@@ -748,26 +748,24 @@ export const CheckInDashboard: React.FC = () => {
   const displayAddress = locationAddress || storeConfig?.address || "1 Bau Tram 3 St P.Cẩm Lệ, TP.Đà Nẵng";
 
   return (
-    <div className="w-full max-w-2xl mx-auto pb-8 animate-fade-in space-y-4">
-      {/* =========================================================================
-          BANNER CA ĐANG LÀM VIỆC & NÚT CHECK-OUT HẾT CA
-          ========================================================================= */}
+    <div className="w-full max-w-2xl mx-auto pb-10 space-y-4 transition-colors">
+      {/* 1. BANNER CA ĐANG LÀM VIỆC & NÚT CHECK-OUT */}
       {activeAttendance && !activeAttendance.check_out_time && (
-        <div className="bg-gradient-to-r from-[#182318] via-[#121B13] to-[#12141A] p-4 sm:p-5 rounded-3xl border-2 border-emerald-500/50 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fadeIn">
+        <div className="bg-white dark:bg-[#1c1a17] p-5 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 text-xl shrink-0 shadow-lg shadow-emerald-500/10">
-              <FaClock />
+            <div className="w-11 h-11 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-stone-400 shrink-0">
+              <FiClock className="text-lg" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                <h4 className="text-xs sm:text-sm font-black uppercase text-white tracking-wider">
-                  Bạn đang trong ca trực: Ca {activeAttendance.shift} ({activeAttendance.day})
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <h4 className="text-xs sm:text-sm font-semibold uppercase text-stone-900 dark:text-[#efe9de] tracking-wide">
+                  Đang trong ca trực: Ca {activeAttendance.shift} ({activeAttendance.day})
                 </h4>
               </div>
-              <p className="text-xs text-[#A0A8B8] mt-1">
-                Vào ca lúc: <strong className="text-emerald-300 font-mono">{formatTime(new Date(activeAttendance.check_in_time))}</strong> • 
-                Đã làm: <strong className="text-[#D4AF37] font-mono font-bold">{calculateElapsed(activeAttendance.check_in_time)}</strong>
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
+                Vào ca: <strong className="text-stone-800 dark:text-stone-200 font-mono">{formatTime(new Date(activeAttendance.check_in_time))}</strong> • 
+                Đã làm: <strong className="text-stone-900 dark:text-[#efe9de] font-mono font-medium">{calculateElapsed(activeAttendance.check_in_time)}</strong>
               </p>
             </div>
           </div>
@@ -782,16 +780,16 @@ export const CheckInDashboard: React.FC = () => {
                 longitude: longitude || undefined,
               });
             }}
-            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-red-950/50 cursor-pointer active:scale-95 transition disabled:opacity-50"
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-900 hover:bg-rose-600 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-rose-500 dark:hover:text-white text-stone-100 font-medium text-xs tracking-wide flex items-center justify-center gap-2 cursor-pointer transition shadow-xs disabled:opacity-50"
           >
             {checkOutMutation.isPending ? (
               <>
-                <FaSpinner className="animate-spin text-sm" />
+                <div className="w-3.5 h-3.5 rounded-full border-2 border-stone-400 border-t-transparent animate-spin shrink-0" />
                 <span>Đang Check-out...</span>
               </>
             ) : (
               <>
-                <FaSignOutAlt className="text-sm" />
+                <FiLogOut className="text-xs" />
                 <span>Check-out Hết Ca</span>
               </>
             )}
@@ -799,38 +797,38 @@ export const CheckInDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* KHUNG CAMERA VIEWPOINT CHÍNH - MỞ THẲNG CAMERA KHÔNG CHO LẤY ẢNH TỪ THIẾT BỊ */}
-      <div className="relative w-full aspect-[3/4] sm:aspect-[4/3] rounded-3xl overflow-hidden bg-black border-2 border-[#D4AF37]/60 shadow-[0_0_40px_rgba(212,175,55,0.2)] flex items-center justify-center">
+      {/* 2. KHUNG CAMERA VIEWPORT CHÍNH */}
+      <div className="relative w-full aspect-[3/4] sm:aspect-[4/3] rounded-3xl overflow-hidden bg-stone-950 border border-stone-200/80 dark:border-stone-800 shadow-md flex items-center justify-center">
         {photoDataUrl ? (
-          // ==================== 1. CHẾ ĐỘ XEM LẠI ẢNH ĐÃ CHỤP TRỰC TIẾP ====================
+          // Chế độ xem lại ảnh đã chụp
           <div className="relative w-full h-full">
             <img
               src={photoDataUrl}
               alt="Ảnh điểm danh"
-              className="w-full h-full object-contain bg-black"
+              className="w-full h-full object-contain bg-stone-950"
             />
-            {/* Thanh trạng thái chụp thành công */}
+            {/* Status bar */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2 z-20">
-              <div className="bg-emerald-500/95 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
-                <FaCheckCircle className="text-xs" />
-                <span>
+              <div className="bg-stone-900/80 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                <FiCheckCircle className="text-xs shrink-0" />
+                <span className="truncate">
                   {isGroupCheckIn && partnerNames.length > 0
-                    ? `Đã chụp ảnh Chụp Chung (${user?.name} & ${partnerNames.join(", ")})`
+                    ? `Đã chụp Chụp Chung (${user?.name} & ${partnerNames.join(", ")})`
                     : "Đã chụp ảnh trực tiếp & đóng dấu hợp lệ"}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={handleRetake}
-                className="bg-[#0B0C10]/90 hover:bg-[#0B0C10] text-[#D4AF37] border border-[#D4AF37]/50 text-xs font-bold px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-lg transition cursor-pointer backdrop-blur-sm"
+                className="bg-stone-900/80 hover:bg-stone-900 text-stone-200 border border-stone-700/70 text-xs font-medium px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm transition cursor-pointer backdrop-blur-sm"
               >
-                <FaRedo className="text-xs" />
+                <FiRotateCcw className="text-xs text-stone-400" />
                 <span>Chụp Lại</span>
               </button>
             </div>
           </div>
         ) : isCameraActive ? (
-          // ==================== 2. LUỒNG CAMERA LIVE TRỰC TIẾP ====================
+          // Luồng camera live
           <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
             <video
               ref={setVideoRef}
@@ -842,16 +840,16 @@ export const CheckInDashboard: React.FC = () => {
               }`}
             />
 
-            {/* OVERLAY NỔI TRÊN CAMERA: THÔNG TIN GỌN GÀNG, THANH LỊCH */}
+            {/* Overlay nổi trên camera */}
             <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-4 sm:p-5 select-none z-10">
-              {/* THANH TOP OVERLAY: LIVE BADGE + NHÂN SỰ + NÚT ĐỔI CAM */}
+              {/* Thanh top: LIVE badge + Tên nhân sự + Đổi camera */}
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <div className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-semibold text-amber-400 border border-amber-400/40 flex items-center gap-1.5 shadow">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-ping inline-block" />
+                  <div className="px-3 py-1 rounded-full bg-stone-900/70 backdrop-blur-md text-[11px] font-medium text-stone-200 border border-white/10 flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse" />
                     <span>LIVE</span>
                   </div>
-                  <div className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-bold text-white border border-white/20 shadow truncate max-w-[200px]">
+                  <div className="px-3 py-1 rounded-full bg-stone-900/70 backdrop-blur-md text-[11px] font-medium text-stone-200 border border-white/10 shadow-sm truncate max-w-[200px]">
                     {staffWatermarkDisplay}
                   </div>
                 </div>
@@ -860,17 +858,17 @@ export const CheckInDashboard: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleSwitchCamera}
-                  className="pointer-events-auto p-2.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white/90 hover:text-[#D4AF37] border border-white/20 transition cursor-pointer shadow active:scale-90"
+                  className="pointer-events-auto p-2.5 rounded-full bg-stone-900/70 hover:bg-stone-900 backdrop-blur-md text-stone-300 hover:text-white border border-white/10 transition cursor-pointer shadow-sm active:scale-95"
                   title="Đổi camera trước / sau"
                 >
-                  <FaSyncAlt className="text-xs sm:text-sm" />
+                  <FiRefreshCw className="text-xs sm:text-sm" />
                 </button>
               </div>
 
-              {/* KHU VỰC GIỮA ĐỂ TRỐNG ĐỂ THẤY RÕ KHUÔN MẶT KHI ĐIỂM DANH */}
+              {/* Khoảng giữa để trống để hiển thị khuôn mặt */}
               <div />
 
-              {/* THÔNG SỐ GÓC DƯỚI: GIỜ TO THANH MẢNH + VẠCH VÀNG + NGÀY / THỨ + ĐỊA CHỈ */}
+              {/* Thông số góc dưới: Giờ to thanh mảnh + Ngày/Thứ + Địa chỉ */}
               <div className="flex items-end justify-between text-white relative pb-16 sm:pb-0">
                 <div className="space-y-1 drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]">
                   <div className="flex items-center gap-2">
@@ -894,17 +892,17 @@ export const CheckInDashboard: React.FC = () => {
                 <div
                   className={`hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium backdrop-blur-md border ${
                     isInsideGeofence
-                      ? "bg-emerald-500/30 border-emerald-400/50 text-emerald-200"
-                      : "bg-amber-500/30 border-amber-400/50 text-amber-200"
+                      ? "bg-stone-900/70 border-white/10 text-emerald-300"
+                      : "bg-stone-900/70 border-white/10 text-amber-300"
                   }`}
                 >
-                  <FaMapMarkerAlt className="text-[10px]" />
+                  <FiMapPin className="text-[11px] text-stone-400" />
                   <span>
                     {isLocating
                       ? "Quét GPS..."
                       : distanceToStore !== null
-                      ? `Cách quán ${distanceToStore}m ${isInsideGeofence ? "✅" : "⚠️"}`
-                      : "Tại Zone 6"}
+                      ? `Cách quán ${distanceToStore}m ${isInsideGeofence ? "✓" : "⚠️"}`
+                      : "Tại Zone Six"}
                   </span>
                 </div>
               </div>
@@ -915,14 +913,14 @@ export const CheckInDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCapturePhoto}
-                className={`flex items-center gap-2 px-8 py-3 rounded-full font-black text-sm transition ${
+                className={`flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-xs font-medium transition cursor-pointer shadow-md backdrop-blur-md ${
                   !hasAssignedShift
-                    ? "bg-[#181B24]/90 text-[#8E95A5] border border-[#2A3144] cursor-not-allowed opacity-90 shadow-md backdrop-blur-sm"
+                    ? "bg-stone-900/80 text-stone-400 border border-stone-700/60 cursor-not-allowed opacity-90"
                     : slotWorkStatus.isCompleted || slotWorkStatus.isTooLateForCheckIn
-                    ? "bg-red-950/90 text-red-200 border border-red-500/60 shadow-[0_0_25px_rgba(239,68,68,0.45)] hover:brightness-110 cursor-pointer"
+                    ? "bg-stone-900/85 text-rose-300 border border-rose-800/60 hover:bg-stone-900"
                     : slotWorkStatus.isTooEarlyForCheckIn
-                    ? "bg-amber-950/90 text-amber-200 border border-amber-500/60 shadow-[0_0_25px_rgba(245,158,11,0.45)] hover:brightness-110 cursor-pointer"
-                    : "gold-gradient-bg text-[#0B0C10] shadow-[0_0_30px_rgba(212,175,55,0.7)] hover:scale-105 active:scale-95 cursor-pointer"
+                    ? "bg-stone-900/85 text-amber-300 border border-amber-800/60 hover:bg-stone-900"
+                    : "bg-white text-stone-950 hover:bg-stone-100 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white shadow-lg active:scale-95"
                 }`}
                 title={
                   !hasAssignedShift
@@ -938,35 +936,35 @@ export const CheckInDashboard: React.FC = () => {
                     : "Chụp ảnh khuôn mặt để điểm danh"
                 }
               >
-                <FaCamera className="text-base" />
+                <FiCamera className="text-sm shrink-0" />
                 <span>
                   {!hasAssignedShift
-                    ? "BẠN KHÔNG CÓ CA LÀM HÔM NAY"
+                    ? "Không có ca làm hôm nay"
                     : slotWorkStatus.isCompleted
-                    ? "QUÁ GIỜ LÀM (ĐÃ KẾT THÚC)"
+                    ? "Quá giờ làm (Đã kết thúc)"
                     : slotWorkStatus.isTooLateForCheckIn
-                    ? "QUÁ GIỜ LÀM"
+                    ? "Quá giờ làm"
                     : slotWorkStatus.isTooEarlyForCheckIn
-                    ? "CHƯA TỚI GIỜ CHECK-IN"
+                    ? "Chưa tới giờ Check-in"
                     : isGroupCheckIn && effectivePartnerNames.length > 0
-                    ? `CHỤP CHUNG (${1 + effectivePartnerNames.length} NGƯỜI)`
-                    : "CHỤP ẢNH NGAY"}
+                    ? `Chụp chung (${1 + effectivePartnerNames.length} người)`
+                    : "Chụp ảnh ngay"}
                 </span>
               </button>
             </div>
           </div>
         ) : (
-          // ==================== 3. TRẠNG THÁI CẤP QUYỀN HOẶC LỖI CAMERA (KHÔNG CÓ TẢI ẢNH TỪ THIẾT BỊ) ====================
+          // Trạng thái cấp quyền camera
           <div className="p-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#181B24] border border-[#D4AF37]/50 flex items-center justify-center mx-auto text-[#D4AF37] text-2xl shadow-lg">
-              <FaCamera className="animate-pulse" />
+            <div className="w-14 h-14 rounded-2xl bg-stone-900 border border-stone-800 flex items-center justify-center mx-auto text-stone-400 text-xl shadow-sm">
+              <FiCamera className="animate-pulse" />
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-sm sm:text-base font-bold text-[#F4F5F8]">
+              <h2 className="text-sm font-semibold text-stone-200">
                 Mở Camera Điểm Danh Check-in
               </h2>
-              <p className="text-xs text-[#8E95A5] max-w-sm mx-auto leading-relaxed">
+              <p className="text-xs text-stone-400 max-w-sm mx-auto leading-relaxed">
                 {cameraError || "Đang kết nối luồng Camera trực tiếp trên thiết bị..."}
               </p>
             </div>
@@ -975,16 +973,16 @@ export const CheckInDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => startCamera()}
-                className="py-2.5 px-5 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 transition flex items-center gap-1.5 cursor-pointer shadow-md"
+                className="py-2 px-4 rounded-xl bg-stone-100 hover:bg-white text-stone-900 font-medium text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs"
               >
-                <FaSyncAlt className="text-xs" />
+                <FiRefreshCw className="text-xs text-stone-500" />
                 <span>Cấp Quyền / Mở Lại Camera</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleCapturePhoto}
-                className="py-2.5 px-4 rounded-xl bg-[#1A1D27] text-xs font-medium text-[#6D7588] hover:text-[#8E95A5] transition cursor-pointer"
+                className="py-2 px-3.5 rounded-xl border border-stone-800 bg-stone-900 hover:bg-stone-800 text-xs font-medium text-stone-400 transition cursor-pointer"
               >
                 Chụp Thử Nghiệm
               </button>
@@ -995,56 +993,60 @@ export const CheckInDashboard: React.FC = () => {
         <canvas ref={canvasRef} className="hidden" />
       </div>
 
-      {/* =========================================================================
-          KHU VỰC ĐIỀU KHIỂN NẰM NGAY DƯỚI PHẦN CHỤP ẢNH (CHUẨN FORM ẢNH 1 & VỊ TRÍ ẢNH 2)
-          ========================================================================= */}
-      <div className="mt-3 w-full max-w-2xl mx-auto space-y-2">
+      {/* 3. KHU VỰC THÔNG BÁO HOẶC ĐIỀU KHIỂN CA LÀM */}
+      <div className="w-full space-y-3">
         {!hasAssignedShift ? (
-          <div className="bg-red-950/85 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-red-500/50 flex items-center gap-2.5 shadow-2xl text-left">
-            <span className="text-red-400 text-base shrink-0">⚠️</span>
-            <div className="min-w-0">
-              <div className="text-xs font-black text-red-200">
-                Bạn không có ca làm việc nào được xếp hôm nay ({todayDayName})!
+          // Banner khi không có ca: Dịu nhẹ, thanh lịch, chuẩn Scandinavian
+          <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-5 shadow-sm flex items-start gap-3.5 transition-colors">
+            <div className="w-10 h-10 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-stone-400 shrink-0">
+              <FiAlertCircle className="text-lg" />
+            </div>
+            <div className="min-w-0 space-y-1">
+              <div className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2 flex-wrap">
+                <span>Bạn không có ca làm việc nào được xếp hôm nay ({todayDayName})</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60">
+                  {todayDayName}
+                </span>
               </div>
-              <div className="text-[10px] text-red-300/80 leading-tight mt-0.5">
-                Giờ này ({formatTime(currentTime)}) là <strong>Ca {currentActiveShift}</strong>. Ca ai người đó chụp, nghiêm cấm chụp điểm danh dùm!
-              </div>
+              <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+                Hiện tại ({formatTime(currentTime)}) là <strong>Ca {currentActiveShift}</strong>. Ca ai người đó chụp, nghiêm cấm chụp điểm danh dùm!
+              </p>
             </div>
           </div>
         ) : (
-          <div className="space-y-2">
-            {/* THẺ CHỌN CA ĐIỂM DANH (CHUẨN 100% FORM ẢNH 1 & NẰM DƯỚI CAMERA NHƯ ẢNH 2) */}
-            <div className="bg-[#12141A] rounded-2xl border border-[#212532] p-4 shadow-xl space-y-3.5">
-              {/* Hàng Header: Tên ca hôm nay + Tài khoản (Trái) | Trạng thái + Nút Chụp Chung (Phải) */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/5">
+          <div className="space-y-3">
+            {/* THẺ CHỌN CA ĐIỂM DANH */}
+            <div className="bg-white dark:bg-[#1c1a17] rounded-3xl border border-stone-200/80 dark:border-stone-800 p-5 shadow-sm space-y-4 transition-colors">
+              {/* Header: Chọn ca & Chụp chung toggle */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-100 dark:border-stone-800">
                 <div>
-                  <div className="text-xs font-black text-[#D4AF37] uppercase tracking-wider flex items-center gap-2">
-                    <FaUsers className="text-sm" />
-                    <span>CHỌN CA ĐIỂM DANH HÔM NAY ({todayDayName.toUpperCase()})</span>
+                  <div className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] uppercase tracking-wider flex items-center gap-2">
+                    <FiUsers className="text-stone-400 text-sm" />
+                    <span>Chọn Ca Điểm Danh Hôm Nay ({todayDayName.toUpperCase()})</span>
                   </div>
-                  <div className="text-xs text-[#8E95A5] mt-1">
-                    Tài khoản đang đăng nhập: <strong className="text-white font-bold">{user?.name}</strong>
+                  <div className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                    Tài khoản đang đăng nhập: <strong className="text-stone-900 dark:text-[#efe9de] font-medium">{user?.name}</strong>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  {/* Badge trạng thái ca */}
+                  {/* Trạng thái ca */}
                   <div
-                    className={`px-3 py-1 rounded-full text-[11px] font-bold border flex items-center gap-1.5 ${
+                    className={`px-3 py-1 rounded-xl text-[11px] font-medium border flex items-center gap-1.5 ${
                       slotWorkStatus.isCompleted || slotWorkStatus.isTooLateForCheckIn
-                        ? "bg-red-500/20 text-red-300 border-red-500/40"
+                        ? "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 border-rose-200/80 dark:border-rose-900/40"
                         : slotWorkStatus.isTooEarlyForCheckIn
-                        ? "bg-amber-500/20 text-amber-300 border-amber-400/40"
-                        : "bg-emerald-500/20 text-emerald-300 border-emerald-400/40"
+                        ? "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border-amber-200/80 dark:border-amber-900/40"
+                        : "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-900/40"
                     }`}
                   >
                     <span
-                      className={`w-2 h-2 rounded-full ${
+                      className={`w-1.5 h-1.5 rounded-full ${
                         slotWorkStatus.isCompleted || slotWorkStatus.isTooLateForCheckIn
-                          ? "bg-red-400"
+                          ? "bg-rose-500"
                           : slotWorkStatus.isTooEarlyForCheckIn
-                          ? "bg-amber-400"
-                          : "bg-emerald-400 animate-pulse"
+                          ? "bg-amber-500"
+                          : "bg-emerald-500 animate-pulse"
                       }`}
                     />
                     <span>
@@ -1053,33 +1055,33 @@ export const CheckInDashboard: React.FC = () => {
                         : slotWorkStatus.isTooLateForCheckIn
                         ? "Quá giờ làm"
                         : slotWorkStatus.isTooEarlyForCheckIn
-                        ? "Chưa tới giờ check-in"
+                        ? "Chưa tới giờ Check-in"
                         : slotWorkStatus.isInProgress
                         ? "Đang trong ca (Hợp lệ)"
-                        : "Trong giờ check-in (Hợp lệ)"}
+                        : "Trong giờ Check-in (Hợp lệ)"}
                     </span>
                   </div>
 
-                  {/* Nút bật/tắt Chế độ Chụp Chung Ca */}
+                  {/* Nút bật/tắt Chụp Chung Ca */}
                   <button
                     type="button"
                     onClick={() => setIsGroupCheckIn(!isGroupCheckIn)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-md ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium transition cursor-pointer flex items-center gap-1.5 shadow-xs ${
                       isGroupCheckIn
-                        ? "gold-gradient-bg text-[#0B0C10] font-black ring-2 ring-[#D4AF37]"
-                        : "bg-[#181B24] text-white/80 hover:text-white hover:bg-white/10 border border-white/10"
+                        ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900"
+                        : "border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800"
                     }`}
                   >
-                    <FaUsers className="text-xs" />
-                    <span>Chế Độ Chụp Chung Ca: {isGroupCheckIn ? "Bật" : "Tắt"}</span>
+                    <FiUsers className="text-xs" />
+                    <span>Chụp chung: {isGroupCheckIn ? "Bật" : "Tắt"}</span>
                   </button>
                 </div>
               </div>
 
-              {/* Hàng Ca: CÁC CA ĐƯỢC PHÂN CÔNG CHO BẠN HÔM NAY: */}
+              {/* Danh sách các ca được phân công cho bạn hôm nay */}
               <div className="space-y-2">
-                <div className="text-[11px] font-bold text-[#8E95A5] uppercase tracking-wider">
-                  CÁC CA ĐƯỢC PHÂN CÔNG CHO BẠN HÔM NAY:
+                <div className="text-[11px] font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                  Các ca được phân công cho bạn hôm nay:
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   {myTodaySlots.map((s) => {
@@ -1092,14 +1094,14 @@ export const CheckInDashboard: React.FC = () => {
                           setSelectedShift(s.shift);
                           setSelectedRole(s.role);
                         }}
-                        className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                        className={`px-3.5 py-2 rounded-xl text-xs font-medium transition cursor-pointer flex items-center gap-1.5 ${
                           isSelected
-                            ? "gold-gradient-bg text-[#0B0C10] shadow-[0_0_15px_rgba(212,175,55,0.4)] font-black ring-1 ring-[#D4AF37]"
-                            : "bg-[#181B24] text-white/70 hover:text-white hover:bg-white/10 border border-white/5"
+                            ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 shadow-xs"
+                            : "border border-stone-200 dark:border-stone-700/60 bg-stone-50 dark:bg-[#25221e] text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800"
                         }`}
                       >
                         <span>Ca {s.shift}</span>
-                        <span className={`text-[11px] ${isSelected ? "text-black/80 font-bold" : "text-white/40"}`}>
+                        <span className={`text-[11px] ${isSelected ? "opacity-80" : "text-stone-400"}`}>
                           ({s.role})
                         </span>
                       </button>
@@ -1109,8 +1111,8 @@ export const CheckInDashboard: React.FC = () => {
 
                 {/* Cảnh báo khi quá giờ làm */}
                 {(slotWorkStatus.isCompleted || slotWorkStatus.isTooLateForCheckIn) && (
-                  <div className="bg-red-950/70 border border-red-500/40 rounded-xl px-3.5 py-2 text-xs text-red-300 flex items-center gap-2 animate-fade-in mt-1">
-                    <span className="text-sm shrink-0">⚠️</span>
+                  <div className="bg-rose-50 dark:bg-rose-950/25 border border-rose-200/80 dark:border-rose-900/40 rounded-xl px-3.5 py-2 text-xs text-rose-700 dark:text-rose-300 flex items-center gap-2 mt-1">
+                    <FiAlertCircle className="text-xs text-rose-500 shrink-0" />
                     <span className="leading-tight">
                       {slotWorkStatus.isCompleted
                         ? `Ca ${selectedShift} (${todayDayName}) đã kết thúc. Quá giờ làm, không thể check-in!`
@@ -1121,11 +1123,11 @@ export const CheckInDashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* THẺ 2: CHI TIẾT ĐỒNG NGHIỆP TRONG CA (HIỆN KHI BẬT CHẾ ĐỘ CHỤP CHUNG) */}
+            {/* Chi tiết đồng nghiệp trong ca khi bật chụp chung */}
             {isGroupCheckIn && (
-              <div className="bg-[#12141A] px-4 py-2.5 rounded-2xl border border-[#D4AF37]/50 flex items-center justify-between gap-2 shadow-xl animate-fade-in flex-wrap">
-                <span className="text-xs font-bold text-[#D4AF37] flex items-center gap-2">
-                  <FaUserFriends className="text-xs" />
+              <div className="bg-white dark:bg-[#1c1a17] px-5 py-3 rounded-2xl border border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-2 shadow-sm flex-wrap transition-colors">
+                <span className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-2">
+                  <FiUsers className="text-stone-400 text-xs" />
                   <span>Chụp cùng đồng nghiệp trong ca:</span>
                 </span>
 
@@ -1146,10 +1148,10 @@ export const CheckInDashboard: React.FC = () => {
                               setSelectedPartnerRoles([...selectedPartnerRoles, p.role]);
                             }
                           }}
-                          className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                          className={`px-3 py-1 rounded-xl text-xs font-medium transition cursor-pointer flex items-center gap-1.5 ${
                             isChecked
-                              ? "bg-emerald-500 text-white shadow font-black"
-                              : "bg-[#181B24] text-white/60 hover:text-white border border-white/10"
+                              ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs"
+                              : "border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800"
                           }`}
                         >
                           <span>{isChecked ? "✓" : "+"}</span>
@@ -1165,7 +1167,7 @@ export const CheckInDashboard: React.FC = () => {
                       value={customPartnerName}
                       onChange={(e) => setCustomPartnerName(e.target.value)}
                       placeholder="Tên đồng nghiệp (Nam, Hoàng...)"
-                      className="px-3 py-1 rounded-xl bg-[#181B24] border border-[#212532] text-xs text-white focus:outline-none focus:border-[#D4AF37]"
+                      className="px-3 py-1 rounded-xl bg-stone-50 dark:bg-[#141311] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400"
                     />
                   </div>
                 )}
@@ -1175,21 +1177,21 @@ export const CheckInDashboard: React.FC = () => {
         )}
       </div>
 
-      {/* THANH XÁC NHẬN SAU KHI ĐÃ CHỤP ẢNH */}
+      {/* 4. THANH XÁC NHẬN SAU KHI ĐÃ CHỤP ẢNH */}
       {photoDataUrl ? (
-        <div className="mt-4 p-4 rounded-2xl bg-[#0B0C10] border border-[#212532] flex items-center justify-between gap-3 flex-wrap">
-          <div className="text-xs text-[#8E95A5]">
+        <div className="p-4 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm flex items-center justify-between gap-3 flex-wrap transition-colors">
+          <div className="text-xs text-stone-500 dark:text-stone-400">
             {isGroupCheckIn && effectivePartnerNames.length > 0 ? (
               <span>
-                Điểm danh <strong className="text-amber-300">CHỤP CHUNG (2 NGƯỜI)</strong>:{" "}
-                <strong className="text-[#F4F5F8]">{user?.name}</strong> &amp;{" "}
-                <strong className="text-[#F5D77F]">{effectivePartnerNames.join(", ")}</strong> • Ca{" "}
-                <strong className="text-[#F5D77F]">{selectedShift}</strong> ({todayDayName})
+                Điểm danh Chụp Chung (2 người):{" "}
+                <strong className="text-stone-900 dark:text-[#efe9de]">{user?.name}</strong> &amp;{" "}
+                <strong className="text-stone-900 dark:text-[#efe9de]">{effectivePartnerNames.join(", ")}</strong> • Ca{" "}
+                <strong className="text-stone-900 dark:text-[#efe9de]">{selectedShift}</strong> ({todayDayName})
               </span>
             ) : (
               <span>
-                Điểm danh: <strong className="text-[#F4F5F8]">{user?.name}</strong> • Ca{" "}
-                <strong className="text-[#F5D77F]">{selectedShift}</strong> ({todayDayName} - {selectedRole})
+                Điểm danh: <strong className="text-stone-900 dark:text-[#efe9de]">{user?.name}</strong> • Ca{" "}
+                <strong className="text-stone-900 dark:text-[#efe9de]">{selectedShift}</strong> ({todayDayName} - {selectedRole})
               </span>
             )}
           </div>
@@ -1198,7 +1200,7 @@ export const CheckInDashboard: React.FC = () => {
             <button
               type="button"
               onClick={handleRetake}
-              className="py-2.5 px-4 rounded-xl bg-[#1A1D27] hover:bg-[#262B3A] text-xs font-bold text-[#8E95A5] hover:text-[#F4F5F8] transition cursor-pointer"
+              className="py-2 px-4 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-[#25221e] hover:bg-stone-100 dark:hover:bg-stone-800 text-xs font-medium text-stone-700 dark:text-stone-300 transition cursor-pointer shadow-xs"
             >
               Chụp Lại
             </button>
@@ -1207,27 +1209,27 @@ export const CheckInDashboard: React.FC = () => {
               type="button"
               onClick={handleSubmitCheckIn}
               disabled={checkInMutation.isPending}
-              className="py-2.5 px-6 rounded-xl gold-gradient-bg text-[#0B0C10] font-black text-xs hover:brightness-110 shadow-lg shadow-[#D4AF37]/20 transition cursor-pointer flex items-center gap-2 disabled:opacity-50"
+              className="py-2 px-5 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white font-medium text-xs shadow-xs transition cursor-pointer flex items-center gap-2 disabled:opacity-50"
             >
               {checkInMutation.isPending ? (
-                <FaSpinner className="animate-spin text-sm" />
+                <div className="w-3.5 h-3.5 rounded-full border-2 border-stone-400 border-t-transparent animate-spin shrink-0" />
               ) : (
-                <FaUserCheck className="text-sm" />
+                <FiUserCheck className="text-xs" />
               )}
               <span>
                 {checkInMutation.isPending
                   ? "Đang gửi điểm danh..."
                   : isGroupCheckIn && effectivePartnerNames.length > 0
-                  ? `Xác Nhận Check-in Chung (${1 + effectivePartnerNames.length} Nhân Sự)`
+                  ? `Xác Nhận Check-in Chung (${1 + effectivePartnerNames.length} Bạn)`
                   : "Xác Nhận Check-in"}
               </span>
             </button>
           </div>
         </div>
       ) : isAlreadyCheckedIn ? (
-        <div className="mt-4 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between gap-3 text-emerald-300 text-xs">
+        <div className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200/70 dark:border-emerald-800/40 flex items-center justify-between gap-3 text-emerald-800 dark:text-emerald-300 text-xs">
           <div className="flex items-center gap-2">
-            <FaCheckCircle className="text-base text-emerald-400 shrink-0" />
+            <FiCheckCircle className="text-base text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>
               Bạn đã điểm danh thành công ca <strong>{selectedShift} ({todayDayName})</strong>! Bấm nút Chụp Ảnh bên trên nếu bạn muốn chụp lại ảnh mới.
             </span>

@@ -2,16 +2,16 @@
 
 import React, { useState } from "react";
 import {
-  FaTimes,
-  FaBolt,
-  FaPlus,
-  FaTrashAlt,
-  FaExclamationTriangle,
-  FaCalendarAlt,
-  FaBuilding,
-  FaCheck,
-  FaSpinner,
-} from "react-icons/fa";
+  FiX,
+  FiZap,
+  FiPlus,
+  FiTrash2,
+  FiAlertTriangle,
+  FiCalendar,
+  FiHome,
+  FiCheck,
+  FiLoader,
+} from "react-icons/fi";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useGetMaterials } from "@/features/pho_ca_vat_lieu/material/hook/useGetMaterials";
 import {
@@ -172,67 +172,70 @@ export const CreateRequisitionModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#12141A] border border-[#212532] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl shadow-xl flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[#212532] bg-[#181B24]">
+        <div className="flex items-center justify-between p-5 border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#25221e]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-              <FaBuilding className="text-lg" />
+            <div className="w-10 h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center text-sm shadow-xs shrink-0">
+              <FiHome className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg font-black text-[#F4F5F8]">Lập Phiếu Yêu Cầu Nhập Kho</h2>
-              <p className="text-xs text-[#8E95A5]">
-                Áp dụng cho: <span className="font-bold text-[#D4AF37]">{storeName || "Chi nhánh hiện tại"}</span>
+              <h2 className="text-base font-bold text-stone-900 dark:text-[#efe9de]">
+                Lập Phiếu Yêu Cầu Nhập Kho
+              </h2>
+              <p className="text-xs text-stone-500 dark:text-stone-400">
+                Áp dụng cho: <span className="font-semibold text-stone-800 dark:text-stone-200">{storeName || "Chi nhánh hiện tại"}</span>
               </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 text-[#8E95A5] hover:text-white rounded-xl hover:bg-[#212532] transition"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
           >
-            <FaTimes />
+            <FiX className="w-4 h-4 text-stone-400" />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-5">
           {/* Top Options: Priority & Expected Date */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-[#8E95A5] uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wider mb-2">
                 Mức độ ưu tiên
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setPriority("NORMAL")}
-                  className={`py-2 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 ${
+                  className={`py-2 px-3 rounded-xl border text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                     priority === "NORMAL"
-                      ? "bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-sm"
-                      : "bg-[#181B24] border-[#212532] text-[#8E95A5] hover:text-white"
+                      ? "bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-400 shadow-xs"
+                      : "bg-stone-50 dark:bg-[#25221e] border-stone-200/80 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
                   }`}
                 >
-                  <FaCheck className={priority === "NORMAL" ? "opacity-100" : "opacity-0"} />
+                  <FiCheck className={`w-3.5 h-3.5 text-stone-400 ${priority === "NORMAL" ? "opacity-100" : "opacity-0"}`} />
                   Bình thường
                 </button>
                 <button
                   type="button"
                   onClick={() => setPriority("URGENT")}
-                  className={`py-2 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 ${
+                  className={`py-2 px-3 rounded-xl border text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                     priority === "URGENT"
-                      ? "bg-red-500/20 border-red-500 text-red-400 shadow-sm"
-                      : "bg-[#181B24] border-[#212532] text-[#8E95A5] hover:text-white"
+                      ? "bg-rose-50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800/60 text-rose-700 dark:text-rose-400 shadow-xs"
+                      : "bg-stone-50 dark:bg-[#25221e] border-stone-200/80 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
                   }`}
                 >
-                  <FaExclamationTriangle />
+                  <FiAlertTriangle className="w-3.5 h-3.5 text-stone-400" />
                   Khẩn cấp
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#8E95A5] uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wider mb-2">
                 Ngày mong muốn nhận
               </label>
               <div className="relative">
@@ -240,13 +243,13 @@ export const CreateRequisitionModal: React.FC<Props> = ({
                   type="date"
                   value={expectedDate}
                   onChange={(e) => setExpectedDate(e.target.value)}
-                  className="w-full bg-[#181B24] border border-[#212532] rounded-xl px-3 py-2 text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                  className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-500 focus:outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#8E95A5] uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wider mb-2">
                 Ghi chú cho Quản Lý
               </label>
               <input
@@ -254,20 +257,20 @@ export const CreateRequisitionModal: React.FC<Props> = ({
                 placeholder="VD: Cần gấp trước cuối tuần khách đông..."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full bg-[#181B24] border border-[#212532] rounded-xl px-3 py-2 text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:border-stone-400 dark:focus:border-stone-500 focus:outline-none"
               />
             </div>
           </div>
 
           {/* Smart Auto-Suggest Action Bar */}
-          <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-[#181B24] to-[#12141A] border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
-                <FaBolt className="text-lg animate-pulse" />
+              <div className="w-9 h-9 rounded-xl bg-stone-200/70 dark:bg-stone-800 flex items-center justify-center text-stone-600 dark:text-stone-300 shrink-0">
+                <FiZap className="w-4 h-4 text-stone-400" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-[#F4F5F8]">Gợi Ý Nhập Kho Thông Minh</h4>
-                <p className="text-xs text-[#8E95A5]">
+                <h4 className="text-xs font-bold text-stone-900 dark:text-[#efe9de]">Gợi Ý Nhập Kho Thông Minh</h4>
+                <p className="text-[11px] text-stone-500 dark:text-stone-400">
                   Tự động quét các mặt hàng dưới định mức an toàn và tính toán lượng thiếu hụt.
                 </p>
               </div>
@@ -277,24 +280,24 @@ export const CreateRequisitionModal: React.FC<Props> = ({
               type="button"
               onClick={handleAutoFill}
               disabled={isLoadingSuggestions}
-              className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-lg shadow-amber-500/20 disabled:opacity-50"
+              className="w-full sm:w-auto px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-stone-100 dark:text-stone-900 font-semibold text-xs transition flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-xs disabled:opacity-50"
             >
               {isLoadingSuggestions ? (
-                <FaSpinner className="animate-spin" />
+                <FiLoader className="w-3.5 h-3.5 animate-spin text-stone-400" />
               ) : (
-                <FaBolt />
+                <FiZap className="w-3.5 h-3.5 text-stone-400" />
               )}
-              Nạp Hàng Chạm Ngưỡng An Toàn
+              <span>Nạp Hàng Chạm Ngưỡng An Toàn</span>
             </button>
           </div>
 
           {/* Manual Add Item Form */}
-          <div className="p-4 rounded-2xl bg-[#181B24] border border-[#212532] flex flex-col md:flex-row items-center gap-3">
+          <div className="p-3.5 rounded-2xl bg-stone-50/70 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 flex flex-col md:flex-row items-center gap-3">
             <div className="flex-1 w-full">
               <select
                 value={selectedMaterialId}
                 onChange={(e) => setSelectedMaterialId(e.target.value)}
-                className="w-full bg-[#12141A] border border-[#212532] rounded-xl px-3 py-2 text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-500 focus:outline-none cursor-pointer"
               >
                 <option value="">-- Chọn thêm nguyên vật liệu / bao bì thủ công --</option>
                 {materials.map((m) => (
@@ -312,7 +315,7 @@ export const CreateRequisitionModal: React.FC<Props> = ({
                 step="any"
                 value={manualQuantity}
                 onChange={(e) => setManualQuantity(parseFloat(e.target.value) || 1)}
-                className="w-full bg-[#12141A] border border-[#212532] rounded-xl px-3 py-2 text-sm text-[#F4F5F8] text-center focus:border-[#D4AF37] focus:outline-none"
+                className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] text-center focus:border-stone-400 dark:focus:border-stone-500 focus:outline-none"
                 placeholder="SL"
               />
             </div>
@@ -320,73 +323,74 @@ export const CreateRequisitionModal: React.FC<Props> = ({
             <button
               type="button"
               onClick={handleAddManualItem}
-              className="w-full md:w-auto px-4 py-2 rounded-xl bg-[#212532] hover:bg-[#2A3042] text-[#F4F5F8] font-bold text-xs flex items-center justify-center gap-2 shrink-0 transition"
+              className="w-full md:w-auto px-4 py-2 rounded-xl bg-stone-200/70 hover:bg-stone-300/80 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-semibold text-xs flex items-center justify-center gap-1.5 shrink-0 transition cursor-pointer"
             >
-              <FaPlus /> Thêm vào đơn
+              <FiPlus className="w-3.5 h-3.5 text-stone-400" />
+              <span>Thêm vào đơn</span>
             </button>
           </div>
 
           {/* Items Table */}
-          <div className="border border-[#212532] rounded-2xl overflow-hidden bg-[#181B24]">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-[#12141A] text-[#8E95A5] text-[11px] font-black uppercase tracking-wider border-b border-[#212532]">
+          <div className="border border-stone-200/80 dark:border-stone-800 rounded-2xl overflow-hidden bg-white dark:bg-[#1c1a17]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-stone-50 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 text-[11px] font-semibold uppercase tracking-wider border-b border-stone-200/80 dark:border-stone-800">
                 <tr>
-                  <th className="p-3.5">Mặt Hàng</th>
-                  <th className="p-3.5 text-center">ĐVT</th>
-                  <th className="p-3.5 text-center">Tồn Hiện Tại</th>
-                  <th className="p-3.5 text-center">Ngưỡng An Toàn</th>
-                  <th className="p-3.5 text-center w-36">SL Cần Nhập</th>
-                  <th className="p-3.5 text-center">NCC Gợi Ý</th>
-                  <th className="p-3.5 text-center w-12"></th>
+                  <th className="p-3">Mặt Hàng</th>
+                  <th className="p-3 text-center">ĐVT</th>
+                  <th className="p-3 text-center">Tồn Hiện Tại</th>
+                  <th className="p-3 text-center">Ngưỡng An Toàn</th>
+                  <th className="p-3 text-center w-36">SL Cần Nhập</th>
+                  <th className="p-3 text-center">NCC Gợi Ý</th>
+                  <th className="p-3 text-center w-12"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#212532] text-xs">
+              <tbody className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
                 {items.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-[#6D7588]">
-                      Chưa có mặt hàng nào. Nhấn <b>"Nạp Hàng Chạm Ngưỡng An Toàn"</b> hoặc thêm thủ công ở trên.
+                    <td colSpan={7} className="p-8 text-center text-stone-400 dark:text-stone-500">
+                      Chưa có mặt hàng nào. Nhấn <strong>"Nạp Hàng Chạm Ngưỡng An Toàn"</strong> hoặc thêm thủ công ở trên.
                     </td>
                   </tr>
                 ) : (
                   items.map((item, idx) => {
                     const isCriticallyLow = item.current_stock <= item.min_threshold;
                     return (
-                      <tr key={item.material_id} className="hover:bg-[#1E2330] transition">
-                        <td className="p-3.5">
-                          <div className="font-bold text-[#F4F5F8]">{item.material_name}</div>
-                          <div className="text-[10px] text-[#6D7588]">{item.material_code}</div>
+                      <tr key={item.material_id} className="hover:bg-stone-50/60 dark:hover:bg-[#25221e]/50 transition">
+                        <td className="p-3">
+                          <div className="font-semibold text-stone-900 dark:text-[#efe9de]">{item.material_name}</div>
+                          <div className="text-[10px] text-stone-400 font-mono">{item.material_code}</div>
                         </td>
-                        <td className="p-3.5 text-center text-[#8E95A5]">{item.unit}</td>
-                        <td className="p-3.5 text-center font-bold">
+                        <td className="p-3 text-center text-stone-500 dark:text-stone-400">{item.unit}</td>
+                        <td className="p-3 text-center font-mono font-semibold">
                           <span
                             className={
-                              isCriticallyLow ? "text-red-400 font-black animate-pulse" : "text-emerald-400"
+                              isCriticallyLow ? "text-rose-600 dark:text-rose-400 font-bold" : "text-emerald-600 dark:text-emerald-400"
                             }
                           >
                             {item.current_stock}
                           </span>
                         </td>
-                        <td className="p-3.5 text-center text-[#8E95A5]">{item.min_threshold}</td>
-                        <td className="p-3.5 text-center">
+                        <td className="p-3 text-center text-stone-500 dark:text-stone-400 font-mono">{item.min_threshold}</td>
+                        <td className="p-3 text-center">
                           <input
                             type="number"
                             min="0.1"
                             step="any"
                             value={item.requested_quantity}
                             onChange={(e) => handleQuantityChange(idx, parseFloat(e.target.value) || 0)}
-                            className="w-24 bg-[#12141A] border border-[#212532] rounded-lg px-2 py-1 text-center font-bold text-amber-400 focus:border-amber-400 focus:outline-none"
+                            className="w-24 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-lg px-2 py-1 text-center font-mono font-semibold text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-500 focus:outline-none"
                           />
                         </td>
-                        <td className="p-3.5 text-center text-[11px] text-[#8E95A5]">
+                        <td className="p-3 text-center text-[11px] text-stone-500 dark:text-stone-400">
                           {item.suggested_supplier_name || "—"}
                         </td>
-                        <td className="p-3.5 text-center">
+                        <td className="p-3 text-center">
                           <button
                             type="button"
                             onClick={() => handleRemoveItem(idx)}
-                            className="text-[#6D7588] hover:text-red-400 transition"
+                            className="text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer"
                           >
-                            <FaTrashAlt />
+                            <FiTrash2 className="w-3.5 h-3.5 text-stone-400" />
                           </button>
                         </td>
                       </tr>
@@ -399,16 +403,16 @@ export const CreateRequisitionModal: React.FC<Props> = ({
         </form>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-[#212532] bg-[#181B24] flex items-center justify-between">
-          <div className="text-xs text-[#8E95A5]">
-            Tổng số mặt hàng yêu cầu: <b className="text-amber-400">{items.length}</b>
+        <div className="p-4 border-t border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#25221e] flex items-center justify-between">
+          <div className="text-xs text-stone-500 dark:text-stone-400">
+            Tổng số mặt hàng yêu cầu: <strong className="text-stone-900 dark:text-[#efe9de]">{items.length}</strong>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-[#8E95A5] hover:text-white hover:bg-[#212532] transition"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-200/60 dark:hover:bg-stone-800 transition cursor-pointer"
             >
               Hủy
             </button>
@@ -416,10 +420,14 @@ export const CreateRequisitionModal: React.FC<Props> = ({
               type="button"
               onClick={handleSubmit}
               disabled={createMutation.isPending || items.length === 0}
-              className="px-6 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/20 disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-stone-100 dark:text-stone-900 font-semibold text-xs transition shadow-xs disabled:opacity-50 cursor-pointer flex items-center gap-2"
             >
-              {createMutation.isPending ? <FaSpinner className="animate-spin" /> : <FaCheck />}
-              Gửi Quản Lý Phê Duyệt
+              {createMutation.isPending ? (
+                <FiLoader className="w-3.5 h-3.5 animate-spin text-stone-400" />
+              ) : (
+                <FiCheck className="w-3.5 h-3.5 text-stone-400" />
+              )}
+              <span>Gửi Quản Lý Phê Duyệt</span>
             </button>
           </div>
         </div>

@@ -2,15 +2,14 @@
 
 import React from "react";
 import {
-  FaCalendarCheck,
-  FaCheckCircle,
-  FaClock,
-  FaLock,
-  FaLockOpen,
-  FaPlus,
-  FaSpinner,
-  FaUsers,
-} from "react-icons/fa";
+  FiCalendar,
+  FiCheckCircle,
+  FiLock,
+  FiUnlock,
+  FiPlus,
+  FiLoader,
+  FiUsers,
+} from "react-icons/fi";
 import { type RegistrationWeekCard } from "@/features/pho_ca_lam_lich/scheduling/service/scheduling.service";
 
 interface Props {
@@ -37,11 +36,11 @@ export const RegistrationWeekCardsBar: React.FC<Props> = ({
       {/* Top Title & Quick Actions */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-2">
-          <FaCalendarCheck className="text-[#D4AF37] text-sm" />
-          <span className="text-xs font-black uppercase text-[#F4F5F8] tracking-wider">
-            Các Đợt Đăng Ký Ca Theo Tuần (Zone Six Signature)
+          <FiCalendar className="text-stone-400 dark:text-stone-400 text-sm" />
+          <span className="text-xs font-semibold uppercase tracking-wider text-stone-900 dark:text-[#efe9de]">
+            Các Đợt Đăng Ký Ca Theo Tuần
           </span>
-          <span className="text-[10px] font-bold text-[#8E95A5] bg-[#12141A] px-2 py-0.5 rounded-full border border-[#212532]">
+          <span className="text-[11px] font-medium text-stone-600 dark:text-stone-400 bg-stone-100 dark:bg-[#25221e] px-2.5 py-0.5 rounded-full border border-stone-200/80 dark:border-stone-800">
             {weekCards.length} đợt
           </span>
         </div>
@@ -53,18 +52,18 @@ export const RegistrationWeekCardsBar: React.FC<Props> = ({
             type="button"
             onClick={onCreateNextWeek}
             disabled={isCreatingNextWeek || isLoadingWeeks}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-black gold-gradient-bg hover:brightness-110 text-[#0B0C10] shadow-md gold-glow-sm transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Tạo mới đợt đăng ký cho tuần tiếp theo tính theo thời gian thực (không tự động tạo tràn lan trong tương lai)"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-medium bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white shadow-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Tạo mới đợt đăng ký cho tuần tiếp theo tính theo thời gian thực"
           >
             {isCreatingNextWeek ? (
               <>
-                <FaSpinner className="animate-spin text-xs" />
+                <FiLoader className="animate-spin text-xs" />
                 <span>Đang Tạo Tuần Mới...</span>
               </>
             ) : (
               <>
-                <FaPlus className="text-xs" />
-                <span>➕ Tạo Mới Tuần Tiếp Theo</span>
+                <FiPlus className="text-xs" />
+                <span>Tạo Mới Tuần Tiếp Theo</span>
               </>
             )}
           </button>
@@ -73,9 +72,9 @@ export const RegistrationWeekCardsBar: React.FC<Props> = ({
 
       {/* Loading state */}
       {isLoadingWeeks && weekCards.length === 0 ? (
-        <div className="p-6 rounded-2xl bg-[#12141A] border border-[#212532] flex items-center justify-center gap-3">
-          <div className="w-5 h-5 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-[#D4AF37] font-semibold">Đang tải danh sách các thẻ tuần...</span>
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-center gap-3">
+          <FiLoader className="w-5 h-5 animate-spin text-stone-400" />
+          <span className="text-xs text-stone-600 dark:text-stone-400 font-medium">Đang tải danh sách các thẻ tuần...</span>
         </div>
       ) : (
         /* Grid / Row of Week Cards */
@@ -90,32 +89,32 @@ export const RegistrationWeekCardsBar: React.FC<Props> = ({
                 onClick={() => onSelectWeek(card)}
                 className={`p-3.5 rounded-2xl border transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between gap-3 ${
                   isSelected
-                    ? "bg-[#18150D] border-[#D4AF37] shadow-lg gold-glow-sm ring-1 ring-[#D4AF37]/50"
-                    : "bg-[#12141A] border-[#212532] hover:border-[#383F52] hover:bg-[#161922]"
+                    ? "bg-white dark:bg-[#1c1a17] border-stone-900 dark:border-stone-100 shadow-sm ring-1 ring-stone-900/10 dark:ring-stone-100/20"
+                    : "bg-white dark:bg-[#1c1a17] border-stone-200/80 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700"
                 }`}
               >
-                {/* Active Indicator Bar */}
+                {/* Active Indicator Top Line */}
                 {isSelected && (
-                  <div className="absolute top-0 left-0 right-0 h-1 gold-gradient-bg" />
+                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-stone-900 dark:bg-stone-100" />
                 )}
 
                 {/* Card Header: Week Tag & Status Badge */}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5">
                     {card.is_current_week ? (
-                      <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-[#251F0D] text-[#F5D77F] border border-[#D4AF37]/50">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900">
                         Tuần Này
                       </span>
                     ) : card.is_next_week ? (
-                      <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-sky-950/60 text-sky-300 border border-sky-600/40">
-                        ★ Tuần Tới
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+                        Tuần Tới
                       </span>
                     ) : card.is_past_week ? (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#1C202C] text-[#8E95A5] border border-[#2E3547]">
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 border border-stone-200/80 dark:border-stone-800">
                         Tuần Trước
                       </span>
                     ) : (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#1C202C] text-[#E7CD80] border border-[#2E3547]">
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-800">
                         Tuần Tương Lai
                       </span>
                     )}
@@ -123,20 +122,20 @@ export const RegistrationWeekCardsBar: React.FC<Props> = ({
 
                   {/* Lock / Open Badge */}
                   <span
-                    className={`inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full border ${
+                    className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
                       isOpen
-                        ? "bg-emerald-950/80 text-emerald-300 border-emerald-500/50"
-                        : "bg-rose-950/80 text-rose-300 border-rose-500/50"
+                        ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+                        : "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800"
                     }`}
                   >
                     {isOpen ? (
                       <>
-                        <FaLockOpen className="text-[9px]" />
+                        <FiUnlock className="text-[10px]" />
                         <span>MỞ</span>
                       </>
                     ) : (
                       <>
-                        <FaLock className="text-[9px]" />
+                        <FiLock className="text-[10px]" />
                         <span>ĐÃ KHÓA</span>
                       </>
                     )}
@@ -145,38 +144,38 @@ export const RegistrationWeekCardsBar: React.FC<Props> = ({
 
                 {/* Week Range */}
                 <div>
-                  <div className={`text-xs font-black ${isSelected ? "text-[#F5D77F]" : "text-[#F4F5F8]"}`}>
+                  <div className={`text-xs font-semibold ${isSelected ? "text-stone-900 dark:text-[#efe9de]" : "text-stone-700 dark:text-stone-300"}`}>
                     {card.week_range}
                   </div>
-                  <div className="text-[10px] text-[#6D7588] mt-0.5">
+                  <div className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5 font-mono">
                     T2 ({card.week_start_date.split("-").slice(1).reverse().join("/")}) → CN ({card.week_end_date.split("-").slice(1).reverse().join("/")})
                   </div>
                 </div>
 
                 {/* Footer info: Registered count / Personal status */}
-                <div className="pt-2 border-t border-[#1C202C] flex items-center justify-between text-[11px]">
+                <div className="pt-2 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between text-[11px]">
                   {canManageSchedule ? (
-                    <div className="flex items-center gap-1.5 text-[#8E95A5]">
-                      <FaUsers className="text-[#D4AF37] text-[10px]" />
+                    <div className="flex items-center gap-1.5 text-stone-500 dark:text-stone-400">
+                      <FiUsers className="text-stone-400 text-xs" />
                       <span>
-                        <strong className="text-[#F4F5F8]">{card.total_registered}</strong> nhân viên đã nộp
+                        <strong className="text-stone-900 dark:text-stone-200 font-semibold">{card.total_registered}</strong> nhân viên
                       </span>
                     </div>
                   ) : (
                     <div>
                       {card.user_has_registered ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-400 font-bold">
-                          <FaCheckCircle className="text-[10px]" /> Đã nộp ({card.user_shifts_count} ca)
+                        <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+                          <FiCheckCircle className="text-xs" /> Đã nộp ({card.user_shifts_count} ca)
                         </span>
                       ) : (
-                        <span className="text-[#6D7588] italic">
-                          Chưa gửi đăng ký
+                        <span className="text-stone-400 dark:text-stone-500 italic">
+                          Chưa nộp
                         </span>
                       )}
                     </div>
                   )}
 
-                  <span className={`text-[10px] font-bold ${isSelected ? "text-[#D4AF37]" : "text-[#555C6E]"}`}>
+                  <span className={`text-[11px] font-medium ${isSelected ? "text-stone-900 dark:text-stone-200" : "text-stone-400 dark:text-stone-500"}`}>
                     {isSelected ? "Đang chọn ›" : "Xem ›"}
                   </span>
                 </div>

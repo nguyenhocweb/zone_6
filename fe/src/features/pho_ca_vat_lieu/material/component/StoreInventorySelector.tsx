@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import { FaStore } from "react-icons/fa";
+import { FiHome, FiMapPin } from "react-icons/fi";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
 import { useGetStores } from "@/features/admin_he_thong/store/hook/useGetStores";
 
@@ -24,7 +24,6 @@ export const StoreInventorySelector: React.FC<StoreInventorySelectorProps> = ({
     return user.role === "admin_he_thong" || user.role === "quan_ly";
   }, [user]);
 
-  // Danh sách cơ sở cho phép chọn
   const allowedStores = useMemo(() => {
     if (!user) return stores;
     if (user.role === "admin_he_thong") return stores;
@@ -37,7 +36,6 @@ export const StoreInventorySelector: React.FC<StoreInventorySelectorProps> = ({
     return stores;
   }, [user, stores]);
 
-  // Tự động khởi tạo selectedStoreId
   useEffect(() => {
     if (stores.length === 0) return;
 
@@ -48,7 +46,6 @@ export const StoreInventorySelector: React.FC<StoreInventorySelectorProps> = ({
         onSelectStore(allowedStores[0].id);
       }
     } else {
-      // Đảm bảo selectedStoreId nằm trong danh sách cho phép
       const exists = allowedStores.some((s) => s.id === selectedStoreId);
       if (!exists && allowedStores.length > 0) {
         onSelectStore(allowedStores[0].id);
@@ -56,20 +53,16 @@ export const StoreInventorySelector: React.FC<StoreInventorySelectorProps> = ({
     }
   }, [stores, user, selectedStoreId, allowedStores, onSelectStore]);
 
-  const currentStore = useMemo(() => {
-    return stores.find((s) => s.id === selectedStoreId) || allowedStores[0] || null;
-  }, [stores, selectedStoreId, allowedStores]);
-
   if (isLoading && stores.length === 0) {
     return (
-      <div className="flex items-center gap-3 overflow-x-auto pb-2 gold-scrollbar-x">
+      <div className="flex items-center gap-3 overflow-x-auto pb-2">
         {[1, 2].map((i) => (
           <div
             key={i}
-            className="shrink-0 min-w-[280px] sm:min-w-[320px] bg-[#161820] border border-white/10 rounded-2xl p-3.5 animate-pulse flex flex-col gap-2"
+            className="shrink-0 min-w-[280px] sm:min-w-[320px] bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 animate-pulse flex flex-col gap-2 shadow-sm"
           >
-            <div className="h-4 bg-white/10 rounded w-44"></div>
-            <div className="h-3 bg-white/10 rounded w-56"></div>
+            <div className="h-4 bg-stone-200 dark:bg-stone-800 rounded w-44"></div>
+            <div className="h-3 bg-stone-100 dark:bg-stone-800/60 rounded w-56"></div>
           </div>
         ))}
       </div>
@@ -78,8 +71,7 @@ export const StoreInventorySelector: React.FC<StoreInventorySelectorProps> = ({
 
   return (
     <div className="w-full">
-      {/* Horizontal Cards Row */}
-      <div className="flex items-stretch gap-3 overflow-x-auto pb-2.5 gold-scrollbar-x">
+      <div className="flex items-stretch gap-3 overflow-x-auto pb-2.5">
         {allowedStores.map((store) => {
           const isSelected = store.id === selectedStoreId;
 
@@ -94,51 +86,49 @@ export const StoreInventorySelector: React.FC<StoreInventorySelectorProps> = ({
                   ? `Chuyển sang xem kho ${store.store_name}`
                   : `Cơ sở trực thuộc cố định: ${store.store_name}`
               }
-              className={`group shrink-0 flex flex-col justify-center p-3.5 px-4 rounded-2xl border text-left transition-all duration-200 min-w-[280px] sm:min-w-[320px] max-w-[380px] ${
+              className={`group shrink-0 flex flex-col justify-between p-4 rounded-2xl border text-left transition-all min-w-[280px] sm:min-w-[320px] max-w-[380px] ${
                 isSelected
-                  ? "bg-gradient-to-r from-amber-500/15 via-[#1C1B16] to-[#14161E] border-[#D4AF37] shadow-lg shadow-amber-500/10 ring-1 ring-amber-400/40"
-                  : "bg-[#14161E] hover:bg-[#1A1D26] border-white/10 hover:border-amber-400/40 opacity-75 hover:opacity-100"
-              } ${isAdminOrManager ? "cursor-pointer hover:scale-[1.01] active:scale-[0.99]" : "cursor-default"}`}
+                  ? "bg-white dark:bg-[#1c1a17] border-stone-900 dark:border-stone-100 shadow-sm ring-1 ring-stone-900/10 dark:ring-stone-100/20"
+                  : "bg-white dark:bg-[#1c1a17] border-stone-200/80 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700"
+              } ${isAdminOrManager ? "cursor-pointer active:scale-[0.99]" : "cursor-default"}`}
             >
               {/* Top: Branch Name & Active Indicator */}
               <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-2.5 min-w-0">
                   <div
                     className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs transition-colors ${
                       isSelected
-                        ? "bg-amber-500/25 text-amber-300 border border-amber-500/50"
-                        : "bg-white/5 text-white/50 border border-white/10 group-hover:text-amber-400 group-hover:border-amber-400/30"
+                        ? "bg-stone-100 dark:bg-[#25221e] text-stone-900 dark:text-stone-100 border border-stone-200/80 dark:border-stone-800"
+                        : "bg-stone-50 dark:bg-[#25221e] text-stone-400 border border-stone-200/60 dark:border-stone-800"
                     }`}
                   >
-                    <FaStore />
+                    <FiHome />
                   </div>
                   <span
-                    className={`text-xs font-black truncate ${
+                    className={`text-xs font-semibold truncate ${
                       isSelected
-                        ? "text-amber-300"
-                        : "text-white group-hover:text-amber-200"
+                        ? "text-stone-900 dark:text-[#efe9de]"
+                        : "text-stone-700 dark:text-stone-300"
                     }`}
                   >
                     {store.store_name}
                   </span>
                 </div>
 
-                {/* Right Badge */}
                 {isSelected ? (
-                  <span className="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                    <span>Đang chọn</span>
+                  <span className="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900">
+                    Đang chọn
                   </span>
                 ) : store.store_code ? (
-                  <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-white/5 text-white/40 border border-white/10">
+                  <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-medium bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 border border-stone-200/80 dark:border-stone-800 font-mono">
                     {store.store_code}
                   </span>
                 ) : null}
               </div>
 
               {/* Bottom: Address */}
-              <div className="flex items-center gap-1.5 mt-2 text-[11px] text-white/50 group-hover:text-white/70 truncate">
-                <span className="text-amber-400/70 text-[10px] shrink-0">📍</span>
+              <div className="flex items-center gap-1.5 mt-2.5 text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                <FiMapPin className="text-[11px] shrink-0 text-stone-400" />
                 <span className="truncate">{store.address || "Chưa cập nhật địa chỉ"}</span>
               </div>
             </button>
@@ -148,4 +138,3 @@ export const StoreInventorySelector: React.FC<StoreInventorySelectorProps> = ({
     </div>
   );
 };
-

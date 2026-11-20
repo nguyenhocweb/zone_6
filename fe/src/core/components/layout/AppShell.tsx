@@ -8,31 +8,32 @@ import { LoginForm } from "@/features/shared/auth/component/LoginForm";
 import { UserHeaderBadge } from "@/features/shared/auth/component/UserHeaderBadge";
 import { ROLE_BADGE_MAP } from "@/features/shared/auth/type/auth.type";
 import {
-  FaCalendarAlt,
-  FaFileInvoiceDollar,
-  FaBroadcastTower,
-  FaUserShield,
-  FaSignOutAlt,
-  FaBell,
-  FaFire,
-  FaIdCard,
-  FaCrown,
-  FaCalendarCheck,
-  FaUsers,
-  FaCheckDouble,
-  FaMapMarkerAlt,
-  FaCamera,
-  FaStore,
-  FaBoxes,
-  FaBookOpen,
-  FaClipboardCheck,
-  FaClock,
-  FaCashRegister,
-  FaChair,
-  FaReceipt,
-  FaCreditCard,
-} from "react-icons/fa";
+  FiCalendar,
+  FiFileText,
+  FiShield,
+  FiLogOut,
+  FiBell,
+  FiUser,
+  FiCheckSquare,
+  FiUsers,
+  FiMapPin,
+  FiCamera,
+  FiHome,
+  FiPackage,
+  FiBookOpen,
+  FiClipboard,
+  FiClock,
+  FiShoppingBag,
+  FiGrid,
+  FiCreditCard,
+  FiDollarSign,
+  FiSun,
+  FiMoon,
+  FiMessageSquare,
+  FiCheck,
+} from "react-icons/fi";
 import { useScheduleNotifications } from "@/features/shared/notifications/hook/useScheduleNotifications";
+import { useTheme } from "@/core/providers/ThemeProvider";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -40,13 +41,18 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const { user, isLoading, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const pathname = usePathname() || "/";
 
   // Hook thông báo cho các cấp quản lý và trưởng ca
   const { stats } = useScheduleNotifications();
 
-  // Các trang công khai dành cho khách hàng (Landing Page & Khách quét QR gọi món tại bàn không cần login)
-  const isPublicPage = pathname === "/" || pathname === "/order" || pathname.startsWith("/order/");
+  // Các trang công khai dành cho khách hàng & trang đăng nhập
+  const isPublicPage =
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/order" ||
+    pathname.startsWith("/order/");
 
   if (isPublicPage) {
     return <>{children}</>;
@@ -55,84 +61,57 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   // Trạng thái đang kiểm tra phiên làm việc
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0C10] text-[#D4AF37] gap-4">
-        <div className="w-12 h-12 border-4 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
-        <span className="text-sm font-semibold tracking-wide">
-          Đang tải dữ liệu Zone 6...
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#f7f4ee] dark:bg-[#141311] text-stone-600 dark:text-stone-300 gap-4">
+        <div className="w-8 h-8 border-2 border-stone-400 border-t-transparent rounded-full animate-spin" />
+        <span className="text-xs font-medium tracking-wide">
+          Đang tải dữ liệu Zone Six...
         </span>
       </div>
     );
   }
 
-  // Chưa đăng nhập -> Hiển thị Form Đăng Nhập
+  // Chưa đăng nhập trên trang yêu cầu xác thực -> Hiển thị Form Đăng Nhập
   if (!user) {
-    return (
-      <div className="min-h-screen flex flex-col bg-[#0B0C10] text-[#F4F5F8]">
-        <header className="sticky top-0 z-40 w-full border-b border-[#212532] bg-[#0B0C10]/90 backdrop-blur-md">
-          <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] font-black gold-glow-sm">
-                <FaCrown className="text-xl" />
-              </div>
-              <div>
-                <span className="font-black text-lg tracking-wider gold-gradient-text uppercase">
-                  Zone 6
-                </span>
-                <span className="ml-2.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#181B24] text-[#D4AF37] border border-[#D4AF37]/40 tracking-wide">
-                  Lounge &amp; Cafe Scheduler &amp; Zalo Bot
-                </span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main className="flex-1 max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 flex items-center justify-center">
-          <LoginForm />
-        </main>
-      </div>
-    );
+    return <LoginForm />;
   }
 
-  const roleBadge = ROLE_BADGE_MAP[user.role] || {
+  const badgeInfo = ROLE_BADGE_MAP[user.role] || {
     label: user.role_label || user.role,
-    bg: "bg-[#181B24]",
-    border: "border-[#212532]",
-    text: "text-[#D4AF37]",
-    icon: "👤",
   };
 
-  // Quyền xem bảng lương tháng (Chỉ Quản Lý, Trưởng Ca & Admin)
-  const canViewSalary = ["admin_he_thong", "quan_ly", "truong_ca"].includes(user.role);
+  // Phân quyền hiển thị chức năng
+  const canReceiveNotifications =
+    user.role === "truong_ca" ||
+    user.role === "quan_ly" ||
+    user.role === "admin_he_thong" ||
+    user.role === "pho_ca_lam_lich" ||
+    user.role === "pho_ca_vat_lieu" ||
+    user.role === "nhan_vien";
 
-  // Quyền nhận thông báo ca làm việc (Trưởng ca, Quản lý, Admin)
-  const canReceiveNotifications = ["admin_he_thong", "quan_ly", "truong_ca"].includes(
-    user.role
-  );
+  const canViewSalary =
+    user.role === "quan_ly" ||
+    user.role === "truong_ca" ||
+    user.role === "admin_he_thong";
 
-  // Quyền quản lý nhân sự (Chỉ Quản Lý, Trưởng Ca & Admin)
-  const canManageStaff = ["admin_he_thong", "quan_ly", "truong_ca"].includes(user.role);
+  const canManageStaff =
+    user.role === "quan_ly" ||
+    user.role === "truong_ca" ||
+    user.role === "admin_he_thong";
 
-  // Quyền cấu hình check-in & tọa độ quán (Chỉ Admin Hệ Thống & Quản Lý)
-  const canConfigCheckin = ["admin_he_thong", "quan_ly"].includes(user.role);
+  const canConfigCheckin =
+    user.role === "admin_he_thong" || user.role === "quan_ly";
 
-  // Quyền cấu hình ca làm việc & định biên (Chỉ Quản Lý, Trưởng Ca, Phó Ca Làm Lịch & Admin)
-  const canConfigShifts = [
-    "admin_he_thong",
-    "quan_ly",
-    "truong_ca",
-    "pho_ca_lam_lich",
-  ].includes(user.role);
-
-  // Qấu hình Zalo Bot (Chỉ duy nhất Admin Hệ Thống)
+  const canManageStores = user.role === "admin_he_thong";
   const canConfigZalo = user.role === "admin_he_thong";
-
-  // Quyền cấu hình cổng thanh toán PayOS (Chỉ duy nhất Admin Hệ Thống)
   const canConfigPayOS = user.role === "admin_he_thong";
 
-  // Quyền quản lý chi nhánh chuỗi cửa hàng (Chỉ duy nhất Admin Hệ Thống)
-  const canManageStores = user.role === "admin_he_thong";
+  const canConfigShifts =
+    user.role === "admin_he_thong" ||
+    user.role === "quan_ly" ||
+    user.role === "truong_ca" ||
+    user.role === "pho_ca_lam_lich";
 
-  // Xác định trạng thái active của từng link theo URL pathname
+  // Xác định active state
   const isScheduleActive = pathname === "/" || pathname === "/schedule";
   const isPosActive = pathname === "/pos" || pathname.startsWith("/pos");
   const isTablesActive = pathname === "/tables" || pathname.startsWith("/tables");
@@ -157,608 +136,430 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const isNotificationsActive =
     pathname === "/notifications" || pathname.startsWith("/notifications");
 
+  // Style cho Sidebar Item (icon màu xám trung tính theo yêu cầu người dùng)
+  const getNavItemClass = (isActive: boolean) =>
+    `w-full flex items-center justify-between p-2.5 rounded-xl transition-all cursor-pointer text-xs group ${
+      isActive
+        ? "bg-stone-200/90 dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-medium border border-stone-300/80 dark:border-stone-700 shadow-sm"
+        : "bg-transparent hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 border border-transparent"
+    }`;
+
+  const getIconClass = (isActive: boolean) =>
+    `w-6 h-6 rounded-lg flex items-center justify-center text-sm shrink-0 transition-colors ${
+      isActive
+        ? "text-stone-900 dark:text-stone-100"
+        : "text-stone-400 dark:text-stone-400 group-hover:text-stone-700 dark:group-hover:text-stone-200"
+    }`;
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0C10] text-[#F4F5F8]">
-      {/* =========================================================================
-       * 1. TOP NAVIGATION HEADER
-       * ========================================================================= */}
-      <header className="sticky top-0 z-40 w-full border-b border-[#212532] bg-[#0B0C10]/90 backdrop-blur-md">
+    <div className="min-h-screen flex flex-col bg-[#f7f4ee] dark:bg-[#141311] text-[#1f1b16] dark:text-[#efe9de] transition-colors duration-200">
+      {/* 1. Header Navigation */}
+      <header className="sticky top-0 z-40 w-full border-b border-stone-200/80 dark:border-stone-800 bg-white/90 dark:bg-[#141311]/90 backdrop-blur-md transition-colors">
         <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/schedule"
-              className="w-10 h-10 rounded-xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] font-black gold-glow-sm hover:brightness-110 transition shrink-0"
+              className="w-9 h-9 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-semibold text-xs tracking-wider shrink-0 transition-transform hover:scale-105"
             >
-              <FaCrown className="text-xl" />
+              Z6
             </Link>
-            <div>
-              <Link
-                href="/schedule"
-                className="font-black text-lg tracking-wider gold-gradient-text uppercase hover:underline"
-              >
-                Zone 6
-              </Link>
-              <span className="ml-2.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#181B24] text-[#D4AF37] border border-[#D4AF37]/40 tracking-wide hidden sm:inline-block">
-                Lounge &amp; Cafe Scheduler &amp; Zalo Bot
-              </span>
-            </div>
+            <Link
+              href="/schedule"
+              className="font-semibold text-sm tracking-wide text-stone-900 dark:text-stone-100 hover:opacity-80 transition"
+            >
+              Zone Six
+            </Link>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Global Theme Toggle Button */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Chuyển sang giao diện Sáng" : "Chuyển sang giao diện Tối"}
+              title={
+                theme === "dark"
+                  ? "Chế độ Tối (Warm Espresso) - Bấm để chuyển sang Sáng"
+                  : "Chế độ Sáng (Warm Linen) - Bấm để chuyển sang Tối"
+              }
+              className="w-9 h-9 rounded-xl flex items-center justify-center transition-colors cursor-pointer border border-stone-200 dark:border-stone-800 bg-stone-100 hover:bg-stone-200/80 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 shadow-xs"
+            >
+              {theme === "dark" ? (
+                <FiSun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <FiMoon className="w-4 h-4 text-stone-600" />
+              )}
+            </button>
             <UserHeaderBadge />
           </div>
         </div>
       </header>
 
-      {/* =========================================================================
-       * 2. MAIN WORKSPACE (SIDEBAR TRÁI & NỘI DUNG PHẢI)
-       * ========================================================================= */}
+      {/* 2. Main Workspace: Sidebar Trái & Nội Dung Phải */}
       <main className="flex-1 max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col lg:flex-row gap-6 items-start w-full">
-          {/* CỘT BÊN TRÁI: DANH SÁCH CHỨC NĂNG HỆ THỐNG & THÔNG TIN TÀI KHOẢN (SIDEBAR) */}
-          <aside className="w-full lg:w-72 shrink-0 bg-[#12141A] border border-[#212532] rounded-3xl p-3.5 shadow-2xl flex flex-col gap-3 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)]">
-            {/* User Card (Cố định ở trên) */}
-            <div className="shrink-0 p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-2.5">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-[#181B24] border border-[#D4AF37]/50 flex items-center justify-center text-xl shadow-inner shrink-0">
-                  {roleBadge.icon}
+          {/* Cột Trái: Sidebar */}
+          <aside className="w-full lg:w-68 shrink-0 bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-3.5 shadow-sm flex flex-col gap-3 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] transition-colors">
+            {/* User Card Tối Giản */}
+            <div className="shrink-0 p-3 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2 transition-colors">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-stone-200 dark:bg-stone-800 flex items-center justify-center text-stone-400 dark:text-stone-400 text-sm shrink-0">
+                  <FiUser />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-sm font-black text-[#F4F5F8] truncate" title={user.name}>
+                  <div className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate" title={user.name}>
                     {user.name}
                   </div>
-                  <span
-                    className={`inline-block text-[10px] font-black px-2 py-0.5 rounded-full border mt-1 ${roleBadge.bg} ${roleBadge.border} ${roleBadge.text}`}
-                  >
-                    {roleBadge.label}
+                  <span className="inline-block text-[10px] font-medium px-1.5 py-0.2 rounded bg-stone-200/70 dark:bg-stone-700/60 text-stone-700 dark:text-stone-300">
+                    {badgeInfo.label}
                   </span>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-[#1C202C] text-[11px] text-[#6D7588] space-y-1">
+              <div className="pt-2 border-t border-stone-200/80 dark:border-stone-800 text-[11px] text-stone-500 space-y-1">
                 <div className="flex items-center justify-between">
                   <span>Mã NV:</span>
-                  <span className="text-[#D4AF37] font-mono font-semibold">{user.user_code}</span>
+                  <span className="font-mono text-stone-900 dark:text-stone-100 font-medium">{user.user_code}</span>
                 </div>
                 <div className="flex items-center justify-between truncate" title={user.email}>
                   <span>Email:</span>
-                  <span className="text-[#8E95A5] truncate max-w-[150px]">{user.email}</span>
+                  <span className="text-stone-700 dark:text-stone-300 truncate max-w-[140px]">{user.email}</span>
                 </div>
-                {user.position && (
-                  <div className="flex items-center justify-between truncate" title={user.position}>
-                    <span>Vị trí:</span>
-                    <span className="text-[#8E95A5] truncate max-w-[150px]">{user.position}</span>
-                  </div>
-                )}
               </div>
 
-              {/* Nút Chuyển Trang Hồ Sơ Cá Nhân */}
               <Link
                 href="/profile"
                 id="btn-sidebar-user-profile"
-                className={`w-full mt-1.5 py-2 px-3 rounded-xl border transition flex items-center justify-center gap-2 cursor-pointer shadow-sm group text-xs font-bold whitespace-nowrap ${
+                className={`w-full mt-1 py-1.5 px-3 rounded-xl border transition flex items-center justify-center gap-1.5 cursor-pointer text-xs font-medium whitespace-nowrap ${
                   isProfileActive
-                    ? "gold-gradient-bg text-[#0B0C10] shadow-md border-[#D4AF37]"
-                    : "border-[#262C3F] bg-[#141724] hover:bg-[#1A1F30] hover:border-[#D4AF37]/50 text-[#D4AF37]"
+                    ? "bg-stone-200/90 dark:bg-stone-800 text-stone-900 dark:text-stone-100 border-stone-300 dark:border-stone-700 shadow-sm"
+                    : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800"
                 }`}
               >
-                <FaIdCard className="text-xs group-hover:scale-110 transition-transform shrink-0" />
+                <FiUser className="text-xs text-stone-400 shrink-0" />
                 <span>Xem Hồ Sơ Cá Nhân</span>
               </Link>
             </div>
 
-            {/* DANH SÁCH CHỨC NĂNG (CHỈ CUỘN PHẦN NÀY NẾU QUÁ MÀN HÌNH) */}
-            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-2 pr-1 -mr-1">
-              {/* Nút Bật Trung Tâm Cảnh Báo Trưởng Ca & Quản Lý */}
+            {/* Danh Sách Chức Năng (Cuộn riêng) */}
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-1.5 pr-1 -mr-1">
+              {/* Cảnh Báo Ca Làm */}
               {canReceiveNotifications && (
                 <Link
                   href="/notifications"
                   id="btn-sidebar-notification-center"
-                  className={`w-full flex items-center justify-between p-2.5 rounded-2xl border transition-all cursor-pointer ${
-                    isNotificationsActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : stats.urgent_count > 0
-                      ? "bg-gradient-to-r from-[#210D12] via-[#1A0E13] to-[#12141A] border-red-500/60 shadow-lg shadow-red-500/20"
-                      : stats.high_count > 0
-                      ? "bg-gradient-to-r from-[#21180D] via-[#1A140F] to-[#12141A] border-amber-500/60 shadow-lg shadow-amber-500/20"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isNotificationsActive)}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div
-                      className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 border ${
-                        isNotificationsActive
-                          ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                          : stats.urgent_count > 0
-                          ? "bg-red-500/20 text-red-400 border-red-500/50 animate-pulse"
-                          : stats.high_count > 0
-                          ? "bg-amber-500/20 text-amber-400 border-amber-500/50"
-                          : "bg-[#181B24] text-[#D4AF37] border-[#212532]"
-                      }`}
-                    >
-                      {stats.urgent_count > 0 ? <FaFire /> : <FaBell />}
+                    <div className={getIconClass(isNotificationsActive)}>
+                      <FiBell />
                     </div>
-                    <div className="text-xs font-black truncate">
-                      Cảnh Báo Ca Làm
-                    </div>
+                    <span className="truncate">Cảnh Báo Ca Làm</span>
                   </div>
-
                   {stats.unread > 0 ? (
-                    <span
-                      className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
-                        stats.urgent_count > 0
-                          ? "bg-red-500 text-white border-red-400 animate-bounce"
-                          : "bg-amber-500 text-black border-amber-400 font-bold"
-                      }`}
-                    >
+                    <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">
                       {stats.unread}
                     </span>
                   ) : (
-                    <span className={`text-[10px] font-medium ${isNotificationsActive ? "text-[#2A230C]" : "text-[#555C6E]"}`}>
-                      0 mới
-                    </span>
+                    <span className="text-[10px] text-stone-400">0 mới</span>
                   )}
                 </Link>
               )}
 
-              {/* 1. Xếp Lịch Zone 6 */}
+              {/* Xếp Lịch Zone 6 */}
               <Link
                 href="/schedule"
                 id="tab-btn-scheduling"
                 data-testid="tab-scheduling"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isScheduleActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isScheduleActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isScheduleActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaCalendarAlt />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Xếp Lịch Zone 6
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isScheduleActive)}>
+                    <FiCalendar />
+                  </div>
+                  <span className="truncate">Xếp Lịch Zone 6</span>
                 </div>
               </Link>
 
-              {/* 2. Điểm Danh Ca Làm (Bắt buộc chụp ảnh) - Cho ALL các role */}
+              {/* Điểm Danh Ca Làm */}
               <Link
                 href="/checkin"
                 id="tab-btn-checkin"
                 data-testid="tab-checkin"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isCheckinActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isCheckinActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isCheckinActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaCamera />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Điểm Danh Ca Làm
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isCheckinActive)}>
+                    <FiCamera />
+                  </div>
+                  <span className="truncate">Điểm Danh Ca Làm</span>
                 </div>
               </Link>
 
-              {/* 2b. Bán Hàng POS (Live Order & VietQR) */}
+              {/* Bán Hàng POS */}
               <Link
                 href="/pos"
                 id="tab-btn-pos"
                 data-testid="tab-pos"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isPosActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isPosActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isPosActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaCashRegister />
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isPosActive)}>
+                    <FiShoppingBag />
+                  </div>
+                  <span className="truncate">Bán Hàng POS</span>
                 </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Bán Hàng POS
-                </div>
-                <span className="text-[9px] px-1.5 py-0.5 rounded font-extrabold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <span className="text-[9px] px-1.5 py-0.2 rounded font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                   LIVE
                 </span>
               </Link>
 
-              {/* 2c. Sơ Đồ Bàn & QR Code Gọi Món */}
+              {/* Sơ Đồ Bàn & QR */}
               <Link
                 href="/tables"
                 id="tab-btn-tables"
                 data-testid="tab-tables"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isTablesActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isTablesActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isTablesActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaChair />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Sơ Đồ Bàn &amp; QR
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isTablesActive)}>
+                    <FiGrid />
+                  </div>
+                  <span className="truncate">Sơ Đồ Bàn &amp; QR</span>
                 </div>
               </Link>
 
-              {/* 2d. Quản Lý Hóa Đơn & Bill */}
+              {/* Quản Lý Hóa Đơn */}
               <Link
                 href="/orders"
                 id="tab-btn-orders"
                 data-testid="tab-orders"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isOrdersActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isOrdersActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isOrdersActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaReceipt />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Quản Lý Hóa Đơn
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isOrdersActive)}>
+                    <FiFileText />
+                  </div>
+                  <span className="truncate">Quản Lý Hóa Đơn</span>
                 </div>
               </Link>
 
-              {/* 3. Đăng Ký Ca Làm */}
+              {/* Đăng Ký Ca Làm */}
               <Link
                 href="/schedule/register"
                 id="tab-btn-register"
                 data-testid="tab-register"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isRegisterActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isRegisterActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isRegisterActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaCalendarCheck />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Đăng Ký Ca Làm
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isRegisterActive)}>
+                    <FiCheckSquare />
+                  </div>
+                  <span className="truncate">Đăng Ký Ca Làm</span>
                 </div>
               </Link>
 
-              {/* 3b. Cấu Hình Ca Làm (Giờ làm & Định biên nhân sự tối thiểu - Chỉ Quản lý/Trưởng ca/Phó ca làm lịch/Admin) */}
+              {/* Cấu Hình Ca Làm */}
               {canConfigShifts && (
                 <Link
                   href="/shifts"
                   id="tab-btn-shifts"
                   data-testid="tab-shifts"
-                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                    isShiftsActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isShiftsActive)}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                      isShiftsActive
-                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                    }`}
-                  >
-                    <FaClock />
-                  </div>
-                  <div className="text-xs font-black truncate flex-1">
-                    Cấu Hình Ca Làm
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isShiftsActive)}>
+                      <FiClock />
+                    </div>
+                    <span className="truncate">Cấu Hình Ca Làm</span>
                   </div>
                 </Link>
               )}
 
-              {/* 3.1 Quản Lý Kho & Vật Liệu (Dành cho nhân sự từ Nhân Viên trở lên) */}
+              {/* Kho & Vật Liệu */}
               <Link
                 href="/materials"
                 id="tab-btn-materials"
                 data-testid="tab-materials"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isMaterialsActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isMaterialsActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isMaterialsActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaBoxes />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Kho &amp; Vật Liệu
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isMaterialsActive)}>
+                    <FiPackage />
+                  </div>
+                  <span className="truncate">Kho &amp; Vật Liệu</span>
                 </div>
               </Link>
 
-              {/* 3.2 Món & Sổ Tay Công Thức (Dành cho nhân sự từ Nhân Viên trở lên) */}
+              {/* Món & Sổ Tay Công Thức */}
               <Link
                 href="/recipes"
                 id="tab-btn-recipes"
                 data-testid="tab-recipes"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isRecipesActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isRecipesActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isRecipesActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaBookOpen />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Món &amp; Sổ Tay Công Thức
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isRecipesActive)}>
+                    <FiBookOpen />
+                  </div>
+                  <span className="truncate">Món &amp; Sổ Tay Công Thức</span>
                 </div>
               </Link>
 
-              {/* 3.3 Kiểm Kê Kho & Đối Soát (Dành cho nhân sự từ Nhân Viên trở lên) */}
+              {/* Kiểm Kê Kho */}
               <Link
                 href="/inventory-audit"
                 id="tab-btn-inventory-audit"
                 data-testid="tab-inventory-audit"
-                className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                  isInventoryAuditActive
-                    ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                    : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                }`}
+                className={getNavItemClass(isInventoryAuditActive)}
               >
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                    isInventoryAuditActive
-                      ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                      : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                  }`}
-                >
-                  <FaClipboardCheck />
-                </div>
-                <div className="text-xs font-black truncate flex-1">
-                  Kiểm Kê Kho
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={getIconClass(isInventoryAuditActive)}>
+                    <FiClipboard />
+                  </div>
+                  <span className="truncate">Kiểm Kê Kho</span>
                 </div>
               </Link>
 
-              {/* 3. Bảng Lương Tháng */}
+              {/* Bảng Lương Tháng */}
               {canViewSalary && (
                 <Link
                   href="/salary"
                   id="tab-btn-salary"
                   data-testid="tab-salary"
-                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                    isSalaryActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isSalaryActive)}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                      isSalaryActive
-                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                    }`}
-                  >
-                    <FaFileInvoiceDollar />
-                  </div>
-                  <div className="text-xs font-black truncate flex-1">
-                    Bảng Lương Tháng
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isSalaryActive)}>
+                      <FiDollarSign />
+                    </div>
+                    <span className="truncate">Bảng Lương Tháng</span>
                   </div>
                 </Link>
               )}
 
-              {/* 4. Quản Lý Nhân Sự (Dành cho Quản Lý, Trưởng Ca & Admin) */}
+              {/* Quản Lý Nhân Sự */}
               {canManageStaff && (
                 <Link
                   href="/staff"
                   id="tab-btn-staff"
                   data-testid="tab-staff"
-                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                    isStaffActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isStaffActive)}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                      isStaffActive
-                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                    }`}
-                  >
-                    <FaUsers />
-                  </div>
-                  <div className="text-xs font-black truncate flex-1">
-                    Quản Lý Nhân Sự
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isStaffActive)}>
+                      <FiUsers />
+                    </div>
+                    <span className="truncate">Quản Lý Nhân Sự</span>
                   </div>
                 </Link>
               )}
 
-              {/* 5. Cấu Hình Check-in & Định Vị Quán (Chỉ Admin Hệ Thống & Quản Lý) */}
+              {/* Cấu Hình Check-in */}
               {canConfigCheckin && (
                 <Link
                   href="/checkin-config"
                   id="tab-btn-checkin-config"
                   data-testid="tab-checkin-config"
-                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                    isCheckinConfigActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isCheckinConfigActive)}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                      isCheckinConfigActive
-                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                    }`}
-                  >
-                    <FaMapMarkerAlt />
-                  </div>
-                  <div className="text-xs font-black truncate flex-1">
-                    Cấu Hình Check-in
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isCheckinConfigActive)}>
+                      <FiMapPin />
+                    </div>
+                    <span className="truncate">Cấu Hình Check-in</span>
                   </div>
                 </Link>
               )}
 
-              {/* 6. Quản Lý Chi Nhánh - Chỉ Admin Hệ Thống */}
+              {/* Quản Lý Chi Nhánh */}
               {canManageStores && (
                 <Link
                   href="/stores"
                   id="tab-btn-stores"
                   data-testid="tab-stores"
-                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                    isStoresActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isStoresActive)}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                      isStoresActive
-                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                    }`}
-                  >
-                    <FaStore />
-                  </div>
-                  <div className="text-xs font-black truncate flex-1">
-                    Quản Lý Chi Nhánh
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isStoresActive)}>
+                      <FiHome />
+                    </div>
+                    <span className="truncate">Quản Lý Chi Nhánh</span>
                   </div>
                 </Link>
               )}
 
-              {/* 7. Zalo Bot (zca-js) - Chỉ Admin Hệ Thống */}
+              {/* Zalo Bot */}
               {canConfigZalo && (
                 <Link
                   href="/zalo"
                   id="tab-btn-zalo"
                   data-testid="tab-zalo"
-                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                    isZaloActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isZaloActive)}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                      isZaloActive
-                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                    }`}
-                  >
-                    <FaBroadcastTower />
-                  </div>
-                  <div className="text-xs font-black truncate flex-1">
-                    Zalo Bot (zca-js)
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isZaloActive)}>
+                      <FiMessageSquare />
+                    </div>
+                    <span className="truncate">Zalo Bot (zca-js)</span>
                   </div>
                 </Link>
               )}
 
-              {/* 8. Cấu Hình Cổng Thanh Toán PayOS - Chỉ Admin Hệ Thống */}
+              {/* Cấu Hình PayOS */}
               {canConfigPayOS && (
                 <Link
                   href="/payos"
                   id="tab-btn-payos"
                   data-testid="tab-payos"
-                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-2xl text-left transition-all cursor-pointer ${
-                    isPayOSActive
-                      ? "gold-gradient-bg text-[#0B0C10] font-black shadow-lg gold-glow-sm"
-                      : "bg-[#0E1015] hover:bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8]"
-                  }`}
+                  className={getNavItemClass(isPayOSActive)}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${
-                      isPayOSActive
-                        ? "bg-[#0B0C10]/20 text-[#0B0C10]"
-                        : "bg-[#181B24] text-[#D4AF37] border border-[#212532]"
-                    }`}
-                  >
-                    <FaCreditCard />
-                  </div>
-                  <div className="text-xs font-black truncate flex-1">
-                    Cấu Hình PayOS
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isPayOSActive)}>
+                      <FiCreditCard />
+                    </div>
+                    <span className="truncate">Cấu Hình PayOS</span>
                   </div>
                 </Link>
               )}
             </div>
 
-            {/* Sidebar Footer: Phân quyền & Nút Đăng Xuất (Cố định ở dưới) */}
-            <div className="shrink-0 pt-2.5 border-t border-[#212532] space-y-2.5">
-              <div className="flex items-center justify-between text-xs text-[#8E95A5]">
+            {/* Sidebar Footer: Vai trò & Nút Đăng Xuất */}
+            <div className="shrink-0 pt-2.5 border-t border-stone-200/80 dark:border-stone-800 space-y-2">
+              <div className="flex items-center justify-between text-xs text-stone-500">
                 <span className="flex items-center gap-1.5">
-                  <FaUserShield className="text-[#D4AF37]" /> Vai trò:
+                  <FiShield className="text-stone-400" /> Vai trò:
                 </span>
-                <span className="font-bold text-[#E7CD80]">{roleBadge.label}</span>
+                <span className="font-medium text-stone-800 dark:text-stone-200">{badgeInfo.label}</span>
               </div>
 
               <button
                 type="button"
                 onClick={logout}
-                className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl border border-red-500/30 bg-red-950/20 text-red-300 hover:bg-red-950/40 text-xs font-bold transition cursor-pointer shadow-sm"
+                className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl border border-stone-200/80 dark:border-stone-800 bg-stone-100 hover:bg-red-50 dark:bg-stone-900 dark:hover:bg-red-950/20 text-stone-600 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400 text-xs font-medium transition cursor-pointer"
               >
-                <FaSignOutAlt className="text-xs" />
+                <FiLogOut className="text-xs text-stone-400" />
                 <span>Đăng Xuất</span>
               </button>
             </div>
           </aside>
 
-          {/* CỘT BÊN PHẢI: NỘI DUNG TỪNG TRANG CHỨC NĂNG RIÊNG BIỆT */}
+          {/* Cột Phải: Nội Dung Trang */}
           <section className="flex-1 min-w-0 w-full space-y-6">
             {children}
           </section>
         </div>
       </main>
 
-      {/* =========================================================================
-       * 3. FOOTER
-       * ========================================================================= */}
-      <footer className="border-t border-[#212532] bg-[#0B0C10] py-6 text-center text-xs text-[#8E95A5]">
+      {/* 3. Footer */}
+      <footer className="border-t border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#141311] py-6 text-center text-xs text-stone-500 transition-colors">
         <div className="max-w-[1680px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-[#D4AF37]">
-            <FaCheckDouble className="text-[#D4AF37]" />
-            <span className="text-[#B9BECC]">
-              Zone Six Signature Gold &amp; Obsidian Edition • Đồng bộ 100% Node.js &amp; Next.js
-            </span>
+          <div className="flex items-center gap-2 text-stone-600 dark:text-stone-400">
+            <FiCheck className="text-stone-400" />
+            <span>Zone Six Đà Nẵng • Hệ thống vận hành nội bộ chuẩn mực</span>
           </div>
-          <div className="text-[#6D7588]">
-            Node.js Express (TypeScript) &amp; Next.js 16 (MongoDB Atlas: zone_6)
+          <div className="text-stone-400 font-mono text-[11px]">
+            Node.js (TypeScript) &amp; Next.js 16
           </div>
         </div>
       </footer>

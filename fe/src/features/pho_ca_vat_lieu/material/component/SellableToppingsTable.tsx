@@ -2,16 +2,15 @@
 
 import React, { useState, useMemo } from "react";
 import {
-  FaIceCream,
-  FaSearch,
-  FaEdit,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaCoins,
-  FaBoxes,
-  FaPercentage,
-  FaSpinner,
-} from "react-icons/fa";
+  FiSearch,
+  FiEdit3,
+  FiCheckCircle,
+  FiXCircle,
+  FiDollarSign,
+  FiPackage,
+  FiPercent,
+  FiLoader,
+} from "react-icons/fi";
 import { useGetSellableToppings } from "../hook/useGetSellableToppings";
 import type { SellableTopping } from "../type/sellable-topping.type";
 import { EditSellableToppingModal } from "./EditSellableToppingModal";
@@ -32,7 +31,6 @@ export const SellableToppingsTable: React.FC<SellableToppingsTableProps> = ({ ca
 
   const toppings = data?.items || [];
 
-  // Thống kê nhanh
   const stats = useMemo(() => {
     const total = toppings.length;
     const activeCount = toppings.filter((t) => t.is_active).length;
@@ -45,176 +43,170 @@ export const SellableToppingsTable: React.FC<SellableToppingsTableProps> = ({ ca
     <div className="space-y-6">
       {/* Top Banner & Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-[11px] font-bold text-[#8E95A5] uppercase tracking-wider">Tổng Topping Bán Ra</p>
-            <p className="text-2xl font-black text-white mt-1">{stats.total} loại</p>
+            <p className="text-[11px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Tổng Topping Bán Ra</p>
+            <p className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">{stats.total} <span className="text-xs font-normal text-stone-400 font-sans">loại</span></p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center text-lg">
-            <FaIceCream />
+          <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#25221e] text-stone-400 flex items-center justify-center text-base border border-stone-200/80 dark:border-stone-800">
+            <FiPackage />
           </div>
         </div>
 
-        <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-[11px] font-bold text-[#8E95A5] uppercase tracking-wider">Đang Mở Bán</p>
-            <p className="text-2xl font-black text-emerald-400 mt-1">{stats.activeCount} món</p>
+            <p className="text-[11px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Đang Mở Bán</p>
+            <p className="text-2xl font-semibold text-emerald-600 dark:text-emerald-400 mt-1 font-mono">{stats.activeCount} <span className="text-xs font-normal text-stone-400 font-sans">món</span></p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
-            <FaCheckCircle />
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 text-stone-400 flex items-center justify-center text-base border border-emerald-200 dark:border-emerald-800">
+            <FiCheckCircle />
           </div>
         </div>
 
-        <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-[11px] font-bold text-[#8E95A5] uppercase tracking-wider">Giá Bán Trung Bình</p>
-            <p className="text-2xl font-black text-[#D4AF37] mt-1">{stats.avgPrice.toLocaleString()} đ</p>
+            <p className="text-[11px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Giá Bán Trung Bình</p>
+            <p className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">{stats.avgPrice.toLocaleString()} đ</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center text-lg">
-            <FaCoins />
+          <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#25221e] text-stone-400 flex items-center justify-center text-base border border-stone-200/80 dark:border-stone-800">
+            <FiDollarSign />
           </div>
         </div>
 
-        <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-[11px] font-bold text-[#8E95A5] uppercase tracking-wider">Lãi Gộp Bình Quân</p>
-            <p className="text-2xl font-black text-amber-400 mt-1">~{stats.avgMargin}%</p>
+            <p className="text-[11px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Lãi Gộp Bình Quân</p>
+            <p className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">~{stats.avgMargin}%</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
-            <FaPercentage />
+          <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#25221e] text-stone-400 flex items-center justify-center text-base border border-stone-200/80 dark:border-stone-800">
+            <FiPercent />
           </div>
         </div>
       </div>
 
       {/* Search Bar & Title */}
-      <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
         <div>
-          <h3 className="text-base font-black text-white flex items-center gap-2">
-            <span className="text-[#D4AF37]">🍨 Bảng CSDL Riêng:</span> Topping Bán Ra Khách (Menu Add-on)
+          <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+            <span>Topping Bán Ra Khách (Menu Add-on)</span>
           </h3>
-          <p className="text-xs text-[#8E95A5] mt-0.5">
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
             Mỗi loại topping trong kho có thể thiết lập cách bán ra riêng (1 vá, 1 miếng, 1 viên...), đơn giá bán lẻ và biên lãi gộp
           </p>
         </div>
 
         <div className="relative w-full sm:w-72">
-          <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-xs" />
+          <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Tìm theo tên, mã, cách bán..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#0B0C10] border border-white/10 text-xs text-white placeholder-white/30 focus:border-[#D4AF37] focus:outline-none"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none transition-colors"
           />
         </div>
       </div>
 
       {/* Main Table */}
-      <div className="bg-[#12141A] border border-[#212532] rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl overflow-hidden shadow-sm">
         {isLoading ? (
-          <div className="p-12 text-center text-[#8E95A5] space-y-3">
-            <FaSpinner className="animate-spin text-2xl text-[#D4AF37] mx-auto" />
+          <div className="p-12 text-center text-stone-400 space-y-3">
+            <FiLoader className="animate-spin text-2xl text-stone-400 mx-auto" />
             <p className="text-xs font-medium">Đang tải dữ liệu bảng Topping Bán Ra...</p>
           </div>
         ) : isError ? (
-          <div className="p-12 text-center text-red-400 text-xs">
+          <div className="p-12 text-center text-rose-500 text-xs">
             Không thể tải dữ liệu bảng topping. Vui lòng thử lại.
           </div>
         ) : toppings.length === 0 ? (
-          <div className="p-12 text-center text-[#8E95A5] space-y-2">
-            <p className="text-sm font-bold text-white">Chưa có topping bán ra nào</p>
-            <p className="text-xs">Khi bạn thêm vật liệu thuộc danh mục Topping & Phụ Gia ở kho, nó sẽ tự động xuất hiện ở bảng này.</p>
+          <div className="p-12 text-center text-stone-500 dark:text-stone-400 space-y-2">
+            <p className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">Chưa có topping bán ra nào</p>
+            <p className="text-xs">Khi bạn thêm vật liệu thuộc danh mục Topping &amp; Phụ Gia ở kho, nó sẽ tự động xuất hiện ở bảng này.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-[#212532] bg-[#181B24]/70 text-[11px] font-bold text-[#8E95A5] uppercase tracking-wider">
-                  <th className="py-3.5 px-4">Mã & Tên Topping</th>
-                  <th className="py-3.5 px-4 text-center">Cách Thức Bán Ra</th>
-                  <th className="py-3.5 px-4 text-right">Giá Bán Khách</th>
-                  <th className="py-3.5 px-4 text-right">Giá Vốn Ước Tính</th>
-                  <th className="py-3.5 px-4 text-center">Lãi Gộp (%)</th>
-                  <th className="py-3.5 px-4 text-center">Tồn Kho (Kho)</th>
-                  <th className="py-3.5 px-4 text-center">Trạng Thái</th>
+                <tr className="border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] text-[11px] font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wider">
+                  <th className="py-3.5 px-4 border-r border-stone-200/60 dark:border-stone-800">Mã &amp; Tên Topping</th>
+                  <th className="py-3.5 px-4 text-center border-r border-stone-200/60 dark:border-stone-800">Cách Thức Bán Ra</th>
+                  <th className="py-3.5 px-4 text-right border-r border-stone-200/60 dark:border-stone-800">Giá Bán Khách</th>
+                  <th className="py-3.5 px-4 text-right border-r border-stone-200/60 dark:border-stone-800">Giá Vốn Ước Tính</th>
+                  <th className="py-3.5 px-4 text-center border-r border-stone-200/60 dark:border-stone-800">Lãi Gộp (%)</th>
+                  <th className="py-3.5 px-4 text-center border-r border-stone-200/60 dark:border-stone-800">Tồn Kho (Kho)</th>
+                  <th className="py-3.5 px-4 text-center border-r border-stone-200/60 dark:border-stone-800">Trạng Thái</th>
                   {canManage && <th className="py-3.5 px-4 text-right">Thao Tác</th>}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#212532] text-xs">
+              <tbody className="divide-y divide-stone-100 dark:divide-stone-800 text-xs text-stone-700 dark:text-stone-300">
                 {toppings.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-[#181B24]/50 transition group"
+                    className="hover:bg-stone-50/60 dark:hover:bg-[#25221e]/40 transition group"
                   >
                     {/* Tên & Mã */}
-                    <td className="py-3.5 px-4">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center text-sm font-bold shrink-0">
-                          <FaIceCream />
-                        </div>
-                        <div>
-                          <p className="font-bold text-white group-hover:text-[#D4AF37] transition">
-                            {item.name}
-                          </p>
-                          <p className="text-[10px] text-[#8E95A5] font-mono">
-                            {item.code} {item.description && `• ${item.description}`}
-                          </p>
-                        </div>
+                    <td className="py-3.5 px-4 border-r border-stone-100 dark:border-stone-800">
+                      <div>
+                        <p className="font-semibold text-stone-900 dark:text-[#efe9de]">
+                          {item.name}
+                        </p>
+                        <p className="text-[10px] text-stone-400 font-mono">
+                          {item.code} {item.description && `• ${item.description}`}
+                        </p>
                       </div>
                     </td>
 
-                    {/* Cách thức bán ra (1 vá, 1 miếng, 1 viên...) */}
-                    <td className="py-3.5 px-4 text-center">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-xs tracking-wide shadow-sm">
-                        🍨 {item.portion_unit}
+                    {/* Cách thức bán ra */}
+                    <td className="py-3.5 px-4 text-center border-r border-stone-100 dark:border-stone-800">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 text-stone-700 dark:text-stone-300 font-medium text-xs font-mono">
+                        {item.portion_unit}
                       </span>
                     </td>
 
                     {/* Giá bán khách */}
-                    <td className="py-3.5 px-4 text-right font-black text-sm text-[#D4AF37]">
+                    <td className="py-3.5 px-4 text-right font-semibold font-mono text-sm text-stone-900 dark:text-[#efe9de] border-r border-stone-100 dark:border-stone-800">
                       {item.selling_price.toLocaleString()} đ
                     </td>
 
                     {/* Giá vốn ước tính */}
-                    <td className="py-3.5 px-4 text-right font-medium text-white/70">
+                    <td className="py-3.5 px-4 text-right font-mono text-stone-500 dark:text-stone-400 border-r border-stone-100 dark:border-stone-800">
                       {item.cost_estimate > 0 ? `${item.cost_estimate.toLocaleString()} đ` : "Chưa tính"}
                     </td>
 
                     {/* Lãi gộp (%) */}
-                    <td className="py-3.5 px-4 text-center">
+                    <td className="py-3.5 px-4 text-center font-mono border-r border-stone-100 dark:border-stone-800">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${
+                        className={`inline-block px-2 py-0.5 rounded text-[11px] font-medium ${
                           item.gross_profit_margin >= 70
-                            ? "bg-emerald-500/10 text-emerald-400"
+                            ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800"
                             : item.gross_profit_margin >= 50
-                            ? "bg-blue-500/10 text-blue-400"
-                            : "bg-white/10 text-white/60"
+                            ? "bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400 border border-sky-200 dark:border-sky-800"
+                            : "bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border border-stone-200/80 dark:border-stone-800"
                         }`}
                       >
                         {item.gross_profit_margin > 0 ? `+${item.gross_profit_margin}%` : "0%"}
                       </span>
                     </td>
 
-                    {/* Tồn kho thực tế từ bảng kho */}
-                    <td className="py-3.5 px-4 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <FaBoxes className="text-[10px] text-white/40" />
-                        <span className="font-bold text-white">
+                    {/* Tồn kho thực tế */}
+                    <td className="py-3.5 px-4 text-center border-r border-stone-100 dark:border-stone-800">
+                      <div className="flex items-center justify-center gap-1.5 font-mono">
+                        <span className="font-semibold text-stone-900 dark:text-stone-100">
                           {item.stock_quantity}
                         </span>
-                        <span className="text-[10px] text-[#8E95A5]">{item.stock_unit}</span>
+                        <span className="text-[10px] text-stone-400">{item.stock_unit}</span>
                       </div>
                     </td>
 
                     {/* Trạng thái */}
-                    <td className="py-3.5 px-4 text-center">
+                    <td className="py-3.5 px-4 text-center border-r border-stone-100 dark:border-stone-800">
                       {item.is_active ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-medium">
-                          <FaCheckCircle className="text-[10px]" /> Đang bán
+                        <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
+                          <FiCheckCircle className="text-[10px] text-stone-400" /> Đang bán
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-white/40 font-medium">
-                          <FaTimesCircle className="text-[10px]" /> Tạm ngưng
+                        <span className="inline-flex items-center gap-1 text-[11px] text-stone-400 font-medium">
+                          <FiXCircle className="text-[10px] text-stone-400" /> Tạm ngưng
                         </span>
                       )}
                     </td>
@@ -225,9 +217,9 @@ export const SellableToppingsTable: React.FC<SellableToppingsTableProps> = ({ ca
                         <button
                           type="button"
                           onClick={() => setSelectedTopping(item)}
-                          className="px-3 py-1.5 rounded-xl bg-[#181B24] border border-[#212532] text-xs font-semibold text-white/80 hover:text-white hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10 transition inline-flex items-center gap-1.5"
+                          className="px-3 py-1.5 rounded-xl bg-stone-50 hover:bg-stone-100 dark:bg-[#25221e] dark:hover:bg-[#2d2924] border border-stone-200/80 dark:border-stone-800 text-xs font-medium text-stone-700 dark:text-stone-300 transition inline-flex items-center gap-1.5 cursor-pointer"
                         >
-                          <FaEdit className="text-[10px] text-[#D4AF37]" />
+                          <FiEdit3 className="text-xs text-stone-400" />
                           <span>Sửa Bán Ra</span>
                         </button>
                       </td>

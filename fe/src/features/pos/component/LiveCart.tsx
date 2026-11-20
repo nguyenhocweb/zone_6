@@ -58,7 +58,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
   const cartItems = Array.isArray(cart?.items) ? cart.items : [];
   const totalItemsCount = cartItems.reduce((sum, it) => sum + (it?.quantity || 0), 0);
 
-  // Lọc danh sách bàn đang trống (AVAILABLE) hoặc bàn đang được chọn cho giỏ hàng này
+  // Lọc danh sách bàn đang trống hoặc bàn đang được chọn cho giỏ hàng này
   const availableOrSelectedTables = useMemo(() => {
     if (!tables || !Array.isArray(tables)) return [];
     return tables
@@ -86,7 +86,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
   const selectedTable =
     cart?.tableNumber && cart.tableNumber !== '' ? cart.tableNumber : 'Mang về';
 
-  // Tính toán số tiền sau thuế VAT (nếu ca hiện tại được cấu hình áp dụng thuế)
+  // Tính toán số tiền sau thuế VAT
   const taxableAmount = Math.max(0, (cart?.subtotal || 0) - (cart?.discount || 0));
   const vatRate = vatInfo?.isApplied ? (vatInfo?.rate || 0) : 0;
   const vatAmount = vatInfo?.isApplied
@@ -95,19 +95,19 @@ export const LiveCart: React.FC<LiveCartProps> = ({
   const displayFinalTotal = taxableAmount + vatAmount;
 
   return (
-    <div className="flex flex-col h-full bg-[#12141a] border-l border-[#212532]">
+    <div className="flex flex-col h-full bg-white dark:bg-[#1c1a17] border-l border-stone-200/80 dark:border-stone-800 transition-colors">
       {/* Header Giỏ Hàng */}
-      <div className="p-4 border-b border-[#212532] bg-[#181b24]/50">
+      <div className="p-4 border-b border-stone-100 dark:border-stone-800 bg-stone-50/50 dark:bg-[#181614]">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#d4af37]/15 text-[#d4af37] flex items-center justify-center">
-              <FiShoppingBag className="w-4 h-4" />
+            <div className="w-7 h-7 rounded-lg bg-stone-100 dark:bg-[#25221e] text-stone-400 border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center">
+              <FiShoppingBag className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white leading-tight">
+              <h2 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] leading-tight">
                 Giỏ Hàng Đồng Bộ
               </h2>
-              <span className="text-[11px] text-[#a0a5b5]">
+              <span className="text-[11px] text-stone-500 dark:text-stone-400">
                 {totalItemsCount} món đang chọn
               </span>
             </div>
@@ -115,8 +115,9 @@ export const LiveCart: React.FC<LiveCartProps> = ({
 
           {cartItems.length > 0 && !isLockedByOther && (
             <button
+              type="button"
               onClick={onClearCart}
-              className="text-xs text-red-400 hover:text-red-300 transition-colors flex items-center gap-1 cursor-pointer"
+              className="text-xs text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 font-medium transition-colors flex items-center gap-1 cursor-pointer"
             >
               <FiTrash2 className="w-3.5 h-3.5" />
               <span>Xóa hết</span>
@@ -124,16 +125,12 @@ export const LiveCart: React.FC<LiveCartProps> = ({
           )}
         </div>
 
-        {/* Select Số Bàn (Bàn Đang Trống & Mặc Định Mang Về) & Tên Khách Hàng */}
+        {/* Select Số Bàn & Tên Khách Hàng */}
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="text-[10px] text-[#a0a5b5] font-medium block mb-1 flex items-center justify-between">
+            <label className="text-[10px] text-stone-500 dark:text-stone-400 font-medium block mb-1 flex items-center justify-between">
               <span>BÀN SỐ</span>
-              <span
-                className={`text-[9px] font-bold ${
-                  selectedTable !== 'Mang về' ? 'text-[#d4af37]' : 'text-[#6c7280]'
-                }`}
-              >
+              <span className="text-[9px] font-mono text-stone-400">
                 {selectedTable !== 'Mang về' ? 'Tại quán' : 'Mang về'}
               </span>
             </label>
@@ -141,13 +138,13 @@ export const LiveCart: React.FC<LiveCartProps> = ({
               disabled={!!isLockedByOther}
               value={selectedTable}
               onChange={(e) => onTableChange(e.target.value)}
-              className="w-full bg-[#12141a] border border-[#212532] rounded-lg px-2.5 py-1.5 text-xs text-white font-medium focus:outline-none focus:border-[#d4af37] cursor-pointer"
+              className="w-full bg-white dark:bg-[#141311] border border-stone-200/80 dark:border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-900 dark:text-[#efe9de] font-medium focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 cursor-pointer shadow-xs"
             >
-              <option value="Mang về" className="bg-[#12141a] text-white">
+              <option value="Mang về" className="bg-white dark:bg-[#1c1a17]">
                 Mang về
               </option>
               {availableOrSelectedTables.length === 0 ? (
-                <option disabled className="bg-[#12141a] text-[#6c7280]">
+                <option disabled className="bg-white dark:bg-[#1c1a17] text-stone-400">
                   (Hết bàn trống)
                 </option>
               ) : (
@@ -159,7 +156,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
                     <option
                       key={tbl.id || (tbl as any)._id}
                       value={displayName}
-                      className="bg-[#12141a] text-white"
+                      className="bg-white dark:bg-[#1c1a17]"
                     >
                       {displayName} {tbl.zone_name ? `(${tbl.zone_name})` : ''}{' '}
                       {isCurrentSelected && tbl.status !== 'AVAILABLE' ? '• Đang chọn' : '• Trống'}
@@ -170,7 +167,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
             </select>
           </div>
           <div>
-            <label className="text-[10px] text-[#a0a5b5] font-medium block mb-1">
+            <label className="text-[10px] text-stone-500 dark:text-stone-400 font-medium block mb-1">
               KHÁCH HÀNG
             </label>
             <input
@@ -179,7 +176,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
               value={cart?.customerName || ''}
               onChange={(e) => onCustomerNameChange(e.target.value)}
               placeholder="Khách lẻ"
-              className="w-full bg-[#12141a] border border-[#212532] rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-[#6c7280] focus:outline-none focus:border-[#d4af37]"
+              className="w-full bg-white dark:bg-[#141311] border border-stone-200/80 dark:border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 shadow-xs"
             />
           </div>
         </div>
@@ -187,8 +184,8 @@ export const LiveCart: React.FC<LiveCartProps> = ({
 
       {/* Cảnh báo khóa thanh toán */}
       {isLockedByOther && (
-        <div className="p-3 bg-amber-500/15 border-b border-amber-500/30 text-amber-300 text-xs flex items-center gap-2 animate-pulse">
-          <FiLock className="w-4 h-4 shrink-0 text-amber-400" />
+        <div className="p-3 bg-amber-50 dark:bg-amber-950/25 border-b border-amber-200/80 dark:border-amber-900/40 text-amber-800 dark:text-amber-300 text-xs flex items-center gap-2">
+          <FiLock className="w-4 h-4 shrink-0 text-amber-500" />
           <span>
             Đơn hàng đang được <strong>{cart?.lockedByName || 'Đồng nghiệp'}</strong> tiến hành thanh toán...
           </span>
@@ -196,12 +193,12 @@ export const LiveCart: React.FC<LiveCartProps> = ({
       )}
 
       {/* Danh Sách Món Đang Chọn */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div className="flex-1 overflow-y-auto p-4 space-y-2.5">
         {cartItems.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6 text-[#a0a5b5]">
-            <FiShoppingBag className="w-12 h-12 text-[#212532] mb-3" />
-            <p className="text-sm font-medium">Chưa có món nào trong giỏ</p>
-            <p className="text-xs text-[#6c7280] mt-1 max-w-[200px]">
+          <div className="h-full flex flex-col items-center justify-center text-center p-6 text-stone-400">
+            <FiShoppingBag className="w-10 h-10 text-stone-300 dark:text-stone-700 mb-2" />
+            <p className="text-xs font-medium text-stone-600 dark:text-stone-400">Chưa có món nào trong giỏ</p>
+            <p className="text-[11px] text-stone-400 mt-0.5 max-w-[200px]">
               Chạm vào bất kỳ món nào ở danh mục bên trái để bắt đầu tạo đơn
             </p>
           </div>
@@ -209,12 +206,12 @@ export const LiveCart: React.FC<LiveCartProps> = ({
           cartItems.map((item, idx) => (
             <div
               key={`${item.recipeId}-${idx}`}
-              className="bg-[#181b24] border border-[#212532] rounded-xl p-3 flex flex-col gap-2 transition-all hover:border-[#2c3242]"
+              className="bg-stone-50/70 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-2xl p-3 flex flex-col gap-2 transition hover:border-stone-300 dark:hover:border-stone-600 shadow-xs"
             >
               {/* Tên món & Giá */}
               <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold text-white leading-snug">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] leading-snug">
                     {item.name}
                   </h4>
                   {/* Toppings nếu có */}
@@ -223,7 +220,7 @@ export const LiveCart: React.FC<LiveCartProps> = ({
                       {item.toppings.map((top, tIdx) => (
                         <span
                           key={tIdx}
-                          className="text-[10px] bg-[#12141a] px-1.5 py-0.5 rounded text-[#fae29c] border border-[#212532]"
+                          className="text-[10px] font-mono bg-white dark:bg-[#1c1a17] px-1.5 py-0.2 rounded-md text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60"
                         >
                           +{top.name} ({top.price.toLocaleString()}đ)
                         </span>
@@ -232,46 +229,48 @@ export const LiveCart: React.FC<LiveCartProps> = ({
                   )}
                   {/* Ghi chú nếu có */}
                   {item.notes && (
-                    <p className="text-[11px] text-[#a0a5b5] italic mt-1">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400 italic mt-0.5">
                       "{item.notes}"
                     </p>
                   )}
                 </div>
 
-                <span className="text-sm font-bold text-[#d4af37] whitespace-nowrap">
+                <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] whitespace-nowrap">
                   {item.subtotal.toLocaleString()}đ
                 </span>
               </div>
 
               {/* Bộ điều khiển số lượng & Badge ai đã thêm */}
-              <div className="flex items-center justify-between pt-1 border-t border-[#212532]/60">
+              <div className="flex items-center justify-between pt-1 border-t border-stone-200/60 dark:border-stone-700/60">
                 {/* Badge người thêm món */}
-                <div className="flex items-center gap-1 text-[10px] text-[#a0a5b5]">
-                  <FiUser className="w-2.5 h-2.5 text-[#d4af37]" />
+                <div className="flex items-center gap-1 text-[10px] text-stone-400">
+                  <FiUser className="w-2.5 h-2.5 text-stone-400" />
                   <span>{item.addedByName || 'Nhân viên'} thêm</span>
                 </div>
 
                 {/* Tăng / Giảm số lượng */}
                 {!isLockedByOther ? (
-                  <div className="flex items-center gap-2 bg-[#12141a] border border-[#212532] rounded-lg p-0.5">
+                  <div className="flex items-center gap-1 bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-700/60 rounded-lg p-0.5 shadow-xs">
                     <button
+                      type="button"
                       onClick={() => onUpdateQuantity(idx, item.quantity - 1)}
-                      className="w-6 h-6 rounded flex items-center justify-center text-[#a0a5b5] hover:text-white hover:bg-[#212532] transition-colors cursor-pointer"
+                      className="w-5 h-5 rounded flex items-center justify-center text-stone-500 hover:text-stone-900 hover:bg-stone-100 dark:text-stone-400 dark:hover:text-white dark:hover:bg-stone-800 transition cursor-pointer"
                     >
-                      <FiMinus className="w-3 h-3" />
+                      <FiMinus className="w-2.5 h-2.5" />
                     </button>
-                    <span className="text-xs font-bold text-white w-5 text-center">
+                    <span className="text-xs font-mono font-semibold text-stone-900 dark:text-[#efe9de] w-5 text-center">
                       {item.quantity}
                     </span>
                     <button
+                      type="button"
                       onClick={() => onUpdateQuantity(idx, item.quantity + 1)}
-                      className="w-6 h-6 rounded flex items-center justify-center text-[#a0a5b5] hover:text-white hover:bg-[#212532] transition-colors cursor-pointer"
+                      className="w-5 h-5 rounded flex items-center justify-center text-stone-500 hover:text-stone-900 hover:bg-stone-100 dark:text-stone-400 dark:hover:text-white dark:hover:bg-stone-800 transition cursor-pointer"
                     >
-                      <FiPlus className="w-3 h-3" />
+                      <FiPlus className="w-2.5 h-2.5" />
                     </button>
                   </div>
                 ) : (
-                  <span className="text-xs font-bold text-white px-2 py-0.5 bg-[#12141a] rounded-md">
+                  <span className="text-xs font-mono font-medium text-stone-800 dark:text-stone-200 px-2 py-0.5 bg-stone-100 dark:bg-stone-800 rounded-md">
                     x{item.quantity}
                   </span>
                 )}
@@ -282,35 +281,35 @@ export const LiveCart: React.FC<LiveCartProps> = ({
       </div>
 
       {/* Tổng Tiền & Nút Thanh Toán */}
-      <div className="p-4 bg-[#181b24] border-t border-[#212532] space-y-3">
+      <div className="p-4 bg-stone-50/70 dark:bg-[#181614] border-t border-stone-100 dark:border-stone-800 space-y-3">
         {/* Tóm tắt số tiền */}
-        <div className="space-y-1.5 text-xs text-[#a0a5b5]">
+        <div className="space-y-1.5 text-xs text-stone-600 dark:text-stone-400">
           <div className="flex justify-between">
             <span>Tạm tính</span>
-            <span className="font-semibold text-white">
+            <span className="font-semibold text-stone-900 dark:text-[#efe9de]">
               {(cart?.subtotal || 0).toLocaleString()}đ
             </span>
           </div>
           {(cart?.discount || 0) > 0 && (
-            <div className="flex justify-between text-emerald-400">
+            <div className="flex justify-between text-emerald-700 dark:text-emerald-400">
               <span>Giảm giá</span>
               <span>-{(cart.discount || 0).toLocaleString()}đ</span>
             </div>
           )}
           {vatInfo?.isApplied && vatAmount > 0 && (
-            <div className="flex justify-between text-amber-300">
+            <div className="flex justify-between text-amber-700 dark:text-amber-400">
               <span className="flex items-center gap-1">
                 <span>Thuế VAT ({vatRate}%)</span>
                 {vatInfo.shiftLabel && (
-                  <span className="text-[10px] text-[#8e95a5]">({vatInfo.shiftLabel})</span>
+                  <span className="text-[10px] text-stone-400">({vatInfo.shiftLabel})</span>
                 )}
               </span>
-              <span className="font-semibold">+{vatAmount.toLocaleString()}đ</span>
+              <span className="font-medium">+{vatAmount.toLocaleString()}đ</span>
             </div>
           )}
-          <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-[#212532]">
+          <div className="flex justify-between text-sm font-semibold text-stone-900 dark:text-[#efe9de] pt-2 border-t border-stone-200/80 dark:border-stone-800">
             <span>Tổng cộng</span>
-            <span className="text-lg text-[#d4af37]">
+            <span className="text-base font-semibold">
               {displayFinalTotal.toLocaleString()}đ
             </span>
           </div>
@@ -319,28 +318,30 @@ export const LiveCart: React.FC<LiveCartProps> = ({
         {/* Nút Thanh Toán VietQR & Tiền Mặt */}
         <div className="grid grid-cols-2 gap-2.5 pt-1">
           <button
+            type="button"
             disabled={cartItems.length === 0 || !!isLockedByOther}
             onClick={() => onOpenCheckout('CASH')}
-            className={`py-3 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-[#212532] ${
+            className={`py-2.5 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 border border-stone-200 dark:border-stone-700 shadow-xs ${
               cartItems.length > 0 && !isLockedByOther
-                ? 'bg-[#212532] hover:bg-[#2c3242] text-white active:scale-98 cursor-pointer shadow-md'
-                : 'bg-[#181b24] text-[#6c7280] cursor-not-allowed opacity-50'
+                ? 'bg-white hover:bg-stone-50 dark:bg-[#25221e] dark:hover:bg-stone-800 text-stone-800 dark:text-[#efe9de] cursor-pointer'
+                : 'bg-stone-100 dark:bg-[#141311] text-stone-400 cursor-not-allowed opacity-50'
             }`}
           >
-            <FiDollarSign className="w-4 h-4 text-emerald-400" />
+            <FiDollarSign className="w-3.5 h-3.5 text-stone-400" />
             <span>TIỀN MẶT</span>
           </button>
 
           <button
+            type="button"
             disabled={cartItems.length === 0 || !!isLockedByOther}
             onClick={() => onOpenCheckout('VIETQR')}
-            className={`py-3 px-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 shadow-lg ${
+            className={`py-2.5 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 shadow-xs ${
               cartItems.length > 0 && !isLockedByOther
-                ? 'bg-gradient-to-r from-[#d4af37] via-[#f7d77b] to-[#b58d22] text-[#0b0c10] hover:shadow-[#d4af37]/25 active:scale-98 cursor-pointer'
-                : 'bg-[#212532] text-[#6c7280] cursor-not-allowed opacity-50'
+                ? 'bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white cursor-pointer'
+                : 'bg-stone-200 dark:bg-stone-800 text-stone-400 cursor-not-allowed opacity-50'
             }`}
           >
-            <FiCreditCard className="w-4 h-4 font-bold" />
+            <FiCreditCard className="w-3.5 h-3.5" />
             <span>QUÉT VIETQR</span>
           </button>
         </div>
@@ -348,4 +349,3 @@ export const LiveCart: React.FC<LiveCartProps> = ({
     </div>
   );
 };
-

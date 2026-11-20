@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { FaTimes, FaIceCream, FaSave } from "react-icons/fa";
+import { FiX, FiCheck, FiLoader, FiLayers } from "react-icons/fi";
 import type { SellableTopping } from "../type/sellable-topping.type";
 import { useUpdateSellableTopping } from "../hook/useUpdateSellableTopping";
 
@@ -62,26 +62,33 @@ export const EditSellableToppingModal: React.FC<EditSellableToppingModalProps> =
   };
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#12141A] border border-[#D4AF37]/40 w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl relative my-8 animate-scale-up">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+
+      {/* Modal Dialog */}
+      <div className="relative w-full max-w-lg bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl shadow-2xl p-6 sm:p-8 z-10 animate-fadeIn text-stone-900 dark:text-[#efe9de] max-h-[90vh] overflow-y-auto custom-scrollbar">
         <button
           onClick={onClose}
           type="button"
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8] flex items-center justify-center transition"
+          className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-[#2f2b26] text-stone-500 dark:text-stone-400 flex items-center justify-center transition cursor-pointer"
         >
-          <FaTimes className="text-sm" />
+          <FiX className="w-4 h-4" />
         </button>
 
         <div className="flex items-center gap-3.5 mb-6">
-          <div className="w-12 h-12 rounded-2xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-xl font-bold shadow-lg shadow-[#D4AF37]/20">
-            <FaIceCream />
+          <div className="w-11 h-11 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center justify-center text-stone-500 dark:text-stone-400 shrink-0">
+            <FiLayers className="w-5 h-5 text-stone-400" />
           </div>
           <div>
-            <h3 className="text-xl font-black text-[#F4F5F8] tracking-wide">
+            <h3 className="text-lg font-bold text-stone-900 dark:text-[#efe9de] tracking-tight">
               Chỉnh Sửa Topping Bán Ra
             </h3>
-            <p className="text-xs text-[#8E95A5]">
-              Cập nhật cách thức bán & giá bán cho <strong className="text-[#D4AF37]">{topping.name}</strong>
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+              Cập nhật cách thức bán &amp; giá bán cho <strong className="text-stone-800 dark:text-stone-200">{topping.name}</strong>
             </p>
           </div>
         </div>
@@ -89,16 +96,16 @@ export const EditSellableToppingModal: React.FC<EditSellableToppingModalProps> =
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Cách thức bán ra */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-              Cách Thức Bán Ra (Khẩu phần) <span className="text-red-400">*</span>
+            <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+              Cách Thức Bán Ra (Khẩu phần) <span className="text-rose-500">*</span>
             </label>
             <input
               {...register("portion_unit", { required: "Vui lòng nhập cách thức bán" })}
               placeholder="VD: 1 vá, 1 miếng, 1 muỗng, 1 viên, 2 miếng..."
-              className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+              className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none"
             />
             {errors.portion_unit && (
-              <p className="text-xs text-red-400">{errors.portion_unit.message}</p>
+              <p className="text-xs text-rose-500">{errors.portion_unit.message}</p>
             )}
             <div className="flex flex-wrap gap-1.5 pt-1">
               {["1 vá", "1 miếng", "1 muỗng", "1 viên", "1 phần", "2 miếng"].map((p) => (
@@ -106,10 +113,10 @@ export const EditSellableToppingModal: React.FC<EditSellableToppingModalProps> =
                   key={p}
                   type="button"
                   onClick={() => setValue("portion_unit", p)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition cursor-pointer ${
                     watch("portion_unit") === p
-                      ? "bg-[#D4AF37] text-black border-[#D4AF37]"
-                      : "bg-[#181B24] text-white/70 border-white/10 hover:border-white/20"
+                      ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent"
+                      : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-[#25221e]"
                   }`}
                 >
                   {p}
@@ -121,13 +128,13 @@ export const EditSellableToppingModal: React.FC<EditSellableToppingModalProps> =
           {/* Giá bán ra và Giá vốn ước tính */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                Giá Bán Ra Khách (VNĐ) <span className="text-red-400">*</span>
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
+                Giá Bán Ra Khách (VNĐ) <span className="text-rose-500">*</span>
               </label>
               <input
                 type="number"
                 {...register("selling_price", { required: true, valueAsNumber: true, min: 0 })}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#D4AF37] font-bold focus:border-[#D4AF37] focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] font-mono focus:border-stone-400 focus:outline-none"
               />
               <div className="flex flex-wrap gap-1 pt-1">
                 {[5000, 7000, 10000, 12000, 15000].map((pr) => (
@@ -135,10 +142,10 @@ export const EditSellableToppingModal: React.FC<EditSellableToppingModalProps> =
                     key={pr}
                     type="button"
                     onClick={() => setValue("selling_price", pr)}
-                    className={`px-2 py-0.5 rounded text-[10px] font-medium border transition ${
+                    className={`px-2 py-0.5 rounded text-[10px] font-medium border transition cursor-pointer ${
                       watch("selling_price") === pr
-                        ? "bg-[#D4AF37] text-black border-[#D4AF37]"
-                        : "bg-[#181B24] text-white/60 border-white/10"
+                        ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-transparent"
+                        : "bg-white dark:bg-[#1c1a17] text-stone-600 dark:text-stone-400 border-stone-200/80 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-[#25221e]"
                     }`}
                   >
                     {pr.toLocaleString()}đ
@@ -148,26 +155,26 @@ export const EditSellableToppingModal: React.FC<EditSellableToppingModalProps> =
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#8E95A5] uppercase tracking-wider">
+              <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
                 Giá Vốn Khẩu Phần (VNĐ)
               </label>
               <input
                 type="number"
                 {...register("cost_estimate", { valueAsNumber: true, min: 0 })}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] font-mono focus:border-stone-400 focus:outline-none"
               />
             </div>
           </div>
 
           {/* Ghi chú */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-[#8E95A5] uppercase tracking-wider">
+            <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
               Ghi Chú
             </label>
             <input
               {...register("description")}
               placeholder="VD: Dùng kèm các món trà trái cây và trà sữa"
-              className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+              className="w-full px-3.5 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 focus:outline-none"
             />
           </div>
 
@@ -177,29 +184,38 @@ export const EditSellableToppingModal: React.FC<EditSellableToppingModalProps> =
               type="checkbox"
               id="is_active_topping"
               {...register("is_active")}
-              className="w-4 h-4 rounded text-[#D4AF37] accent-[#D4AF37]"
+              className="w-4 h-4 rounded text-stone-900 accent-stone-900 dark:accent-stone-100 cursor-pointer"
             />
-            <label htmlFor="is_active_topping" className="text-xs font-semibold text-white/80 cursor-pointer">
+            <label htmlFor="is_active_topping" className="text-xs font-medium text-stone-700 dark:text-stone-300 cursor-pointer select-none">
               Đang mở bán cho khách (Active)
             </label>
           </div>
 
           {/* Nút hành động */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+          <div className="flex justify-end gap-3 pt-4 border-t border-stone-200/80 dark:border-stone-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-white/10 text-white/70 hover:text-white font-medium text-xs transition"
+              className="px-4 py-2 rounded-xl border border-stone-200/80 dark:border-stone-700/60 bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2e2a25] text-stone-700 dark:text-stone-300 font-semibold text-xs transition cursor-pointer"
             >
               Hủy
             </button>
             <button
               type="submit"
               disabled={updateMutation.isPending}
-              className="px-6 py-2.5 rounded-xl bg-[#D4AF37] text-black font-bold text-xs hover:bg-[#F3E5AB] flex items-center gap-2 shadow-lg shadow-[#D4AF37]/20 transition disabled:opacity-50"
+              className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 font-semibold text-xs transition flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-xs"
             >
-              <FaSave className="text-xs" />
-              <span>{updateMutation.isPending ? "Đang lưu..." : "Lưu Thay Đổi"}</span>
+              {updateMutation.isPending ? (
+                <>
+                  <FiLoader className="animate-spin text-xs" />
+                  <span>Đang lưu...</span>
+                </>
+              ) : (
+                <>
+                  <FiCheck className="text-xs" />
+                  <span>Lưu Thay Đổi</span>
+                </>
+              )}
             </button>
           </div>
         </form>

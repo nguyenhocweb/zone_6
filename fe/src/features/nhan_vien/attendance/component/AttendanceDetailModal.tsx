@@ -2,16 +2,14 @@
 
 import React, { useState } from "react";
 import {
-  FaTimes,
-  FaCheckCircle,
-  FaMapMarkerAlt,
-  FaClock,
-  FaTrashAlt,
-  FaSpinner,
-  FaCamera,
-  FaShieldAlt,
-  FaUserCheck,
-} from "react-icons/fa";
+  FiX,
+  FiCheckCircle,
+  FiMapPin,
+  FiClock,
+  FiTrash2,
+  FiCamera,
+  FiShield,
+} from "react-icons/fi";
 import { useSlotAttendance, useCancelCheckIn } from "../hook/useAttendance";
 import { ConfirmModal } from "@/core/components/ui/ConfirmModal";
 
@@ -73,22 +71,22 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-3xl bg-[#12141A] border border-[#212532] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-lg rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-[#212532] bg-[#0B0C10] flex items-center justify-between">
+        <div className="p-4 sm:p-5 border-b border-stone-100 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-              <FaCheckCircle className="text-lg" />
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+              <FiCheckCircle className="text-lg" />
             </div>
             <div>
-              <h3 className="text-sm font-black text-[#F4F5F8] uppercase tracking-wide flex items-center gap-1.5">
+              <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] uppercase tracking-wide flex items-center gap-1.5">
                 <span>Bằng Chứng Điểm Danh Ca Làm</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 font-medium border border-emerald-200/80 dark:border-emerald-800/40">
                   Đã Check-in
                 </span>
               </h3>
-              <p className="text-[11px] text-[#8E95A5]">
+              <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
                 {slotData.day} • Ca {slotData.shift} • Vị trí: {slotData.role}
               </p>
             </div>
@@ -97,28 +95,28 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-[#1A1D27] hover:bg-[#262B3A] text-[#8E95A5] hover:text-[#F4F5F8] flex items-center justify-center transition cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 flex items-center justify-center transition cursor-pointer"
           >
-            <FaTimes className="text-sm" />
+            <FiX className="text-base" />
           </button>
         </div>
 
         {/* Body */}
         <div className="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
           {isLoading ? (
-            <div className="p-12 text-center text-xs text-[#8E95A5] flex flex-col items-center justify-center gap-2">
-              <FaSpinner className="animate-spin text-2xl text-[#D4AF37]" />
+            <div className="p-12 text-center text-xs text-stone-400 flex flex-col items-center justify-center gap-2">
+              <div className="w-6 h-6 border-2 border-stone-400 border-t-transparent rounded-full animate-spin" />
               <span>Đang tải thông tin và ảnh check-in...</span>
             </div>
           ) : attendance ? (
             <div className="space-y-4">
               {/* Ảnh Selfie / Photo Proof */}
               <div className="space-y-1.5">
-                <span className="text-xs font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                  <FaCamera className="text-[#D4AF37]" />
+                <span className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                  <FiCamera className="text-stone-400 text-xs" />
                   <span>Ảnh chụp lúc Check-in tại quán:</span>
                 </span>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-black border-2 border-emerald-500/40 shadow-xl">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-stone-950 border border-stone-200/80 dark:border-stone-800 shadow-sm">
                   {attendance.photo_url ? (
                     <img
                       src={attendance.photo_url}
@@ -126,12 +124,12 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs text-[#8E95A5]">
+                    <div className="w-full h-full flex items-center justify-center text-xs text-stone-400">
                       Không có ảnh chụp
                     </div>
                   )}
-                  <div className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-mono text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
-                    <FaShieldAlt className="text-xs" />
+                  <div className="absolute bottom-2 left-2 bg-stone-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-mono text-emerald-300 border border-white/10 flex items-center gap-1">
+                    <FiShield className="text-xs" />
                     <span>Xác thực khuôn mặt thành công</span>
                   </div>
                 </div>
@@ -139,90 +137,86 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
 
               {/* Thông tin chi tiết */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 rounded-xl bg-[#0B0C10] border border-[#212532] space-y-1">
-                  <span className="text-[10px] text-[#6D7588] uppercase font-bold block">
+                <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 space-y-0.5">
+                  <span className="text-[10px] text-stone-400 uppercase font-medium block">
                     Nhân sự
                   </span>
-                  <span className="text-xs font-black text-[#F4F5F8] block">
+                  <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] block">
                     {attendance.staff_name}
                   </span>
-                  <span className="text-[10px] text-[#D4AF37] block">
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 block">
                     Vai trò: {attendance.user_role || "Nhân viên"}
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#0B0C10] border border-[#212532] space-y-1">
-                  <span className="text-[10px] text-[#6D7588] uppercase font-bold block">
+                <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 space-y-0.5">
+                  <span className="text-[10px] text-stone-400 uppercase font-medium block">
                     Giờ Check-in
                   </span>
-                  <span className="text-xs font-mono font-black text-emerald-400 block">
+                  <span className="text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-300 block">
                     {new Date(attendance.check_in_time).toLocaleTimeString("vi-VN", {
                       hour: "2-digit",
                       minute: "2-digit",
                       second: "2-digit",
                     })}
                   </span>
-                  <span className="text-[10px] text-[#8E95A5] block">
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400 block">
                     {new Date(attendance.check_in_time).toLocaleDateString("vi-VN")}
                   </span>
                 </div>
               </div>
 
               {/* Định vị GPS lúc Check-in */}
-              <div className="p-3.5 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-2">
+              <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-[#F4F5F8] flex items-center gap-1.5">
-                    <FaMapMarkerAlt className="text-[#D4AF37]" />
-                    <span>Khoảng cách so với quán Zone 6:</span>
+                  <span className="font-medium text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+                    <FiMapPin className="text-stone-400 text-xs" />
+                    <span>Khoảng cách so với quán Zone Six:</span>
                   </span>
                   <span
-                    className={`font-mono font-black ${
+                    className={`font-mono font-medium ${
                       attendance.is_geofence_valid
-                        ? "text-emerald-400"
-                        : "text-amber-400"
+                        ? "text-emerald-700 dark:text-emerald-300"
+                        : "text-amber-700 dark:text-amber-300"
                     }`}
                   >
                     {attendance.distance_meters} mét{" "}
-                    {attendance.is_geofence_valid ? "✅" : "⚠️"}
+                    {attendance.is_geofence_valid ? "✓" : "⚠️"}
                   </span>
                 </div>
 
-                <div className="text-[11px] text-[#8E95A5] font-mono">
+                <div className="text-[11px] text-stone-400 font-mono">
                   Tọa độ: {attendance.location?.latitude?.toFixed(6)},{" "}
                   {attendance.location?.longitude?.toFixed(6)}
                 </div>
 
                 {attendance.address && (
-                  <div className="p-2.5 rounded-xl bg-[#141822] border border-[#212638] text-[11px] text-[#F4F5F8] space-y-0.5">
-                    <span className="text-[#8E95A5] block text-[10px] font-bold uppercase tracking-wider">
-                      Địa chỉ chụp lúc check-in:
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200/70 dark:border-stone-700/60 text-[11px] text-stone-800 dark:text-stone-200 space-y-0.5">
+                    <span className="text-stone-400 block text-[10px] font-medium uppercase tracking-wider">
+                      Địa chỉ lúc check-in:
                     </span>
-                    <span className="font-medium text-[#F4F5F8]">{attendance.address}</span>
+                    <span className="font-medium">{attendance.address}</span>
                   </div>
                 )}
               </div>
             </div>
           ) : (
-            <div className="p-6 text-center text-xs text-[#8E95A5]">
+            <div className="p-6 text-center text-xs text-stone-400">
               Ca này được đánh dấu đã điểm danh.
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-[#212532] bg-[#0B0C10] flex items-center justify-between">
+        <div className="p-4 border-t border-stone-100 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] flex items-center justify-between">
           {canCancel ? (
             <button
               type="button"
               onClick={handleCancel}
               disabled={cancelMutation.isPending}
-              className="py-2 px-3 rounded-xl bg-rose-600/20 border border-rose-500/40 text-rose-300 hover:bg-rose-600/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="py-2 px-3 rounded-xl bg-rose-50 dark:bg-rose-950/25 border border-rose-200 dark:border-rose-900/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-xs font-medium transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
-              {cancelMutation.isPending ? (
-                <FaSpinner className="animate-spin text-xs" />
-              ) : (
-                <FaTrashAlt className="text-xs" />
-              )}
+              <FiTrash2 className="text-xs" />
               <span>Hủy Điểm Danh</span>
             </button>
           ) : (
@@ -232,7 +226,7 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="py-2 px-5 rounded-xl bg-[#1A1D27] hover:bg-[#262B3A] text-xs font-bold text-[#F4F5F8] transition cursor-pointer"
+            className="py-2 px-4 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] hover:bg-stone-50 dark:hover:bg-stone-800 text-xs font-medium text-stone-800 dark:text-[#efe9de] transition cursor-pointer shadow-xs"
           >
             Đóng
           </button>

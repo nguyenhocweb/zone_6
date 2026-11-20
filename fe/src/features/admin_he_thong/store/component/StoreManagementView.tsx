@@ -2,16 +2,14 @@
 
 import React, { useState, useMemo } from "react";
 import {
-  FaStore,
-  FaPlus,
-  FaSearch,
-  FaCheckCircle,
-  FaPowerOff,
-  FaBuilding,
-  FaMapMarkedAlt,
-  FaSpinner,
-  FaExclamationCircle,
-} from "react-icons/fa";
+  FiPlus,
+  FiSearch,
+  FiCheckCircle,
+  FiPower,
+  FiMapPin,
+  FiAlertCircle,
+  FiLayers,
+} from "react-icons/fi";
 import { useGetStores } from "../hook/useGetStores";
 import type { Store } from "../type/store.type";
 import { StoreCard } from "./StoreCard";
@@ -63,36 +61,31 @@ export const StoreManagementView: React.FC = () => {
   }, [stores, statusFilter, searchQuery]);
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
+    <div className="space-y-6 animate-fadeIn pb-12">
       {/* Top Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#12141A] via-[#181B24] to-[#12141A] border border-[#D4AF37]/20 shadow-xl relative overflow-hidden">
-        {/* Ambient Gold Glow */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
-
-        <div className="space-y-2 z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#D4AF37]/20 to-[#D4AF37]/5 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] shadow-lg shadow-[#D4AF37]/10">
-              <FaBuilding className="text-2xl" />
-            </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Quản Lý <span className="gold-gradient-text">Chi Nhánh</span>
-              </h1>
-              <p className="text-xs sm:text-sm text-white/60">
-                Thêm mới, cấu hình vị trí GPS điểm danh, mở cửa hoặc đóng cửa tạm dừng chi nhánh
-              </p>
-            </div>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm relative overflow-hidden">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center shrink-0">
+            <FiLayers className="w-5 h-5 text-stone-400 dark:text-stone-400" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
+              Quản lý chi nhánh
+            </h1>
+            <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
+              Thêm mới, cấu hình vị trí GPS điểm danh, mở cửa hoặc đóng cửa tạm dừng chi nhánh
+            </p>
           </div>
         </div>
 
-        <div className="z-10 flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => setIsCreateOpen(true)}
-            className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl gold-gradient-bg text-black font-bold text-sm shadow-lg shadow-[#D4AF37]/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 font-medium text-xs shadow-sm transition-all cursor-pointer"
           >
-            <FaPlus className="text-xs" />
-            <span>Thêm Chi Nhánh Mới</span>
+            <FiPlus className="w-4 h-4" />
+            <span>Thêm chi nhánh mới</span>
           </button>
         </div>
       </div>
@@ -100,124 +93,124 @@ export const StoreManagementView: React.FC = () => {
       {/* Top Metrics Ribbon */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Metric 1: Total */}
-        <div className="p-5 rounded-2xl bg-[#12141A] border border-white/10 flex items-center justify-between">
+        <div className="p-5 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-xs font-medium text-white/50 mb-1">Tổng Chi Nhánh</p>
-            <h3 className="text-2xl font-extrabold text-white">{stats.total}</h3>
+            <p className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-1">Tổng chi nhánh</p>
+            <h3 className="text-2xl font-semibold font-mono text-stone-900 dark:text-[#efe9de]">{stats.total}</h3>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70">
-            <FaStore className="text-xl" />
+          <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+            <FiMapPin className="w-4 h-4 text-stone-400 dark:text-stone-400" />
           </div>
         </div>
 
         {/* Metric 2: Open/Active */}
-        <div className="p-5 rounded-2xl bg-[#12141A] border border-emerald-500/20 flex items-center justify-between">
+        <div className="p-5 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-xs font-medium text-emerald-400/80 mb-1">Đang Mở Cửa</p>
-            <h3 className="text-2xl font-extrabold text-emerald-400">{stats.active}</h3>
+            <p className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-1">Đang mở cửa</p>
+            <h3 className="text-2xl font-semibold font-mono text-emerald-600 dark:text-emerald-400">{stats.active}</h3>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-            <FaCheckCircle className="text-xl" />
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center">
+            <FiCheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           </div>
         </div>
 
         {/* Metric 3: Closed/Inactive */}
-        <div className="p-5 rounded-2xl bg-[#12141A] border border-red-500/20 flex items-center justify-between">
+        <div className="p-5 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-xs font-medium text-red-400/80 mb-1">Đã Đóng Cửa</p>
-            <h3 className="text-2xl font-extrabold text-red-400">{stats.inactive}</h3>
+            <p className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-1">Đã đóng cửa</p>
+            <h3 className="text-2xl font-semibold font-mono text-rose-600 dark:text-rose-400">{stats.inactive}</h3>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
-            <FaPowerOff className="text-xl" />
+          <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/40 flex items-center justify-center">
+            <FiPower className="w-4 h-4 text-rose-600 dark:text-rose-400" />
           </div>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 rounded-2xl bg-[#12141A] border border-white/10">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm">
         {/* Search Input */}
         <div className="relative flex-1">
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-sm" />
+          <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-400 text-sm" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Tìm theo tên chi nhánh, mã CS, địa chỉ, số điện thoại..."
-            className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-[#181B24] border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-[#efe9de] placeholder-stone-400 dark:placeholder-stone-500 text-xs focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors"
           />
         </div>
 
         {/* Status Filter Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#181B24] border border-white/5">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800">
           <button
             type="button"
             onClick={() => setStatusFilter("all")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
               statusFilter === "all"
-                ? "bg-[#D4AF37] text-black shadow"
-                : "text-white/60 hover:text-white"
+                ? "bg-white dark:bg-[#1c1a17] text-stone-900 dark:text-[#efe9de] shadow-sm"
+                : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
             }`}
           >
-            Tất Cả ({stats.total})
+            Tất cả ({stats.total})
           </button>
 
           <button
             type="button"
             onClick={() => setStatusFilter("active")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
               statusFilter === "active"
-                ? "bg-emerald-500 text-black shadow"
-                : "text-white/60 hover:text-emerald-400"
+                ? "bg-white dark:bg-[#1c1a17] text-stone-900 dark:text-[#efe9de] shadow-sm"
+                : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
             }`}
           >
-            Mở Cửa ({stats.active})
+            Mở cửa ({stats.active})
           </button>
 
           <button
             type="button"
             onClick={() => setStatusFilter("inactive")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
               statusFilter === "inactive"
-                ? "bg-red-500 text-white shadow"
-                : "text-white/60 hover:text-red-400"
+                ? "bg-white dark:bg-[#1c1a17] text-stone-900 dark:text-[#efe9de] shadow-sm"
+                : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de]"
             }`}
           >
-            Đóng Cửa ({stats.inactive})
+            Đóng cửa ({stats.inactive})
           </button>
         </div>
       </div>
 
       {/* Store Cards Grid / States */}
       {isLoading ? (
-        <div className="py-24 flex flex-col items-center justify-center gap-4 text-white/50">
-          <FaSpinner className="text-3xl text-[#D4AF37] animate-spin" />
-          <p className="text-sm">Đang tải danh sách chi nhánh Zone Six...</p>
+        <div className="py-24 flex flex-col items-center justify-center gap-3 text-stone-500 dark:text-stone-400">
+          <div className="w-6 h-6 border-2 border-stone-300 border-t-stone-700 dark:border-stone-700 dark:border-t-stone-300 rounded-full animate-spin" />
+          <p className="text-xs">Đang tải danh sách chi nhánh Zone Six...</p>
         </div>
       ) : isError ? (
-        <div className="p-8 rounded-2xl bg-red-500/5 border border-red-500/20 text-center space-y-4">
-          <FaExclamationCircle className="text-3xl text-red-400 mx-auto" />
+        <div className="p-8 rounded-3xl bg-white dark:bg-[#1c1a17] border border-rose-200 dark:border-rose-900/40 text-center space-y-4">
+          <FiAlertCircle className="w-8 h-8 text-rose-500 dark:text-rose-400 mx-auto" />
           <div className="space-y-1">
-            <h3 className="text-base font-semibold text-white">Không thể tải dữ liệu chi nhánh</h3>
-            <p className="text-xs text-white/50">
+            <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">Không thể tải dữ liệu chi nhánh</h3>
+            <p className="text-xs text-stone-500 dark:text-stone-400">
               {(error as any)?.message || "Vui lòng kiểm tra kết nối mạng hoặc thử lại sau"}
             </p>
           </div>
           <button
             type="button"
             onClick={() => refetch()}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold transition-colors"
+            className="px-4 py-2 rounded-xl bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-medium transition cursor-pointer"
           >
-            Thử Lại
+            Thử lại
           </button>
         </div>
       ) : filteredStores.length === 0 ? (
-        <div className="py-20 text-center rounded-2xl bg-[#12141A]/50 border border-white/5 p-8 space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 mx-auto">
-            <FaMapMarkedAlt className="text-2xl" />
+        <div className="py-20 text-center rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 p-8 space-y-4 shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center text-stone-400 dark:text-stone-400 mx-auto">
+            <FiMapPin className="w-5 h-5 text-stone-400 dark:text-stone-400" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-white">Không tìm thấy chi nhánh nào</h3>
-            <p className="text-xs text-white/50 max-w-md mx-auto">
+            <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">Không tìm thấy chi nhánh nào</h3>
+            <p className="text-xs text-stone-500 dark:text-stone-400 max-w-md mx-auto">
               {searchQuery || statusFilter !== "all"
                 ? "Không có chi nhánh phù hợp với bộ lọc tìm kiếm hiện tại."
                 : "Hệ thống chưa có chi nhánh nào được kích hoạt. Hãy tạo chi nhánh đầu tiên để bắt đầu."}
@@ -230,9 +223,9 @@ export const StoreManagementView: React.FC = () => {
                 setSearchQuery("");
                 setStatusFilter("all");
               }}
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors"
+              className="px-4 py-2 rounded-xl bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-medium transition cursor-pointer"
             >
-              Xóa Bộ Lọc
+              Xóa bộ lọc
             </button>
           )}
         </div>

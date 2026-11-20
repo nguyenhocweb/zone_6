@@ -1,23 +1,14 @@
-"use client";
+import { Metadata } from 'next';
+import { LoginForm } from '@/features/shared/auth/component/LoginForm';
 
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { LoginForm } from "@/features/shared/auth/component/LoginForm";
-import { useAuth } from "@/features/shared/auth/hook/useAuth";
+export const metadata: Metadata = {
+  title: 'Cổng Nhân Sự - Zone Six Đà Nẵng',
+  description: 'Hệ thống quản lý ca, điểm danh và vận hành nội bộ Zone Six Đà Nẵng.',
+};
+
+// Opt out of experimental Turbopack instant-navigation segment validation
+export const instant = false;
 
 export default function LoginPage() {
-  const { user, isLoading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading && user) {
-      router.push("/profile");
-    }
-  }, [user, isLoading, router]);
-
-  return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#0B0C10]">
-      <LoginForm />
-    </div>
-  );
+  return <LoginForm />;
 }

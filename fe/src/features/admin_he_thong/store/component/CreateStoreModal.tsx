@@ -4,17 +4,16 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  FaStore,
-  FaMapMarkerAlt,
-  FaPhoneAlt,
-  FaCrosshairs,
-  FaTimes,
-  FaCheckCircle,
-  FaSpinner,
-  FaClock,
-  FaSyncAlt,
-  FaReceipt,
-} from "react-icons/fa";
+  FiMapPin,
+  FiPhone,
+  FiCrosshair,
+  FiX,
+  FiCheck,
+  FiClock,
+  FiRefreshCw,
+  FiPercent,
+  FiLayers,
+} from "react-icons/fi";
 import { storeCreateSchema, type StoreCreateFormValues } from "../schema/store.create.schema";
 import { useCreateStore } from "../hook/useCreateStore";
 import { reverseGeocodeService } from "../../checkin-config/service/checkin-config.service";
@@ -142,7 +141,6 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
     );
   };
 
-  // Tự động kích hoạt lấy GPS & địa chỉ thực tế ngay khi mở modal tạo chi nhánh
   useEffect(() => {
     if (isOpen) {
       handleGetCurrentLocation();
@@ -175,32 +173,32 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
       reset();
       onClose();
     } catch {
-      // Error handled by hook
+      // Handled by hook
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#12141A] border border-[#D4AF37]/40 w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl relative my-8">
+    <div className="fixed inset-0 z-[99999] bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl relative my-8">
         {/* Nút đóng */}
         <button
           onClick={onClose}
           type="button"
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#181B24] border border-[#212532] text-[#8E95A5] hover:text-[#F4F5F8] flex items-center justify-center transition"
+          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-[#efe9de] flex items-center justify-center transition cursor-pointer"
         >
-          <FaTimes className="text-sm" />
+          <FiX className="w-4 h-4 text-stone-400 dark:text-stone-400" />
         </button>
 
         {/* Tiêu đề modal */}
         <div className="flex items-center gap-3.5 mb-6">
-          <div className="w-12 h-12 rounded-2xl gold-gradient-bg flex items-center justify-center text-[#0B0C10] text-xl font-bold shadow-lg shadow-[#D4AF37]/20">
-            <FaStore />
+          <div className="w-11 h-11 rounded-2xl bg-stone-100 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 flex items-center justify-center">
+            <FiLayers className="w-5 h-5 text-stone-400 dark:text-stone-400" />
           </div>
           <div>
-            <h3 className="text-xl font-black text-[#F4F5F8] tracking-wide">
-              Thêm Chi Nhánh Mới
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
+              Thêm chi nhánh mới
             </h3>
-            <p className="text-xs text-[#8E95A5]">
+            <p className="text-xs text-stone-500 dark:text-stone-400">
               Khởi tạo cơ sở mới trong chuỗi Zone Six Cafe &amp; Lounge
             </p>
           </div>
@@ -211,31 +209,31 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Tên chi nhánh */}
             <div className="sm:col-span-2 space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                Tên Chi Nhánh <span className="text-red-400">*</span>
+              <label className="text-xs font-medium text-stone-700 dark:text-stone-300">
+                Tên chi nhánh <span className="text-rose-500">*</span>
               </label>
               <input
                 {...register("store_name")}
                 placeholder="VD: Zone Six - Cơ Sở Lê Ninh"
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
               />
               {errors.store_name && (
-                <p className="text-xs text-red-400">{errors.store_name.message}</p>
+                <p className="text-xs text-rose-500">{errors.store_name.message}</p>
               )}
             </div>
 
             {/* Mã chi nhánh */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                Mã Chi Nhánh
+              <label className="text-xs font-medium text-stone-700 dark:text-stone-300">
+                Mã chi nhánh
               </label>
               <input
                 {...register("store_code")}
                 placeholder="Tự động sinh (Z6-CSxx)"
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] uppercase focus:border-[#D4AF37] focus:outline-none font-mono"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-900 dark:text-[#efe9de] uppercase focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none font-mono"
               />
               {errors.store_code && (
-                <p className="text-xs text-red-400">{errors.store_code.message}</p>
+                <p className="text-xs text-rose-500">{errors.store_code.message}</p>
               )}
             </div>
           </div>
@@ -244,31 +242,22 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
             {/* Địa chỉ thực tế lấy từ GPS */}
             <div className="sm:col-span-2 space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-1.5">
-                  <span>Địa Chỉ Thực Tế</span>
-                  <span className="text-red-400">*</span>
-                  <span className="text-[10px] font-normal text-emerald-400/90 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
-                    <FaCheckCircle className="text-[9px]" /> Lấy từ GPS
+                <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                  <span>Địa chỉ cụ thể</span>
+                  <span className="text-rose-500">*</span>
+                  <span className="text-[10px] text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/40 flex items-center gap-1">
+                    <FiCheck className="w-3 h-3" /> Lấy từ GPS
                   </span>
                 </label>
                 <button
                   type="button"
                   onClick={() => handleResolveAddressFromCoords()}
                   disabled={isResolvingAddress || isLocating}
-                  className="text-[11px] font-semibold text-[#D4AF37] hover:text-[#f3cc58] hover:underline flex items-center gap-1 disabled:opacity-50 cursor-pointer"
-                  title="Giải mã lại địa chỉ từ tọa độ Vĩ độ & Kinh độ hiện tại"
+                  className="text-[11px] font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] hover:underline flex items-center gap-1 disabled:opacity-50 cursor-pointer"
+                  title="Giải mã lại địa chỉ từ tọa độ GPS hiện tại"
                 >
-                  {isResolvingAddress ? (
-                    <>
-                      <FaSpinner className="animate-spin text-[10px]" />
-                      <span>Đang lấy địa chỉ...</span>
-                    </>
-                  ) : (
-                    <>
-                      <FaSyncAlt className="text-[10px]" />
-                      <span>Cập nhật từ GPS / Tọa độ</span>
-                    </>
-                  )}
+                  <FiRefreshCw className={`w-3 h-3 text-stone-400 dark:text-stone-400 ${isResolvingAddress ? "animate-spin" : ""}`} />
+                  <span>{isResolvingAddress ? "Đang lấy..." : "Cập nhật GPS"}</span>
                 </button>
               </div>
 
@@ -276,55 +265,51 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                 <input
                   {...register("address")}
                   placeholder="Địa chỉ tự động lấy từ định vị GPS..."
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
                 />
-                <FaMapMarkerAlt className="absolute left-3 top-3.5 text-xs text-[#D4AF37]" />
+                <FiMapPin className="absolute left-3 top-3.5 w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
               </div>
               {errors.address && (
-                <p className="text-xs text-red-400">{errors.address.message}</p>
+                <p className="text-xs text-rose-500">{errors.address.message}</p>
               )}
             </div>
 
             {/* Số điện thoại */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                Số Điện Thoại
+              <label className="text-xs font-medium text-stone-700 dark:text-stone-300">
+                Số điện thoại
               </label>
               <div className="relative">
                 <input
                   {...register("phone")}
                   placeholder="VD: 0987654321"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#0B0C10] border border-[#212532] text-sm text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none font-mono"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none font-mono"
                 />
-                <FaPhoneAlt className="absolute left-3 top-3.5 text-xs text-[#6D7588]" />
+                <FiPhone className="absolute left-3 top-3.5 w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
               </div>
             </div>
           </div>
 
           {/* Vùng GPS & Geofence */}
-          <div className="p-4 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-3">
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-2">
-                <FaMapMarkerAlt className="text-sm" /> Tọa Độ Định Vị GPS &amp; Bán Kính
+              <span className="text-xs font-medium text-stone-900 dark:text-[#efe9de] flex items-center gap-1.5">
+                <FiMapPin className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> Tọa độ định vị GPS &amp; Bán kính
               </span>
               <button
                 type="button"
                 onClick={handleGetCurrentLocation}
                 disabled={isLocating || isResolvingAddress}
-                className="text-xs font-bold px-3 py-1.5 rounded-lg border border-[#D4AF37]/50 bg-[#181B24] hover:bg-[#D4AF37] hover:text-[#0B0C10] text-[#D4AF37] transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="text-xs font-medium px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#1c1a17] text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                {isLocating || isResolvingAddress ? (
-                  <FaSpinner className="animate-spin text-xs" />
-                ) : (
-                  <FaCrosshairs className="text-xs" />
-                )}
-                <span>Lấy GPS Thiết Bị &amp; Địa Chỉ</span>
+                <FiCrosshair className={`w-3.5 h-3.5 text-stone-400 dark:text-stone-400 ${isLocating ? "animate-spin" : ""}`} />
+                <span>{isLocating ? "Đang dò..." : "Lấy vị trí hiện tại"}</span>
               </button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="text-[11px] text-[#8E95A5]">Vĩ Độ (Latitude)</label>
+                <label className="text-[11px] text-stone-500 dark:text-stone-400">Vĩ độ (Latitude)</label>
                 <input
                   type="number"
                   step="any"
@@ -336,12 +321,12 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                       handleResolveAddressFromCoords(lat, lon);
                     }
                   }}
-                  className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none font-mono"
+                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none font-mono"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-[#8E95A5]">Kinh Độ (Longitude)</label>
+                <label className="text-[11px] text-stone-500 dark:text-stone-400">Kinh độ (Longitude)</label>
                 <input
                   type="number"
                   step="any"
@@ -353,17 +338,17 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                       handleResolveAddressFromCoords(lat, lon);
                     }
                   }}
-                  className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none font-mono"
+                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none font-mono"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-[#8E95A5]">Bán Kính Check-in (Mét)</label>
+                <label className="text-[11px] text-stone-500 dark:text-stone-400">Bán kính check-in (Mét)</label>
                 <select
                   {...register("geofence_radius_meters", { valueAsNumber: true })}
-                  className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-[#D4AF37] font-bold focus:border-[#D4AF37] focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-medium focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
                 >
-                  <option value={30}>30 mét (Cực chặt chẽ)</option>
+                  <option value={30}>30 mét (Chặt chẽ)</option>
                   <option value={50}>50 mét (Tiêu chuẩn)</option>
                   <option value={100}>100 mét (Khuyến nghị)</option>
                   <option value={200}>200 mét (Mặt bằng rộng)</option>
@@ -377,12 +362,12 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
           {/* Cấu hình khung thời gian & Trạng thái hoạt động */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#8E95A5] flex items-center gap-1.5">
-                <FaClock className="text-xs text-[#D4AF37]" /> Trước Ca (Phút)
+              <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                <FiClock className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> Trước ca (Phút)
               </label>
               <select
                 {...register("allowed_checkin_before_minutes", { valueAsNumber: true })}
-                className="w-full px-3 py-2 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
               >
                 <option value={15}>15 phút</option>
                 <option value={30}>30 phút (Mặc định)</option>
@@ -393,12 +378,12 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#8E95A5] flex items-center gap-1.5">
-                <FaClock className="text-xs text-[#D4AF37]" /> Sau Ca (Phút)
+              <label className="text-xs font-medium text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+                <FiClock className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> Sau ca (Phút)
               </label>
               <select
                 {...register("allowed_checkin_after_minutes", { valueAsNumber: true })}
-                className="w-full px-3 py-2 rounded-xl bg-[#0B0C10] border border-[#212532] text-xs text-[#F4F5F8] focus:border-[#D4AF37] focus:outline-none"
+                className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
               >
                 <option value={15}>15 phút</option>
                 <option value={30}>30 phút (Mặc định)</option>
@@ -408,37 +393,37 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#8E95A5]">Trạng Thái Hoạt Động</label>
+              <label className="text-xs font-medium text-stone-700 dark:text-stone-300">Trạng thái hoạt động</label>
               <div
                 onClick={() => setValue("is_active", !isActive)}
-                className={`w-full px-3 py-2 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition select-none ${
+                className={`w-full px-3 py-2 rounded-xl border text-xs font-medium flex items-center justify-center gap-2 cursor-pointer transition select-none ${
                   isActive
-                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                    : "bg-red-500/10 border-red-500/30 text-red-400"
+                    ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/40 text-emerald-700 dark:text-emerald-400"
+                    : "bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800/40 text-rose-700 dark:text-rose-400"
                 }`}
               >
-                <span className={`w-2 h-2 rounded-full ${isActive ? "bg-emerald-400" : "bg-red-400"}`} />
-                <span>{isActive ? "Đang Mở Cửa" : "Đã Đóng Cửa"}</span>
+                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-emerald-500" : "bg-rose-500"}`} />
+                <span>{isActive ? "Đang mở cửa" : "Đã đóng cửa"}</span>
               </div>
             </div>
           </div>
 
           {/* Cấu hình Thuế VAT Chi Nhánh */}
-          <div className="p-4 rounded-2xl bg-[#0B0C10] border border-[#212532] space-y-3">
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider flex items-center gap-2">
-                <FaReceipt className="text-sm" /> Thuế VAT Chi Nhánh
+              <span className="text-xs font-medium text-stone-900 dark:text-[#efe9de] flex items-center gap-1.5">
+                <FiPercent className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> Thuế VAT chi nhánh
               </span>
               <div
                 onClick={() => setValue("vat_enabled", !vatEnabled, { shouldDirty: true, shouldValidate: true })}
-                className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer transition border ${
+                className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 cursor-pointer transition border ${
                   vatEnabled
-                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
-                    : "bg-[#212532] text-[#8E95A5] border-white/10"
+                    ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/40"
+                    : "bg-stone-200 dark:bg-stone-800 text-stone-500 dark:text-stone-400 border-stone-300 dark:border-stone-700"
                 }`}
               >
-                <span className={`w-2 h-2 rounded-full ${vatEnabled ? "bg-emerald-400" : "bg-[#8E95A5]"}`} />
-                <span>{vatEnabled ? "Đang Bật Thuế VAT" : "Đang Tắt Thuế VAT"}</span>
+                <span className={`w-1.5 h-1.5 rounded-full ${vatEnabled ? "bg-emerald-500" : "bg-stone-400"}`} />
+                <span>{vatEnabled ? "Đang bật thuế VAT" : "Đang tắt thuế VAT"}</span>
               </div>
             </div>
 
@@ -446,22 +431,22 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
               <div className="space-y-3 pt-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[11px] text-[#8E95A5] block mb-1">Tỷ Lệ Thuế VAT (%)</label>
+                    <label className="text-[11px] text-stone-500 dark:text-stone-400 block mb-1">Tỷ lệ thuế VAT (%)</label>
                     <input
                       type="number"
                       min={0}
                       max={100}
                       {...register("vat_rate", { valueAsNumber: true })}
-                      className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-[#D4AF37] font-bold focus:border-[#D4AF37] focus:outline-none"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-mono font-medium focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
                       placeholder="VD: 8, 10"
                     />
                   </div>
 
                   <div>
-                    <label className="text-[11px] text-[#8E95A5] block mb-1">Phạm Vi Áp Dụng Ca</label>
+                    <label className="text-[11px] text-stone-500 dark:text-stone-400 block mb-1">Phạm vi áp dụng ca</label>
                     <select
                       {...register("vat_apply_mode")}
-                      className="w-full px-3 py-2 rounded-lg bg-[#141724] border border-[#262C3F] text-xs text-white font-medium focus:border-[#D4AF37] focus:outline-none"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] font-medium focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
                     >
                       <option value="ALL">Áp dụng tất cả các ca (All)</option>
                       <option value="SPECIFIC_SHIFTS">Theo ca chỉ định (chọn 1 hoặc nhiều ca)</option>
@@ -469,17 +454,16 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                   </div>
                 </div>
 
-                {/* Khi chọn SPECIFIC_SHIFTS: hiển thị danh sách tất cả các ca lấy từ API để chọn 1 hoặc nhiều */}
+                {/* Khi chọn SPECIFIC_SHIFTS */}
                 {watch("vat_apply_mode") === "SPECIFIC_SHIFTS" && (
-                  <div className="p-3.5 rounded-xl bg-[#0E1015] border border-[#212532] space-y-3 animate-in fade-in duration-150">
+                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#F4F5F8]">
+                        <span className="text-xs font-medium text-stone-900 dark:text-[#efe9de]">
                           Chọn các ca áp dụng thuế VAT:
                         </span>
                         {isLoadingShifts && (
-                          <span className="text-[10px] text-[#D4AF37] flex items-center gap-1 font-medium">
-                            <FaSpinner className="animate-spin text-[10px]" />
+                          <span className="text-[10px] text-stone-400 flex items-center gap-1 font-medium">
                             Đang tải ca...
                           </span>
                         )}
@@ -488,19 +472,19 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                         <button
                           type="button"
                           onClick={handleSelectAllShifts}
-                          className="text-[10px] text-[#D4AF37] hover:underline font-semibold cursor-pointer"
+                          className="text-[10px] text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] hover:underline font-medium cursor-pointer"
                         >
                           Chọn tất cả
                         </button>
-                        <span className="text-white/20 text-[10px]">|</span>
+                        <span className="text-stone-300 dark:text-stone-700 text-[10px]">|</span>
                         <button
                           type="button"
                           onClick={handleDeselectAllShifts}
-                          className="text-[10px] text-[#8E95A5] hover:text-white hover:underline font-semibold cursor-pointer"
+                          className="text-[10px] text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] hover:underline font-medium cursor-pointer"
                         >
                           Bỏ chọn
                         </button>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#D4AF37]/15 text-[#D4AF37]">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
                           Đã chọn: {(watch("vat_applied_shifts") || []).length} ca
                         </span>
                       </div>
@@ -519,17 +503,17 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                               key={shiftName}
                               type="button"
                               onClick={() => handleToggleShift(shiftName)}
-                              className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+                              className={`px-3 py-1.5 rounded-xl border text-xs font-medium transition flex items-center gap-2 cursor-pointer ${
                                 isChecked
-                                  ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white"
-                                  : "bg-[#141724] border-[#262C3F] text-[#8E95A5] hover:text-white"
+                                  ? "bg-stone-50 dark:bg-[#25221e] border-stone-900 dark:border-[#efe9de] text-stone-900 dark:text-[#efe9de]"
+                                  : "bg-white dark:bg-[#1c1a17] border-stone-200 dark:border-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-[#efe9de]"
                               }`}
                             >
                               <span
                                 className={`w-3.5 h-3.5 rounded flex items-center justify-center border text-[9px] ${
                                   isChecked
-                                    ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10] font-bold"
-                                    : "border-[#4A5162]"
+                                    ? "bg-stone-900 border-stone-900 text-white dark:bg-[#efe9de] dark:border-[#efe9de] dark:text-stone-900"
+                                    : "border-stone-300 dark:border-stone-700"
                                 }`}
                               >
                                 {isChecked ? "✓" : ""}
@@ -555,20 +539,20 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                               key={shift._id || shift.shift_code}
                               type="button"
                               onClick={() => handleToggleShift(sName)}
-                              className={`p-2.5 rounded-xl border text-xs font-semibold transition flex items-center justify-between text-left cursor-pointer ${
+                              className={`p-2.5 rounded-xl border text-xs font-medium transition flex items-center justify-between text-left cursor-pointer ${
                                 isChecked
-                                  ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white shadow-sm shadow-[#D4AF37]/10"
-                                  : "bg-[#141724] border-[#262C3F] text-[#8E95A5] hover:text-white hover:border-[#4A5162]"
+                                  ? "bg-stone-50 dark:bg-[#25221e] border-stone-900 dark:border-[#efe9de] text-stone-900 dark:text-[#efe9de]"
+                                  : "bg-white dark:bg-[#1c1a17] border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:border-stone-300 dark:hover:border-stone-700"
                               }`}
                             >
                               <div className="flex items-center gap-2 min-w-0">
                                 <span
                                   className="w-2.5 h-2.5 rounded-full shrink-0"
-                                  style={{ backgroundColor: shift.color || "#D4AF37" }}
+                                  style={{ backgroundColor: shift.color || "#a8a29e" }}
                                 />
                                 <div className="truncate">
-                                  <span className="font-bold text-white block truncate">{sName}</span>
-                                  <span className="text-[10px] text-[#8E95A5] font-mono block">
+                                  <span className="font-medium text-stone-900 dark:text-[#efe9de] block truncate">{sName}</span>
+                                  <span className="text-[10px] text-stone-400 dark:text-stone-500 font-mono block">
                                     {shift.start_time} - {shift.end_time}
                                   </span>
                                 </div>
@@ -576,8 +560,8 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                               <span
                                 className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ml-2 ${
                                   isChecked
-                                    ? "bg-[#D4AF37] border-[#D4AF37] text-[#0B0C10] font-bold"
-                                    : "border-[#4A5162]"
+                                    ? "bg-stone-900 border-stone-900 text-white dark:bg-[#efe9de] dark:border-[#efe9de] dark:text-stone-900 font-bold"
+                                    : "border-stone-300 dark:border-stone-700"
                                 }`}
                               >
                                 {isChecked ? "✓" : ""}
@@ -587,12 +571,6 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
                         })}
                       </div>
                     )}
-
-                    {(watch("vat_applied_shifts") || []).length === 0 && (
-                      <p className="text-[11px] text-amber-400/80 italic">
-                        * Chưa chọn ca nào: Thuế VAT sẽ tạm thời không áp dụng cho ca nào cho đến khi chọn ít nhất 1 ca.
-                      </p>
-                    )}
                   </div>
                 )}
               </div>
@@ -600,31 +578,26 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
           </div>
 
           {/* Nút hành động */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#212532]">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-stone-100 dark:border-stone-800">
             <button
               type="button"
               onClick={onClose}
               disabled={createMutation.isPending}
-              className="px-5 py-2.5 rounded-xl border border-[#212532] bg-[#181B24] hover:bg-[#212532] text-[#8E95A5] hover:text-[#F4F5F8] text-xs font-bold transition disabled:opacity-50"
+              className="px-4 py-2 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-medium transition cursor-pointer disabled:opacity-50"
             >
-              Hủy Bỏ
+              Hủy bỏ
             </button>
             <button
               type="submit"
               disabled={createMutation.isPending}
-              className="px-6 py-2.5 rounded-xl gold-gradient-bg text-[#0B0C10] text-xs font-black hover:brightness-110 active:scale-95 transition flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg shadow-[#D4AF37]/20"
+              className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-[#efe9de] dark:hover:bg-white text-white dark:text-stone-900 text-xs font-medium transition flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
             >
               {createMutation.isPending ? (
-                <>
-                  <FaSpinner className="animate-spin text-xs" />
-                  <span>Đang khởi tạo...</span>
-                </>
+                <div className="w-3.5 h-3.5 border-2 border-stone-400 border-t-white dark:border-stone-600 dark:border-t-stone-900 rounded-full animate-spin" />
               ) : (
-                <>
-                  <FaCheckCircle className="text-xs" />
-                  <span>Thêm Chi Nhánh</span>
-                </>
+                <FiCheck className="w-3.5 h-3.5" />
               )}
+              <span>{createMutation.isPending ? "Đang khởi tạo..." : "Thêm chi nhánh"}</span>
             </button>
           </div>
         </form>

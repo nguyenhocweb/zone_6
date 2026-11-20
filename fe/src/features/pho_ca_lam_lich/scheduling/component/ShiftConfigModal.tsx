@@ -3,24 +3,17 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
-  FaTimes,
-  FaClock,
-  FaUsers,
-  FaCoffee,
-  FaMotorcycle,
-  FaPlus,
-  FaTrash,
-  FaEdit,
-  FaUndo,
-  FaCheck,
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaSun,
-  FaCloudSun,
-  FaMoon,
-  FaBed,
-  FaCalendarAlt,
-} from "react-icons/fa";
+  FiX,
+  FiClock,
+  FiUsers,
+  FiCoffee,
+  FiPlus,
+  FiTrash2,
+  FiEdit3,
+  FiRotateCcw,
+  FiCheck,
+  FiCheckCircle,
+} from "react-icons/fi";
 import {
   useGetShiftConfigs,
   useCreateShiftConfig,
@@ -41,34 +34,15 @@ interface ShiftConfigModalProps {
 }
 
 const PRESET_COLORS = [
-  { label: "Vàng Gold", value: "#D4AF37" },
-  { label: "Hổ Phách", value: "#F59E0B" },
-  { label: "Cam Hoàng Hôn", value: "#F97316" },
-  { label: "Xanh Indigo", value: "#6366F1" },
-  { label: "Xanh Ngọc", value: "#10B981" },
-  { label: "Hồng Ruby", value: "#EC4899" },
-  { label: "Xanh Cyan", value: "#06B6D4" },
-  { label: "Tím Thạch Anh", value: "#8B5CF6" },
+  { label: "Stone", value: "#78716c" },
+  { label: "Amber", value: "#d97706" },
+  { label: "Orange", value: "#ea580c" },
+  { label: "Indigo", value: "#4f46e5" },
+  { label: "Emerald", value: "#059669" },
+  { label: "Rose", value: "#e11d48" },
+  { label: "Cyan", value: "#0891b2" },
+  { label: "Purple", value: "#7c3aed" },
 ];
-
-const WEEK_DAYS = [
-  { key: "mon", label: "T2" },
-  { key: "tue", label: "T3" },
-  { key: "wed", label: "T4" },
-  { key: "thu", label: "T5" },
-  { key: "fri", label: "T6" },
-  { key: "sat", label: "T7" },
-  { key: "sun", label: "CN" },
-];
-
-function getShiftIcon(name: string, code: string) {
-  const lower = (name + code).toLowerCase();
-  if (lower.includes("sáng")) return <FaSun className="text-amber-400" />;
-  if (lower.includes("chiều")) return <FaCloudSun className="text-orange-400" />;
-  if (lower.includes("tối")) return <FaMoon className="text-[#D4AF37]" />;
-  if (lower.includes("khuya") || lower.includes("đêm")) return <FaBed className="text-indigo-400" />;
-  return <FaClock className="text-gray-400" />;
-}
 
 function calculateHours(startTime: string, endTime: string): number {
   if (!startTime || !endTime) return 0;
@@ -96,7 +70,6 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
   const deleteMutation = useDeleteShiftConfig(storeId);
   const resetMutation = useResetShiftConfigs(storeId);
 
-  // Form State
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingShift, setDeletingShift] = useState<{ id: string; name: string } | null>(null);
@@ -111,31 +84,16 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
     max_staff: 4,
     min_barista: 1,
     min_service: 1,
-    color: "#D4AF37",
+    color: "#78716c",
     apply_days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
     is_active: true,
     description: "",
   });
 
-  // Calculate work hours real-time when start/end change
   useEffect(() => {
     const hours = calculateHours(formData.start_time, formData.end_time);
     setFormData((prev) => ({ ...prev, work_hours: hours }));
   }, [formData.start_time, formData.end_time]);
-
-  // Lock body scroll
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
 
   const shifts = data?.shifts || [];
   const summary = data?.summary || {
@@ -149,6 +107,8 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
       .reduce((sum, s) => sum + (s.work_hours || 0), 0),
   };
 
+  if (!isOpen) return null;
+
   const handleOpenCreate = () => {
     setEditingId(null);
     setFormData({
@@ -161,7 +121,7 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
       max_staff: 4,
       min_barista: 1,
       min_service: 1,
-      color: "#D4AF37",
+      color: "#78716c",
       apply_days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
       is_active: true,
       description: "",
@@ -181,7 +141,7 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
       max_staff: shift.max_staff,
       min_barista: shift.min_barista,
       min_service: shift.min_service,
-      color: shift.color || "#D4AF37",
+      color: shift.color || "#78716c",
       apply_days: shift.apply_days || ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
       is_active: shift.is_active,
       description: shift.description || "",
@@ -244,28 +204,28 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
   };
 
   const modalContent = (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-[#0D0E12] border border-[#212532] rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl shadow-black/80 overflow-hidden">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm animate-fadeIn">
+      <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[#212532] bg-[#161820]">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/15 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">
-              <FaClock className="text-xl" />
+            <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 flex items-center justify-center text-stone-400">
+              <FiClock className="text-xl" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                Cấu Hình Ca Làm Việc & Định Biên Nhân Sự
+              <h2 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                Cấu Hình Ca Làm Việc &amp; Định Biên
               </h2>
-              <p className="text-xs text-gray-400">
-                Thiết lập giờ làm (từ mấy giờ đến mấy giờ), định biên nhân sự tối thiểu cho từng ca
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                Thiết lập giờ làm và định biên nhân sự tối thiểu cho từng ca
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-[#212532]/60 hover:bg-[#212532] text-gray-400 hover:text-white flex items-center justify-center transition-colors"
+            className="w-9 h-9 rounded-xl bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2d2924] text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 flex items-center justify-center transition-colors cursor-pointer"
           >
-            <FaTimes />
+            <FiX className="text-base" />
           </button>
         </div>
 
@@ -273,30 +233,30 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-3.5">
-              <span className="text-[11px] font-medium text-gray-400">Tổng số ca</span>
-              <div className="text-2xl font-black text-white mt-1">
-                {summary.total_shifts} <span className="text-xs font-normal text-gray-500">ca</span>
+            <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-3.5 shadow-sm">
+              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Tổng số ca</span>
+              <div className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">
+                {summary.total_shifts} <span className="text-xs font-normal text-stone-400 font-sans">ca</span>
               </div>
             </div>
-            <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-3.5">
-              <span className="text-[11px] font-medium text-gray-400">Ca đang kích hoạt</span>
-              <div className="text-2xl font-black text-emerald-400 mt-1">
-                {summary.active_shifts} <span className="text-xs font-normal text-gray-500">ca</span>
+            <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-3.5 shadow-sm">
+              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Ca đang kích hoạt</span>
+              <div className="text-2xl font-semibold text-emerald-600 dark:text-emerald-400 mt-1 font-mono">
+                {summary.active_shifts} <span className="text-xs font-normal text-stone-400 font-sans">ca</span>
               </div>
             </div>
-            <div className="bg-[#12141A] border border-[#D4AF37]/30 rounded-2xl p-3.5 bg-gradient-to-br from-[#D4AF37]/5 to-transparent">
-              <span className="text-[11px] font-bold text-[#D4AF37] flex items-center gap-1">
-                <FaUsers /> Tối thiểu nhân sự/ngày
+            <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-3.5 shadow-sm">
+              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400 flex items-center gap-1">
+                <FiUsers className="text-stone-400" /> Tối thiểu nhân sự/ngày
               </span>
-              <div className="text-2xl font-black text-[#F5D77F] mt-1">
-                {summary.total_min_staff_per_day} <span className="text-xs font-normal text-[#D4AF37]/70">nhân sự</span>
+              <div className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">
+                {summary.total_min_staff_per_day} <span className="text-xs font-normal text-stone-400 font-sans">nhân sự</span>
               </div>
             </div>
-            <div className="bg-[#12141A] border border-[#212532] rounded-2xl p-3.5">
-              <span className="text-[11px] font-medium text-gray-400">Tổng giờ công/ngày</span>
-              <div className="text-2xl font-black text-cyan-400 mt-1">
-                {summary.total_planned_hours_per_day} <span className="text-xs font-normal text-gray-500">tiếng</span>
+            <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-3.5 shadow-sm">
+              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Tổng giờ công/ngày</span>
+              <div className="text-2xl font-semibold text-stone-900 dark:text-[#efe9de] mt-1 font-mono">
+                {summary.total_planned_hours_per_day} <span className="text-xs font-normal text-stone-400 font-sans">tiếng</span>
               </div>
             </div>
           </div>
@@ -304,7 +264,7 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
           {/* Action Row */}
           {!isEditing && (
             <div className="flex items-center justify-between gap-3 pt-1">
-              <div className="text-xs text-gray-400 font-medium">
+              <div className="text-xs text-stone-500 dark:text-stone-400 font-medium">
                 Danh sách các ca trực chuẩn và định biên nhân sự theo ca:
               </div>
               <div className="flex items-center gap-2">
@@ -312,17 +272,17 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                   type="button"
                   onClick={handleResetDefaults}
                   disabled={resetMutation.isPending}
-                  className="px-3 py-2 rounded-xl border border-[#2A2E3D] text-xs font-medium text-gray-300 hover:text-white hover:bg-[#212532] transition-colors flex items-center gap-1.5"
+                  className="px-3 py-2 rounded-xl border border-stone-200/80 dark:border-stone-800 text-xs font-medium text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 bg-stone-50 hover:bg-stone-100 dark:bg-[#25221e] dark:hover:bg-[#2d2924] transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
-                  <FaUndo className="text-[10px]" />
+                  <FiRotateCcw className="text-xs text-stone-400" />
                   <span>Khôi phục mặc định</span>
                 </button>
                 <button
                   type="button"
                   onClick={handleOpenCreate}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-black text-xs font-bold hover:brightness-110 transition-all flex items-center gap-1.5 shadow-lg shadow-[#D4AF37]/20"
+                  className="px-4 py-2 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
                 >
-                  <FaPlus className="text-[11px]" />
+                  <FiPlus className="text-xs" />
                   <span>Thêm Ca Mới</span>
                 </button>
               </div>
@@ -330,27 +290,26 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
           )}
 
           {/* EDIT / CREATE FORM DRAWER */}
-          {isEditing ? (
-            <form onSubmit={handleSubmit} className="bg-[#161820] border border-[#D4AF37]/40 rounded-2xl p-5 space-y-4 shadow-xl">
-              <div className="flex items-center justify-between border-b border-[#212532] pb-3">
-                <h3 className="text-sm font-bold text-[#F5D77F] flex items-center gap-2">
-                  {editingId ? <FaEdit /> : <FaPlus />}
+          {isEditing && (
+            <form onSubmit={handleSubmit} className="bg-stone-50 dark:bg-[#25221e] border border-stone-300 dark:border-stone-700 rounded-2xl p-5 space-y-4 shadow-sm">
+              <div className="flex items-center justify-between border-b border-stone-200/80 dark:border-stone-800 pb-3">
+                <h3 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+                  {editingId ? <FiEdit3 className="text-stone-400" /> : <FiPlus className="text-stone-400" />}
                   <span>{editingId ? "Chỉnh Sửa Ca Làm Việc" : "Tạo Mới Ca Làm Việc"}</span>
                 </h3>
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="text-xs text-gray-400 hover:text-white"
+                  className="text-xs text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 cursor-pointer"
                 >
                   Đóng Form
                 </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Tên Ca */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-300 mb-1">
-                    Tên Ca Làm <span className="text-red-400">*</span>
+                  <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1">
+                    Tên Ca Làm <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -358,13 +317,12 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                     value={formData.shift_name}
                     onChange={(e) => setFormData({ ...formData, shift_name: e.target.value })}
                     placeholder="Ví dụ: Ca Sáng, Ca Chiều, Ca Tăng Cường..."
-                    className="w-full bg-[#0D0E12] border border-[#2A2E3D] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-xl px-3.5 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
                   />
                 </div>
 
-                {/* Mã Ca */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-300 mb-1">
+                  <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1">
                     Mã Ca (Code)
                   </label>
                   <input
@@ -372,146 +330,141 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                     value={formData.shift_code || ""}
                     onChange={(e) => setFormData({ ...formData, shift_code: e.target.value.toUpperCase() })}
                     placeholder="Tự sinh nếu để trống (ví dụ: CA_SANG)"
-                    className="w-full bg-[#0D0E12] border border-[#2A2E3D] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 uppercase focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-xl px-3.5 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 uppercase font-mono focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
                   />
                 </div>
 
-                {/* Giờ Bắt Đầu & Giờ Kết Thúc */}
-                <div className="bg-[#0D0E12] border border-[#2A2E3D] rounded-xl p-3 sm:col-span-2">
+                <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-xl p-3 sm:col-span-2">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-[#D4AF37] flex items-center gap-1.5">
-                      <FaClock /> Khung Giờ Làm Việc (Từ mấy giờ đến mấy giờ)
+                    <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-1.5">
+                      <FiClock className="text-stone-400" /> Khung Giờ Làm Việc
                     </span>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-950/40 border border-cyan-700/40 text-cyan-300 font-bold">
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-mono font-medium">
                       {formData.work_hours || 0} tiếng làm việc
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] text-gray-400 mb-1">Giờ bắt đầu</label>
+                      <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">Giờ bắt đầu</label>
                       <input
                         type="time"
                         required
                         value={formData.start_time}
                         onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
-                        className="w-full bg-[#161820] border border-[#2A2E3D] rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-lg px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] font-mono focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] text-gray-400 mb-1">Giờ kết thúc</label>
+                      <label className="block text-[11px] text-stone-500 dark:text-stone-400 mb-1">Giờ kết thúc</label>
                       <input
                         type="time"
                         required
                         value={formData.end_time}
                         onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
-                        className="w-full bg-[#161820] border border-[#2A2E3D] rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-lg px-3 py-2 text-xs text-stone-900 dark:text-[#efe9de] font-mono focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
                       />
                     </div>
                   </div>
                 </div>
 
-                {/* ĐỊNH BIÊN NHÂN SỰ TỐI THIỂU & TỐI ĐA */}
-                <div className="bg-[#0D0E12] border border-[#D4AF37]/30 rounded-xl p-3.5 sm:col-span-2 space-y-3">
+                {/* Định biên */}
+                <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-xl p-3.5 sm:col-span-2 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-[#F5D77F] flex items-center gap-1.5">
-                      <FaUsers /> Định Biên Nhân Sự Trong Ca
+                    <span className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-1.5">
+                      <FiUsers className="text-stone-400" /> Định Biên Nhân Sự Trong Ca
                     </span>
-                    <span className="text-[11px] text-gray-400">
+                    <span className="text-[11px] text-stone-400">
                       Ràng buộc tối thiểu để đảm bảo vận hành
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {/* Tối thiểu ca */}
-                    <div className="bg-[#161820] border border-[#D4AF37]/40 rounded-xl p-2.5 text-center">
-                      <span className="text-[11px] font-bold text-[#D4AF37] block mb-1">
+                    <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl p-2.5 text-center">
+                      <span className="text-[11px] font-medium text-stone-600 dark:text-stone-400 block mb-1">
                         Tối thiểu (Min) *
                       </span>
                       <div className="flex items-center justify-center gap-2">
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, min_staff: Math.max(1, (formData.min_staff || 2) - 1) })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           -
                         </button>
-                        <span className="text-lg font-black text-white">{formData.min_staff}</span>
+                        <span className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] font-mono">{formData.min_staff}</span>
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, min_staff: (formData.min_staff || 2) + 1 })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           +
                         </button>
                       </div>
                     </div>
 
-                    {/* Tối đa ca */}
-                    <div className="bg-[#161820] border border-[#2A2E3D] rounded-xl p-2.5 text-center">
-                      <span className="text-[11px] font-medium text-gray-400 block mb-1">
+                    <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl p-2.5 text-center">
+                      <span className="text-[11px] font-medium text-stone-600 dark:text-stone-400 block mb-1">
                         Tối đa (Max)
                       </span>
                       <div className="flex items-center justify-center gap-2">
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, max_staff: Math.max((formData.min_staff || 1), (formData.max_staff || 4) - 1) })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           -
                         </button>
-                        <span className="text-lg font-black text-white">{formData.max_staff}</span>
+                        <span className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] font-mono">{formData.max_staff}</span>
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, max_staff: (formData.max_staff || 4) + 1 })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           +
                         </button>
                       </div>
                     </div>
 
-                    {/* Tối thiểu Pha chế */}
-                    <div className="bg-[#161820] border border-[#2A2E3D] rounded-xl p-2.5 text-center">
-                      <span className="text-[11px] font-medium text-amber-300 flex items-center justify-center gap-1 mb-1">
-                        <FaCoffee /> Min Barista
+                    <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl p-2.5 text-center">
+                      <span className="text-[11px] font-medium text-stone-600 dark:text-stone-400 flex items-center justify-center gap-1 mb-1">
+                        <FiCoffee className="text-stone-400" /> Min Barista
                       </span>
                       <div className="flex items-center justify-center gap-2">
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, min_barista: Math.max(0, (formData.min_barista || 1) - 1) })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           -
                         </button>
-                        <span className="text-lg font-black text-amber-300">{formData.min_barista}</span>
+                        <span className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] font-mono">{formData.min_barista}</span>
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, min_barista: (formData.min_barista || 1) + 1 })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           +
                         </button>
                       </div>
                     </div>
 
-                    {/* Tối thiểu Phục vụ / Giữ xe */}
-                    <div className="bg-[#161820] border border-[#2A2E3D] rounded-xl p-2.5 text-center">
-                      <span className="text-[11px] font-medium text-orange-300 flex items-center justify-center gap-1 mb-1">
-                        <FaMotorcycle /> Min Phục vụ
+                    <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl p-2.5 text-center">
+                      <span className="text-[11px] font-medium text-stone-600 dark:text-stone-400 flex items-center justify-center gap-1 mb-1">
+                        <FiUsers className="text-stone-400" /> Min Phục vụ
                       </span>
                       <div className="flex items-center justify-center gap-2">
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, min_service: Math.max(0, (formData.min_service || 1) - 1) })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           -
                         </button>
-                        <span className="text-lg font-black text-orange-300">{formData.min_service}</span>
+                        <span className="text-lg font-semibold text-stone-900 dark:text-[#efe9de] font-mono">{formData.min_service}</span>
                         <button
                           type="button"
                           onClick={() => setFormData({ ...formData, min_service: (formData.min_service || 1) + 1 })}
-                          className="w-6 h-6 rounded bg-[#212532] text-gray-300 hover:text-white font-bold"
+                          className="w-6 h-6 rounded bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold cursor-pointer"
                         >
                           +
                         </button>
@@ -520,9 +473,9 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                   </div>
                 </div>
 
-                {/* Màu Nhận Diện Ca */}
+                {/* Màu Nhận Diện */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-300 mb-1.5">
+                  <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                     Màu Sắc Nhận Diện Ca
                   </label>
                   <div className="flex flex-wrap items-center gap-2">
@@ -531,13 +484,13 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                         key={c.value}
                         type="button"
                         onClick={() => setFormData({ ...formData, color: c.value })}
-                        className={`w-7 h-7 rounded-full flex items-center justify-center border-2 transition-transform ${
-                          formData.color === c.value ? "scale-110 border-white shadow-md shadow-white/20" : "border-transparent opacity-70 hover:opacity-100"
+                        className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                          formData.color === c.value ? "ring-2 ring-stone-900 dark:ring-stone-100 scale-110 shadow-sm" : "opacity-80 hover:opacity-100"
                         }`}
                         style={{ backgroundColor: c.value }}
                         title={c.label}
                       >
-                        {formData.color === c.value && <FaCheck className="text-[10px] text-black drop-shadow" />}
+                        {formData.color === c.value && <FiCheck className="text-[12px] text-white drop-shadow" />}
                       </button>
                     ))}
                   </div>
@@ -545,25 +498,25 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
 
                 {/* Trạng Thái Kích Hoạt */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-300 mb-1.5">
+                  <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                     Trạng Thái Ca
                   </label>
-                  <label className="inline-flex items-center gap-2.5 cursor-pointer bg-[#0D0E12] border border-[#2A2E3D] rounded-xl px-4 py-2">
+                  <label className="inline-flex items-center gap-2.5 cursor-pointer bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-xl px-4 py-2">
                     <input
                       type="checkbox"
                       checked={formData.is_active}
                       onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                      className="rounded accent-[#D4AF37] w-4 h-4 cursor-pointer"
+                      className="rounded text-stone-900 dark:text-stone-100 focus:ring-0 w-4 h-4 cursor-pointer"
                     />
-                    <span className="text-xs font-medium text-white">
-                      {formData.is_active ? "Đang kích hoạt (Áp dụng xếp lịch)" : "Tạm dừng ca này"}
+                    <span className="text-xs font-medium text-stone-800 dark:text-stone-200">
+                      {formData.is_active ? "Đang kích hoạt" : "Tạm dừng ca này"}
                     </span>
                   </label>
                 </div>
 
                 {/* Mô tả / Ghi chú */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold text-gray-300 mb-1">
+                  <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1">
                     Ghi Chú / Mô Tả Công Việc Ca
                   </label>
                   <input
@@ -571,45 +524,45 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                     value={formData.description || ""}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Ví dụ: Phục vụ giờ cao điểm học tập và chốt ca cuối ngày..."
-                    className="w-full bg-[#0D0E12] border border-[#2A2E3D] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-xl px-3.5 py-2 text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-600"
                   />
                 </div>
               </div>
 
               {/* Form Actions */}
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#212532]">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-stone-200/80 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 rounded-xl border border-[#2A2E3D] text-xs font-semibold text-gray-300 hover:text-white hover:bg-[#212532] transition-colors"
+                  className="px-4 py-2 rounded-xl border border-stone-200/80 dark:border-stone-800 text-xs font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-50 dark:hover:bg-[#25221e] transition-colors cursor-pointer"
                 >
                   Hủy Bỏ
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending || updateMutation.isPending}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-black text-xs font-bold hover:brightness-110 transition-all flex items-center gap-2 shadow-lg shadow-[#D4AF37]/20"
+                  className="px-5 py-2 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold transition-all flex items-center gap-2 shadow-sm cursor-pointer"
                 >
-                  <FaCheck />
+                  <FiCheck />
                   <span>{editingId ? "Lưu Thay Đổi" : "Tạo Ca Mới"}</span>
                 </button>
               </div>
             </form>
-          ) : null}
+          )}
 
           {/* LIST OF SHIFTS */}
           <div className="space-y-3">
             {isLoading ? (
-              <div className="text-center py-10 text-gray-400 text-xs">
+              <div className="text-center py-10 text-stone-400 text-xs">
                 Đang tải cấu hình ca làm việc...
               </div>
             ) : shifts.length === 0 ? (
-              <div className="text-center py-12 bg-[#12141A] border border-[#212532] rounded-2xl">
-                <FaClock className="text-3xl text-gray-500 mx-auto mb-2" />
-                <p className="text-xs text-gray-400">Chưa có ca làm việc nào được cấu hình</p>
+              <div className="text-center py-12 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-2xl">
+                <FiClock className="text-3xl text-stone-400 mx-auto mb-2" />
+                <p className="text-xs text-stone-500 dark:text-stone-400">Chưa có ca làm việc nào được cấu hình</p>
                 <button
                   onClick={handleResetDefaults}
-                  className="mt-3 px-4 py-1.5 rounded-xl bg-[#212532] text-xs text-white hover:bg-[#2A2E3D]"
+                  className="mt-3 px-4 py-1.5 rounded-xl bg-stone-100 dark:bg-[#2d2924] text-xs text-stone-800 dark:text-stone-200 hover:bg-stone-200 font-medium"
                 >
                   Khởi tạo 4 ca mặc định
                 </button>
@@ -618,79 +571,73 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
               shifts.map((shift) => (
                 <div
                   key={shift._id}
-                  className={`bg-[#12141A] border rounded-2xl p-4 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                  className={`bg-white dark:bg-[#1c1a17] border rounded-2xl p-4 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm ${
                     shift.is_active
-                      ? "border-[#212532] hover:border-[#D4AF37]/50"
-                      : "border-gray-800/60 opacity-60 bg-[#0B0C10]"
+                      ? "border-stone-200/80 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700"
+                      : "border-stone-200/60 dark:border-stone-800/60 opacity-60 bg-stone-50/50 dark:bg-[#181614]"
                   }`}
-                  style={{ borderLeftWidth: "4px", borderLeftColor: shift.color || "#D4AF37" }}
+                  style={{ borderLeftWidth: "4px", borderLeftColor: shift.color || "#78716c" }}
                 >
                   {/* Left: Shift Info */}
                   <div className="flex items-start gap-3.5">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-lg mt-0.5 border"
-                      style={{
-                        backgroundColor: `${shift.color || "#D4AF37"}15`,
-                        borderColor: `${shift.color || "#D4AF37"}40`,
-                      }}
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-lg mt-0.5 border bg-stone-50 dark:bg-[#25221e] border-stone-200/80 dark:border-stone-800 text-stone-400"
                     >
-                      {getShiftIcon(shift.shift_name, shift.shift_code)}
+                      <FiClock />
                     </div>
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-bold text-white">{shift.shift_name}</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-md bg-[#212532] text-gray-400 font-mono">
+                        <span className="text-sm font-semibold text-stone-900 dark:text-[#efe9de]">{shift.shift_name}</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-md bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 font-mono border border-stone-200/80 dark:border-stone-800">
                           {shift.shift_code}
                         </span>
                         {!shift.is_active && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-red-950/40 border border-red-700/40 text-red-400 font-semibold">
+                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-400 font-medium">
                             Đã tạm dừng
                           </span>
                         )}
                       </div>
 
                       {/* Time & Hours */}
-                      <div className="flex items-center gap-3 text-xs text-gray-300 mt-1.5 font-medium">
-                        <span className="flex items-center gap-1.5 text-white font-bold bg-[#1A1D27] px-2.5 py-1 rounded-lg border border-[#2A2E3D]">
-                          <FaClock className="text-[#D4AF37] text-[11px]" />
+                      <div className="flex items-center gap-3 text-xs text-stone-600 dark:text-stone-300 mt-1.5 font-medium">
+                        <span className="flex items-center gap-1.5 text-stone-900 dark:text-[#efe9de] font-semibold bg-stone-100 dark:bg-[#25221e] px-2.5 py-1 rounded-lg border border-stone-200/80 dark:border-stone-800 font-mono">
+                          <FiClock className="text-stone-400 text-xs" />
                           <span>{shift.start_time} – {shift.end_time}</span>
                         </span>
-                        <span className="text-gray-400 text-xs">
+                        <span className="text-stone-400 text-xs">
                           ({shift.work_hours} giờ làm việc)
                         </span>
                       </div>
 
                       {shift.description && (
-                        <p className="text-[11px] text-gray-500 mt-1 italic">
+                        <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-1 italic">
                           {shift.description}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* Middle: Định Biên Nhân Sự Tối Thiểu */}
+                  {/* Middle: Định Biên */}
                   <div className="flex flex-wrap items-center gap-2">
-                    {/* Badge Tối Thiểu Nổi Bật */}
-                    <div className="bg-[#1C180E] border border-[#D4AF37]/50 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-sm">
-                      <FaUsers className="text-[#D4AF37] text-sm" />
+                    <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-sm">
+                      <FiUsers className="text-stone-400 text-sm" />
                       <div>
-                        <div className="text-[9px] text-gray-400 uppercase font-semibold leading-none">
+                        <div className="text-[9px] text-stone-500 dark:text-stone-400 uppercase font-medium leading-none">
                           Tối thiểu
                         </div>
-                        <div className="text-xs font-black text-[#F5D77F] leading-tight">
+                        <div className="text-xs font-semibold text-stone-900 dark:text-[#efe9de] leading-tight font-mono">
                           {shift.min_staff} người
                         </div>
                       </div>
                     </div>
 
-                    {/* Chi tiết vị trí */}
-                    <div className="bg-[#161820] border border-[#212532] rounded-xl px-2.5 py-1.5 text-[11px] text-gray-300 space-y-0.5">
-                      <div className="flex items-center gap-1 text-amber-300">
-                        <FaCoffee className="text-[10px]" />
+                    <div className="bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 rounded-xl px-2.5 py-1.5 text-[11px] text-stone-600 dark:text-stone-300 space-y-0.5">
+                      <div className="flex items-center gap-1 text-stone-700 dark:text-stone-300 font-medium">
+                        <FiCoffee className="text-xs text-stone-400" />
                         <span>Barista: ≥ {shift.min_barista || 1}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-orange-300">
-                        <FaMotorcycle className="text-[10px]" />
+                      <div className="flex items-center gap-1 text-stone-700 dark:text-stone-300 font-medium">
+                        <FiUsers className="text-xs text-stone-400" />
                         <span>Phục vụ: ≥ {shift.min_service || 1}</span>
                       </div>
                     </div>
@@ -701,10 +648,10 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                     <button
                       type="button"
                       onClick={() => handleToggleActive(shift)}
-                      className={`text-xs px-2.5 py-1.5 rounded-xl border transition-colors ${
+                      className={`text-xs px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer ${
                         shift.is_active
-                          ? "bg-emerald-950/20 border-emerald-700/40 text-emerald-400 hover:bg-emerald-950/40"
-                          : "bg-gray-800/40 border-gray-700 text-gray-400 hover:text-white"
+                          ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100"
+                          : "bg-stone-100 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200"
                       }`}
                     >
                       {shift.is_active ? "Đang bật" : "Tắt"}
@@ -712,18 +659,18 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
                     <button
                       type="button"
                       onClick={() => handleOpenEdit(shift)}
-                      className="w-8 h-8 rounded-xl bg-[#212532] text-gray-300 hover:text-white hover:bg-[#2A2E3D] flex items-center justify-center transition-colors"
+                      className="w-8 h-8 rounded-xl bg-stone-50 hover:bg-stone-100 dark:bg-[#25221e] dark:hover:bg-[#2d2924] border border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-300 flex items-center justify-center transition-colors cursor-pointer"
                       title="Chỉnh sửa ca"
                     >
-                      <FaEdit className="text-xs" />
+                      <FiEdit3 className="text-xs text-stone-400" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(shift._id, shift.shift_name)}
-                      className="w-8 h-8 rounded-xl bg-red-950/30 border border-red-800/30 text-red-400 hover:bg-red-900/40 flex items-center justify-center transition-colors"
+                      className="w-8 h-8 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 flex items-center justify-center transition-colors cursor-pointer"
                       title="Xóa ca"
                     >
-                      <FaTrash className="text-xs" />
+                      <FiTrash2 className="text-xs text-stone-400" />
                     </button>
                   </div>
                 </div>
@@ -733,14 +680,14 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#212532] bg-[#161820] flex items-center justify-between">
-          <div className="text-xs text-gray-400 flex items-center gap-1.5">
-            <FaCheckCircle className="text-emerald-400 text-xs" />
+        <div className="px-6 py-4 border-t border-stone-200/80 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] flex items-center justify-between">
+          <div className="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
+            <FiCheckCircle className="text-stone-400 text-xs" />
             <span>Đã đồng bộ tự động với cơ sở dữ liệu MongoDB Atlas</span>
           </div>
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-[#212532] text-xs font-semibold text-white hover:bg-[#2A2E3D] transition-colors"
+            className="px-5 py-2 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold transition-colors cursor-pointer"
           >
             Đóng
           </button>

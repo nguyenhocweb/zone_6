@@ -1,15 +1,14 @@
+
 "use client";
 
 import React, { useState, useMemo } from "react";
 import {
-  FaTimes,
-  FaTruckLoading,
-  FaSearch,
-  FaCheck,
-  FaPlus,
-  FaTrashAlt,
-  FaBoxes,
-} from "react-icons/fa";
+  FiX,
+  FiTruck,
+  FiSearch,
+  FiCheck,
+  FiLoader,
+} from "react-icons/fi";
 import { useCreateSupplier } from "../hook/useSuppliers";
 import type { SuppliedMaterial } from "../type/supplier.type";
 import type { Material } from "@/features/pho_ca_vat_lieu/material/type/material.type";
@@ -123,34 +122,30 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-      <div
-        className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="relative w-full max-w-3xl bg-[#161820] border border-[#D4AF37]/40 rounded-2xl shadow-2xl shadow-black/80 flex flex-col max-h-[90vh] overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
+      <div className="relative w-full max-w-3xl max-h-[90vh] bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl shadow-xl flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="p-5 border-b border-[#D4AF37]/20 flex items-center justify-between bg-gradient-to-r from-[#1c1f2b] to-[#161820]">
+        <div className="p-5 border-b border-stone-200/80 dark:border-stone-800 flex items-center justify-between bg-stone-50/70 dark:bg-[#25221e]">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#D4AF37]/30 to-[#B89628]/10 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">
-              <FaTruckLoading className="text-xl" />
+            <div className="w-10 h-10 rounded-2xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center text-sm shadow-xs shrink-0">
+              <FiTruck className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white tracking-wide">
+              <h3 className="text-base font-bold text-stone-900 dark:text-[#efe9de]">
                 Thêm Mới Nhà Cung Cấp
               </h3>
-              <p className="text-xs text-gray-400 mt-0.5">
-                Chức năng dành riêng cho Quản Lý & Admin Hệ Thống
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                Chức năng dành riêng cho Quản Lý &amp; Admin Hệ Thống
               </p>
             </div>
           </div>
 
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
           >
-            <FaTimes className="text-lg" />
+            <FiX className="w-4 h-4 text-stone-400" />
           </button>
         </div>
 
@@ -158,8 +153,8 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-300 mb-1">
-                Tên Nhà Cung Cấp <span className="text-red-400">*</span>
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                Tên Nhà Cung Cấp <span className="text-rose-500">*</span>
               </label>
               <input
                 type="text"
@@ -167,12 +162,12 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                 placeholder="Ví dụ: Công ty TNHH Bao Bì Phúc Thịnh"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 bg-[#12141a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                className="w-full px-3 py-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
                 Mã Nhà Cung Cấp (Tùy chọn)
               </label>
               <input
@@ -180,12 +175,12 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                 placeholder="Tự sinh nếu bỏ trống (NCC-001)"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full px-3 py-2 bg-[#12141a] border border-white/10 rounded-lg text-sm text-white font-mono placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                className="w-full px-3 py-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl text-xs text-stone-900 dark:text-[#efe9de] font-mono placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
                 Người Liên Hệ / Đại Diện
               </label>
               <input
@@ -193,12 +188,12 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                 placeholder="Ví dụ: Anh Tuấn (Kinh doanh)"
                 value={contactPerson}
                 onChange={(e) => setContactPerson(e.target.value)}
-                className="w-full px-3 py-2 bg-[#12141a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                className="w-full px-3 py-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
                 Số Điện Thoại
               </label>
               <input
@@ -206,12 +201,12 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                 placeholder="0901234567"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-3 py-2 bg-[#12141a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                className="w-full px-3 py-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
                 Email
               </label>
               <input
@@ -219,12 +214,12 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                 placeholder="kinhdoanh@phucthinh.vn"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 bg-[#12141a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                className="w-full px-3 py-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
                 Địa Chỉ Kho / Trụ Sở
               </label>
               <input
@@ -232,44 +227,44 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                 placeholder="Số 45, Đường 3/2, Quận 10, TP.HCM"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full px-3 py-2 bg-[#12141a] border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                className="w-full px-3 py-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-gray-300 mb-1">
-              Ghi Chú & Điều Khoản Cung Ứng
+            <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+              Ghi Chú &amp; Điều Khoản Cung Ứng
             </label>
             <textarea
               rows={2}
               placeholder="Chính sách giao hàng, công nợ 15 ngày, chiết khấu..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-3 py-2 bg-[#12141a] border border-white/10 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+              className="w-full px-3 py-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
             />
           </div>
 
           {/* Chọn các nguyên liệu cung cấp */}
-          <div className="pt-2 border-t border-white/10">
+          <div className="pt-3 border-t border-stone-200/80 dark:border-stone-800">
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 uppercase tracking-wider">
                 Chọn Các Nguyên Vật Liệu Cung Cấp ({suppliedMaterials.length} đã chọn)
               </label>
               <div className="relative w-48">
-                <FaSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs" />
+                <FiSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs" />
                 <input
                   type="text"
                   placeholder="Lọc nguyên liệu..."
                   value={materialSearch}
                   onChange={(e) => setMaterialSearch(e.target.value)}
-                  className="w-full pl-7 pr-2 py-1 bg-[#12141a] border border-white/10 rounded text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full pl-7 pr-2 py-1 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-lg text-xs text-stone-900 dark:text-[#efe9de] placeholder-stone-400 focus:outline-none focus:border-stone-400 dark:focus:border-stone-500"
                 />
               </div>
             </div>
 
             {/* List of materials to toggle */}
-            <div className="max-h-48 overflow-y-auto p-2 bg-[#12141a] rounded-xl border border-white/10 space-y-1.5">
+            <div className="max-h-48 overflow-y-auto p-2 bg-stone-50/70 dark:bg-[#25221e] rounded-2xl border border-stone-200/80 dark:border-stone-800 space-y-1.5">
               {filteredMaterials.map((mat) => {
                 const matId = mat._id || mat.id || "";
                 const isSelected = suppliedMaterials.some((sm) => sm.material_id === matId);
@@ -278,28 +273,26 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                 return (
                   <div
                     key={matId}
-                    className={`p-2 rounded-lg flex items-center justify-between transition-all ${
-                      isSelected
-                        ? "bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-white"
-                        : "bg-[#181a24] border border-white/5 text-gray-300 hover:border-white/20"
-                    }`}
+                    className={`p-2 rounded-xl flex items-center justify-between transition-all ${isSelected
+                        ? "bg-stone-200/80 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-[#efe9de]"
+                        : "bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800/60 text-stone-600 dark:text-stone-400 hover:border-stone-300 dark:hover:border-stone-700"
+                      }`}
                   >
                     <div
                       className="flex items-center gap-2.5 flex-1 cursor-pointer select-none"
                       onClick={() => handleToggleMaterial(mat)}
                     >
                       <div
-                        className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${
-                          isSelected
-                            ? "bg-[#D4AF37] text-black font-bold"
-                            : "border border-gray-500"
-                        }`}
+                        className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${isSelected
+                            ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-bold"
+                            : "border border-stone-300 dark:border-stone-600"
+                          }`}
                       >
-                        {isSelected && <FaCheck />}
+                        {isSelected && <FiCheck className="w-3 h-3 text-stone-400" />}
                       </div>
                       <div>
                         <div className="font-semibold text-xs">{mat.name}</div>
-                        <div className="text-[10px] text-gray-400 font-mono">
+                        <div className="text-[10px] text-stone-400 font-mono">
                           {mat.code} • {mat.unit}
                         </div>
                       </div>
@@ -307,7 +300,7 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
 
                     {isSelected && (
                       <div className="flex items-center gap-1.5 ml-2">
-                        <span className="text-[10px] text-gray-400">Giá nhập:</span>
+                        <span className="text-[10px] text-stone-500 dark:text-stone-400">Giá nhập:</span>
                         <input
                           type="number"
                           placeholder="Giá"
@@ -315,9 +308,9 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
                           onChange={(e) =>
                             handlePriceChange(matId, parseFloat(e.target.value) || 0)
                           }
-                          className="w-20 text-center py-0.5 bg-[#12141a] border border-[#D4AF37]/40 rounded text-xs text-white font-mono"
+                          className="w-20 text-center py-0.5 bg-white dark:bg-[#1c1a17] border border-stone-300 dark:border-stone-700 rounded-lg text-xs text-stone-900 dark:text-[#efe9de] font-mono focus:outline-none"
                         />
-                        <span className="text-[10px] text-gray-400">đ</span>
+                        <span className="text-[10px] text-stone-400">đ</span>
                       </div>
                     )}
                   </div>
@@ -327,21 +320,28 @@ export const CreateSupplierModal: React.FC<CreateSupplierModalProps> = ({
           </div>
 
           {/* Action buttons */}
-          <div className="pt-3 border-t border-white/10 flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-stone-200/80 dark:border-stone-800 flex items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
               disabled={createMutation.isPending}
-              className="px-4 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-200/60 dark:hover:bg-stone-800 transition cursor-pointer"
             >
               Hủy
             </button>
             <button
               type="submit"
               disabled={createMutation.isPending}
-              className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#D4AF37] hover:bg-[#c4a132] text-black shadow-md transition-all flex items-center gap-2"
+              className="px-5 py-2 rounded-xl text-xs font-semibold bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-stone-100 dark:text-stone-900 shadow-xs transition flex items-center gap-2 cursor-pointer"
             >
-              {createMutation.isPending ? "Đang lưu..." : "Thêm Nhà Cung Cấp"}
+              {createMutation.isPending ? (
+                <>
+                  <FiLoader className="w-3.5 h-3.5 animate-spin text-stone-400" />
+                  <span>Đang lưu...</span>
+                </>
+              ) : (
+                <span>Thêm Nhà Cung Cấp</span>
+              )}
             </button>
           </div>
         </form>

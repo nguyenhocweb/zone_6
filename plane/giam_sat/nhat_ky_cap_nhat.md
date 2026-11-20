@@ -4,6 +4,87 @@
 
 ---
 
+### [2026-11-20 16:40] - Tái Thiết Kế Toàn Diện Các Phân Hệ Còn Lại (Kho Vật Liệu, Sổ Tay Công Thức, Yêu Cầu Nhập Kho, Thu Mua PO, Nhà Cung Cấp, Uploader Lịch) Chuẩn Scandinavian Dual-Theme Warm Linen / Warm Espresso & 100% Icon Feather Xám Trung Tính
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Hoàn tất đồng bộ toàn diện tất cả các phân hệ và modal còn lại sang chuẩn Scandinavian Warm Linen (`#f7f4ee`) & Warm Espresso (`#141311`), loại bỏ triệt để mã màu đen pitch-black `#0B0C10`/`#12141A`/`#181B24`/`#161820` và vàng neon `#D4AF37`, chuẩn hóa 100% icon sang Feather `Fi*` màu xám trung tính (`text-stone-400 dark:text-stone-400`), thay thế toàn bộ hộp thoại xóa tự chế bằng `<ConfirmModal>` chuẩn hệ thống.
+- **Nội dung hoàn thành:**
+  - **1. Phân hệ Yêu Cầu Nhập Kho & Thu Mua PO (`/materials`, `/procurement`):**
+    - `CreateRequisitionModal.tsx`: Chuyển đổi toàn diện sang dual-theme, thẻ gợi ý nhập kho thông minh, nút mức độ ưu tiên pill, bảng nguyên liệu bo góc thanh lịch, 100% icon Feather (`FiHome`, `FiZap`, `FiPlus`, `FiTrash2`, `FiAlertTriangle`, `FiCheck`, `FiLoader`).
+    - `RequisitionDetailModal.tsx`: Thẻ chi tiết duyệt số lượng và từ chối yêu cầu, bảng đối chiếu tồn/min/xin duyệt dual-theme, 100% icon Feather (`FiFileText`, `FiHome`, `FiUser`, `FiCheck`, `FiSlash`, `FiLoader`).
+    - `RequisitionListView.tsx`: Thanh công cụ tìm kiếm & bộ lọc phân loại Segmented Pills, bảng danh sách phiếu yêu cầu đa cơ sở với tính năng chọn gộp đơn PO, 100% icon Feather (`FiSearch`, `FiPlus`, `FiTruck`, `FiFileText`, `FiHome`, `FiClock`, `FiCheckCircle`, `FiXCircle`).
+    - `PoAggregationModal.tsx`: Ma trận gộp đơn PO đa chi nhánh theo Nhà cung cấp, bộ chọn chế độ Gộp/Tách và điểm nhận hàng Hub/Store, bảng phân bổ từng quán, 100% icon Feather (`FiLayers`, `FiHome`, `FiPackage`, `FiTruck`, `FiCheck`, `FiLoader`).
+    - `PoDetailModal.tsx`: Modal chi tiết đơn PO & xác nhận nhập kho thực tế cộng dồn tồn kho, thẻ thông tin giao hàng & thanh toán, bảng kiểm đếm, 100% icon Feather (`FiTruck`, `FiMapPin`, `FiCalendar`, `FiCheck`, `FiPackage`, `FiLoader`).
+    - `ProcurementDashboard.tsx`: 4 thẻ KPI thu mua font mono, thanh lọc trạng thái và loại đơn, bảng đơn hàng PO phát hành đa chi nhánh, 100% icon Feather.
+    - `fe/src/app/procurement/page.tsx`: Banner Scandinavian chuẩn mực, loại bỏ emoji và mã màu cố định cũ.
+  - **2. Phân hệ Quản Lý Nhà Cung Cấp (Suppliers Management):**
+    - `CreateSupplierModal.tsx` & `EditSupplierModal.tsx`: Modal thêm/sửa nhà cung cấp, liên kết danh mục vật tư cung ứng kèm giá sỉ, bộ lọc tìm kiếm nguyên liệu, 100% icon Feather (`FiTruck`, `FiEdit3`, `FiSearch`, `FiCheck`, `FiLoader`).
+    - `SuppliersTable.tsx`: Bảng quản lý nhà cung cấp, thông tin liên hệ đa kênh, danh sách nguyên liệu liên kết, tích hợp `<ConfirmModal>` cho thao tác xóa nhà cung cấp.
+  - **3. Phân hệ Uploader Lịch Tuần (`ScheduleUploader.tsx`):**
+    - Loại bỏ mã màu đen obsidian và viền vàng neon cũ; chuyển sang thẻ kéo thả tệp Excel viền nét đứt thanh lịch, nút Mẫu V2 và Modal nạp Google Drive theo chuẩn Warm Linen / Warm Espresso, 100% icon Feather (`FiUploadCloud`, `FiZap`, `FiGlobe`, `FiEye`, `FiLoader`).
+- **Tệp thay đổi:**
+  - `fe/src/features/pho_ca_vat_lieu/purchase_requisition/component/CreateRequisitionModal.tsx`
+  - `fe/src/features/pho_ca_vat_lieu/purchase_requisition/component/RequisitionDetailModal.tsx`
+  - `fe/src/features/pho_ca_vat_lieu/purchase_requisition/component/RequisitionListView.tsx`
+  - `fe/src/features/quan_ly/procurement/component/PoAggregationModal.tsx`
+  - `fe/src/features/quan_ly/procurement/component/PoDetailModal.tsx`
+  - `fe/src/features/quan_ly/procurement/component/ProcurementDashboard.tsx`
+  - `fe/src/app/procurement/page.tsx`
+  - `fe/src/features/admin_he_thong/supplier/component/CreateSupplierModal.tsx`
+  - `fe/src/features/admin_he_thong/supplier/component/EditSupplierModal.tsx`
+  - `fe/src/features/admin_he_thong/supplier/component/SuppliersTable.tsx`
+  - `fe/src/features/pho_ca_lam_lich/scheduling/component/ScheduleUploader.tsx`
+- **Verification:**
+  - Chạy `tsc -p fe/tsconfig.json --noEmit` đạt 0 lỗi (TypeScript code 0).
+  - Kiểm tra toàn bộ mã nguồn không còn hộp thoại trình duyệt `alert()`, `confirm()`, `prompt()`.
+
+---
+
+### [2026-11-19 16:15] - Tái Thiết Kế Toàn Diện 5 Phân Hệ Quản Trị Hệ Thống (/staff, /checkin-config, /stores, /zalo, /payos) Chuẩn Scandinavian Dual-Theme & Toàn Bộ Icon Xám Trung Tính
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Tái thiết kế đồng bộ toàn bộ các trang chức năng trong menu sidebar quản trị:
+  1. Quản Lý Nhân Sự (`/staff`)
+  2. Cấu Hình Check-in (`/checkin-config`)
+  3. Quản Lý Chi Nhánh (`/stores`)
+  4. Zalo Bot (zca-js) (`/zalo`)
+  5. Cấu Hình PayOS (`/payos`)
+  Loại bỏ 100% giao diện đen obsidian `#0B0C10`/`#12141A`/`#181B24`, vàng neon `#D4AF37`, icon sặc sỡ FontAwesome `Fa*`, chuẩn hóa sang hệ thống Warm Linen `#f7f4ee` (Sáng) & Warm Espresso `#141311` (Tối), viền đá mềm mại, toàn bộ icon chuyển sang Feather `Fi*` màu xám trung tính (`text-stone-400 dark:text-stone-400`).
+- **Nội dung hoàn thành:**
+  - **1. Phân hệ Quản Lý Nhân Sự (`/staff`):**
+    - `StaffManagementView.tsx`: Banner card đá, 4 thẻ KPI chỉ số nhân sự (Tổng nhân sự, Đang làm việc, Tạm dừng, Trưởng ca/Quản lý) font mono, thanh lọc chi nhánh + tìm kiếm + vai trò, bảng nhân sự hover êm ái, badge vai trò pastel.
+    - `CreateStaffModal.tsx` & `EditStaffModal.tsx`: Modal tạo và sửa nhân sự đa vai trò, giới hạn cấp bậc (Trưởng ca không được phân quyền ngang hoặc hơn mình), gán cơ sở, preset lương giờ, toggle kích hoạt.
+    - `StaffQrModal.tsx`: Modal hiển thị mã QR điểm danh ca trực độ phân giải cao, nút sao chép mã và tải ảnh QR.
+  - **2. Phân hệ Cấu Hình Check-in & Định Vị Cơ Sở (`/checkin-config`):**
+    - `CheckinConfigView.tsx`: Bộ chuyển đổi đa cơ sở, thẻ định vị GPS Geofence với thanh đo bán kính & nút test khoảng cách HUD, thẻ khung giờ vào ca Time Window & Timeline trực quan, thẻ gọi món tại bàn & chống troll GPS (Song hành/Quầy/Tại bàn), thẻ cấu hình thuế VAT theo ca làm việc.
+  - **3. Phân hệ Quản Lý Chi Nhánh (`/stores`):**
+    - `StoreManagementView.tsx`: Banner quản lý chi nhánh, 3 thẻ KPI (Tổng chi nhánh, Đang mở cửa, Đã đóng cửa), thanh tìm kiếm và bộ lọc trạng thái Segmented Pills.
+    - `StoreCard.tsx`: Thẻ chi nhánh thiết kế theo phong cách Scandinavian, huy hiệu mở/đóng cửa, thông số bán kính và giờ ca font mono, liên kết Google Maps.
+    - `CreateStoreModal.tsx` & `EditStoreModal.tsx`: Modal khởi tạo và chỉnh sửa chi nhánh, tự động dò GPS & reverse geocoding địa chỉ thực tế, cấu hình VAT và danh sách ca áp dụng.
+    - `CloseStoreConfirmModal.tsx` & `DeleteStoreConfirmModal.tsx`: Tích hợp `<ConfirmModal>` chuẩn hệ thống.
+  - **4. Phân hệ Zalo Bot Đa Cơ Sở (`/zalo`):**
+    - `ZaloManager.tsx`: Banner điều hành và trạng thái kết nối WebSocket Online/Offline, bộ chuyển đổi chi nhánh, thẻ tài khoản Zalo & mã QR đăng nhập với bộ đếm ngược, thẻ quy chuẩn đặt tên nhóm 4 nghiệp vụ, lưới 4 thẻ kênh nghiệp vụ (Điểm danh, Kho, Lịch tuần, Thông báo chung) hỗ trợ gán ID nhóm tự động và gửi tin thử nghiệm.
+  - **5. Phân hệ Cấu Hình Cổng Thanh Toán PayOS (`/payos`):**
+    - `PayOSManagementView.tsx`: Banner quản lý PayOS Open Banking, 3 thẻ KPI (Tổng tài khoản, Đang thanh toán chính, Cơ chế bảo mật).
+    - `PayOSAccountCard.tsx`: Thẻ tài khoản PayOS với huy hiệu tài khoản chính duy nhất, thẻ ngân hàng thụ hưởng VietQR, bảng điều khiển ẩn/hiện mã Client ID, API Key, Checksum Key, nút kiểm tra kết nối webhook và nút đặt làm tài khoản chính.
+    - `PayOSAccountModal.tsx`: Modal thêm và chỉnh sửa cấu hình PayOS, chọn nhanh mã ngân hàng, kiểm tra kết nối tức thời, kích hoạt tài khoản chính duy nhất.
+- **Tệp thay đổi:**
+  - `fe/src/features/quan_ly/staff/component/StaffManagementView.tsx`
+  - `fe/src/features/quan_ly/staff/component/CreateStaffModal.tsx`
+  - `fe/src/features/quan_ly/staff/component/EditStaffModal.tsx`
+  - `fe/src/features/quan_ly/staff/component/StaffQrModal.tsx`
+  - `fe/src/features/admin_he_thong/checkin-config/component/CheckinConfigView.tsx`
+  - `fe/src/features/admin_he_thong/store/component/StoreManagementView.tsx`
+  - `fe/src/features/admin_he_thong/store/component/StoreCard.tsx`
+  - `fe/src/features/admin_he_thong/store/component/CreateStoreModal.tsx`
+  - `fe/src/features/admin_he_thong/store/component/EditStoreModal.tsx`
+  - `fe/src/features/admin_he_thong/store/component/CloseStoreConfirmModal.tsx`
+  - `fe/src/features/admin_he_thong/store/component/DeleteStoreConfirmModal.tsx`
+  - `fe/src/features/admin_he_thong/zalo/component/ZaloManager.tsx`
+  - `fe/src/features/admin_he_thong/payos/component/PayOSManagementView.tsx`
+  - `fe/src/features/admin_he_thong/payos/component/PayOSAccountCard.tsx`
+  - `fe/src/features/admin_he_thong/payos/component/PayOSAccountModal.tsx`
+- **Verification:**
+  - `node ./fe/node_modules/typescript/bin/tsc -p fe/tsconfig.json --noEmit`: 0 lỗi (Exit Code 0).
+
 ### [2026-11-16 17:10] - Khắc Phục Lỗi 'Run Command Timeout' Khi Deploy Docker Backend Lên VPS Qua GitHub Actions
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Xử lý sự cố GitHub Actions deploy thất bại với lỗi `2026/11/16 07:37:54 Run Command Timeout` tại bước `#12 [backend builder 8/8] RUN npx tsc`.
