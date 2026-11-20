@@ -24,14 +24,14 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   onConfirmSuccess,
   isSubmitting,
 }) => {
-  if (!isOpen) return null;
-
   const { data: defaultPayOS } = useGetDefaultPayOSConfig();
+
+  if (!isOpen) return null;
 
   // Cấu hình tài khoản VietQR thụ hưởng Zone Six
   const bankId = defaultPayOS?.bank_name || 'MB';
-  const accountNo = defaultPayOS?.account_number || '0353489999';
-  const accountName = defaultPayOS?.account_holder_name || 'ZONE SIX COFFEE & LOUNGE';
+  const accountNo = defaultPayOS?.account_number || 'VQRQANTPI3912';
+  const accountName = defaultPayOS?.account_holder_name || 'NGUYEN VAN NGUYEN';
 
   const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(
     orderCode
