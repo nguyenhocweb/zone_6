@@ -424,6 +424,8 @@ export function PosView() {
         tableNumber={cart?.tableNumber}
         onConfirmSuccess={handleVietQrSuccess}
         paymentSuccessEvent={paymentSuccessAlert}
+        payosQrCode={(pendingOrderRecord as any)?.payos_qr_code}
+        payosOrderCode={(pendingOrderRecord as any)?.payos_order_code}
       />
 
       {/* Modal Lịch Sử Đơn Hàng */}

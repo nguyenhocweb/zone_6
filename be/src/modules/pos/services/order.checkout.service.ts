@@ -5,6 +5,7 @@ import { TableRepository } from '../../admin_he_thong/table/repositories/table.r
 import { emitTableEvent } from '../../admin_he_thong/table/socket/table.socket.js';
 import { IOrder, IOrderItem } from '../models/order.model.js';
 import { StoreConfigModel } from '../../admin_he_thong/store-config/models/store-config.model.js';
+import { PayOSPaymentService } from '../../admin_he_thong/payos/services/payos-payment.service.js';
 import { BadRequestError } from '../../../core/errors.js';
 
 export interface ICheckoutInput {
@@ -142,6 +143,24 @@ export class OrderCheckoutService {
       input.paymentStatus === 'PENDING' ||
       (input.paymentMethod === 'VIETQR' && input.paymentStatus !== 'COMPLETED');
 
+    // 3. Với phương thức VietQR: Tự động khởi tạo Payment Request chính thức trên máy chủ PayOS
+    let payosData: any = null;
+    if (input.paymentMethod === 'VIETQR') {
+      try {
+        const payosPaymentService = new PayOSPaymentService();
+        const numericOrderCode = Number(Date.now().toString().slice(-9));
+        const cleanDesc = `Z6 ${orderSeq}`;
+        payosData = await payosPaymentService.createPaymentLink({
+          orderCode: numericOrderCode,
+          amount: calculatedFinalAmount,
+          description: cleanDesc,
+          expiredAt: Math.floor(Date.now() / 1000) + 600, // 10 phút
+        });
+      } catch {
+        // Dự phòng nếu lỗi mạng hoặc offline
+      }
+    }
+
     const orderData: Partial<IOrder> = {
       store_id: new mongoose.Types.ObjectId(input.storeId),
       shift_id: input.shiftId && mongoose.Types.ObjectId.isValid(input.shiftId)
@@ -159,6 +178,10 @@ export class OrderCheckoutService {
       final_amount: calculatedFinalAmount,
       payment_method: input.paymentMethod,
       payment_status: isPendingPayment ? 'PENDING' : 'COMPLETED',
+      payos_order_code: payosData?.orderCode,
+      payos_payment_link_id: payosData?.paymentLinkId,
+      payos_qr_code: payosData?.qrCode,
+      payos_checkout_url: payosData?.checkoutUrl,
       created_by_id: new mongoose.Types.ObjectId(input.user.userId),
       created_by_name: input.user.name,
       paid_by_id: isPendingPayment ? undefined : new mongoose.Types.ObjectId(input.user.userId),

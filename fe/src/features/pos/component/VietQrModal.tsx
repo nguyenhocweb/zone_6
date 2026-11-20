@@ -15,10 +15,12 @@ interface VietQrModalProps {
   tableNumber?: string;
   onConfirmSuccess: (order?: any) => void;
   paymentSuccessEvent?: {
-    orderCode: string;
+    orderCode: string | number;
     amount: number;
     order?: any;
   } | null;
+  payosQrCode?: string;
+  payosOrderCode?: number;
 }
 
 export const VietQrModal: React.FC<VietQrModalProps> = ({
@@ -29,6 +31,8 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   tableNumber,
   onConfirmSuccess,
   paymentSuccessEvent,
+  payosQrCode,
+  payosOrderCode,
 }) => {
   const { data: defaultPayOS } = useGetDefaultPayOSConfig();
 
@@ -78,16 +82,18 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   useEffect(() => {
     if (!isOpen || isPaid || isExpired || !orderCode || !paymentSuccessEvent) return;
 
-    const eventCode = paymentSuccessEvent.orderCode || paymentSuccessEvent.order?.order_code;
-    const cleanEventCode = (eventCode || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    const eventCode = String(paymentSuccessEvent.orderCode || paymentSuccessEvent.order?.order_code || '');
+    const cleanEventCode = eventCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
     const cleanTargetCode = orderCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    const isPayosCodeMatch = payosOrderCode && String(payosOrderCode) === String(eventCode);
 
     if (
-      cleanEventCode &&
-      cleanTargetCode &&
-      (cleanEventCode === cleanTargetCode ||
-        cleanEventCode.includes(cleanTargetCode) ||
-        cleanTargetCode.includes(cleanEventCode))
+      isPayosCodeMatch ||
+      (cleanEventCode &&
+        cleanTargetCode &&
+        (cleanEventCode === cleanTargetCode ||
+          cleanEventCode.includes(cleanTargetCode) ||
+          cleanTargetCode.includes(cleanEventCode)))
     ) {
       setIsPaid(true);
       setReceivedAmount(paymentSuccessEvent.amount);
@@ -138,9 +144,11 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   const accountNo = defaultPayOS?.account_number || '093588454123';
   const accountName = defaultPayOS?.account_holder_name || 'NGUYEN VAN NGUYEN';
 
-  const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(
-    orderCode
-  )}&accountName=${encodeURIComponent(accountName)}`;
+  const qrUrl = payosQrCode
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payosQrCode)}`
+    : `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(
+        orderCode
+      )}&accountName=${encodeURIComponent(accountName)}`;
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);

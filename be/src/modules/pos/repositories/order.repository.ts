@@ -34,6 +34,16 @@ export class OrderRepository {
     return OrderModel.findOne({ order_code: orderCode.trim() }).exec();
   }
 
+  async findByPayOSOrderCode(orderCode: number | string): Promise<IOrder | null> {
+    if (!orderCode) return null;
+    const num = Number(orderCode);
+    if (!isNaN(num)) {
+      const order = await OrderModel.findOne({ payos_order_code: num }).exec();
+      if (order) return order;
+    }
+    return OrderModel.findOne({ order_code: String(orderCode).trim() }).exec();
+  }
+
   async findPendingByDescription(description: string): Promise<IOrder | null> {
     if (!description) return null;
     const cleanDesc = description.trim();

@@ -41,6 +41,10 @@ export interface IOrder extends Document {
   created_by_name: string;
   paid_by_id?: mongoose.Types.ObjectId;
   paid_by_name?: string;
+  payos_order_code?: number;
+  payos_payment_link_id?: string;
+  payos_qr_code?: string;
+  payos_checkout_url?: string;
   void_reason?: string;
   voided_by_id?: mongoose.Types.ObjectId;
   voided_by_name?: string;
@@ -111,6 +115,10 @@ const OrderSchema = new Schema<IOrder>(
     created_by_name: { type: String, required: true },
     paid_by_id: { type: Schema.Types.ObjectId, ref: 'users' },
     paid_by_name: { type: String },
+    payos_order_code: { type: Number, index: true },
+    payos_payment_link_id: { type: String },
+    payos_qr_code: { type: String },
+    payos_checkout_url: { type: String },
     void_reason: { type: String, default: null },
     voided_by_id: { type: Schema.Types.ObjectId, ref: 'users', default: null },
     voided_by_name: { type: String, default: null },

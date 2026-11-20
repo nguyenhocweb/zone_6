@@ -74,10 +74,14 @@ export class PayOSWebhookService {
       return { success: true, message: 'Payment not successful' };
     }
 
-    // 2. Tìm đơn hàng tương ứng (theo orderCode hoặc description)
+    // 2. Tìm đơn hàng tương ứng (theo payos_order_code, description hoặc orderCode)
     let matchedOrder = null;
 
-    if (description) {
+    if (orderCode) {
+      matchedOrder = await this.orderRepo.findByPayOSOrderCode(orderCode);
+    }
+
+    if (!matchedOrder && description) {
       matchedOrder = await this.orderRepo.findPendingByDescription(description);
     }
 

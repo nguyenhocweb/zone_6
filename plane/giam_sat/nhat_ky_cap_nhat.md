@@ -4,6 +4,26 @@
 
 ---
 
+### [2026-11-20 22:30] - Tích Hợp API PayOS CreatePaymentLink Khởi Tạo Giao Dịch Chính Thức Trên Máy Chủ PayOS
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Làm rõ lý do thanh toán thành công nhưng chưa nhận sự kiện trả về từ PayOS và khắc phục triệt để.
+- **Nội dung hoàn thành:**
+  - **Phân tích nguyên nhân:** PayOS hoạt động theo cơ chế Dynamic Payment Gateway, chỉ phát Webhook khi giao dịch thuộc về một Payment Request được khởi tạo chính thức qua API `/v2/payment-requests`. Trước đó POS chỉ sinh ảnh QR tĩnh bên ngoài nên PayOS không có bản ghi đơn hàng để đối soát.
+  - **Tạo dịch vụ PayOSPaymentService:** Xây dựng `payos-payment.service.ts` gọi `POST https://api-merchant.payos.vn/v2/payment-requests` với chữ ký HMAC-SHA256, tự động đăng ký đơn hàng lên PayOS và nhận về chuỗi VietQR chuẩn EMVCo cùng `orderCode` số nguyên.
+  - **Tích hợp vào OrderCheckoutService:** Khi thanh toán VietQR trên POS, hệ thống đồng thời tạo đơn PENDING và đăng ký Payment Request trên PayOS (hiệu lực 10 phút).
+  - **Cập nhật VietQrModal & PosView:** Modal hiển thị mã VietQR chính thức do PayOS cấp, tự động đối soát chính xác theo `payos_order_code`.
+  - **Kiểm thử:** `tsc --noEmit` đạt 0 lỗi, API PayOS trả về `code: "00"` thành công.
+- **Tệp thay đổi:**
+  - `be/src/modules/admin_he_thong/payos/services/payos-payment.service.ts` (Mới)
+  - `be/src/modules/pos/services/order.checkout.service.ts`
+  - `be/src/modules/pos/models/order.model.ts`
+  - `be/src/modules/pos/repositories/order.repository.ts`
+  - `be/src/modules/admin_he_thong/payos/services/payos-webhook.service.ts`
+  - `fe/src/features/pos/component/PosView.tsx`
+  - `fe/src/features/pos/component/VietQrModal.tsx`
+
+---
+
 ### [2026-11-20 22:15] - Thiết Lập Bộ Đếm Ngược 10 Phút Hết Hạn Mã VietQR & Đồng Bộ Số Tài Khoản MBBank Chuẩn NAPAS 24/7 (093588454123)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**
