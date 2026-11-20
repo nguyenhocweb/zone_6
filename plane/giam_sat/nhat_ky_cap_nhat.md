@@ -4,6 +4,27 @@
 
 ---
 
+### [2026-11-20 22:15] - Thiết Lập Bộ Đếm Ngược 10 Phút Hết Hạn Mã VietQR & Đồng Bộ Số Tài Khoản MBBank Chuẩn NAPAS 24/7 (093588454123)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Giới hạn thời gian tồn tại của mã QR là 10 phút.
+  2. Giải thích và khắc phục lỗi ngân hàng báo "hệ thống chuyển tiền 24/7 ngân hàng thụ hưởng đang bị lỗi".
+- **Nội dung hoàn thành:**
+  - **Khắc phục lỗi chuyển tiền 24/7 của ngân hàng thụ hưởng:**
+    - Phát hiện nguyên nhân: Mã QR trước đó sử dụng số tài khoản định danh ảo `VQRQANTPI3912` (VietQR Pro alias). Một số ứng dụng ngân hàng khi chuyển khoản liên ngân hàng qua NAPAS 24/7 không hỗ trợ số tài khoản chứa chữ cái (`VQRQ...`) dẫn đến NAPAS báo lỗi *"hệ thống chuyển tiền 24/7 ngân hàng thụ hưởng đang bị lỗi"*.
+    - Cập nhật số tài khoản thụ hưởng trong MongoDB Atlas (`payos_configs`) sang số tài khoản MBBank chuẩn: `093588454123` (số điện thoại mở tài khoản của anh Nguyễn Văn Nguyên). Số tài khoản này tương thích 100% mọi ngân hàng tại Việt Nam qua NAPAS 24/7.
+  - **Giới hạn thời gian tồn tại mã QR 10 phút (600 giây):**
+    - Bổ sung bộ đếm ngược thời gian `timeLeft` (10:00 -> 00:00) hiển thị huy hiệu đồng hồ trực quan trên cả `VietQrModal.tsx` và `TableVietQrModal.tsx`.
+    - Khi hết 10 phút: Mã QR tự động dừng lắng nghe, chuyển sang giao diện cảnh báo hết hạn và cung cấp nút "Gia Hạn Thêm 10 Phút" hoặc đóng modal để bảo vệ an toàn giao dịch.
+  - **Đồng bộ ngrok Webhook:** Ngrok tunnel đã được khởi động và đăng ký thành công với PayOS tại `https://giant-drudge-pastime.ngrok-free.dev/api/v1/payos/webhook`.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` toàn bộ Backend và Frontend đạt 0 lỗi.
+- **Tệp thay đổi:**
+  - `fe/src/features/pos/component/VietQrModal.tsx`
+  - `fe/src/features/table-order/component/TableVietQrModal.tsx`
+  - MongoDB Atlas `payos_configs` (Cập nhật `account_number: '093588454123'`)
+
+---
+
 ### [2026-11-20 18:35] - Triển Khai Luồng Thanh Toán Tự Động PayOS Webhook + WebSocket & Loại Bỏ Nút Xác Nhận Thủ Công Trên POS Và Gọi Món Tại Bàn
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Bỏ nút xác nhận thanh toán thủ công ("Xác Nhận Đã Thanh Toán" / "Tôi Đã Chuyển Khoản Xong"), chuyển sang cơ chế WebSocket thời gian thực tự động nhận tín hiệu thành công từ PayOS Webhook để chốt đơn, tuyệt đối không cho phép tự ý xác nhận thủ công.

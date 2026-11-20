@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { FiX, FiCheckCircle, FiCopy, FiLoader } from 'react-icons/fi';
+import { FiX, FiCheckCircle, FiCopy, FiLoader, FiClock, FiAlertTriangle, FiRefreshCw } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { useGetDefaultPayOSConfig } from '@/features/admin_he_thong/payos/hook/useGetDefaultPayOSConfig';
 import { posService } from '../service/pos.service';
@@ -35,17 +35,48 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   const [isPaid, setIsPaid] = useState(false);
   const [receivedAmount, setReceivedAmount] = useState<number | null>(null);
 
-  // Reset trạng thái khi đóng/mở modal
+  // Đếm ngược thời gian hiệu lực của mã QR (10 phút = 600 giây)
+  const [timeLeft, setTimeLeft] = useState(600);
+  const [isExpired, setIsExpired] = useState(false);
+
+  // Reset trạng thái khi đóng/mở modal hoặc đổi mã đơn
   useEffect(() => {
     if (!isOpen) {
       setIsPaid(false);
       setReceivedAmount(null);
+      setTimeLeft(600);
+      setIsExpired(false);
+      return;
     }
-  }, [isOpen]);
 
-  // 1. Tự động nhận diện thanh toán từ WebSocket PayOS
+    setTimeLeft(600);
+    setIsExpired(false);
+
+    const countdown = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdown);
+          setIsExpired(true);
+          toast.warning('⏳ Mã QR thanh toán đã hết hạn (quá 10 phút)! Vui lòng làm mới.');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(countdown);
+  }, [isOpen, orderCode]);
+
+  // Format mm:ss
+  const formatCountdown = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  // 1. Tự động nhận diện thanh toán từ WebSocket PayOS (chỉ khi chưa hết hạn)
   useEffect(() => {
-    if (!isOpen || isPaid || !orderCode || !paymentSuccessEvent) return;
+    if (!isOpen || isPaid || isExpired || !orderCode || !paymentSuccessEvent) return;
 
     const eventCode = paymentSuccessEvent.orderCode || paymentSuccessEvent.order?.order_code;
     const cleanEventCode = (eventCode || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
@@ -71,11 +102,11 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
 
       return () => clearTimeout(timer);
     }
-  }, [isOpen, isPaid, orderCode, paymentSuccessEvent, onConfirmSuccess, totalAmount]);
+  }, [isOpen, isPaid, isExpired, orderCode, paymentSuccessEvent, onConfirmSuccess, totalAmount]);
 
   // 2. Cơ chế dự phòng: Tự động kiểm tra trạng thái đơn hàng định kỳ 3s (Polling)
   useEffect(() => {
-    if (!isOpen || isPaid || !orderCode) return;
+    if (!isOpen || isPaid || isExpired || !orderCode) return;
 
     const interval = setInterval(async () => {
       try {
@@ -98,13 +129,13 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isOpen, isPaid, orderCode, onConfirmSuccess, totalAmount]);
+  }, [isOpen, isPaid, isExpired, orderCode, onConfirmSuccess, totalAmount]);
 
   if (!isOpen) return null;
 
   // Cấu hình tài khoản VietQR thụ hưởng Zone Six (ưu tiên từ Database PayOS)
   const bankId = defaultPayOS?.bank_name || 'MB';
-  const accountNo = defaultPayOS?.account_number || 'VQRQANTPI3912';
+  const accountNo = defaultPayOS?.account_number || '093588454123';
   const accountName = defaultPayOS?.account_holder_name || 'NGUYEN VAN NGUYEN';
 
   const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(
@@ -114,6 +145,12 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast.success(`Đã sao chép ${label}`);
+  };
+
+  const handleRenewTime = () => {
+    setTimeLeft(600);
+    setIsExpired(false);
+    toast.info('Đã gia hạn mã QR thêm 10 phút.');
   };
 
   return (
@@ -158,6 +195,28 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
                 Hệ thống đang tự động đóng và hoàn tất đơn hàng...
               </p>
             </div>
+          ) : isExpired ? (
+            <div className="w-full flex flex-col items-center justify-center py-8 px-4 bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/30 rounded-3xl text-center space-y-3 animate-in fade-in">
+              <div className="w-14 h-14 rounded-full bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl">
+                <FiAlertTriangle className="w-7 h-7" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-rose-950 dark:text-rose-200">
+                  MÃ QR ĐÃ HẾT HẠN (QUÁ 10 PHÚT)
+                </h4>
+                <p className="text-xs text-stone-500 dark:text-stone-400 max-w-xs">
+                  Để đảm bảo an toàn giao dịch, mã thanh toán tự động hết hiệu lực sau 10 phút. Vui lòng bấm gia hạn để tiếp tục.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleRenewTime}
+                className="mt-2 py-2.5 px-5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition cursor-pointer flex items-center gap-2 shadow-xs"
+              >
+                <FiRefreshCw className="w-3.5 h-3.5" />
+                <span>Gia Hạn Thêm 10 Phút</span>
+              </button>
+            </div>
           ) : (
             <>
               {/* Ảnh VietQR Image */}
@@ -167,6 +226,15 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
                   alt="Mã VietQR Thanh Toán"
                   className="w-full h-auto object-contain rounded-lg"
                 />
+              </div>
+
+              {/* Huy hiệu đếm ngược 10 phút */}
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-xs shadow-2xs">
+                <FiClock className={`w-3.5 h-3.5 ${timeLeft < 120 ? 'text-rose-500 animate-pulse' : 'text-amber-500'}`} />
+                <span className="text-stone-500 dark:text-stone-400">Hiệu lực mã QR:</span>
+                <span className={`font-mono font-bold ${timeLeft < 120 ? 'text-rose-600 dark:text-rose-400' : 'text-stone-800 dark:text-stone-200'}`}>
+                  {formatCountdown(timeLeft)}
+                </span>
               </div>
 
               {/* Banner trạng thái tự động chờ WebSocket */}
