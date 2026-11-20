@@ -48,6 +48,7 @@ coverage/
 Thumbs.db
 *.pem
 .vercel
+ngrok*.yml
 *.tsbuildinfo
 
 # Impeccable Design Skill Suite (Local only)

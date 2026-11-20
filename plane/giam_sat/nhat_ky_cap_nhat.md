@@ -4,6 +4,21 @@
 
 ---
 
+### [2026-11-20 22:56] - Cấu Hình Tài Khoản Ngrok Độc Lập Cho Zone Six (Domain Tĩnh mystify-collie-acquire) & Tách Biệt Dự Án Khác
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Chuyển đổi sang tài khoản Ngrok mới cho Zone Six với domain tĩnh `mystify-collie-acquire.ngrok-free.dev` và giữ nguyên tài khoản Ngrok cũ cho dự án khác của người dùng.
+- **Nội dung hoàn thành:**
+  - **Tách biệt cấu hình không xung đột:** Tạo file cấu hình riêng `ngrok_zone6.yml` chứa authtoken mới của Zone Six và gán cổng quản lý `web_addr: 127.0.0.1:4041`, giữ nguyên 100% file cấu hình gốc `ngrok.yml` của dự án cũ (`nvnremix@gmail.com` chạy trên cổng 4040). Cả 2 dự án có thể bật Ngrok song song cùng lúc mà không bị xung đột.
+  - **Khởi động tunnel domain tĩnh:** Khởi động tunnel mới kết nối trực tiếp vào `https://mystify-collie-acquire.ngrok-free.dev` trỏ về port 8000.
+  - **Cập nhật Webhook trên PayOS:** Gọi API `POST https://api-merchant.payos.vn/confirm-webhook` đăng ký URL mới `https://mystify-collie-acquire.ngrok-free.dev/api/v1/payos/webhook`. PayOS đã xác thực và phản hồi `code: "00" - success`.
+  - **Tạo kịch bản chạy nhanh:** Tạo file `run-ngrok.bat` để người dùng dễ dàng bật/tắt Ngrok riêng cho Zone Six bằng một cú click chuột.
+- **Tệp thay đổi:**
+  - `ngrok_zone6.yml` (Cấu hình riêng)
+  - `run-ngrok.bat` (Script khởi chạy)
+  - `.gitignore` (Bảo mật file token)
+
+---
+
 ### [2026-11-20 22:38] - Khắc Phục Lỗi Modal VietQR Bị Đứng Yên Sau Khi Nhận Thanh Toán Thành Công
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Xử lý lỗi sau khi PayOS gửi webhook thành công và modal hiện "ĐÃ NHẬN THANH TOÁN! +5.000 VNĐ", modal lại bị đứng im ở dòng "Đang chuyển trang..." mà không tự động đóng hoàn tất đơn.
