@@ -33,6 +33,9 @@ export function PosView() {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
 
+  // Đơn hàng PENDING đang chờ PayOS Webhook
+  const [pendingOrderRecord, setPendingOrderRecord] = useState<IOrderRecord | null>(null);
+
   // Modal VietQR
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   // Modal Tiền Mặt (ConfirmModal chuẩn Obsidian Gold)
@@ -67,6 +70,7 @@ export function PosView() {
     isConnected,
     newOrderAlert,
     dismissNewOrderAlert,
+    paymentSuccessAlert,
     addItem,
     updateQuantity,
     clearCart,
@@ -174,7 +178,7 @@ export function PosView() {
   }, [shiftData?.storeId]);
 
   // 3. Mở thanh toán (Tiền mặt hoặc VietQR)
-  const handleOpenCheckout = (method: 'VIETQR' | 'CASH') => {
+  const handleOpenCheckout = async (method: 'VIETQR' | 'CASH') => {
     const items = cart?.items || [];
     if (items.length === 0) {
       toast.error('Vui lòng chọn ít nhất 1 món để thanh toán.');
@@ -183,18 +187,78 @@ export function PosView() {
 
     setPendingPaymentMethod(method);
     setLockForPayment(true);
-    setOrderCodePreview(`Z6-POS-${Date.now().toString().slice(-6)}`);
 
-    if (method === 'VIETQR') {
-      setIsQrModalOpen(true);
-    } else {
-      // Mở modal xác nhận tiền mặt chuẩn giao diện Obsidian Gold
+    if (method === 'CASH') {
+      setOrderCodePreview(`Z6-POS-${Date.now().toString().slice(-6)}`);
       setIsCashConfirmOpen(true);
+      return;
+    }
+
+    // Với VietQR: Tự động tạo đơn hàng PENDING để sinh mã chính xác và đón WebSocket PayOS
+    if (!shiftData || !user) return;
+    setIsCheckingOut(true);
+
+    try {
+      const createdPendingOrder = await posService.checkoutOrder({
+        storeId: shiftData.storeId,
+        shiftId: shiftData.shiftId,
+        shiftName: shiftData.shiftName,
+        sessionCode: shiftData.sessionCode,
+        tableNumber: cart.tableNumber,
+        customerName: cart.customerName,
+        items: cart.items,
+        totalAmount: cart.subtotal,
+        discountAmount: cart.discount,
+        vatRate: vatInfo.isApplied ? vatInfo.rate : 0,
+        vatAmount: vatInfo.isApplied ? vatInfo.amount : 0,
+        finalAmount: effectiveFinalTotal,
+        paymentMethod: 'VIETQR',
+        paymentStatus: 'PENDING',
+      });
+
+      setPendingOrderRecord(createdPendingOrder);
+      setOrderCodePreview(createdPendingOrder.order_code);
+      setIsQrModalOpen(true);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Không thể tạo đơn hàng chờ thanh toán');
+      setLockForPayment(false);
+    } finally {
+      setIsCheckingOut(false);
     }
   };
 
-  // 4. Xác nhận hoàn tất thanh toán
-  const handleConfirmPayment = async (method: 'VIETQR' | 'CASH') => {
+  // 4a. Xử lý khi PayOS Webhook báo thanh toán thành công qua WebSocket
+  const handleVietQrSuccess = (paidOrder?: any) => {
+    const finalOrder = paidOrder || pendingOrderRecord;
+    if (finalOrder) {
+      notifyOrderCompleted(finalOrder);
+    }
+    setIsQrModalOpen(false);
+    setPendingOrderRecord(null);
+    setLockForPayment(false);
+    clearCart();
+    toast.success('🎉 Đơn hàng đã được thanh toán thành công qua PayOS!');
+  };
+
+  // 4b. Hủy đơn VietQR khi đóng modal
+  const handleCancelVietQr = async () => {
+    if (pendingOrderRecord) {
+      const orderId = (pendingOrderRecord as any).id || (pendingOrderRecord as any)._id;
+      if (orderId) {
+        try {
+          await posService.cancelPendingOrder(orderId, shiftData?.sessionCode);
+        } catch {
+          // silent
+        }
+      }
+    }
+    setIsQrModalOpen(false);
+    setPendingOrderRecord(null);
+    setLockForPayment(false);
+  };
+
+  // 4c. Xác nhận hoàn tất thanh toán Tiền Mặt
+  const handleConfirmCashPayment = async () => {
     if (!shiftData || !user) return;
     setIsCheckingOut(true);
 
@@ -212,15 +276,17 @@ export function PosView() {
         vatRate: vatInfo.isApplied ? vatInfo.rate : 0,
         vatAmount: vatInfo.isApplied ? vatInfo.amount : 0,
         finalAmount: effectiveFinalTotal,
-        paymentMethod: method,
+        paymentMethod: 'CASH',
+        paymentStatus: 'COMPLETED',
       });
 
       // Phát sự kiện hoàn tất đơn cho tất cả đồng nghiệp trong ca
       notifyOrderCompleted(newOrder);
 
-      // Đóng modal
-      setIsQrModalOpen(false);
+      // Đóng modal tiền mặt & xóa giỏ hàng
+      setIsCashConfirmOpen(false);
       setLockForPayment(false);
+      clearCart();
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Thanh toán đơn hàng thất bại');
       setLockForPayment(false);
@@ -352,15 +418,12 @@ export function PosView() {
       {/* Modal Quét VietQR Động */}
       <VietQrModal
         isOpen={isQrModalOpen}
-        onClose={() => {
-          setIsQrModalOpen(false);
-          setLockForPayment(false);
-        }}
+        onClose={handleCancelVietQr}
         totalAmount={effectiveFinalTotal}
         orderCode={effectiveOrderCode}
         tableNumber={cart?.tableNumber}
-        onConfirmSuccess={() => handleConfirmPayment('VIETQR')}
-        isSubmitting={isCheckingOut}
+        onConfirmSuccess={handleVietQrSuccess}
+        paymentSuccessEvent={paymentSuccessAlert}
       />
 
       {/* Modal Lịch Sử Đơn Hàng */}
@@ -406,8 +469,7 @@ export function PosView() {
         cancelLabel="Hủy Bỏ"
         isLoading={isCheckingOut}
         onConfirm={() => {
-          setIsCashConfirmOpen(false);
-          handleConfirmPayment('CASH');
+          handleConfirmCashPayment();
         }}
         onCancel={() => {
           setIsCashConfirmOpen(false);

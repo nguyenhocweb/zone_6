@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaCheckCircle, FaCopy, FaTimes, FaQrcode, FaCheck } from 'react-icons/fa';
 import { toast } from 'sonner';
 import { useGetDefaultPayOSConfig } from '@/features/admin_he_thong/payos/hook/useGetDefaultPayOSConfig';
@@ -22,6 +22,26 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
   const [isDone, setIsDone] = useState(false);
 
   const { data: defaultPayOS } = useGetDefaultPayOSConfig();
+
+  // Tự động kiểm tra trạng thái thanh toán từ PayOS Webhook
+  useEffect(() => {
+    if (!order?.orderCode || isDone) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/v1/pos/order-status/${encodeURIComponent(order.orderCode)}`);
+        const json = await res.json();
+        if (json?.data?.paymentStatus === 'COMPLETED') {
+          setIsDone(true);
+          toast.success('🎉 Quầy Bar đã nhận được thanh toán thành công!');
+        }
+      } catch {
+        // silent
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [order?.orderCode, isDone]);
 
   if (!order) return null;
 
@@ -121,13 +141,13 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={handleFinish}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#f7d77b] text-black font-extrabold text-xs shadow-lg hover:brightness-110 active:scale-95 transition cursor-pointer"
-              >
-                Tôi Đã Chuyển Khoản Xong
-              </button>
+              <div className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-semibold">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                <span>Đang chờ chuyển khoản... Tự động xác nhận qua PayOS</span>
+              </div>
             </div>
           </>
         ) : (

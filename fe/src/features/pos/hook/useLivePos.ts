@@ -76,6 +76,11 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
   const [isConnected, setIsConnected] = useState(false);
   const [activeStaff, setActiveStaff] = useState<Array<{ userId: string; name: string }>>([]);
   const [newOrderAlert, setNewOrderAlert] = useState<ITableOrderNotification | null>(null);
+  const [paymentSuccessAlert, setPaymentSuccessAlert] = useState<{
+    orderCode: string;
+    amount: number;
+    order?: any;
+  } | null>(null);
   const socketRef = useRef<Socket | null>(null);
 
   // Trích xuất các trường nguyên thủy để làm dependencies, tránh re-connect loop do object reference
@@ -194,6 +199,12 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
           }
         );
       }
+    });
+
+    // Nhận thông báo thanh toán thành công tự động từ PayOS Webhook
+    socket.on('pos:payment_success', (data: { orderCode: string; amount: number; order: any }) => {
+      playOrderNotificationSound();
+      setPaymentSuccessAlert(data);
     });
 
     socket.on('pos:error', (data: { message: string }) => {
@@ -409,12 +420,19 @@ export function useLivePos(shiftData: IVerifyShiftData | null, user: { userId: s
     setNewOrderAlert(null);
   }, []);
 
+  // Đóng thông báo thanh toán thành công
+  const dismissPaymentSuccessAlert = useCallback(() => {
+    setPaymentSuccessAlert(null);
+  }, []);
+
   return {
     cart,
     isConnected,
     activeStaff,
     newOrderAlert,
     dismissNewOrderAlert,
+    paymentSuccessAlert,
+    dismissPaymentSuccessAlert,
     playOrderNotificationSound,
     addItem,
     updateQuantity,

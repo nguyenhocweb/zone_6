@@ -9,6 +9,7 @@ import { updatePayOSConfigController } from '../controllers/payos-config.update.
 import { deletePayOSConfigController } from '../controllers/payos-config.delete.controller.js';
 import { setDefaultPayOSConfigController } from '../controllers/payos-config.set-default.controller.js';
 import { testPayOSConfigController } from '../controllers/payos-config.test.controller.js';
+import { payOSWebhookController, payOSSimulatePaymentController } from '../controllers/payos-webhook.controller.js';
 import { validateBody } from '../../../../middlewares/validation.middleware.js';
 import { authenticate, requireRoles } from '../../../../middlewares/auth.middleware.js';
 import {
@@ -19,6 +20,10 @@ import {
 
 export function createPayOSRouter(): Router {
   const router = Router();
+
+  // === 0. PAYOS WEBHOOK CÔNG KHAI (PayOS Server gọi đến khi khách chuyển tiền thành công) ===
+  router.post('/webhook', payOSWebhookController);
+  router.post('/simulate-payment', payOSSimulatePaymentController);
 
   // === 1. TÀI KHOẢN THANH TOÁN CHÍNH ĐANG HOẠT ĐỘNG (DÀNH CHO POS & GỌI MÓN TẠI BÀN) ===
   // Trả về thông tin thụ hưởng công khai (không lộ api_key / checksum_key)

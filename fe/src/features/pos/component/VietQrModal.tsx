@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
-import { FiX, FiCheckCircle, FiCopy, FiAlertCircle } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { FiX, FiCheckCircle, FiCopy, FiLoader } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { useGetDefaultPayOSConfig } from '@/features/admin_he_thong/payos/hook/useGetDefaultPayOSConfig';
+import { posService } from '../service/pos.service';
+import { playOrderNotificationSound } from '../hook/useLivePos';
 
 interface VietQrModalProps {
   isOpen: boolean;
@@ -11,8 +13,12 @@ interface VietQrModalProps {
   totalAmount: number;
   orderCode: string;
   tableNumber?: string;
-  onConfirmSuccess: () => void;
-  isSubmitting: boolean;
+  onConfirmSuccess: (order?: any) => void;
+  paymentSuccessEvent?: {
+    orderCode: string;
+    amount: number;
+    order?: any;
+  } | null;
 }
 
 export const VietQrModal: React.FC<VietQrModalProps> = ({
@@ -22,13 +28,81 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   orderCode,
   tableNumber,
   onConfirmSuccess,
-  isSubmitting,
+  paymentSuccessEvent,
 }) => {
   const { data: defaultPayOS } = useGetDefaultPayOSConfig();
 
+  const [isPaid, setIsPaid] = useState(false);
+  const [receivedAmount, setReceivedAmount] = useState<number | null>(null);
+
+  // Reset trạng thái khi đóng/mở modal
+  useEffect(() => {
+    if (!isOpen) {
+      setIsPaid(false);
+      setReceivedAmount(null);
+    }
+  }, [isOpen]);
+
+  // 1. Tự động nhận diện thanh toán từ WebSocket PayOS
+  useEffect(() => {
+    if (!isOpen || isPaid || !orderCode || !paymentSuccessEvent) return;
+
+    const eventCode = paymentSuccessEvent.orderCode || paymentSuccessEvent.order?.order_code;
+    const cleanEventCode = (eventCode || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    const cleanTargetCode = orderCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+
+    if (
+      cleanEventCode &&
+      cleanTargetCode &&
+      (cleanEventCode === cleanTargetCode ||
+        cleanEventCode.includes(cleanTargetCode) ||
+        cleanTargetCode.includes(cleanEventCode))
+    ) {
+      setIsPaid(true);
+      setReceivedAmount(paymentSuccessEvent.amount);
+      playOrderNotificationSound();
+      toast.success(
+        `🎉 PayOS: Đã nhận thanh toán ${Number(paymentSuccessEvent.amount || totalAmount).toLocaleString()}đ!`
+      );
+
+      const timer = setTimeout(() => {
+        onConfirmSuccess(paymentSuccessEvent.order);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, isPaid, orderCode, paymentSuccessEvent, onConfirmSuccess, totalAmount]);
+
+  // 2. Cơ chế dự phòng: Tự động kiểm tra trạng thái đơn hàng định kỳ 3s (Polling)
+  useEffect(() => {
+    if (!isOpen || isPaid || !orderCode) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const status = await posService.checkOrderStatus(orderCode);
+        if (status?.paymentStatus === 'COMPLETED') {
+          setIsPaid(true);
+          setReceivedAmount(status.finalAmount);
+          playOrderNotificationSound();
+          toast.success(
+            `🎉 PayOS: Đã nhận thanh toán ${Number(status.finalAmount || totalAmount).toLocaleString()}đ!`
+          );
+
+          setTimeout(() => {
+            onConfirmSuccess();
+          }, 1500);
+        }
+      } catch {
+        // Dự phòng ngầm
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isOpen, isPaid, orderCode, onConfirmSuccess, totalAmount]);
+
   if (!isOpen) return null;
 
-  // Cấu hình tài khoản VietQR thụ hưởng Zone Six
+  // Cấu hình tài khoản VietQR thụ hưởng Zone Six (ưu tiên từ Database PayOS)
   const bankId = defaultPayOS?.bank_name || 'MB';
   const accountNo = defaultPayOS?.account_number || 'VQRQANTPI3912';
   const accountName = defaultPayOS?.account_holder_name || 'NGUYEN VAN NGUYEN';
@@ -48,8 +122,8 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
         {/* Header Modal */}
         <div className="p-4 sm:p-5 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between bg-stone-50/70 dark:bg-[#181614]">
           <div>
-            <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de]">
-              Thanh Toán VietQR Động
+            <h3 className="text-base font-semibold text-stone-900 dark:text-[#efe9de] flex items-center gap-2">
+              <span>{isPaid ? 'Thanh Toán Thành Công 🎉' : 'Thanh Toán VietQR Động'}</span>
             </h3>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
               Mã đơn: <span className="font-mono text-stone-800 dark:text-stone-200 font-medium">{orderCode}</span>
@@ -59,7 +133,8 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 flex items-center justify-center transition cursor-pointer"
+            disabled={isPaid}
+            className="w-8 h-8 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-[#25221e] dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 flex items-center justify-center transition cursor-pointer disabled:opacity-40"
           >
             <FiX className="w-4 h-4" />
           </button>
@@ -67,83 +142,110 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
 
         {/* Content Body: Mã QR & Thông tin thanh toán */}
         <div className="p-5 flex flex-col items-center space-y-4 overflow-y-auto max-h-[75vh]">
-          {/* Ảnh VietQR Image */}
-          <div className="p-3 bg-white rounded-2xl border border-stone-200/80 shadow-xs flex items-center justify-center w-full max-w-[280px]">
-            <img
-              src={qrUrl}
-              alt="Mã VietQR Thanh Toán"
-              className="w-full h-auto object-contain rounded-lg"
-            />
-          </div>
+          {/* Trạng thái đã nhận tiền thành công */}
+          {isPaid ? (
+            <div className="w-full flex flex-col items-center justify-center py-8 px-4 bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/30 rounded-3xl animate-in zoom-in-95 duration-200 text-center space-y-2.5">
+              <div className="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-emerald-500/25">
+                <FiCheckCircle className="w-8 h-8" />
+              </div>
+              <h4 className="text-base font-bold text-emerald-950 dark:text-[#efe9de]">
+                ĐÃ NHẬN THANH TOÁN!
+              </h4>
+              <p className="text-xl font-mono font-bold text-emerald-700 dark:text-emerald-400">
+                +{Number(receivedAmount || totalAmount).toLocaleString()} VNĐ
+              </p>
+              <p className="text-xs text-stone-500 dark:text-stone-400">
+                Hệ thống đang tự động đóng và hoàn tất đơn hàng...
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Ảnh VietQR Image */}
+              <div className="p-3 bg-white rounded-2xl border border-stone-200/80 shadow-xs flex items-center justify-center w-full max-w-[280px]">
+                <img
+                  src={qrUrl}
+                  alt="Mã VietQR Thanh Toán"
+                  className="w-full h-auto object-contain rounded-lg"
+                />
+              </div>
 
-          {/* Chi tiết chuyển khoản */}
-          <div className="w-full space-y-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-2xl p-4 text-xs">
-            <div className="flex justify-between items-center">
-              <span className="text-stone-400">Ngân hàng:</span>
-              <span className="font-semibold text-stone-900 dark:text-[#efe9de]">{bankId}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-stone-400">Số tài khoản:</span>
-              <div className="flex items-center gap-1.5 font-mono font-medium text-stone-900 dark:text-[#efe9de]">
-                <span>{accountNo}</span>
-                <button
-                  type="button"
-                  onClick={() => handleCopy(accountNo, 'Số tài khoản')}
-                  className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded text-stone-400 hover:text-stone-900 dark:hover:text-white transition cursor-pointer"
-                  title="Sao chép"
-                >
-                  <FiCopy className="w-3 h-3" />
-                </button>
+              {/* Banner trạng thái tự động chờ WebSocket */}
+              <div className="w-full flex flex-col items-center space-y-1.5">
+                <div className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-2xl bg-amber-500/10 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/20 text-xs font-medium">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                  </span>
+                  <span>Đang chờ thanh toán qua PayOS...</span>
+                </div>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 text-center">
+                  Hệ thống tự động xác nhận qua WebSocket khi tài khoản MBBank nhận tiền
+                </p>
               </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-stone-400">Chủ tài khoản:</span>
-              <span className="font-medium text-stone-900 dark:text-[#efe9de]">{accountName}</span>
-            </div>
-            <div className="flex justify-between items-center pt-2 border-t border-stone-200/80 dark:border-stone-700/60">
-              <span className="text-stone-400 font-medium">Số tiền:</span>
-              <span className="text-base font-semibold text-stone-900 dark:text-[#efe9de]">
-                {totalAmount.toLocaleString()} VNĐ
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-stone-400">Nội dung CK:</span>
-              <div className="flex items-center gap-1.5 font-mono font-medium text-stone-900 dark:text-[#efe9de]">
-                <span>{orderCode}</span>
-                <button
-                  type="button"
-                  onClick={() => handleCopy(orderCode, 'Nội dung chuyển khoản')}
-                  className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded text-stone-400 hover:text-stone-900 dark:hover:text-white transition cursor-pointer"
-                  title="Sao chép"
-                >
-                  <FiCopy className="w-3 h-3" />
-                </button>
+
+              {/* Chi tiết chuyển khoản */}
+              <div className="w-full space-y-2 bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-2xl p-4 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-stone-400">Ngân hàng:</span>
+                  <span className="font-semibold text-stone-900 dark:text-[#efe9de]">{bankId}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-stone-400">Số tài khoản:</span>
+                  <div className="flex items-center gap-1.5 font-mono font-medium text-stone-900 dark:text-[#efe9de]">
+                    <span>{accountNo}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(accountNo, 'Số tài khoản')}
+                      className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded text-stone-400 hover:text-stone-900 dark:hover:text-white transition cursor-pointer"
+                      title="Sao chép"
+                    >
+                      <FiCopy className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-stone-400">Chủ tài khoản:</span>
+                  <span className="font-medium text-stone-900 dark:text-[#efe9de]">{accountName}</span>
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t border-stone-200/80 dark:border-stone-700/60">
+                  <span className="text-stone-400 font-medium">Số tiền:</span>
+                  <span className="text-base font-semibold text-stone-900 dark:text-[#efe9de]">
+                    {totalAmount.toLocaleString()} VNĐ
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-stone-400">Nội dung CK:</span>
+                  <div className="flex items-center gap-1.5 font-mono font-medium text-stone-900 dark:text-[#efe9de]">
+                    <span>{orderCode}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(orderCode, 'Nội dung chuyển khoản')}
+                      className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded text-stone-400 hover:text-stone-900 dark:hover:text-white transition cursor-pointer"
+                      title="Sao chép"
+                    >
+                      <FiCopy className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
 
-        {/* Footer Actions */}
-        <div className="p-4 border-t border-stone-100 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] flex items-center justify-end gap-2.5">
+        {/* Footer Actions: ĐÃ BỎ NÚT XÁC NHẬN THỦ CÔNG */}
+        <div className="p-4 border-t border-stone-100 dark:border-stone-800 bg-stone-50/70 dark:bg-[#181614] flex items-center justify-between">
+          <div className="text-[11px] text-stone-400 dark:text-stone-500 flex items-center gap-1.5">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span>Cổng PayOS Active</span>
+          </div>
+
           <button
             type="button"
             onClick={onClose}
-            className="py-2.5 px-4 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] text-xs font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition cursor-pointer"
+            disabled={isPaid}
+            className="py-2.5 px-5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#25221e] text-xs font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition cursor-pointer disabled:opacity-40"
           >
-            Hủy Bỏ
-          </button>
-          <button
-            type="button"
-            onClick={onConfirmSuccess}
-            disabled={isSubmitting}
-            className="py-2.5 px-5 rounded-xl bg-stone-900 text-stone-100 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white text-xs font-semibold shadow-xs transition cursor-pointer flex items-center gap-2 disabled:opacity-50"
-          >
-            {isSubmitting ? (
-              <div className="w-3.5 h-3.5 rounded-full border-2 border-stone-400 border-t-transparent animate-spin" />
-            ) : (
-              <FiCheckCircle className="w-4 h-4" />
-            )}
-            <span>{isSubmitting ? 'Đang hoàn tất...' : 'Xác Nhận Đã Thanh Toán'}</span>
+            {isPaid ? 'Đang chuyển trang...' : 'Hủy Bỏ'}
           </button>
         </div>
       </div>

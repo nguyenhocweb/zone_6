@@ -10,6 +10,7 @@ import { createTableOrderController } from '../controllers/table-order.create.co
 import { getPublicStoresAndTablesController } from '../controllers/table-order.public-tables.controller.js';
 import { voidOrderController } from '../controllers/order.void.controller.js';
 import { listAllOrdersController } from '../controllers/order.list-all.controller.js';
+import { getOrderStatusController, cancelOrderController } from '../controllers/order.status.controller.js';
 
 export function createPosRouter(): Router {
   const router = Router();
@@ -24,6 +25,7 @@ export function createPosRouter(): Router {
   router.get('/table-order/public-tables', getPublicStoresAndTablesController);
   router.get('/table-order/verify', verifyTableOrderController);
   router.post('/table-order/submit', createTableOrderController);
+  router.get('/order-status/:orderCode', getOrderStatusController);
 
   // 1. Xác thực điều kiện ca trực & điểm danh GPS/Camera
   router.get('/verify-shift', authenticate, verifyShiftController.handle);
@@ -42,6 +44,7 @@ export function createPosRouter(): Router {
   router.get('/orders', authenticate, historyController.handle);
   router.get('/orders/all', authenticate, listAllOrdersController);
   router.post('/orders/:id/void', authenticate, voidOrderController);
+  router.post('/orders/:orderId/cancel', authenticate, cancelOrderController);
 
   return router;
 }

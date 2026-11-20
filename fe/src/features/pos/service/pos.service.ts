@@ -44,8 +44,30 @@ export const posService = {
     vatAmount?: number;
     finalAmount: number;
     paymentMethod: 'VIETQR' | 'CASH' | 'CARD';
+    paymentStatus?: 'PENDING' | 'COMPLETED';
   }): Promise<IOrderRecord> {
     const res = await axiosClient.post('/api/v1/pos/checkout', data);
+    return res.data.data;
+  },
+
+  async checkOrderStatus(orderCode: string): Promise<{
+    orderId: string;
+    orderCode: string;
+    paymentStatus: 'PENDING' | 'COMPLETED' | 'CANCELLED';
+    paymentMethod: string;
+    finalAmount: number;
+  }> {
+    const res = await axiosClient.get(`/api/v1/pos/order-status/${encodeURIComponent(orderCode)}`);
+    return res.data.data;
+  },
+
+  async cancelPendingOrder(orderId: string, sessionCode?: string): Promise<boolean> {
+    const res = await axiosClient.post(`/api/v1/pos/orders/${orderId}/cancel`, { sessionCode });
+    return res.data.success;
+  },
+
+  async simulatePayOSPayment(orderCode: string, amount?: number): Promise<any> {
+    const res = await axiosClient.post('/api/v1/payos/simulate-payment', { orderCode, amount });
     return res.data.data;
   },
 

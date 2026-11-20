@@ -11,6 +11,8 @@ export const CheckoutOrderSchema = z.object({
   discountAmount: z.number().min(0).optional().default(0),
   finalAmount: z.number().min(0, 'Số tiền thanh toán phải >= 0'),
   paymentMethod: z.enum(['VIETQR', 'CASH', 'CARD']).default('VIETQR'),
+  paymentStatus: z.enum(['PENDING', 'COMPLETED']).optional(),
+  sessionCode: z.string().optional(),
 });
 
 export const VerifyShiftQuerySchema = z.object({

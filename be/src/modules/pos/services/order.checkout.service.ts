@@ -31,6 +31,7 @@ export interface ICheckoutInput {
   vatAmount?: number;
   finalAmount: number;
   paymentMethod: 'VIETQR' | 'CASH' | 'CARD';
+  paymentStatus?: 'PENDING' | 'COMPLETED';
   user: {
     userId: string;
     name: string;
@@ -137,6 +138,10 @@ export class OrderCheckoutService {
         ? input.finalAmount
         : Math.max(0, input.totalAmount - (input.discountAmount || 0)) + effectiveVatAmount;
 
+    const isPendingPayment =
+      input.paymentStatus === 'PENDING' ||
+      (input.paymentMethod === 'VIETQR' && input.paymentStatus !== 'COMPLETED');
+
     const orderData: Partial<IOrder> = {
       store_id: new mongoose.Types.ObjectId(input.storeId),
       shift_id: input.shiftId && mongoose.Types.ObjectId.isValid(input.shiftId)
@@ -153,18 +158,18 @@ export class OrderCheckoutService {
       vat_amount: effectiveVatAmount,
       final_amount: calculatedFinalAmount,
       payment_method: input.paymentMethod,
-      payment_status: 'COMPLETED',
+      payment_status: isPendingPayment ? 'PENDING' : 'COMPLETED',
       created_by_id: new mongoose.Types.ObjectId(input.user.userId),
       created_by_name: input.user.name,
-      paid_by_id: new mongoose.Types.ObjectId(input.user.userId),
-      paid_by_name: input.user.name,
-      paid_at: new Date(),
+      paid_by_id: isPendingPayment ? undefined : new mongoose.Types.ObjectId(input.user.userId),
+      paid_by_name: isPendingPayment ? undefined : input.user.name,
+      paid_at: isPendingPayment ? undefined : new Date(),
     };
 
     const newOrder = await this.orderRepo.createOrder(orderData);
 
-    // Làm sạch giỏ hàng của session nếu có sessionCode
-    if (input.sessionCode) {
+    // Làm sạch giỏ hàng của session nếu đơn hàng đã thanh toán hoàn tất ngay
+    if (input.sessionCode && !isPendingPayment) {
       await this.sessionRepo.clearCart(input.sessionCode);
     }
 

@@ -4,6 +4,42 @@
 
 ---
 
+### [2026-11-20 18:35] - Triển Khai Luồng Thanh Toán Tự Động PayOS Webhook + WebSocket & Loại Bỏ Nút Xác Nhận Thủ Công Trên POS Và Gọi Món Tại Bàn
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Bỏ nút xác nhận thanh toán thủ công ("Xác Nhận Đã Thanh Toán" / "Tôi Đã Chuyển Khoản Xong"), chuyển sang cơ chế WebSocket thời gian thực tự động nhận tín hiệu thành công từ PayOS Webhook để chốt đơn, tuyệt đối không cho phép tự ý xác nhận thủ công.
+- **Nội dung hoàn thành:**
+  - **Loại bỏ hoàn toàn nút bấm thủ công:** Gỡ bỏ nút "Xác Nhận Đã Thanh Toán" trên `VietQrModal.tsx` và nút "Tôi Đã Chuyển Khoản Xong" trên `TableVietQrModal.tsx`.
+  - **Khởi tạo đơn hàng dạng PENDING:** Khi bấm thanh toán VietQR, hệ thống POS tạo đơn hàng lưu vào MongoDB với trạng thái `payment_status: 'PENDING'`, sinh mã `order_code` chuẩn dạng số nguyên (`Date.now() % 1000000000`) tương thích PayOS và chuyển giao dịch.
+  - **Giao diện chờ thanh toán tự động & Hiệu ứng Live Pulse:** Hiển thị thẻ trạng thái "Đang chờ thanh toán qua PayOS..." với hiệu ứng chấm tròn hổ phách nhấp nháy (live pulse).
+  - **Xử lý PayOS Webhook:**
+    - Tạo `payos-webhook.service.ts` và `payos-webhook.controller.ts` tại route `POST /api/v1/payos/webhook`.
+    - Xác thực chữ ký HMAC-SHA256 theo thuật toán PayOS (sắp xếp key alphabet, băm với `checksum_key` của tài khoản cấu hình MBBank active).
+    - Cập nhật trạng thái đơn hàng sang `payment_status: 'COMPLETED'`, ghi nhận thời điểm thanh toán.
+    - Phát sự kiện WebSocket qua Socket.io: `pos:payment_success` và `pos:order_completed` tới toàn bộ màn hình POS và quầy thu ngân.
+  - **Phản hồi thời gian thực trên Frontend:**
+    - `useLivePos.ts` lắng nghe `pos:payment_success`, phát âm thanh Web Audio API, hiển thị toast thông báo.
+    - `VietQrModal.tsx` lắng nghe sự kiện, hiển thị dấu tích xanh hoạt họa chuyển động (Animated Green Checkmark), thông báo "Thanh toán thành công!", tự động dọn sạch giỏ hàng và đóng modal sau 1.5 giây.
+    - Tích hợp Fallback Polling chu kỳ 3 giây gọi `GET /api/v1/pos/order-status/:orderCode` đảm bảo không bị gián đoạn mạng.
+    - Hỗ trợ endpoint mô phỏng thanh toán phục vụ môi trường dev local: `POST /api/v1/payos/simulate-payment`.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` toàn bộ Backend và Frontend đạt 0 lỗi.
+- **Tệp thay đổi:**
+  - `be/src/modules/admin_he_thong/payos/controllers/payos-webhook.controller.ts` (Mới)
+  - `be/src/modules/admin_he_thong/payos/services/payos-webhook.service.ts` (Mới)
+  - `be/src/modules/admin_he_thong/payos/routes/payos.routes.ts`
+  - `be/src/modules/pos/controllers/order.status.controller.ts` (Mới)
+  - `be/src/modules/pos/services/order.status.service.ts` (Mới)
+  - `be/src/modules/pos/repositories/order.repository.ts`
+  - `be/src/modules/pos/routes/pos.routes.ts`
+  - `be/src/modules/pos/schemas/order.schema.ts`
+  - `be/src/modules/pos/services/order.checkout.service.ts`
+  - `fe/src/features/pos/component/PosView.tsx`
+  - `fe/src/features/pos/component/VietQrModal.tsx`
+  - `fe/src/features/pos/hook/useLivePos.ts`
+  - `fe/src/features/pos/service/pos.service.ts`
+  - `fe/src/features/table-order/component/TableVietQrModal.tsx`
+
+---
+
 ### [2026-11-20 18:22] - Khắc Phục Lỗi React 19 "Expected static flag was missing" Trong VietQrModal
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Xử lý lỗi `Internal React error: Expected static flag was missing. Please notify the React team.` tại `PosView.tsx:353` (`VietQrModal`).
