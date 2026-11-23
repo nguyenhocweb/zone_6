@@ -4,6 +4,21 @@
 
 ---
 
+### [2026-11-23 19:58] - Khắc Phục Lỗi Runtime TypeError 'Cannot read properties of undefined (reading toLocaleString)' Trong TableVietQrModal
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Xử lý lỗi crash Runtime TypeError `Cannot read properties of undefined (reading 'toLocaleString')` tại `TableVietQrModal (src/features/table-order/component/TableVietQrModal.tsx:51:5)` khi gửi đơn hàng tại bàn.
+- **Nội dung hoàn thành:**
+  - **Phát hiện nguyên nhân gốc rễ:** API Backend `/api/v1/pos/table-order/submit` trả về Mongoose document với các trường snake_case (`order_code`, `final_amount`, `table_number`), trong khi `TableVietQrModal` truy cập trực tiếp `order.finalAmount.toLocaleString()`, khiến `order.finalAmount` bị `undefined` và gây sập ứng dụng khi modal thanh toán VietQR bật lên.
+  - **Chuẩn hóa 2 lớp phòng vệ (Two-Layer Defensive Normalization):**
+    1. *Tại Service Layer (`table-order.service.ts`):* Chuẩn hóa mapping dữ liệu `submitOrder` trả về object camelCase chuẩn với `finalAmount: Number(d.final_amount ?? d.finalAmount ?? 0)` và `orderCode: d.order_code || d.orderCode`.
+    2. *Tại Component (`TableVietQrModal.tsx`):* Trích xuất các biến phòng vệ an toàn `safeFinalAmount`, `safeOrderCode`, `safeTableNumber` với giá trị mặc định, bọc an toàn 100% các vị trí gọi `.toLocaleString('vi-VN')`, URL PayOS VietQR và bảng thông tin chuyển khoản.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` đạt 0 lỗi tuyệt đối.
+- **Tệp thay đổi:**
+  - `fe/src/features/table-order/service/table-order.service.ts`
+  - `fe/src/features/table-order/component/TableVietQrModal.tsx`
+
+---
+
 ### [2026-11-23 19:54] - Loại Bỏ Bước Chọn Size Dư Thừa & Cố Định Size Theo Công Thức Món Trong ItemCustomizerModal
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Món đồ uống đã gắn sẵn size trong công thức/thực đơn (ví dụ: Trà Đào Cam Sả Tươi đã là Size L) mà trong modal lại bắt chọn size M / L và cộng tiền vô lý. Yêu cầu loại bỏ bước chọn size dư thừa này.

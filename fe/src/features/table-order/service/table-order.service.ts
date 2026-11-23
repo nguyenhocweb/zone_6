@@ -79,6 +79,21 @@ export const tableOrderService = {
 
   async submitOrder(payload: CreateTableOrderDto): Promise<TableOrderResult> {
     const res = await axiosClient.post('/api/v1/pos/table-order/submit', payload);
-    return res.data.data;
+    const d = res.data?.data || {};
+    return {
+      id: d._id || d.id || '',
+      orderCode: d.order_code || d.orderCode || '',
+      tableNumber: d.table_number || d.tableNumber || '',
+      customerName: d.customer_name || d.customerName || '',
+      customerPhone: d.customer_phone || d.customerPhone || '',
+      deviceName: d.device_name || d.deviceName || '',
+      totalAmount: Number(d.total_amount ?? d.totalAmount ?? 0),
+      discountAmount: Number(d.discount_amount ?? d.discountAmount ?? 0),
+      finalAmount: Number(d.final_amount ?? d.finalAmount ?? 0),
+      paymentMethod: d.payment_method || d.paymentMethod || 'VIETQR',
+      paymentStatus: d.payment_status || d.paymentStatus || 'PENDING',
+      orderStatus: d.order_status || d.orderStatus || 'PENDING',
+      createdAt: d.created_at || d.createdAt || new Date().toISOString(),
+    };
   },
 };

@@ -27,9 +27,13 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
 
   const { data: defaultPayOS } = useGetDefaultPayOSConfig();
 
+  const safeOrderCode = order?.orderCode || (order as any)?.order_code || '';
+  const safeFinalAmount = Number(order?.finalAmount ?? (order as any)?.final_amount ?? 0);
+  const safeTableNumber = order?.tableNumber || (order as any)?.table_number || 'Bàn Đã Chọn';
+
   // Đếm ngược 10 phút
   useEffect(() => {
-    if (!order?.orderCode) {
+    if (!safeOrderCode) {
       setTimeLeft(600);
       setIsExpired(false);
       return;
@@ -51,7 +55,7 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
     }, 1000);
 
     return () => clearInterval(countdown);
-  }, [order?.orderCode]);
+  }, [safeOrderCode]);
 
   // Format mm:ss
   const formatCountdown = (seconds: number) => {
@@ -62,11 +66,11 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
 
   // Tự động kiểm tra trạng thái thanh toán từ PayOS Webhook (chỉ khi chưa hết hạn)
   useEffect(() => {
-    if (!order?.orderCode || isDone || isExpired) return;
+    if (!safeOrderCode || isDone || isExpired) return;
 
     const interval = setInterval(async () => {
       try {
-        const res = await fetch(`/api/v1/pos/order-status/${encodeURIComponent(order.orderCode)}`);
+        const res = await fetch(`/api/v1/pos/order-status/${encodeURIComponent(safeOrderCode)}`);
         const json = await res.json();
         if (json?.data?.paymentStatus === 'COMPLETED') {
           setIsDone(true);
@@ -78,7 +82,7 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [order?.orderCode, isDone, isExpired]);
+  }, [safeOrderCode, isDone, isExpired]);
 
   if (!order) return null;
 
@@ -87,8 +91,8 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
   const accountNo = defaultPayOS?.account_number || '093588454123';
   const accountName = defaultPayOS?.account_holder_name || 'NGUYEN VAN NGUYEN';
 
-  const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${order.finalAmount}&addInfo=${encodeURIComponent(
-    order.orderCode
+  const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${safeFinalAmount}&addInfo=${encodeURIComponent(
+    safeOrderCode
   )}&accountName=${encodeURIComponent(accountName)}`;
 
   const handleRenewTime = () => {
@@ -161,7 +165,7 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
                   <div className="p-3 bg-white rounded-2xl shadow-xl w-60 h-60 flex items-center justify-center">
                     <img
                       src={qrUrl}
-                      alt={`VietQR ${order.orderCode}`}
+                      alt={`VietQR ${safeOrderCode}`}
                       className="w-full h-full object-contain"
                     />
                   </div>
@@ -178,7 +182,7 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
                   <div className="space-y-1">
                     <div className="text-xs text-[#a0a5b5]">Số tiền thanh toán:</div>
                     <div className="text-xl font-mono font-black text-[#d4af37]">
-                      {order.finalAmount.toLocaleString('vi-VN')} đ
+                      {safeFinalAmount.toLocaleString('vi-VN')} đ
                     </div>
                   </div>
                 </>
@@ -207,9 +211,9 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
                 <div className="flex items-center justify-between">
                   <span className="text-[#a0a5b5]">Nội dung:</span>
                   <div className="flex items-center gap-1.5 font-mono font-black text-[#d4af37]">
-                    <span>{order.orderCode}</span>
+                    <span>{safeOrderCode}</span>
                     <button
-                      onClick={() => handleCopy(order.orderCode, 'content')}
+                      onClick={() => handleCopy(safeOrderCode, 'content')}
                       className="text-[#d4af37] hover:text-white transition"
                     >
                       {copiedContent ? <FaCheck className="text-emerald-400 text-xs" /> : <FaCopy className="text-xs" />}
@@ -237,10 +241,10 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
             <div>
               <h3 className="text-base font-black text-white">Đã Gửi Đơn Tới Quầy Bar!</h3>
               <p className="text-xs text-[#a0a5b5] mt-1 leading-relaxed">
-                Mã đơn: <strong className="text-[#d4af37] font-mono">{order.orderCode}</strong>
+                Mã đơn: <strong className="text-[#d4af37] font-mono">{safeOrderCode}</strong>
               </p>
               <p className="text-xs text-[#a0a5b5] mt-1">
-                Bàn: <strong className="text-white">{order.tableNumber || 'Bàn Đã Chọn'}</strong>
+                Bàn: <strong className="text-white">{safeTableNumber}</strong>
               </p>
             </div>
 
