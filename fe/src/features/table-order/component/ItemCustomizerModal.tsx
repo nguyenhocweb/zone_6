@@ -26,7 +26,6 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
   onClose,
   onAddToCart,
 }) => {
-  const [size, setSize] = useState<'M' | 'L'>('M');
   const [sugar, setSugar] = useState<string>('100% Tiêu chuẩn');
   const [ice, setIce] = useState<string>('100% Bình thường');
   const [notes, setNotes] = useState<string>('');
@@ -35,7 +34,6 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
 
   useEffect(() => {
     if (recipe) {
-      setSize('M');
       setSugar('100% Tiêu chuẩn');
       setIce('100% Bình thường');
       setNotes('');
@@ -57,9 +55,8 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
   if (!recipe) return null;
 
   const basePrice = Number(recipe.price || recipe.selling_price || 35000);
-  const sizeSurcharge = size === 'L' ? 5000 : 0;
   const totalToppingsPrice = selectedToppings.reduce((sum, t) => sum + (t.price || 0), 0);
-  const unitPrice = basePrice + sizeSurcharge + totalToppingsPrice;
+  const unitPrice = basePrice + totalToppingsPrice;
   const subtotal = unitPrice * quantity;
 
   const toggleTopping = (top: { name: string; price: number }) => {
@@ -75,6 +72,9 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
   const handleConfirm = () => {
     const toppingNames = selectedToppings.map((t) => t.name).join(', ');
     const noteParts: string[] = [];
+    if (recipe.serving_size) {
+      noteParts.push(`Size: ${recipe.serving_size}`);
+    }
     noteParts.push(`Đường: ${sugar}`);
     noteParts.push(`Đá: ${ice}`);
     if (toppingNames) {
@@ -86,7 +86,7 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
 
     onAddToCart({
       recipeId: recipe.id || recipe._id,
-      name: `${recipe.name || recipe.title}${size === 'L' ? ' (Size L)' : ' (Size M)'}`,
+      name: recipe.name || recipe.title,
       quantity,
       unitPrice,
       subtotal,
@@ -109,9 +109,16 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
               <FaCoffee className="text-base" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-[#efe9de] truncate">
-                {recipe.name || recipe.title}
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm sm:text-base font-bold text-stone-900 dark:text-[#efe9de] truncate">
+                  {recipe.name || recipe.title}
+                </h3>
+                {recipe.serving_size && (
+                  <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-[#d4af37] border border-amber-500/30 shrink-0">
+                    {recipe.serving_size}
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-amber-600 dark:text-[#d4af37] font-mono font-bold">
                 {basePrice.toLocaleString('vi-VN')} đ
               </p>
@@ -128,44 +135,11 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
 
         {/* Content */}
         <div className="p-5 space-y-5 flex-1 overflow-y-auto">
-          {/* Size Selection */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-stone-900 dark:text-[#efe9de] uppercase tracking-wider">
-              1. Chọn Kích Thước (Size)
-            </label>
-            <div className="grid grid-cols-2 gap-2.5">
-              <button
-                type="button"
-                onClick={() => setSize('M')}
-                className={`p-3 rounded-2xl border text-xs font-semibold transition flex items-center justify-between cursor-pointer ${
-                  size === 'M'
-                    ? 'border-amber-500 bg-amber-500/10 text-stone-900 dark:text-[#efe9de] shadow-xs'
-                    : 'border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#201d19] text-stone-600 dark:text-stone-400'
-                }`}
-              >
-                <span>Size Vừa (M)</span>
-                <span className="text-[11px] text-stone-400">Tiêu chuẩn</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSize('L')}
-                className={`p-3 rounded-2xl border text-xs font-semibold transition flex items-center justify-between cursor-pointer ${
-                  size === 'L'
-                    ? 'border-amber-500 bg-amber-500/10 text-stone-900 dark:text-[#efe9de] shadow-xs'
-                    : 'border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#201d19] text-stone-600 dark:text-stone-400'
-                }`}
-              >
-                <span>Size Lớn (L)</span>
-                <span className="text-[11px] text-amber-600 dark:text-[#d4af37] font-mono font-bold">+5.000 đ</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Chọn Topping Cho Ly */}
+          {/* 1. Chọn Topping Cho Ly */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-stone-900 dark:text-[#efe9de] uppercase tracking-wider flex items-center gap-1.5">
-                <span>2. Chọn Topping Cho Ly</span>
+                <span>1. Chọn Topping Cho Ly</span>
                 {selectedToppings.length > 0 && (
                   <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-600 dark:text-[#d4af37] text-[10px] font-mono font-bold">
                     +{selectedToppings.length} đã chọn
@@ -175,7 +149,7 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
               <span className="text-[11px] text-stone-400">Có thể chọn nhiều loại</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-52 overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
               {toppingsList.map((top, idx) => {
                 const isSelected = selectedToppings.some((t) => t.name === top.name);
                 return (
@@ -210,10 +184,10 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
             </div>
           </div>
 
-          {/* Mức đường */}
+          {/* 2. Mức đường */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-stone-900 dark:text-[#efe9de] uppercase tracking-wider">
-              3. Mức Đường
+              2. Mức Đường
             </label>
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
               {['100% Tiêu chuẩn', '70% Ít ngọt', '50% Vừa', '30% Nhẹ', '0% Không đường'].map((lvl) => (
@@ -233,10 +207,10 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
             </div>
           </div>
 
-          {/* Mức đá */}
+          {/* 3. Mức đá */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-stone-900 dark:text-[#efe9de] uppercase tracking-wider">
-              4. Mức Đá
+              3. Mức Đá
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {['100% Bình thường', '70% Ít đá', '0% Không đá', 'Uống Nóng'].map((lvl) => (
@@ -256,10 +230,10 @@ export const ItemCustomizerModal: React.FC<ItemCustomizerModalProps> = ({
             </div>
           </div>
 
-          {/* Ghi chú thêm */}
+          {/* 4. Ghi chú thêm */}
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-stone-900 dark:text-[#efe9de] uppercase tracking-wider">
-              5. Ghi Chú Riêng Cho Quầy Pha Chế
+              4. Ghi Chú Riêng Cho Quầy Pha Chế
             </label>
             <input
               type="text"

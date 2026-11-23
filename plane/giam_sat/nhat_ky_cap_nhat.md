@@ -4,6 +4,20 @@
 
 ---
 
+### [2026-11-23 19:54] - Loại Bỏ Bước Chọn Size Dư Thừa & Cố Định Size Theo Công Thức Món Trong ItemCustomizerModal
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Món đồ uống đã gắn sẵn size trong công thức/thực đơn (ví dụ: Trà Đào Cam Sả Tươi đã là Size L) mà trong modal lại bắt chọn size M / L và cộng tiền vô lý. Yêu cầu loại bỏ bước chọn size dư thừa này.
+- **Nội dung hoàn thành:**
+  - **Khắc phục triệt để:** Loại bỏ hoàn toàn khối *"1. CHỌN KÍCH THƯỚC (SIZE)"* và phụ thu hardcode `+5.000đ` trong `ItemCustomizerModal.tsx`.
+  - **Giữ nguyên Size gốc của công thức:** Hiển thị trực tiếp nhãn badge `recipe.serving_size` (Size M / Size L) tại Header modal ngay cạnh tên món để khách hàng biết rõ định lượng.
+  - **Định giá chính xác:** Giá gốc của món ăn là giá niêm yết chuẩn, tổng tiền chỉ cộng thêm khi khách hàng tích chọn các topping cho ly.
+  - **Đơn giản hóa tên món trong giỏ:** Không tự động nối chuỗi `(Size M)` hay `(Size L)` giả lập, lưu size chuẩn xác vào trường ghi chú và hiển thị rõ ràng.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` đạt 0 lỗi tuyệt đối.
+- **Tệp thay đổi:**
+  - `fe/src/features/table-order/component/ItemCustomizerModal.tsx`
+
+---
+
 ### [2026-11-23 19:48] - Tái Thiết Kế Layout Gọi Món Tại Bàn (/order) Dành Cho Máy Tính & Bổ Sung Tính Năng Chọn Topping Cho Từng Ly
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Thiết kế lại layout cho máy tính (desktop) để không bị co hẹp thành một cột đơn giữa màn hình đen; đồng thời bổ sung tính năng chọn topping cho từng ly nước.
