@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { asyncHandler } from '../../../../core/utils/asyncHandler.js';
-import { authenticate } from '../../../../middlewares/auth.middleware.js';
+import { authenticate, optionalAuthenticate } from '../../../../middlewares/auth.middleware.js';
 import {
   getSellableToppingsController,
   getSellableToppingByIdController,
@@ -12,9 +12,9 @@ import { deleteSellableToppingController } from '../controllers/sellable-topping
 export function createSellableToppingRouter(): Router {
   const router = Router();
 
-  // GET all sellable toppings & GET by id (nhân sự đã login đều xem được)
-  router.get('/', authenticate, asyncHandler(getSellableToppingsController));
-  router.get('/:id', authenticate, asyncHandler(getSellableToppingByIdController));
+  // GET all sellable toppings & GET by id (cho phép cả khách tại bàn lẫn nhân viên)
+  router.get('/', optionalAuthenticate, asyncHandler(getSellableToppingsController));
+  router.get('/:id', optionalAuthenticate, asyncHandler(getSellableToppingByIdController));
 
   // Quản lý: thêm, sửa, xóa
   router.post('/', authenticate, asyncHandler(createSellableToppingController));

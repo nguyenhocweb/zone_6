@@ -64,6 +64,19 @@ export const tableOrderService = {
     }
   },
 
+  async getToppings(storeId?: string): Promise<any[]> {
+    try {
+      const params = storeId ? { store_id: storeId, is_active: true } : { is_active: true };
+      const res = await axiosClient.get('/api/v1/sellable-toppings', { params });
+      const data = res.data?.data;
+      if (Array.isArray(data)) return data;
+      if (data && Array.isArray(data.items)) return data.items;
+      return [];
+    } catch {
+      return [];
+    }
+  },
+
   async submitOrder(payload: CreateTableOrderDto): Promise<TableOrderResult> {
     const res = await axiosClient.post('/api/v1/pos/table-order/submit', payload);
     return res.data.data;

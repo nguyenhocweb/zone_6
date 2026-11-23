@@ -134,9 +134,9 @@ export const CustomerCartDrawer: React.FC<CustomerCartDrawerProps> = ({
                         {item.toppings.map((top, tIdx) => (
                           <span
                             key={tIdx}
-                            className="text-[9px] bg-[#181b24] text-[#fae29c] px-1.5 py-0.5 rounded border border-[#212532]"
+                            className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-[#d4af37] px-1.5 py-0.5 rounded border border-amber-500/20 font-medium"
                           >
-                            +{top.name}
+                            +{top.name} {top.price ? `(+${top.price.toLocaleString('vi-VN')}đ)` : ''}
                           </span>
                         ))}
                       </div>

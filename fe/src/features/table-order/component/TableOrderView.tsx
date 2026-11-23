@@ -9,6 +9,7 @@ import { GeofenceGuard } from './GeofenceGuard';
 import { CustomerMenu } from './CustomerMenu';
 import { ItemCustomizerModal } from './ItemCustomizerModal';
 import { CustomerCartDrawer } from './CustomerCartDrawer';
+import { DesktopOrderCart } from './DesktopOrderCart';
 import { TableVietQrModal } from './TableVietQrModal';
 import { getOrCreateDeviceId, detectDeviceName } from '../utils/device-info';
 import { FaQrcode, FaArrowLeft } from 'react-icons/fa';
@@ -18,7 +19,7 @@ export const TableOrderView: React.FC = () => {
   const searchParams = useSearchParams();
   const urlToken = searchParams.get('token') || '';
 
-  const [activeToken, setActiveToken] = useState<string>(urlToken);
+  const [activeToken] = useState<string>(urlToken);
   const [isLoading, setIsLoading] = useState(true);
   const [gpsError, setGpsError] = useState<string | null>(null);
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
@@ -26,6 +27,7 @@ export const TableOrderView: React.FC = () => {
 
   const [categories, setCategories] = useState<any[]>([]);
   const [recipes, setRecipes] = useState<any[]>([]);
+  const [toppings, setToppings] = useState<any[]>([]);
   const [cartItems, setCartItems] = useState<TableCartItem[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<any | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,10 +58,11 @@ export const TableOrderView: React.FC = () => {
           const verifyRes = await tableOrderService.verifyTable(activeToken, lat, lng);
           setVerifyData(verifyRes);
 
-          // Tải danh mục và menu
-          const [catRes, menuRes] = await Promise.all([
+          // Tải đồng thời danh mục, menu và danh sách topping bán ra
+          const [catRes, menuRes, toppingsRes] = await Promise.all([
             tableOrderService.getCategories(),
             tableOrderService.getMenu(verifyRes.store?.id),
+            tableOrderService.getToppings(verifyRes.store?.id),
           ]);
           const safeCatList = Array.isArray(catRes)
             ? catRes
@@ -70,6 +73,7 @@ export const TableOrderView: React.FC = () => {
 
           setCategories(safeCatList);
           setRecipes(safeMenuList);
+          setToppings(toppingsRes || []);
         } catch (err: any) {
           const msg = err.response?.data?.message || err.message || 'Lỗi xác thực bàn';
           toast.error(msg);
@@ -197,55 +201,49 @@ export const TableOrderView: React.FC = () => {
   // KHI KHÁCH CHƯA QUÉT MÃ QR TRÊN BÀN: Khóa truy cập, yêu cầu quét mã QR Standee mica tại bàn
   if (!activeToken) {
     return (
-      <div className="min-h-screen bg-[#0b0c10] text-[#f4f5f8] flex flex-col items-center justify-center p-4 sm:p-6 text-center selection:bg-[#d4af37] selection:text-black">
-        <div className="max-w-md w-full bg-[#12141a] border border-[#212532] rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl shadow-[#d4af37]/5">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af37]/20 to-[#906b18]/10 border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37] text-2xl mx-auto shadow-lg shadow-[#d4af37]/10">
+      <div className="min-h-screen bg-stone-50 dark:bg-[#141311] text-stone-900 dark:text-[#efe9de] flex flex-col items-center justify-center p-4 sm:p-6 text-center">
+        <div className="max-w-md w-full bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+          <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 text-2xl mx-auto shadow-md">
             <FaQrcode />
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-lg sm:text-xl font-black text-white uppercase tracking-tight">
+            <h1 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-[#efe9de] uppercase tracking-tight">
               Yêu Cầu Quét Mã QR Tại Bàn
             </h1>
-            <p className="text-xs text-[#a0a5b5] leading-relaxed">
+            <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
               Trang gọi món chỉ mở khi bạn quét mã QR Standee mica được đặt trực tiếp trên bàn tại quán Zone Six.
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-[#181b24] border border-[#212532] text-left space-y-3 text-xs text-[#a0a5b5]">
-            <div className="text-white font-bold text-xs uppercase tracking-wider text-[#d4af37] flex items-center gap-1.5">
-              <span>Quy trình tự gọi món:</span>
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-[#201d19] border border-stone-200/80 dark:border-stone-800 text-left space-y-2.5 text-xs text-stone-600 dark:text-stone-300">
+            <div className="font-bold text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400">
+              Quy trình tự gọi món:
             </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-[#d4af37]/20 text-[#d4af37] font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
-                1
-              </span>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
               <span>Mở ứng dụng <strong>Camera</strong> hoặc <strong>Zalo</strong> trên điện thoại.</span>
             </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-[#d4af37]/20 text-[#d4af37] font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
-                2
-              </span>
-              <span>Hướng máy ảnh quét mã QR trên tấm <strong>Standee Mica</strong> đặt trên bàn bạn đang ngồi.</span>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span>Hướng máy ảnh quét mã QR trên tấm <strong>Standee Mica</strong> đặt trên bàn.</span>
             </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-[#d4af37]/20 text-[#d4af37] font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
-                3
-              </span>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
               <span>Chạm vào liên kết hiển thị để tự động mở thực đơn và gọi món phục vụ tận nơi.</span>
             </div>
           </div>
 
           <Link
             href="/"
-            className="w-full py-3.5 px-4 rounded-xl text-xs font-black bg-gradient-to-r from-[#d4af37] to-[#b58d22] text-[#0b0c10] uppercase tracking-wider hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#d4af37]/15"
+            className="w-full py-3.5 px-4 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-stone-950 uppercase tracking-wider transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-amber-500/20"
           >
             <FaArrowLeft className="text-xs" />
             <span>Quay Lại Trang Chủ Zone Six</span>
           </Link>
         </div>
 
-        <div className="text-center text-[11px] text-[#6c7280] pt-6 pb-2">
+        <div className="text-center text-[11px] text-stone-400 pt-6 pb-2">
           Zone Six Signature © 2026 • Trải nghiệm dịch vụ số hóa tại bàn
         </div>
       </div>
@@ -271,32 +269,57 @@ export const TableOrderView: React.FC = () => {
       storeName={storeName}
       onRetry={verifyLocationAndLoadData}
     >
-      {/* Menu Catalog */}
-      <CustomerMenu
-        categories={categories}
-        recipes={recipes}
-        onSelectItem={(item) => setSelectedRecipe(item)}
-      />
+      {/* Main 2-Column Desktop & Mobile Layout */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7 w-full flex-1">
+        <div className="flex flex-col lg:flex-row gap-7 items-start">
+          {/* Cột Trái: Thực đơn & Danh mục (Rộng 65-70% trên Desktop) */}
+          <main className="flex-1 min-w-0 w-full">
+            <CustomerMenu
+              categories={categories}
+              recipes={recipes}
+              onSelectItem={(item) => setSelectedRecipe(item)}
+            />
+          </main>
 
-      {/* Floating Bottom Cart Drawer */}
-      <CustomerCartDrawer
-        items={cartItems}
-        tableName={tableName}
-        distanceMeters={verifyData?.distance_meters}
-        isSubmitting={isSubmitting}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onSubmitOrder={handleSubmitOrder}
-      />
+          {/* Cột Phải: Giỏ Hàng Trực Tiếp Trên Máy Tính (Rộng 30-35%, Sticky cố định) */}
+          <div className="w-full lg:w-[380px] xl:w-[420px] shrink-0 hidden lg:block">
+            <DesktopOrderCart
+              items={cartItems}
+              tableName={tableName}
+              zoneName={zoneName}
+              distanceMeters={verifyData?.distance_meters}
+              isSubmitting={isSubmitting}
+              onUpdateQuantity={handleUpdateQuantity}
+              onRemoveItem={handleRemoveItem}
+              onClearCart={() => setCartItems([])}
+              onSubmitOrder={handleSubmitOrder}
+            />
+          </div>
+        </div>
+      </div>
 
-      {/* Item Customizer Modal */}
+      {/* Floating Bottom Cart Drawer (Dành riêng cho màn hình Mobile < lg) */}
+      <div className="lg:hidden">
+        <CustomerCartDrawer
+          items={cartItems}
+          tableName={tableName}
+          distanceMeters={verifyData?.distance_meters}
+          isSubmitting={isSubmitting}
+          onUpdateQuantity={handleUpdateQuantity}
+          onRemoveItem={handleRemoveItem}
+          onSubmitOrder={handleSubmitOrder}
+        />
+      </div>
+
+      {/* Item Customizer Modal (Chọn Size, Đá, Đường & Topping Cho Ly) */}
       <ItemCustomizerModal
         recipe={selectedRecipe}
+        availableToppings={toppings}
         onClose={() => setSelectedRecipe(null)}
         onAddToCart={handleAddToCart}
       />
 
-      {/* VietQR Modal */}
+      {/* VietQR Dynamic Modal */}
       <TableVietQrModal
         order={submittedOrder}
         onClose={() => setSubmittedOrder(null)}

@@ -4,6 +4,34 @@
 
 ---
 
+### [2026-11-23 19:48] - Tái Thiết Kế Layout Gọi Món Tại Bàn (/order) Dành Cho Máy Tính & Bổ Sung Tính Năng Chọn Topping Cho Từng Ly
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Thiết kế lại layout cho máy tính (desktop) để không bị co hẹp thành một cột đơn giữa màn hình đen; đồng thời bổ sung tính năng chọn topping cho từng ly nước.
+- **Nội dung hoàn thành:**
+  - **Bố cục 2 Cột Desktop Split Layout:**
+    - Thay thế container `max-w-xl` hẹp đơn lẻ bằng bố cục chuẩn máy tính `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5`.
+    - **Cột Trái (68% Desktop):** Lưới thực đơn đa cột responsive (`grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5`), thẻ món có ảnh lớn 16:9 sắc nét, nhãn Best Seller, mô tả chi tiết, giá tiền font mono rõ nét và nút "+ Tùy chọn".
+    - **Cột Phải (32% Desktop - Sticky cố định):** Xây dựng component mới `DesktopOrderCart.tsx` hiển thị trực tiếp giỏ hàng của bàn, danh sách món kèm size/đá/đường/toppings, tăng giảm số lượng, form nhập tên/SĐT khách, tổng tiền và 2 phương thức thanh toán (VietQR PayOS động & Tiền mặt tại quầy).
+    - **Chế độ Mobile (< lg):** Vẫn duy trì thanh bar nổi bên dưới và `CustomerCartDrawer` mượt mà, không làm gián đoạn trải nghiệm trên smartphone.
+  - **Tính Năng Chọn Topping Thêm Cho Ly:**
+    - Nâng cấp `ItemCustomizerModal.tsx`: Thêm mục *"Chọn Topping Cho Ly"* dạng lưới checkbox đa chọn với giá tiền từng loại (Trân châu trắng 3Q, Trân châu đen hoàng kim, Thạch củ năng, Đào ngâm miếng giòn, Kem cheese...).
+    - Tự động cộng dồn giá topping vào đơn giá và thành tiền theo số lượng ly trong thời gian thực.
+    - Lưu danh sách toppings vào `TableCartItem` và truyền xuống `table-order.create.service.ts` lưu vào MongoDB Atlas.
+    - Mở khóa public endpoint `GET /api/v1/sellable-toppings` thông qua `optionalAuthenticate` tại `sellable-topping.routes.ts` để khách gọi món tại bàn tự động nạp danh sách topping thực tế của cơ sở.
+  - **Top Banner Brand Header (GeofenceGuard):** Tái thiết kế thanh ribbon thành Top Navbar chuyên nghiệp với logo Zone Six, tên chi nhánh, số bàn, khu vực và badge định vị GPS thời gian thực.
+  - **Tuân thủ quy chuẩn:** Toàn bộ 8 tệp code đều tuân thủ nguyên tắc Max 300 Lines (mỗi file dưới 298 dòng); `tsc --noEmit` đạt 0 lỗi tuyệt đối.
+- **Tệp thay đổi:**
+  - `fe/src/features/table-order/component/DesktopOrderCart.tsx` (Mới)
+  - `fe/src/features/table-order/component/ItemCustomizerModal.tsx`
+  - `fe/src/features/table-order/component/CustomerMenu.tsx`
+  - `fe/src/features/table-order/component/TableOrderView.tsx`
+  - `fe/src/features/table-order/component/GeofenceGuard.tsx`
+  - `fe/src/features/table-order/component/CustomerCartDrawer.tsx`
+  - `fe/src/features/table-order/service/table-order.service.ts`
+  - `be/src/modules/pho_ca_vat_lieu/material/routes/sellable-topping.routes.ts`
+
+---
+
 ### [2026-11-23 19:35] - Triển Khai Cơ Chế Shift Gatekeeper Nghiêm Ngặt 4 Trạng Thái Cho POS Live Order & Khắc Phục Turbopack Dropped Segment /tables
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**

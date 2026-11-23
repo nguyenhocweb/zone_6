@@ -130,20 +130,39 @@ export const GeofenceGuard: React.FC<GeofenceGuardProps> = ({
 
   // Vị trí hợp lệ -> Render giao diện gọi món
   return (
-    <div className="min-h-screen bg-[#0b0c10] text-[#f4f5f8] flex flex-col">
-      {/* Top GPS Status Ribbon */}
-      <div className="bg-[#12141a] border-b border-[#212532] px-4 py-2 flex items-center justify-between text-[11px]">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-          <span className="text-[#a0a5b5]">Bàn:</span>
-          <strong className="text-white font-black">{tableName}</strong>
-          <span className="text-[#6c7280]">({zoneName})</span>
+    <div className="min-h-screen bg-stone-50 dark:bg-[#141311] text-stone-900 dark:text-[#efe9de] flex flex-col transition-colors">
+      {/* Top GPS Status Ribbon / Brand Bar */}
+      <header className="bg-white dark:bg-[#1a1815] border-b border-stone-200/80 dark:border-stone-800 sticky top-0 z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 flex items-center justify-center font-bold text-xs shadow-xs shrink-0">
+              Z6
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs sm:text-sm font-bold text-stone-900 dark:text-[#efe9de]">
+                  {storeName}
+                </span>
+                <span className="text-stone-300 dark:text-stone-700">•</span>
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-[#d4af37] border border-amber-500/20">
+                  {tableName}
+                </span>
+              </div>
+              <p className="text-[11px] text-stone-400">
+                Khu vực: {zoneName} • Thực đơn điện tử tại bàn
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="px-3 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/40 text-emerald-700 dark:text-emerald-300 text-xs font-mono font-medium flex items-center gap-1.5 shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <FaCheckCircle className="text-[10px]" />
+              <span>Đã định vị GPS (~{Math.round(distanceMeters)}m)</span>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 text-emerald-400 font-mono">
-          <FaCheckCircle className="text-[10px]" />
-          <span>Đã định vị (~{distanceMeters}m)</span>
-        </div>
-      </div>
+      </header>
 
       {children}
     </div>

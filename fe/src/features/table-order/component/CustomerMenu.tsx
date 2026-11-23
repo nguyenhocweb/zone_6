@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { FaSearch, FaPlus, FaCoffee, FaFire, FaTimes } from 'react-icons/fa';
+import { FaSearch, FaPlus, FaCoffee, FaFire, FaTimes, FaSlidersH } from 'react-icons/fa';
 
 interface CustomerMenuProps {
   categories: any[];
@@ -81,21 +81,22 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
   }, [safeRecipes, selectedCategory, searchQuery]);
 
   return (
-    <div className="pb-32 px-4 pt-4 max-w-xl mx-auto w-full space-y-4">
+    <div className="w-full space-y-5 pb-28 lg:pb-8">
       {/* Search Bar */}
       <div className="relative">
-        <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6c7280] text-xs" />
+        <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-xs" />
         <input
           type="text"
-          placeholder="Tìm kiếm đồ uống, cà phê, trà..."
+          placeholder="Tìm kiếm đồ uống, cà phê, trà trái cây..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-[#12141a] border border-[#212532] rounded-2xl pl-10 pr-10 py-3 text-xs text-white placeholder-[#6c7280] focus:border-[#d4af37] outline-none shadow-lg"
+          className="w-full bg-white dark:bg-[#1a1815] border border-stone-200/80 dark:border-stone-800 rounded-2xl pl-10 pr-10 py-3 text-xs sm:text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:border-amber-500 outline-none shadow-xs transition-colors"
         />
         {searchQuery && (
           <button
+            type="button"
             onClick={() => setSearchQuery('')}
-            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6c7280] hover:text-white"
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 cursor-pointer p-1"
           >
             <FaTimes className="text-xs" />
           </button>
@@ -103,13 +104,14 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
       </div>
 
       {/* Category Pills Slider */}
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
         <button
+          type="button"
           onClick={() => setSelectedCategory('ALL')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition cursor-pointer ${
             selectedCategory === 'ALL'
-              ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
-              : 'bg-[#12141a] border border-[#212532] text-[#a0a5b5] hover:text-white'
+              ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
+              : 'bg-white dark:bg-[#1a1815] border border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
           }`}
         >
           Tất Cả Món ({safeRecipes.length})
@@ -121,11 +123,12 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
           return (
             <button
               key={catId}
+              type="button"
               onClick={() => setSelectedCategory(catId)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition cursor-pointer ${
                 isSelected
-                  ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
-                  : 'bg-[#12141a] border border-[#212532] text-[#a0a5b5] hover:text-white'
+                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
+                  : 'bg-white dark:bg-[#1a1815] border border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
               }`}
             >
               {cat.name}
@@ -134,12 +137,17 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
         })}
       </div>
 
-      {/* Item List */}
-      <div className="space-y-3">
+      {/* Responsive Multi-Column Item Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5">
         {filteredRecipes.length === 0 ? (
-          <div className="text-center py-12 p-6 rounded-3xl bg-[#12141a] border border-[#212532]">
-            <FaCoffee className="text-3xl text-[#6c7280] mx-auto mb-3" />
-            <p className="text-xs text-[#a0a5b5]">Không tìm thấy món nước nào phù hợp.</p>
+          <div className="col-span-full text-center py-16 p-6 rounded-3xl bg-white dark:bg-[#1a1815] border border-stone-200/80 dark:border-stone-800">
+            <FaCoffee className="text-4xl text-stone-300 dark:text-stone-700 mx-auto mb-3" />
+            <p className="text-sm font-semibold text-stone-700 dark:text-stone-300">
+              Không tìm thấy món nước nào phù hợp
+            </p>
+            <p className="text-xs text-stone-400 mt-1">
+              Thử tìm kiếm với từ khóa khác hoặc chuyển sang danh mục khác.
+            </p>
           </div>
         ) : (
           filteredRecipes.map((item: any) => {
@@ -150,57 +158,71 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
               <div
                 key={item.id || item._id}
                 onClick={() => onSelectItem(item)}
-                className="p-3.5 rounded-2xl bg-[#12141a] border border-[#212532] hover:border-[#d4af37]/40 transition flex items-center justify-between gap-3 shadow-md hover:shadow-lg hover:shadow-[#d4af37]/5 cursor-pointer active:scale-[0.99]"
+                className="group rounded-2xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 transition-all duration-200 overflow-hidden flex flex-row sm:flex-col justify-between p-3.5 sm:p-0 gap-3.5 sm:gap-0 cursor-pointer active:scale-[0.99]"
               >
-                {/* Image / Thumbnail */}
-                <div className="w-20 h-20 rounded-xl bg-[#181b24] border border-[#212532] overflow-hidden shrink-0 flex items-center justify-center relative">
+                {/* Image Section */}
+                <div className="w-24 h-24 sm:w-full sm:h-44 bg-stone-100 dark:bg-stone-900 rounded-xl sm:rounded-none overflow-hidden shrink-0 relative flex items-center justify-center">
                   {item.image_url || item.image ? (
                     <img
                       src={item.image_url || item.image}
                       alt={item.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <FaCoffee className="text-xl text-[#d4af37]/60" />
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-[#201d19] text-stone-400">
+                      <FaCoffee className="text-2xl text-amber-500/60 mb-1" />
+                      <span className="text-[10px] font-medium text-stone-400">Zone Six Cafe</span>
+                    </div>
                   )}
+
                   {isBestSeller && (
-                    <span className="absolute top-1 left-1 px-1.5 py-0.5 rounded-md bg-amber-500 text-[9px] font-black text-black flex items-center gap-0.5">
-                      <FaFire className="text-[8px]" />
-                      HOT
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-amber-500 text-[10px] font-black text-stone-950 flex items-center gap-1 shadow-xs">
+                      <FaFire className="text-[9px]" />
+                      <span>BEST SELLER</span>
+                    </span>
+                  )}
+
+                  {item.category && (
+                    <span className="hidden sm:inline-block absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur text-[10px] text-white font-medium">
+                      {item.category}
                     </span>
                   )}
                 </div>
 
-                {/* Details */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-black text-white line-clamp-1 group-hover:text-[#d4af37]">
-                    {item.name || item.title}
-                  </h4>
-                  <p className="text-[11px] text-[#a0a5b5] line-clamp-1 mt-0.5">
-                    {item.description || item.sub_title || 'Đậm vị truyền thống Zone Six'}
-                  </p>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="text-xs font-mono font-extrabold text-[#d4af37]">
-                      {price.toLocaleString('vi-VN')} đ
-                    </span>
-                    {item.serving_size && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 font-bold border border-amber-500/30">
-                        {item.serving_size}
+                {/* Details Section */}
+                <div className="flex-1 min-w-0 sm:p-4 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-[#efe9de] line-clamp-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                      {item.name || item.title}
+                    </h4>
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-2 mt-0.5 leading-relaxed">
+                      {item.description || item.sub_title || 'Đồ uống tinh tế, chuẩn công thức Zone Six'}
+                    </p>
+                  </div>
+
+                  {/* Price & Action Row */}
+                  <div className="mt-3 flex items-center justify-between gap-2 pt-2 border-t border-stone-100 dark:border-stone-800/80">
+                    <div>
+                      <span className="text-xs sm:text-sm font-mono font-extrabold text-amber-600 dark:text-[#d4af37]">
+                        {price.toLocaleString('vi-VN')} đ
                       </span>
-                    )}
-                    {item.unit && !item.serving_size && (
-                      <span className="text-[10px] text-[#6c7280]">/{item.unit}</span>
-                    )}
+                      {item.serving_size && (
+                        <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold border border-amber-500/20">
+                          {item.serving_size}
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-stone-950 transition text-xs font-bold flex items-center gap-1 shadow-xs shrink-0"
+                    >
+                      <FaSlidersH className="text-[10px]" />
+                      <span className="hidden sm:inline">Tùy chọn</span>
+                      <span className="sm:hidden">+</span>
+                    </button>
                   </div>
                 </div>
-
-                {/* Add button */}
-                <button
-                  type="button"
-                  className="w-9 h-9 rounded-xl bg-[#181b24] border border-[#d4af37]/40 text-[#d4af37] hover:bg-[#d4af37] hover:text-black flex items-center justify-center transition shadow-sm shrink-0"
-                >
-                  <FaPlus className="text-xs" />
-                </button>
               </div>
             );
           })
@@ -209,4 +231,3 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
     </div>
   );
 };
-
