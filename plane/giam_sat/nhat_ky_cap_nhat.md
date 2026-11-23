@@ -4,6 +4,29 @@
 
 ---
 
+### [2026-11-23 20:35] - Khắc Phục Lỗi Turbopack Instant Navigation Trên /orders & Bổ Sung Nút Xem Chi Tiết Hóa Đơn Trực Quan
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Khắc phục cảnh báo Turbopack: `Route "/orders": Could not validate that a segment in your UI has instant navigation. Dropped segment: src/app/orders/page.tsx. Set export const instant = false`.
+  2. Bổ sung chức năng Xem Chi Tiết Hóa Đơn rõ ràng trên trang Quản lý hóa đơn (`/orders`), tránh gây nhầm lẫn chỉ có nút In Bill K80.
+- **Nội dung hoàn thành:**
+  - **Khắc phục triệt để lỗi Turbopack (`fe/src/app/orders/page.tsx`):**
+    - Thêm `export const instant = false;` vào `page.tsx` tương tự các trang `/tables` và `/pos`, giải quyết hoàn toàn cảnh báo dropped segment.
+  - **Nâng cấp UI/UX Xem Chi Tiết Hóa Đơn (`fe/src/features/pos/component/`):**
+    - *Nút "Chi Tiết" chuyên biệt:* Bổ sung nút bấm `[👁️ Chi Tiết]` có chữ và icon con mắt `FiEye` tại cột Thao Tác, tách bạch hoàn toàn với nút In Hóa Đơn nhiệt `[🖨️]`.
+    - *Mã HĐ tương tác:* Biến cột `Mã Hóa Đơn` thành liên kết clickable kèm icon con mắt, người dùng bấm vào mã đơn là mở ngay chi tiết hóa đơn.
+    - *Hiển thị Topping & Ghi Chú Đầy Đủ trong `OrderDetailModal.tsx`:* Bổ sung hiển thị mảng `item.toppings` chi tiết theo từng món (tên topping + đơn giá) và ghi chú pha chế (đường, đá).
+    - *Tái cấu trúc SRP & Tuân thủ Max 300 Lines Rule:* Tách thanh công cụ lọc và KPI sang `OrderFilterToolbar.tsx` (178 dòng) và helper `order-date-preset.ts` (21 dòng), giúp `OrderManagementView.tsx` rút gọn từ 482 dòng xuống còn **257 dòng**.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` đạt 0 lỗi tuyệt đối.
+- **Tệp thay đổi:**
+  - `fe/src/app/orders/page.tsx`
+  - `fe/src/features/pos/component/OrderManagementView.tsx`
+  - `fe/src/features/pos/component/OrderFilterToolbar.tsx`
+  - `fe/src/features/pos/component/OrderDetailModal.tsx`
+  - `fe/src/features/pos/utils/order-date-preset.ts`
+
+---
+
 ### [2026-11-23 20:15] - Hoàn Thiện Quy Trình Thanh Toán Tiền Mặt Tại Quầy Cho Đơn Tự Gọi Món Tại Bàn Với Phiếu Hóa Đơn Tạm Tính, Đếm Ngược 30 Phút Tự Động Hủy & Xác Nhận Realtime
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Khi bấm vào "Thanh Toán Tiền Mặt Tại Quầy" trên trang gọi món tại bàn (`/order`), hiển thị phiếu hóa đơn chi tiết yêu cầu khách hàng di chuyển đến quầy để thanh toán. Kèm đồng hồ đếm ngược 30 phút; nếu quá 30 phút mà nhân viên ca trực chưa xác nhận đã thu tiền thì đơn hàng tự động hủy và giải phóng bàn; nếu nhân viên xác nhận thành công thì tự động chuyển màn hình báo thành công.

@@ -110,7 +110,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 <span className="w-20 text-right">T.Tiền</span>
               </div>
 
-              {order.items.map((item, idx) => (
+              {(order.items || []).map((item, idx) => (
                 <div key={idx} className="space-y-0.5">
                   <div className="flex justify-between text-[11px] text-stone-800 dark:text-stone-200 print:text-black font-medium">
                     <span className="flex-1 line-clamp-1">{item.name}</span>
@@ -122,6 +122,11 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                       {item.subtotal.toLocaleString('vi-VN')}
                     </span>
                   </div>
+                  {Array.isArray(item.toppings) && item.toppings.length > 0 && (
+                    <div className="text-[10px] text-amber-700 dark:text-[#d4af37] print:text-black pl-2">
+                      + Topping: {item.toppings.map((t) => `${t.name}${t.price ? ` (+${t.price.toLocaleString('vi-VN')}đ)` : ''}`).join(', ')}
+                    </div>
+                  )}
                   {item.notes && (
                     <div className="text-[10px] text-stone-400 print:text-black italic pl-2">
                       - {item.notes}
@@ -214,6 +219,13 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             >
               <FiPrinter className="text-xs" />
               <span>In Hóa Đơn K80</span>
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="py-2.5 px-4 rounded-xl bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 text-stone-700 dark:text-stone-300 font-semibold text-xs hover:bg-stone-200 dark:hover:bg-[#2f2b26] transition cursor-pointer"
+            >
+              Đóng
             </button>
           </div>
         </div>
