@@ -251,7 +251,7 @@ export const CustomerCartDrawer: React.FC<CustomerCartDrawerProps> = ({
                     <FaMoneyBillWave className="text-lg text-emerald-400 shrink-0" />
                     <div>
                       <div className="text-xs font-bold">Tiền Mặt</div>
-                      <div className="text-[10px] text-[#a0a5b5]">Nhân viên tới thu tại bàn</div>
+                      <div className="text-[10px] text-[#a0a5b5]">Thanh toán tại quầy thu ngân</div>
                     </div>
                   </button>
                 </div>

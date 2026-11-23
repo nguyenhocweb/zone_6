@@ -33,6 +33,28 @@ export interface OrderListResult {
 
 export class OrderListAllService {
   async execute(filter: OrderListFilter): Promise<OrderListResult> {
+    // Tự động quét và đánh dấu hủy các đơn tiền mặt tại bàn quá 30 phút chưa thu tiền
+    try {
+      const thirtyMinsAgo = new Date(Date.now() - 30 * 60 * 1000);
+      await OrderModel.updateMany(
+        {
+          store_id: new mongoose.Types.ObjectId(filter.store_id),
+          payment_method: 'CASH',
+          payment_status: 'PENDING',
+          created_at: { $lt: thirtyMinsAgo },
+        },
+        {
+          $set: {
+            payment_status: 'CANCELLED',
+            void_reason: 'Tự động hủy: Quá 30 phút nhân viên ca trực chưa xác nhận thu tiền mặt tại quầy',
+            voided_at: new Date(),
+          },
+        }
+      );
+    } catch {
+      // Bỏ qua lỗi ngầm nếu store_id chưa hợp lệ
+    }
+
     const query: any = {
       store_id: new mongoose.Types.ObjectId(filter.store_id),
     };

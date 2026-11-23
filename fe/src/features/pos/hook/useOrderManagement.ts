@@ -31,3 +31,18 @@ export function useVoidOrder() {
   });
 }
 
+export function useConfirmCashOrder() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => orderManagementService.confirmCashPayment(id),
+    onSuccess: (order) => {
+      toast.success(`Đã xác nhận thu tiền mặt cho đơn #${order.order_code}!`);
+      queryClient.invalidateQueries({ queryKey: ORDER_MANAGEMENT_QUERY_KEY });
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || err.message || 'Lỗi khi xác nhận thu tiền mặt');
+    },
+  });
+}
+

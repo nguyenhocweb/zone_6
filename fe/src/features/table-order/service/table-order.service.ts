@@ -87,6 +87,16 @@ export const tableOrderService = {
       customerName: d.customer_name || d.customerName || '',
       customerPhone: d.customer_phone || d.customerPhone || '',
       deviceName: d.device_name || d.deviceName || '',
+      items: Array.isArray(d.items)
+        ? d.items.map((it: any) => ({
+            name: it.name,
+            quantity: Number(it.quantity || 1),
+            unitPrice: Number(it.unitPrice || it.unit_price || 0),
+            subtotal: Number(it.subtotal || 0),
+            toppings: it.toppings || [],
+            notes: it.notes || '',
+          }))
+        : [],
       totalAmount: Number(d.total_amount ?? d.totalAmount ?? 0),
       discountAmount: Number(d.discount_amount ?? d.discountAmount ?? 0),
       finalAmount: Number(d.final_amount ?? d.finalAmount ?? 0),

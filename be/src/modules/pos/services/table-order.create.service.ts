@@ -114,7 +114,7 @@ export class TableOrderCreateService {
       discount_amount: dto.discountAmount || 0,
       final_amount: dto.finalAmount,
       payment_method: dto.paymentMethod || 'VIETQR',
-      payment_status: dto.paymentMethod === 'VIETQR' ? 'PENDING' : 'COMPLETED',
+      payment_status: 'PENDING',
       created_by_name: `Khách Bàn ${table.table_number} (QR)`,
     });
 

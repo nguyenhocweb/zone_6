@@ -13,12 +13,14 @@ import {
   FiChevronRight,
   FiSmartphone,
   FiCreditCard,
+  FiCheck,
 } from 'react-icons/fi';
 import { useAuth } from '@/features/shared/auth/hook/useAuth';
-import { useOrderManagement, useVoidOrder } from '../hook/useOrderManagement';
+import { useOrderManagement, useVoidOrder, useConfirmCashOrder } from '../hook/useOrderManagement';
 import { IOrderRecord, OrderFilterParams } from '../type/pos.type';
 import { OrderDetailModal } from './OrderDetailModal';
 import { VoidOrderModal } from './VoidOrderModal';
+import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
 
 export const OrderManagementView: React.FC = () => {
   const { user } = useAuth();
@@ -38,9 +40,11 @@ export const OrderManagementView: React.FC = () => {
   const [datePreset, setDatePreset] = useState<string>('ALL');
   const [selectedOrderForDetail, setSelectedOrderForDetail] = useState<IOrderRecord | null>(null);
   const [selectedOrderForVoid, setSelectedOrderForVoid] = useState<IOrderRecord | null>(null);
+  const [selectedOrderForConfirmCash, setSelectedOrderForConfirmCash] = useState<IOrderRecord | null>(null);
 
   const { data, isLoading } = useOrderManagement(filters);
   const voidMutation = useVoidOrder();
+  const confirmCashMutation = useConfirmCashOrder();
 
   const handleDatePresetChange = (preset: string) => {
     setDatePreset(preset);
@@ -358,6 +362,17 @@ export const OrderManagementView: React.FC = () => {
                       {/* Thao tác */}
                       <td className="p-4 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-2">
+                          {order.payment_status === 'PENDING' && (
+                            <button
+                              onClick={() => setSelectedOrderForConfirmCash(order)}
+                              className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-800/60 transition cursor-pointer flex items-center gap-1 text-xs font-semibold"
+                              title="Xác nhận thu tiền mặt tại quầy"
+                            >
+                              <FiCheck className="text-xs" />
+                              <span className="hidden xl:inline text-[11px]">Thu Tiền</span>
+                            </button>
+                          )}
+
                           <button
                             onClick={() => setSelectedOrderForDetail(order)}
                             className="p-2 rounded-lg bg-stone-100 dark:bg-[#25221e] text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-[#efe9de] hover:bg-stone-200 dark:hover:bg-[#2f2b26] transition cursor-pointer"
@@ -415,6 +430,7 @@ export const OrderManagementView: React.FC = () => {
       <OrderDetailModal
         order={selectedOrderForDetail}
         onClose={() => setSelectedOrderForDetail(null)}
+        onConfirmCashClick={(order) => setSelectedOrderForConfirmCash(order)}
         onVoidClick={
           canVoidOrder
             ? (order) => {
@@ -423,6 +439,27 @@ export const OrderManagementView: React.FC = () => {
               }
             : undefined
         }
+      />
+
+      {/* Confirm Cash Payment Modal */}
+      <ConfirmModal
+        isOpen={Boolean(selectedOrderForConfirmCash)}
+        title="Xác Nhận Thu Tiền Mặt"
+        message={`Xác nhận đã nhận đủ ${selectedOrderForConfirmCash?.final_amount?.toLocaleString('vi-VN')} đ tiền mặt từ ${selectedOrderForConfirmCash?.customer_name || 'khách'} cho đơn #${selectedOrderForConfirmCash?.order_code}?`}
+        confirmLabel="Xác Nhận Đã Thu"
+        cancelLabel="Bỏ Qua"
+        isLoading={confirmCashMutation.isPending}
+        onCancel={() => setSelectedOrderForConfirmCash(null)}
+        onConfirm={() => {
+          if (selectedOrderForConfirmCash) {
+            confirmCashMutation.mutate(selectedOrderForConfirmCash._id, {
+              onSuccess: () => {
+                setSelectedOrderForConfirmCash(null);
+                setSelectedOrderForDetail(null);
+              },
+            });
+          }
+        }}
       />
 
       {/* Void Modal */}

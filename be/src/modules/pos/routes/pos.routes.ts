@@ -11,6 +11,7 @@ import { getPublicStoresAndTablesController } from '../controllers/table-order.p
 import { voidOrderController } from '../controllers/order.void.controller.js';
 import { listAllOrdersController } from '../controllers/order.list-all.controller.js';
 import { getOrderStatusController, cancelOrderController } from '../controllers/order.status.controller.js';
+import { confirmCashOrderController } from '../controllers/order.confirm-cash.controller.js';
 
 export function createPosRouter(): Router {
   const router = Router();
@@ -43,6 +44,7 @@ export function createPosRouter(): Router {
   // 5. Lịch sử hóa đơn đã thanh toán theo chi nhánh
   router.get('/orders', authenticate, historyController.handle);
   router.get('/orders/all', authenticate, listAllOrdersController);
+  router.post('/orders/:id/confirm-cash', authenticate, confirmCashOrderController);
   router.post('/orders/:id/void', authenticate, voidOrderController);
   router.post('/orders/:orderId/cancel', authenticate, cancelOrderController);
 

@@ -1,19 +1,21 @@
 'use client';
 
 import React from 'react';
-import { FiX, FiPrinter, FiSlash, FiFileText } from 'react-icons/fi';
+import { FiX, FiPrinter, FiSlash, FiCheck } from 'react-icons/fi';
 import { IOrderRecord } from '../type/pos.type';
 
 interface OrderDetailModalProps {
   order: IOrderRecord | null;
   onClose: () => void;
   onVoidClick?: (order: IOrderRecord) => void;
+  onConfirmCashClick?: (order: IOrderRecord) => void;
 }
 
 export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   order,
   onClose,
   onVoidClick,
+  onConfirmCashClick,
 }) => {
   if (!order) return null;
 
@@ -195,6 +197,16 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           )}
 
           <div className="flex items-center gap-2 ml-auto">
+            {order.payment_status === 'PENDING' && onConfirmCashClick && (
+              <button
+                type="button"
+                onClick={() => onConfirmCashClick(order)}
+                className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-sm active:scale-95 transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <FiCheck className="text-xs" />
+                <span>Xác Nhận Thu Tiền Mặt</span>
+              </button>
+            )}
             <button
               type="button"
               onClick={handlePrint}

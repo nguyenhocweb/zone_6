@@ -4,6 +4,47 @@
 
 ---
 
+### [2026-11-23 20:15] - Hoàn Thiện Quy Trình Thanh Toán Tiền Mặt Tại Quầy Cho Đơn Tự Gọi Món Tại Bàn Với Phiếu Hóa Đơn Tạm Tính, Đếm Ngược 30 Phút Tự Động Hủy & Xác Nhận Realtime
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Khi bấm vào "Thanh Toán Tiền Mặt Tại Quầy" trên trang gọi món tại bàn (`/order`), hiển thị phiếu hóa đơn chi tiết yêu cầu khách hàng di chuyển đến quầy để thanh toán. Kèm đồng hồ đếm ngược 30 phút; nếu quá 30 phút mà nhân viên ca trực chưa xác nhận đã thu tiền thì đơn hàng tự động hủy và giải phóng bàn; nếu nhân viên xác nhận thành công thì tự động chuyển màn hình báo thành công.
+- **Nội dung hoàn thành:**
+  - **Backend (`be/src/modules/pos/`):**
+    1. *Khởi tạo đơn tiền mặt ở trạng thái chờ (`table-order.create.service.ts`):* Khi khách đặt đơn bằng `CASH`, thiết lập `payment_status: 'PENDING'` thay vì tự động đánh dấu COMPLETED.
+    2. *Cơ chế tự động hủy sau 30 phút (`order.status.service.ts` & `order.list-all.service.ts`):* Khi kiểm tra trạng thái đơn hàng (`/order-status/:orderCode`) hoặc tải danh sách đơn POS, hệ thống tính toán thời gian trôi qua dựa trên `created_at`. Nếu quá 30 phút (1800 giây) mà đơn vẫn ở trạng thái `PENDING`, tự động cập nhật `payment_status = 'CANCELLED'`, trả trạng thái bàn về `AVAILABLE`, phát socket `pos:order_cancelled` và `table:updated`.
+    3. *API xác nhận thu tiền mặt cho nhân viên POS (`order.confirm-cash.controller.ts` & `pos.routes.ts`):* Endpoint `POST /api/v1/pos/orders/:id/confirm-cash` cập nhật `payment_status: 'COMPLETED'`, `paid_at`, `paid_by_name`, đồng thời phát socket `pos:payment_success` và `pos:order_status_updated`.
+  - **Frontend (`fe/src/features/table-order/` & `fe/src/features/pos/`):**
+    1. *Tạo Component `TableCashBillModal.tsx` (< 300 dòng):*
+       - Giao diện Obsidian Gold chuẩn phong cách Scandinavian Dual-Theme.
+       - Hiển thị mã đơn hàng lớn kèm nút 1-click sao chép.
+       - Hộp thông báo nổi bật hướng dẫn khách hàng mang mã đơn đến quầy thu ngân/quầy Bar để thanh toán tiền mặt.
+       - Đồng hồ đếm ngược 30 phút trực quan kèm thanh tiến trình (progress bar), đồng bộ chính xác theo `createdAt` của server.
+       - Danh sách món chi tiết kèm toppings, ghi chú, đơn giá và tổng số tiền cần thanh toán.
+       - Polling tự động mỗi 3s: Chuyển sang màn hình "THANH TOÁN THÀNH CÔNG!" khi nhân viên xác nhận, hoặc chuyển sang màn hình "HÓA ĐƠN ĐÃ TỰ ĐỘNG HỦY" khi quá 30 phút.
+    2. *Tích hợp vào `TableOrderView.tsx`:* Quản lý trạng thái riêng biệt cho `vietQrOrder` và `cashBillOrder`. Tách component `ScanQrPrompt.tsx` giúp `TableOrderView.tsx` chỉ còn 269 dòng (tuân thủ nghiêm ngặt Max 300 Lines Rule).
+    3. *Giao diện nhân viên POS (`OrderManagementView.tsx` & `OrderDetailModal.tsx`):*
+       - Bổ sung nút bấm "Thu Tiền" trực tiếp tại cột thao tác cho các đơn `PENDING`.
+       - Tích hợp `<ConfirmModal>` xác nhận thu tiền mặt chuẩn quy chuẩn (không dùng browser `confirm()`).
+       - Bổ sung nút "Xác Nhận Thu Tiền Mặt" trong `OrderDetailModal.tsx`.
+  - **Kiểm thử & Typecheck:** Chạy `tsc --noEmit` cho cả Backend và Frontend, đạt 0 lỗi. Mọi file đều tuân thủ dưới 300 dòng.
+- **Tệp thay đổi:**
+  - `be/src/modules/pos/services/table-order.create.service.ts`
+  - `be/src/modules/pos/services/order.status.service.ts`
+  - `be/src/modules/pos/services/order.list-all.service.ts`
+  - `be/src/modules/pos/controllers/order.confirm-cash.controller.ts`
+  - `be/src/modules/pos/routes/pos.routes.ts`
+  - `fe/src/features/table-order/component/TableCashBillModal.tsx`
+  - `fe/src/features/table-order/component/ScanQrPrompt.tsx`
+  - `fe/src/features/table-order/component/TableOrderView.tsx`
+  - `fe/src/features/table-order/component/CustomerCartDrawer.tsx`
+  - `fe/src/features/table-order/service/table-order.service.ts`
+  - `fe/src/features/table-order/type/table-order.type.ts`
+  - `fe/src/features/pos/component/OrderManagementView.tsx`
+  - `fe/src/features/pos/component/OrderDetailModal.tsx`
+  - `fe/src/features/pos/service/order-management.service.ts`
+  - `fe/src/features/pos/hook/useOrderManagement.ts`
+
+---
+
 ### [2026-11-23 19:58] - Khắc Phục Lỗi Runtime TypeError 'Cannot read properties of undefined (reading toLocaleString)' Trong TableVietQrModal
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Xử lý lỗi crash Runtime TypeError `Cannot read properties of undefined (reading 'toLocaleString')` tại `TableVietQrModal (src/features/table-order/component/TableVietQrModal.tsx:51:5)` khi gửi đơn hàng tại bàn.

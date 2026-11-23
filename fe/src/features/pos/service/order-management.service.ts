@@ -13,5 +13,10 @@ export const orderManagementService = {
     });
     return res.data.data;
   },
+
+  async confirmCashPayment(id: string): Promise<IOrderRecord> {
+    const res = await axiosClient.post(`/api/v1/pos/orders/${id}/confirm-cash`);
+    return res.data.data;
+  },
 };
 

@@ -59,14 +59,23 @@ export interface TableOrderResult {
   id: string;
   orderCode: string;
   tableNumber?: string;
+  zoneName?: string;
   customerName?: string;
   customerPhone?: string;
   deviceName?: string;
+  items?: Array<{
+    name: string;
+    quantity: number;
+    unitPrice: number;
+    subtotal: number;
+    toppings?: Array<{ name: string; price: number }>;
+    notes?: string;
+  }>;
   totalAmount: number;
   discountAmount: number;
   finalAmount: number;
   paymentMethod: 'VIETQR' | 'CASH';
-  paymentStatus: 'PENDING' | 'PAID';
+  paymentStatus: 'PENDING' | 'PAID' | 'COMPLETED' | 'CANCELLED';
   orderStatus: 'PENDING' | 'PREPARING' | 'COMPLETED' | 'CANCELLED';
   createdAt: string;
 }
