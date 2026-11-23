@@ -45,6 +45,9 @@ export class OrderCheckoutController {
       user: {
         userId: user.userId,
         name: user.name || user.email || 'Nhân viên',
+        role: user.role,
+        assigned_store_id: user.assigned_store_id,
+        assigned_stores: user.assigned_stores,
       },
     });
 

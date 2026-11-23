@@ -6,6 +6,9 @@ export const metadata = {
   description: 'Quản lý danh sách bàn và xuất mã QR định vị GPS gọi món tại bàn',
 };
 
+// Opt out of experimental Turbopack instant-navigation segment validation
+export const instant = false;
+
 export default function TablesPage() {
   return <TableManagementView />;
 }

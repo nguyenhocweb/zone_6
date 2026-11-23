@@ -145,6 +145,42 @@ export function PosView() {
     }
   }, [user]);
 
+  // Heartbeat định kỳ 60s đối chiếu điều kiện Shift Gatekeeper thời gian thực
+  useEffect(() => {
+    if (!shiftData) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const freshData = await posService.verifyShift(shiftData.storeId);
+        setShiftData(freshData);
+
+        // Cảnh báo khi thời gian bàn giao ca sắp hết (< 10 phút)
+        if (
+          freshData.gatekeeperStatus === 'HANDOVER_GRACE_PERIOD' &&
+          freshData.remainingMinutes !== undefined &&
+          freshData.remainingMinutes <= 10
+        ) {
+          toast.warning(
+            `⚠️ Sắp hết thời gian bàn giao ca (+1h)! Màn hình POS sẽ tự động khóa trong ${freshData.remainingMinutes} phút nữa.`,
+            { id: 'shift-handover-warning' }
+          );
+        }
+      } catch (err: any) {
+        // Hết hạn ca và thời gian bàn giao -> Tự động khóa POS tức thì!
+        const errMsg =
+          err.response?.data?.message ||
+          'Ca làm việc và thời gian bàn giao ca (+60 phút) đã kết thúc. Màn hình POS đã tự động khóa để bảo mật!';
+        setShiftData(null);
+        setVerifyError(errMsg);
+        toast.error('🔒 Thời gian bàn giao ca đã kết thúc. POS đã tự động khóa!', {
+          id: 'shift-expired-lock',
+        });
+      }
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [shiftData?.storeId, shiftData?.shiftId]);
+
   // 2. Tải danh mục món & Topping thật từ database khi đã xác thực ca thành công
   useEffect(() => {
     if (shiftData?.storeId) {
@@ -345,18 +381,25 @@ export function PosView() {
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <Link
               href="/checkin"
               className="w-full py-3.5 px-4 rounded-xl text-xs font-semibold bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-white transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
             >
               <FiCamera className="w-4 h-4 text-stone-300 dark:text-stone-600" />
-              <span>ĐIỂM DANH CHECK-IN NGAY</span>
+              <span>ĐIỂM DANH CHECK-IN CA LÀM</span>
+            </Link>
+
+            <Link
+              href="/scheduling"
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-white dark:bg-[#25221e] hover:bg-stone-50 dark:hover:bg-[#2a2622] text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700/60 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Xem Lịch Phân Ca Tuần</span>
             </Link>
 
             <button
               onClick={checkShiftAccess}
-              className="w-full py-3 px-4 rounded-xl text-xs font-semibold bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2f2b26] text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700/60 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-stone-100 dark:bg-[#25221e] hover:bg-stone-200 dark:hover:bg-[#2f2b26] text-stone-700 dark:text-stone-300 transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <FiRefreshCw className="w-3.5 h-3.5 text-stone-400" />
               <span>Thử kiểm tra lại</span>

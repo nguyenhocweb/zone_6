@@ -6,6 +6,7 @@ import { emitTableEvent } from '../../admin_he_thong/table/socket/table.socket.j
 import { IOrder, IOrderItem } from '../models/order.model.js';
 import { StoreConfigModel } from '../../admin_he_thong/store-config/models/store-config.model.js';
 import { PayOSPaymentService } from '../../admin_he_thong/payos/services/payos-payment.service.js';
+import { PosVerifyShiftService } from './pos.verify-shift.service.js';
 import { BadRequestError } from '../../../core/errors.js';
 
 export interface ICheckoutInput {
@@ -36,6 +37,9 @@ export interface ICheckoutInput {
   user: {
     userId: string;
     name: string;
+    role?: string;
+    assigned_store_id?: string | null;
+    assigned_stores?: string[];
   };
 }
 
@@ -54,6 +58,19 @@ export class OrderCheckoutService {
     if (!input.items || input.items.length === 0) {
       throw new BadRequestError('Đơn hàng không có món nào để thanh toán.');
     }
+
+    // 0. Xác thực điều kiện ca trực Shift Gatekeeper tại thời điểm checkout
+    const verifyShiftService = new PosVerifyShiftService();
+    const verifiedShift = await verifyShiftService.execute(
+      {
+        userId: input.user.userId,
+        name: input.user.name,
+        role: input.user.role,
+        assigned_store_id: input.user.assigned_store_id,
+        assigned_stores: input.user.assigned_stores,
+      },
+      input.storeId
+    );
 
     const storeDoc = await StoreConfigModel.findById(input.storeId).lean();
     const storeCode = storeDoc?.store_code || 'CS';
@@ -161,11 +178,13 @@ export class OrderCheckoutService {
       }
     }
 
+    const effectiveShiftId = verifiedShift.shiftId || input.shiftId;
     const orderData: Partial<IOrder> = {
       store_id: new mongoose.Types.ObjectId(input.storeId),
-      shift_id: input.shiftId && mongoose.Types.ObjectId.isValid(input.shiftId)
-        ? new mongoose.Types.ObjectId(input.shiftId)
+      shift_id: effectiveShiftId && mongoose.Types.ObjectId.isValid(effectiveShiftId)
+        ? new mongoose.Types.ObjectId(effectiveShiftId)
         : undefined,
+      shift_name: verifiedShift.shiftName || input.shiftName || 'Ca Trực',
       order_code: orderCode,
       table_id: matchedTable ? matchedTable._id : undefined,
       table_number: isTakeAway ? 'Mang về' : (input.tableNumber || 'Mang về'),

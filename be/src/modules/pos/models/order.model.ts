@@ -18,6 +18,7 @@ export interface IOrderItem {
 export interface IOrder extends Document {
   store_id: mongoose.Types.ObjectId;
   shift_id?: mongoose.Types.ObjectId;
+  shift_name?: string;
   order_code: string;
   table_id?: mongoose.Types.ObjectId;
   table_number?: string;
@@ -78,6 +79,7 @@ const OrderSchema = new Schema<IOrder>(
   {
     store_id: { type: Schema.Types.ObjectId, ref: 'stores', required: true, index: true },
     shift_id: { type: Schema.Types.ObjectId, ref: 'shift_configs' },
+    shift_name: { type: String, default: '' },
     order_code: { type: String, required: true, unique: true },
     table_id: { type: Schema.Types.ObjectId, ref: 'tables', default: null },
     table_number: { type: String, default: '' },

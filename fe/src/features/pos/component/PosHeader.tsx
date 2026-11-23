@@ -1,7 +1,18 @@
 'use client';
 
 import React from 'react';
-import { FiWifi, FiWifiOff, FiClock, FiMapPin, FiLayers, FiShield, FiBell, FiX } from 'react-icons/fi';
+import {
+  FiWifi,
+  FiWifiOff,
+  FiClock,
+  FiMapPin,
+  FiLayers,
+  FiShield,
+  FiBell,
+  FiX,
+  FiAlertTriangle,
+  FiCheckCircle,
+} from 'react-icons/fi';
 import { IVerifyShiftData } from '../type/pos.type';
 
 interface PosHeaderProps {
@@ -41,12 +52,54 @@ export const PosHeader: React.FC<PosHeaderProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>LIVE ORDER</span>
             </span>
-            {shiftData.mode === 'SUPERVISOR' && (
-              <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60 flex items-center gap-1">
-                <FiShield className="text-stone-400 text-xs" />
-                <span>GIÁM SÁT</span>
-              </span>
-            )}
+
+            {/* Shift Gatekeeper Realtime Status Badge */}
+            {(() => {
+              const status = shiftData.gatekeeperStatus;
+              const remaining = shiftData.remainingMinutes ?? 0;
+              const formatRemaining = (mins: number) => {
+                if (mins >= 60) {
+                  const h = Math.floor(mins / 60);
+                  const m = mins % 60;
+                  return `${h}h${m > 0 ? `${m}p` : ''}`;
+                }
+                return `${mins}p`;
+              };
+
+              if (status === 'SUPERVISOR') {
+                return (
+                  <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-stone-100 dark:bg-[#25221e] text-stone-600 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/60 flex items-center gap-1">
+                    <FiShield className="text-amber-500 text-xs" />
+                    <span>GIÁM SÁT 24/7</span>
+                  </span>
+                );
+              }
+
+              if (status === 'HANDOVER_GRACE_PERIOD') {
+                return (
+                  <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60 flex items-center gap-1 animate-pulse shadow-xs">
+                    <FiAlertTriangle className="text-amber-600 dark:text-amber-400 text-xs" />
+                    <span>BÀN GIAO CA (+1H) • CÒN {formatRemaining(remaining)} (KHÓA LÚC {shiftData.handoverUntil})</span>
+                  </span>
+                );
+              }
+
+              if (status === 'EARLY_ACCESS') {
+                return (
+                  <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-sky-50 dark:bg-sky-950/40 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-700/60 flex items-center gap-1 shadow-xs">
+                    <FiCheckCircle className="text-sky-600 dark:text-sky-400 text-xs" />
+                    <span>VÀO CA SỚM • CÒN {formatRemaining(remaining)} (BẮT ĐẦU {shiftData.shiftStartTime})</span>
+                  </span>
+                );
+              }
+
+              return (
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 flex items-center gap-1 shadow-xs">
+                  <FiClock className="text-emerald-600 dark:text-emerald-400 text-xs" />
+                  <span>TRONG CA • CÒN {formatRemaining(remaining)} ({shiftData.shiftStartTime} - {shiftData.shiftEndTime})</span>
+                </span>
+              );
+            })()}
           </div>
           <div className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400 mt-0.5 flex-wrap">
             <span className="flex items-center gap-1 font-medium text-stone-800 dark:text-stone-200">

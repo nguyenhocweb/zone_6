@@ -1,6 +1,9 @@
+export type ShiftGatekeeperStatus = 'IN_SHIFT' | 'HANDOVER_GRACE_PERIOD' | 'EARLY_ACCESS' | 'SUPERVISOR';
+
 export interface IVerifyShiftData {
   allowed: boolean;
   mode: 'STAFF' | 'SUPERVISOR';
+  gatekeeperStatus: ShiftGatekeeperStatus;
   storeId: string;
   storeName: string;
   shiftId: string;
@@ -8,6 +11,11 @@ export interface IVerifyShiftData {
   sessionCode: string;
   staffName: string;
   staffRole: string;
+  shiftStartTime?: string;
+  shiftEndTime?: string;
+  handoverUntil?: string;
+  remainingMinutes?: number;
+  message?: string;
 }
 
 export interface IPosTopping {

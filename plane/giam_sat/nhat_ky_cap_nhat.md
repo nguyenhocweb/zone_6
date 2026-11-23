@@ -4,6 +4,39 @@
 
 ---
 
+### [2026-11-23 19:35] - Triển Khai Cơ Chế Shift Gatekeeper Nghiêm Ngặt 4 Trạng Thái Cho POS Live Order & Khắc Phục Turbopack Dropped Segment /tables
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  1. Khắc phục cảnh báo Turbopack Instant Navigation segment dropped trên `/tables`.
+  2. Nâng cấp Shift Gatekeeper POS: Chỉ nhân viên trong ca mới được mở POS, tự động đóng khi hết ca và gia hạn thêm 1 tiếng (+60 phút) để kiểm két, chốt bill và bàn giao ca. Cho phép nhân viên đã check-in ca tiếp theo trước 30 phút mở POS sớm để nhận bàn giao. Phân quyền ngoại lệ: Admin toàn quyền 24/7 toàn chuỗi; Quản lý chỉ được mở tại các chi nhánh được phân công. Tự động kiểm tra thời gian thực và khóa màn hình khi hết giờ bàn giao.
+- **Nội dung hoàn thành:**
+  - **Khắc phục lỗi Instant Navigation trên /tables:** Thêm `export const instant = false;` vào `fe/src/app/tables/page.tsx` giúp Turbopack không drop segment và validate tức thời.
+  - **Nâng cấp PosVerifyShiftService:**
+    - Quản lý (`quan_ly`): Validate nghiêm ngặt `user.assigned_stores` và `user.assigned_store_id`, từ chối truy cập nếu chi nhánh không thuộc phạm vi phụ trách.
+    - Admin (`admin_he_thong`): Toàn quyền truy cập 24/7 bất kỳ chi nhánh nào (`mode: 'SUPERVISOR'`).
+    - Nhân sự trong ca: Tra cứu cấu hình ca (`ShiftConfigModel`) và đối chiếu với bản ghi điểm danh trong 24h qua. Phân loại chuẩn xác 4 trạng thái:
+      - `IN_SHIFT` ($T_{start} \le T_{now} \le T_{end}$): Đang trong ca làm việc chính thức.
+      - `HANDOVER_GRACE_PERIOD` ($T_{end} < T_{now} \le T_{end} + 60\text{m}$): Gia hạn +1h sau ca để kiểm đếm két, xử lý đơn tồn và in bill K80 (ngay cả khi đã bấm checkout điểm danh).
+      - `EARLY_ACCESS` ($T_{next\_start} - 30\text{m} \le T_{now} < T_{next\_start}$): Nhân viên đã check-in sớm đúng quy định được vào nhận bàn giao ca.
+      - `LOCKED`: Ngoài các khung giờ trên, hệ thống trả về thông báo lỗi chi tiết theo từng ngữ cảnh (chưa check-in, đã hết hạn bàn giao +60p, hoặc đến quá sớm trước 30p).
+  - **Ràng buộc kép tại Backend Checkout (OrderCheckoutService):** Gọi `PosVerifyShiftService` trực tiếp khi tạo đơn/thanh toán, lập tức từ chối và bắn `ForbiddenError` nếu ca làm việc đã hết hạn thời gian bàn giao, đồng thời tự động gắn `shift_name` vào bản ghi đơn hàng.
+  - **Nâng cấp Realtime Gatekeeper & Heartbeat tại Frontend:**
+    - Cập nhật `IVerifyShiftData` với `gatekeeperStatus`, `shiftStartTime`, `shiftEndTime`, `handoverUntil`, `remainingMinutes`.
+    - `PosHeader.tsx`: Hiển thị Badge trực quan theo trạng thái (Xanh lá - Trong ca, Vàng hổ phách nhấp nháy - Bàn giao ca +1h, Xanh dương - Vào ca sớm, Xám vàng - Giám sát 24/7) kèm đếm ngược phút còn lại.
+    - `PosView.tsx`: Thiết lập Heartbeat định kỳ 60 giây ngầm kiểm tra quyền ca trực. Khi hết thời gian bàn giao (+60p), tự động chuyển sang Màn hình Khóa POS Obsidian Gold và phát thông báo Sonner toast; hiển thị cảnh báo vàng khi thời gian bàn giao còn dưới 10 phút.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` toàn bộ Backend và Frontend đạt 0 lỗi tuyệt đối.
+- **Tệp thay đổi:**
+  - `be/src/modules/pos/services/pos.verify-shift.service.ts`
+  - `be/src/modules/pos/services/order.checkout.service.ts`
+  - `be/src/modules/pos/controllers/order.checkout.controller.ts`
+  - `be/src/modules/pos/models/order.model.ts`
+  - `fe/src/app/tables/page.tsx`
+  - `fe/src/features/pos/type/pos.type.ts`
+  - `fe/src/features/pos/component/PosHeader.tsx`
+  - `fe/src/features/pos/component/PosView.tsx`
+
+---
+
 ### [2026-11-20 22:56] - Cấu Hình Tài Khoản Ngrok Độc Lập Cho Zone Six (Domain Tĩnh mystify-collie-acquire) & Tách Biệt Dự Án Khác
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Chuyển đổi sang tài khoản Ngrok mới cho Zone Six với domain tĩnh `mystify-collie-acquire.ngrok-free.dev` và giữ nguyên tài khoản Ngrok cũ cho dự án khác của người dùng.
