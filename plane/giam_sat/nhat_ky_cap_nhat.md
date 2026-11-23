@@ -4,6 +4,27 @@
 
 ---
 
+### [2026-11-23 20:50] - Nâng Cấp Giao Diện Xem Chi Tiết Hóa Đơn Sang Dạng Toàn Màn Hình (Full-Screen Workspace Mode)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Chuyển đổi màn hình Xem Chi Tiết Hóa Đơn (`OrderDetailModal.tsx`) từ dạng hộp popup nhỏ hẹp 1 phần giữa màn hình (`max-w-lg`) sang dạng Full Màn Hình (Full-Screen) chuyên nghiệp, rộng rãi và trực quan trên máy tính.
+- **Nội dung hoàn thành:**
+  - **Thiết kế Full-Screen Workspace Dashboard (`OrderDetailModal.tsx`):**
+    - Container chiếm 100% màn hình (`w-screen h-screen fixed inset-0 z-50 bg-stone-100/90 dark:bg-[#12110f]/95 backdrop-blur-md`).
+    - *Sticky Header Bar:* Nút `[← Quay Lại]`, Mã đơn hàng font mono to, Badges trạng thái thanh toán (Đã thanh toán/Chờ/Hủy), Nguồn đơn (Bàn QR/POS), Bàn phục vụ, Nút Thu tiền mặt, Nút Hủy bill, Nút In Bill K80 và Nút Đóng `[✕]`.
+    - *4 Thẻ KPI Nhanh (`OrderQuickMetrics.tsx`):* Tổng tiền thanh toán (Font mono to màu vàng gold/amber), Phương thức thanh toán, Bàn/Vị trí, Khách hàng.
+    - *Bố Cục 2 Cột Split Screen Rộng Rãi Trên Desktop:*
+      - *Cột Trái (65%):* Thẻ Danh Sách Món Ăn Đã Gọi rộng rãi với từng món chi tiết, tag topping màu amber nổi bật, mức đường/đá/ghi chú; Bảng chi phí tổng kết (Tạm tính, Giảm giá, VAT, Tổng tiền thanh toán); Hộp cảnh báo đỏ nếu đơn đã hủy.
+      - *Cột Phải (35%):* Thẻ Thông Tin Vận Hành (Thời gian tạo, thời gian thanh toán, người tạo đơn, thu ngân thu tiền, định vị GPS Geofence) và Bản In Hóa Đơn Nhiệt K80 Xem Trước (`OrderThermalReceipt.tsx`) kèm nút In ngay.
+    - *Bảo Toàn Khả Năng In Ấn K80:* Tối ưu `@media print` đảm bảo khi bấm In Bill K80, toàn bộ khung Dashboard full-screen tự động ẩn đi và chỉ in duy nhất khổ giấy K80 chuẩn máy in hóa đơn.
+    - *Tuân thủ Granular SRP & Max 300 Lines Rule:* Tách `OrderThermalReceipt.tsx` (139 dòng) và `OrderQuickMetrics.tsx` (57 dòng), giúp `OrderDetailModal.tsx` duy trì **268 dòng** cực kỳ gọn gàng.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` đạt 0 lỗi tuyệt đối.
+- **Tệp thay đổi:**
+  - `fe/src/features/pos/component/OrderDetailModal.tsx`
+  - `fe/src/features/pos/component/OrderQuickMetrics.tsx`
+  - `fe/src/features/pos/component/OrderThermalReceipt.tsx`
+
+---
+
 ### [2026-11-23 20:35] - Khắc Phục Lỗi Turbopack Instant Navigation Trên /orders & Bổ Sung Nút Xem Chi Tiết Hóa Đơn Trực Quan
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:**
