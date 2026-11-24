@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   FiX,
   FiPrinter,
@@ -11,6 +12,7 @@ import {
 } from 'react-icons/fi';
 import { IOrderRecord } from '../type/pos.type';
 import { OrderQuickMetrics } from './OrderQuickMetrics';
+import { OrderOperationInfo } from './OrderOperationInfo';
 import { OrderThermalReceipt } from './OrderThermalReceipt';
 
 interface OrderDetailModalProps {
@@ -26,7 +28,24 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   onVoidClick,
   onConfirmCashClick,
 }) => {
-  if (!order) return null;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (order) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [order]);
+
+  if (!order || !mounted) return null;
 
   const handlePrint = () => {
     window.print();
@@ -37,10 +56,21 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   const isTableQr = order.order_source === 'CUSTOMER_TABLE_QR';
   const items = order.items || [];
 
-  return (
-    <div className="fixed inset-0 z-50 bg-stone-100/90 dark:bg-[#12110f]/95 backdrop-blur-md flex flex-col w-screen h-screen overflow-hidden animate-in fade-in duration-200">
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[99999] bg-stone-100 dark:bg-[#12110f] flex flex-col w-screen h-screen max-w-full max-h-screen overflow-hidden animate-fadeIn"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',
+        height: '100vh',
+      }}
+    >
       {/* 1. Full-Screen Sticky Header */}
-      <header className="p-4 sm:px-6 lg:px-8 border-b border-stone-200/80 dark:border-stone-800 bg-white/95 dark:bg-[#1a1815]/95 backdrop-blur shrink-0 flex items-center justify-between gap-4 print:hidden">
+      <header className="p-3 sm:px-6 lg:px-8 border-b border-stone-200/80 dark:border-stone-800 bg-white dark:bg-[#1a1815] shrink-0 flex items-center justify-between gap-4 print:hidden shadow-xs">
         <div className="flex items-center gap-3 min-w-0">
           <button
             type="button"
@@ -121,13 +151,13 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       </header>
 
       {/* 2. Full-Screen Body Content */}
-      <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto space-y-6">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto space-y-6">
         {/* 4 Quick Metric Cards */}
         <OrderQuickMetrics order={order} />
 
         {/* Main 2-Column Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* CỘT TRÁI (65%): Danh sách món ăn chi tiết & Tổng hợp tài chính */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start w-full">
+          {/* CỘT TRÁI (7 cols): Danh sách món ăn chi tiết & Tổng hợp tài chính */}
           <div className="lg:col-span-7 space-y-6 print:hidden">
             {/* Card Danh Sách Món Ăn */}
             <div className="bg-white dark:bg-[#1a1815] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
@@ -232,40 +262,10 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             )}
           </div>
 
-          {/* CỘT PHẢI (35%): Thông tin vận hành & Xem trước phiếu in K80 */}
+          {/* CỘT PHẢI (5 cols): Thông tin vận hành & Xem trước phiếu in K80 */}
           <div className="lg:col-span-5 space-y-6">
             {/* Card Thông Tin Vận Hành */}
-            <div className="bg-white dark:bg-[#1a1815] border border-stone-200/80 dark:border-stone-800 rounded-3xl p-5 shadow-sm space-y-3 text-xs print:hidden">
-              <h3 className="font-bold text-stone-900 dark:text-[#efe9de] border-b border-stone-200/80 dark:border-stone-800 pb-2">
-                Thông Tin Vận Hành
-              </h3>
-              <div className="space-y-2 text-stone-600 dark:text-stone-400">
-                <div className="flex justify-between">
-                  <span>Thời gian tạo đơn:</span>
-                  <strong className="text-stone-800 dark:text-stone-200">{new Date(order.created_at).toLocaleString('vi-VN')}</strong>
-                </div>
-                <div className="flex justify-between">
-                  <span>Thời gian thanh toán:</span>
-                  <strong className="text-stone-800 dark:text-stone-200">
-                    {order.paid_at ? new Date(order.paid_at).toLocaleString('vi-VN') : 'Chưa thanh toán'}
-                  </strong>
-                </div>
-                <div className="flex justify-between">
-                  <span>Người tạo đơn:</span>
-                  <strong className="text-stone-800 dark:text-stone-200">{order.created_by_name || 'Hệ Thống'}</strong>
-                </div>
-                <div className="flex justify-between">
-                  <span>Thu ngân thu tiền:</span>
-                  <strong className="text-stone-800 dark:text-stone-200">{order.paid_by_name || 'Chưa xác nhận'}</strong>
-                </div>
-                {order.distance_meters !== undefined && (
-                  <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-medium">
-                    <span>Định vị GPS Geofence:</span>
-                    <span>Cách quán ~{order.distance_meters}m</span>
-                  </div>
-                )}
-              </div>
-            </div>
+            <OrderOperationInfo order={order} />
 
             {/* Card Bản In Hóa Đơn K80 Thermal Preview */}
             <div className="space-y-3">
@@ -288,6 +288,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           </div>
         </div>
       </main>
-    </div>
+    </div>,
+    document.body
   );
 };

@@ -4,6 +4,30 @@
 
 ---
 
+### [2026-11-24 13:45] - Khắc Phục Lỗi Bố Cục Xem Chi Tiết Hóa Đơn Bị Tràn Màn Hình & Tránh Lồng Khung Bằng React Portal
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Khắc phục lỗi giao diện xem chi tiết hóa đơn: bị thanh bên (Sidebar) và thanh điều hướng đè/chiếm chỗ, nội dung cột phải và nút hành động (In Bill K80, Đóng ✕) bị đẩy tràn ra khỏi mép phải màn hình máy tính (`media_1795502386246_c9cc1023.jpg`).
+- **Nguyên nhân kỹ thuật gốc rễ (Root Cause):**
+  - Trong `OrderManagementView.tsx`, phần tử bọc ngoài có class `animate-fadeIn`. Theo chuẩn W3C CSS, bất kỳ phần tử nào có animation/transform đều thiết lập một **Containing Block** mới cho tất cả các phần tử con có `position: fixed`.
+  - Do đó, `fixed inset-0 w-screen h-screen` của `OrderDetailModal` bị giới hạn trong khung chứa chính của `AppShell.tsx` (bắt đầu cách mép trái 260px bởi sidebar) thay vì gắn vào `viewport`. Độ rộng `w-screen` bắt đầu từ 260px kéo dài sang phải khiến mép phải bị đẩy ra ngoài màn hình đúng 260px và sidebar vẫn lộ ra ngoài.
+- **Nội dung hoàn thành:**
+  - **Triển khai `createPortal(..., document.body)` (`fe/src/features/pos/component/OrderDetailModal.tsx`):**
+    - Teleport toàn bộ modal ra trực tiếp `document.body`, thoát hoàn toàn khỏi containing block của `AppShell` và `animate-fadeIn`.
+    - Sử dụng `fixed inset-0 z-[99999] w-screen h-screen` bao phủ trọn vẹn 100% viewport từ tọa độ `(0, 0)`, che phủ hoàn toàn sidebar và topbar đúng chuẩn chế độ Full-Screen Workspace toàn màn hình.
+    - Khóa cuộn trang `document.body.style.overflow = 'hidden'` khi mở modal và khôi phục khi đóng.
+    - Đảm bảo header với các nút bấm `[In Bill K80]`, `[Thu Tiền Mặt]`, `[Hủy Hóa Đơn]`, `[✕]` luôn hiển thị đầy đủ, không bao giờ bị cắt xén.
+  - **Tách Thẻ Thông Tin Vận Hành `OrderOperationInfo.tsx` (50 dòng):**
+    - Tuân thủ nghiêm ngặt Granular SRP và quy chuẩn Max 300 Lines Rule, giúp `OrderDetailModal.tsx` duy trì **294 dòng** cực kỳ chuẩn mực.
+  - **Áp dụng Portal Cho Cả `VoidOrderModal.tsx` (155 dòng):**
+    - Bọc `createPortal(..., document.body)` với `z-[99999]` giúp modal hủy hóa đơn luôn căn giữa màn hình chuẩn xác, không bị lệch hoặc đè bởi layout cha.
+  - **Kiểm thử & Typecheck:** `tsc --noEmit` cả Backend và Frontend đạt **0 lỗi tuyệt đối**.
+- **Tệp thay đổi:**
+  - `fe/src/features/pos/component/OrderDetailModal.tsx`
+  - `fe/src/features/pos/component/OrderOperationInfo.tsx`
+  - `fe/src/features/pos/component/VoidOrderModal.tsx`
+
+---
+
 ### [2026-11-23 20:50] - Nâng Cấp Giao Diện Xem Chi Tiết Hóa Đơn Sang Dạng Toàn Màn Hình (Full-Screen Workspace Mode)
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Chuyển đổi màn hình Xem Chi Tiết Hóa Đơn (`OrderDetailModal.tsx`) từ dạng hộp popup nhỏ hẹp 1 phần giữa màn hình (`max-w-lg`) sang dạng Full Màn Hình (Full-Screen) chuyên nghiệp, rộng rãi và trực quan trên máy tính.

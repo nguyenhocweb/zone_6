@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { FiX, FiAlertTriangle, FiSlash } from 'react-icons/fi';
 import { IOrderRecord } from '../type/pos.type';
 
@@ -27,10 +28,26 @@ export const VoidOrderModal: React.FC<VoidOrderModalProps> = ({
   onConfirmVoid,
   isSubmitting,
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<string>(COMMON_REASONS[0]);
   const [customReason, setCustomReason] = useState<string>('');
 
-  if (!isOpen || !order) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  if (!isOpen || !order || !mounted) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,8 +56,19 @@ export const VoidOrderModal: React.FC<VoidOrderModalProps> = ({
     onConfirmVoid(order._id, finalReason);
   };
 
-  return (
-    <div className="fixed inset-0 z-50 bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[99999] bg-stone-900/60 dark:bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',
+        height: '100vh',
+      }}
+    >
       <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/90 dark:border-stone-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="p-4 border-b border-stone-200/80 dark:border-stone-800 flex items-center justify-between bg-stone-50/70 dark:bg-[#25221e]/40">
@@ -121,7 +149,7 @@ export const VoidOrderModal: React.FC<VoidOrderModalProps> = ({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
-
