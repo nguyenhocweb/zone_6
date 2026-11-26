@@ -5,6 +5,7 @@ export interface IStoreConfigDoc extends Document {
   store_code?: string;
   address: string;
   phone?: string;
+  image_url?: string;
   latitude: number;
   longitude: number;
   geofence_radius_meters: number;
@@ -47,6 +48,11 @@ const StoreConfigSchema = new Schema<IStoreConfigDoc>(
       trim: true,
     },
     phone: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    image_url: {
       type: String,
       default: null,
       trim: true,

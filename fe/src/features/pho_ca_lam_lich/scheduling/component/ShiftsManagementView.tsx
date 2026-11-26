@@ -30,6 +30,7 @@ import type {
   ShiftConfigCreatePayload,
 } from "../type/shift-config.type";
 import { useAuth } from "@/features/shared/auth/hook/useAuth";
+import { usePublicReviewStores } from "@/features/reviews/hook/useReviews";
 import { ConfirmModal } from "@/core/components/ui/ConfirmModal";
 
 const PRESET_COLORS = [
@@ -70,7 +71,28 @@ function calculateHours(startTime: string, endTime: string): number {
 
 export const ShiftsManagementView: React.FC = () => {
   const { user } = useAuth();
-  const storeId = user?.assigned_store_id || null;
+  const isMultiStoreRole = user?.role === "admin_he_thong" || user?.role === "quan_ly";
+  const { data: allStores = [] } = usePublicReviewStores();
+
+  const assignedSet = new Set((user?.assigned_stores || []).map(String));
+  const availableStores =
+    user?.role === "admin_he_thong"
+      ? allStores
+      : user?.role === "quan_ly"
+        ? allStores.filter((s) => assignedSet.has(String(s._id)))
+        : [];
+
+  const [selectedStoreId, setSelectedStoreId] = useState<string>("");
+
+  useEffect(() => {
+    if (user?.role === "quan_ly" && availableStores.length > 0 && !selectedStoreId) {
+      setSelectedStoreId(availableStores[0]._id);
+    }
+  }, [user?.role, availableStores, selectedStoreId]);
+
+  const storeId = isMultiStoreRole
+    ? selectedStoreId || null
+    : user?.assigned_store_id || null;
 
   const canManage = user
     ? ["admin_he_thong", "quan_ly", "truong_ca", "pho_ca_lam_lich"].includes(user.role)
@@ -259,7 +281,7 @@ export const ShiftsManagementView: React.FC = () => {
                 Cấu Hình Ca Làm Việc &amp; Định Biên
               </h1>
               <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 font-medium">
-                Chuẩn Zone Six
+                Chuẩn Go Cà Phê
               </span>
             </div>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
@@ -292,6 +314,42 @@ export const ShiftsManagementView: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* 1b. Bộ Chọn Chi Nhánh (Dành cho Admin Hệ Thống & Quản Lý để cấu hình lịch riêng từng quán) */}
+      {isMultiStoreRole && availableStores.length > 0 && (
+        <div className="bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 rounded-2xl p-4 shadow-xs flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold text-stone-500 dark:text-stone-400 mr-1">
+            Chi nhánh áp dụng:
+          </span>
+          {user?.role === "admin_he_thong" && (
+            <button
+              type="button"
+              onClick={() => setSelectedStoreId("")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${
+                selectedStoreId === ""
+                  ? "bg-stone-900 dark:bg-[#d4af37] text-white dark:text-[#141311] border-stone-900 dark:border-[#d4af37]"
+                  : "bg-stone-50 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-700"
+              }`}
+            >
+              Mặc định toàn chuỗi
+            </button>
+          )}
+          {availableStores.map((st) => (
+            <button
+              key={st._id}
+              type="button"
+              onClick={() => setSelectedStoreId(st._id)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${
+                selectedStoreId === st._id
+                  ? "bg-stone-900 dark:bg-[#d4af37] text-white dark:text-[#141311] border-stone-900 dark:border-[#d4af37]"
+                  : "bg-stone-50 dark:bg-[#25221e] text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-700"
+              }`}
+            >
+              {st.store_name}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

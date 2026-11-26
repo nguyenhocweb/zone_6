@@ -169,7 +169,7 @@ export const PayOSAccountModal: React.FC<PayOSAccountModalProps> = ({
             <input
               type="text"
               {...register('name')}
-              placeholder="VD: PayOS MBBank Chính, PayOS Quán Zone Six..."
+              placeholder="VD: PayOS MBBank Chính, PayOS Quán Go Cà Phê..."
               className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none rounded-xl text-stone-900 dark:text-[#efe9de] text-xs sm:text-sm transition"
             />
             {errors.name && (
@@ -226,7 +226,7 @@ export const PayOSAccountModal: React.FC<PayOSAccountModalProps> = ({
               <input
                 type="text"
                 {...register('account_holder_name')}
-                placeholder="VD: ZONE SIX COFFEE & LOUNGE"
+                placeholder="VD: GO CÀ PHÊ COFFEE & LOUNGE"
                 className="w-full px-3 py-2 bg-white dark:bg-[#1c1a17] border border-stone-200 dark:border-stone-800 focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none rounded-xl text-stone-900 dark:text-[#efe9de] text-xs sm:text-sm transition uppercase tracking-wider font-medium"
               />
               {errors.account_holder_name && (

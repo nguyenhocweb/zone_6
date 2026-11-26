@@ -1,6 +1,13 @@
 import nodemailer, { type Transporter } from 'nodemailer';
 import { logger } from '../logger.js';
 
+export interface SendReviewOtpParams {
+  toEmail: string;
+  storeName: string;
+  otpCode: string;
+  expiresInMinutes?: number;
+}
+
 export interface SendStaffCredentialsParams {
   toEmail: string;
   staffName: string;
@@ -61,13 +68,13 @@ export class EmailService {
 
     const appUrl = process.env.APP_URL || 'http://localhost:3001';
 
-    // HTML Email Template chuẩn Zone 6 Luxury Obsidian & Gold
+    // HTML Email Template chuẩn Go Cà Phêxury Obsidian & Gold
     const htmlContent = `
     <!DOCTYPE html>
     <html lang="vi">
     <head>
       <meta charset="UTF-8">
-      <title>Chào mừng bạn đến với Zone 6 Lounge & Cafe</title>
+      <title>Chào mừng bạn đến với Go Cà Phêunge & Cafe</title>
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0b0c10; color: #f4f5f8; margin: 0; padding: 20px; }
         .container { max-width: 580px; margin: 0 auto; background-color: #12141a; border: 1px solid #212532; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -89,13 +96,13 @@ export class EmailService {
     <body>
       <div class="container">
         <div class="header">
-          <h1>Zone 6 Lounge &amp; Cafe</h1>
+          <h1>Go Cà Phêunge &amp; Cafe</h1>
           <div style="font-size: 12px; color: #2a230c; font-weight: bold; margin-top: 4px;">Hệ Thống Phân Ca &amp; Xếp Lịch Làm Việc Tự Động</div>
         </div>
         <div class="content">
           <div class="welcome-text">
             Xin chào <strong>${staffName}</strong>,<br>
-            Tài khoản nhân sự của bạn trên hệ thống <strong>Zone 6</strong> đã được khởi tạo bởi <strong>${creatorName}</strong> (${creatorRoleLabel}). Dưới đây là thông tin đăng nhập của bạn:
+            Tài khoản nhân sự của bạn trên hệ thống <strong>Go Cà Phêtrong> đã được khởi tạo bởi <strong>${creatorName}</strong> (${creatorRoleLabel}). Dưới đây là thông tin đăng nhập của bạn:
           </div>
 
           <div class="credential-box">
@@ -130,7 +137,7 @@ export class EmailService {
           </div>
         </div>
         <div class="footer">
-          Zone 6 Signature • Đây là email tự động từ hệ thống quản lý nhân sự Zone 6 Lounge &amp; Cafe.
+          Go Cà Phêgnature • Đây là email tự động từ hệ thống quản lý nhân sự Go Cà Phêunge &amp; Cafe.
         </div>
       </div>
     </body>
@@ -139,7 +146,7 @@ export class EmailService {
 
     // 1. Luôn ghi log chi tiết an toàn vào hệ thống backend
     console.log(`\n================================================================================`);
-    console.log(`📧 [ZONE 6 EMAIL DISPATCH] GỬI MẬT KHẨU TÀI KHOẢN NHÂN VIÊN MỚI`);
+    console.log(`📧 [Go Cà PhêAIL DISPATCH] GỬI MẬT KHẨU TÀI KHOẢN NHÂN VIÊN MỚI`);
     console.log(`--------------------------------------------------------------------------------`);
     console.log(`Người nhận:  ${staffName} <${toEmail}>`);
     console.log(`Mã NV:       ${userCode}`);
@@ -152,9 +159,9 @@ export class EmailService {
     if (this.transporter) {
       try {
         await this.transporter.sendMail({
-          from: `"Zone 6 Lounge & Cafe" <${process.env.SMTP_USER || 'no-reply@zonesix.vn'}>`,
+          from: `"Go Cà Phê" <${process.env.SMTP_USER || 'no-reply@zonesix.vn'}>`,
           to: toEmail,
-          subject: `[Zone 6] Thông tin tài khoản & Mật khẩu đăng nhập của bạn (${userCode})`,
+          subject: `[Go Cà Phê] Thông tin tài khoản & Mật khẩu đăng nhập của bạn (${userCode})`,
           html: htmlContent,
         });
         logger.info(`[EmailService] Đã gửi thành công email tới: ${toEmail}`);
@@ -166,6 +173,61 @@ export class EmailService {
     }
 
     return true;
+  }
+
+  /**
+   * Gửi mã OTP xác thực đánh giá chi nhánh cho khách hàng (không cần đăng nhập).
+   * Trong production bắt buộc phải có SMTP; trong môi trường dev có thể log ra terminal để test.
+   */
+  async sendReviewOtp(params: SendReviewOtpParams): Promise<{ sent: boolean; mode: 'smtp' | 'dev_log' }> {
+    const { toEmail, storeName, otpCode, expiresInMinutes = 5 } = params;
+
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+      <meta charset="UTF-8">
+      <title>Mã xác thực đánh giá Go Cà Phê</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f7f4ee; color: #1f1b16; margin: 0; padding: 24px;">
+      <div style="max-width: 520px; margin: 0 auto; background: #ffffff; border: 1px solid #e6dfd3; border-radius: 20px; overflow: hidden;">
+        <div style="background: #141311; padding: 22px 24px; text-align: center;">
+          <div style="font-size: 11px; letter-spacing: 2px; color: #d4af37; text-transform: uppercase; font-weight: 700;">Go Cà Phê</div>
+          <h1 style="margin: 6px 0 0; color: #efe9de; font-size: 18px; font-weight: 700;">Xác Thực Đánh Giá Chi Nhánh</h1>
+        </div>
+        <div style="padding: 28px 24px; font-size: 14px; line-height: 1.6; color: #44403c;">
+          <p style="margin-top: 0;">Xin chào Quý khách,</p>
+          <p>Bạn đang thực hiện gửi đánh giá cho chi nhánh <strong>${storeName}</strong>. Vui lòng nhập mã OTP bên dưới để xác nhận bạn là khách hàng thực tế:</p>
+          <div style="margin: 22px 0; text-align: center; background: #f7f4ee; border: 1px dashed #a8791e; border-radius: 14px; padding: 18px;">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #78716c; margin-bottom: 6px;">Mã xác thực OTP</div>
+            <div style="font-family: monospace; font-size: 32px; font-weight: 800; letter-spacing: 8px; color: #141311;">${otpCode}</div>
+            <div style="font-size: 12px; color: #78716c; margin-top: 8px;">Có hiệu lực trong <strong>${expiresInMinutes} phút</strong></div>
+          </div>
+          <p style="font-size: 12px; color: #78716c; margin-bottom: 0;">Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này. Tuyệt đối không chia sẻ mã OTP cho bất kỳ ai.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+    `;
+
+    if (this.transporter) {
+      await this.transporter.sendMail({
+        from: `"Go Cà Phê" <${process.env.SMTP_USER || 'no-reply@zonesix.vn'}>`,
+        to: toEmail,
+        subject: `[Go Cà Phê] Mã OTP xác thực đánh giá (${otpCode})`,
+        html: htmlContent,
+      });
+      logger.info(`[EmailService] Đã gửi OTP đánh giá tới: ${toEmail}`);
+      return { sent: true, mode: 'smtp' };
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      logger.error('[EmailService] Thiếu cấu hình SMTP trong môi trường production, không thể gửi OTP.');
+      return { sent: false, mode: 'smtp' };
+    }
+
+    console.log(`\n📧 [DEV REVIEW OTP] Store: ${storeName} | To: ${toEmail} | OTP: ${otpCode}\n`);
+    return { sent: true, mode: 'dev_log' };
   }
 }
 

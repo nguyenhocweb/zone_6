@@ -5,6 +5,7 @@ export interface Store {
   store_code: string;
   address: string;
   phone?: string | null;
+  image_url?: string | null;
   latitude: number;
   longitude: number;
   geofence_radius_meters: number;
@@ -33,6 +34,7 @@ export interface StoreCreatePayload {
   store_code?: string;
   address: string;
   phone?: string | null;
+  image_url?: string | null;
   latitude: number;
   longitude: number;
   geofence_radius_meters: number;

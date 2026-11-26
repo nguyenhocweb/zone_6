@@ -86,7 +86,7 @@ export const EditStaffModal: React.FC<EditStaffModalProps> = ({ staff, isOpen, o
         {
           value: 'quan_ly',
           label: 'Quản lý',
-          desc: 'Điều hành cơ sở Zone Six',
+          desc: 'Điều hành cơ sở Go Cà Phê',
         },
         {
           value: 'truong_ca',

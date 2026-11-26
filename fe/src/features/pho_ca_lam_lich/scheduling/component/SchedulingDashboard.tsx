@@ -583,7 +583,7 @@ export const SchedulingDashboard: React.FC<SchedulingDashboardProps> = ({
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
-      toast.success("Xuất file Excel lịch chuẩn Zone Six thành công!");
+      toast.success("Xuất file Excel lịch chuẩn Go Cà Phê thành công!");
     } catch (error: any) {
       toast.error("Có lỗi khi tạo file Excel xuất ra!");
     } finally {

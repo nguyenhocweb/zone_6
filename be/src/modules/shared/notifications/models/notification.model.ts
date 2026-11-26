@@ -12,6 +12,12 @@ export type NotificationType =
   | 'MATERIAL_CHECK_REMINDER'    // Nhắc kiểm tra nguyên vật liệu (Cao/Trung bình)
   | 'SHIFT_PERSONAL_REMINDER'    // Nhắc ca làm cá nhân nhân viên (Cao)
   | 'REGISTRATION_WINDOW_ALERT'  // Thông báo đợt đăng ký ca làm (Thấp/Trung bình)
+  | 'CUSTOMER_REVIEW_ALERT'      // Đánh giá mới từ khách hàng (Gấp nếu <=3 sao)
+  | 'TABLE_ORDER_ALERT'          // Đơn gọi món mới tại bàn (Cao)
+  | 'ORDER_VOID_ALERT'           // Hóa đơn bị hủy / void (Cao)
+  | 'PURCHASE_REQUISITION_ALERT' // Phiếu yêu cầu nhập kho mới (Cao)
+  | 'PURCHASE_ORDER_ALERT'       // Đơn thu mua PO phát hành / nhập kho (Trung bình)
+  | 'INVENTORY_AUDIT_ALERT'      // Phiếu kiểm kê kho có chênh lệch (Cao)
   | 'GENERAL_INFO';              // Thông tin chung (Thấp)
 
 export interface IScheduleNotificationDoc extends Document {
@@ -62,6 +68,12 @@ export function createNotificationSchema(): Schema<IScheduleNotificationDoc> {
           'MATERIAL_CHECK_REMINDER',
           'SHIFT_PERSONAL_REMINDER',
           'REGISTRATION_WINDOW_ALERT',
+          'CUSTOMER_REVIEW_ALERT',
+          'TABLE_ORDER_ALERT',
+          'ORDER_VOID_ALERT',
+          'PURCHASE_REQUISITION_ALERT',
+          'PURCHASE_ORDER_ALERT',
+          'INVENTORY_AUDIT_ALERT',
           'GENERAL_INFO',
         ],
         index: true,

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { PurchaseRequisitionRepository } from '../repositories/purchase-requisition.repository.js';
 import { StoreConfigModel } from '../../../admin_he_thong/store-config/models/store-config.model.js';
+import { dispatchRoleNotifications } from '../../../shared/notifications/services/notification.dispatcher.js';
 import { BadRequestError } from '../../../../core/errors.js';
 import type { CreateRequisitionDto } from '../schemas/purchase-requisition.schema.js';
 
@@ -68,6 +69,15 @@ export class RequisitionCreateService {
       expected_delivery_date: dto.expected_delivery_date ? new Date(dto.expected_delivery_date) : null,
       notes: dto.notes || null,
       items,
+    });
+
+    void dispatchRoleNotifications({
+      roles: ['quan_ly', 'admin_he_thong'],
+      code: `PR:${created.code}`,
+      type: 'PURCHASE_REQUISITION_ALERT',
+      severity: dto.priority === 'URGENT' ? 'urgent' : 'high',
+      title: `📦 Phiếu yêu cầu nhập kho #${created.code} (${store.store_name})`,
+      message: `${currentUser.full_name || 'Phó ca'} vừa lập phiếu yêu cầu ${items.length} mặt hàng cần Quản Lý duyệt.`,
     });
 
     return created;

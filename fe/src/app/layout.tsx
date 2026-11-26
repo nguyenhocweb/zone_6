@@ -10,8 +10,8 @@ import { AppShell } from "@/core/components/layout/AppShell";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Zone 6 - Xếp Lịch Làm Việc & Zalo Bot",
-  description: "Hệ thống quản lý, xếp lịch tự động Zone 6 và tích hợp Zalo cá nhân",
+  title: "Go Cà Phê - Xếp Lịch Làm Việc & Zalo Bot",
+  description: "Hệ thống quản lý, xếp lịch tự động Go Cà Phê và tích hợp Zalo cá nhân",
 };
 
 export default function RootLayout({

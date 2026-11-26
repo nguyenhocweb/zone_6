@@ -86,7 +86,7 @@ export function useResetShiftConfigs(storeId?: string | null) {
     mutationFn: () => resetShiftConfigsService(storeId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.shiftConfigs.all });
-      toast.success('Đã khôi phục danh sách ca làm việc chuẩn Zone Six thành công!');
+      toast.success('Đã khôi phục danh sách ca làm việc chuẩn Go Cà Phê thành công!');
     },
     onError: (error: any) => {
       const msg =

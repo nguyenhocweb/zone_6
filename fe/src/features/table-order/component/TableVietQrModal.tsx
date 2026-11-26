@@ -86,7 +86,7 @@ export const TableVietQrModal: React.FC<TableVietQrModalProps> = ({
 
   if (!order) return null;
 
-  // Cấu hình tài khoản VietQR thụ hưởng Zone Six (ưu tiên tài khoản PayOS chính từ Database)
+  // Cấu hình tài khoản VietQR thụ hưởng Go Cà Phê (ưu tiên tài khoản PayOS chính từ Database)
   const bankId = defaultPayOS?.bank_name || 'MB';
   const accountNo = defaultPayOS?.account_number || '093588454123';
   const accountName = defaultPayOS?.account_holder_name || 'NGUYEN VAN NGUYEN';

@@ -16,7 +16,7 @@ export const OrderThermalReceipt: React.FC<OrderThermalReceiptProps> = ({ order 
     <div className="p-5 rounded-2xl bg-white dark:bg-[#201d19] border border-stone-200/80 dark:border-stone-800 shadow-sm print:border-none print:bg-white print:p-0 space-y-4 font-mono text-xs text-stone-900 dark:text-[#efe9de] print:text-black">
       {/* Header Receipt */}
       <div className="text-center space-y-1 border-b border-dashed border-stone-200 dark:border-stone-700 print:border-black pb-4">
-        <h2 className="text-sm font-bold tracking-tight">ZONE SIX COFFEE & LOUNGE</h2>
+        <h2 className="text-sm font-bold tracking-tight">GO CÀ PHÊ COFFEE & LOUNGE</h2>
         <p className="text-[11px] text-stone-500 dark:text-stone-400 print:text-black">214 Lê Ninh, P. Quán Bàu, TP Vinh</p>
         <p className="text-[11px] text-stone-500 dark:text-stone-400 print:text-black">Hotline: 0353.489.999</p>
         <div className="pt-2">

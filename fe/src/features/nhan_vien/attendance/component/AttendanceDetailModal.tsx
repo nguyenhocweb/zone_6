@@ -171,7 +171,7 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-medium text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
                     <FiMapPin className="text-stone-400 text-xs" />
-                    <span>Khoảng cách so với quán Zone Six:</span>
+                    <span>Khoảng cách so với quán Go Cà Phê:</span>
                   </span>
                   <span
                     className={`font-mono font-medium ${

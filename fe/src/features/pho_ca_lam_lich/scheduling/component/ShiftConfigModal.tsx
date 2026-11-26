@@ -715,7 +715,7 @@ export const ShiftConfigModal: React.FC<ShiftConfigModalProps> = ({
       <ConfirmModal
         isOpen={isResetConfirmOpen}
         title="Khôi Phục Ca Làm Mặc Định"
-        message="Bạn có chắc muốn khôi phục 4 ca làm việc mặc định chuẩn Zone Six (Sáng, Chiều, Tối, Khuya) không?"
+        message="Bạn có chắc muốn khôi phục 4 ca làm việc mặc định chuẩn Go Cà Phê (Sáng, Chiều, Tối, Khuya) không?"
         confirmLabel="Khôi Phục Mặc Định"
         cancelLabel="Hủy Bỏ"
         isDestructive={false}

@@ -1,0 +1,14 @@
+model ReviewOtp {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId        String   @map("store_id") @db.ObjectId
+  canonicalEmail String   @map("canonical_email")
+  otpHash        String   @map("otp_hash")
+  attempts       Int      @default(0)
+  used           Boolean  @default(false)
+  expiresAt      DateTime @map("expires_at")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([storeId, canonicalEmail, used])
+  @@index([expiresAt])
+  @@map("review_otps")
+}

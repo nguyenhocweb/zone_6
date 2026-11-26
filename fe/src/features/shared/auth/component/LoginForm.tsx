@@ -131,7 +131,7 @@ export const LoginForm: React.FC = () => {
         {/* Cinematic Atmospheric Photo */}
         <img
           src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1600&q=85"
-          alt="Không gian Zone Six"
+          alt="Không gian Go Cà Phê"
           className="absolute inset-0 w-full h-full object-cover"
         />
 
@@ -151,7 +151,7 @@ export const LoginForm: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold tracking-wide text-white">
-              Zone Six
+              Go Cà Phê
             </span>
             <span className="text-[11px] text-white/60">
               Cà phê &amp; Lounge Đà Nẵng
@@ -352,13 +352,13 @@ export const LoginForm: React.FC = () => {
             }}
           >
             <FiShield className="w-3.5 h-3.5" style={{ color: t.accent }} />
-            <span>Hệ thống phân quyền &amp; điểm danh nội bộ Zone Six</span>
+            <span>Hệ thống phân quyền &amp; điểm danh nội bộ Go Cà Phê</span>
           </div>
         </div>
 
         {/* Bottom Footer */}
         <div className="pt-8 text-center text-xs" style={{ color: t.textMuted }}>
-          &copy; {new Date().getFullYear()} Zone Six. Tất cả các quyền được bảo lưu.
+          &copy; {new Date().getFullYear()} Go Cà Phê. Tất cả các quyền được bảo lưu.
         </div>
       </div>
     </div>

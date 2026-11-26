@@ -7,10 +7,7 @@ import {
   FiEdit2,
   FiWifi,
   FiCopy,
-  FiEye,
-  FiEyeOff,
   FiCreditCard,
-  FiKey,
 } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { ConfirmModal } from '@/core/components/ui/ConfirmModal';
@@ -27,7 +24,6 @@ interface PayOSAccountCardProps {
 }
 
 export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEdit }) => {
-  const [showSecret, setShowSecret] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const setDefaultMutation = useSetDefaultPayOSConfig();
   const deleteMutation = useDeletePayOSConfig();
@@ -139,41 +135,6 @@ export const PayOSAccountCard: React.FC<PayOSAccountCardProps> = ({ config, onEd
             <span>Chủ tài khoản:</span>
             <span className="font-semibold text-stone-900 dark:text-[#efe9de] uppercase tracking-wide">
               {config.account_holder_name}
-            </span>
-          </div>
-        </div>
-
-        {/* Thông tin PayOS Credentials */}
-        <div className="p-3.5 rounded-2xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 space-y-1.5 font-mono text-[11px]">
-          <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 pb-1 border-b border-stone-200 dark:border-stone-800">
-            <span className="flex items-center gap-1 font-sans text-xs font-medium">
-              <FiKey className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" /> PayOS Credentials
-            </span>
-            <button
-              onClick={() => setShowSecret(!showSecret)}
-              className="text-xs text-stone-500 hover:text-stone-900 dark:hover:text-[#efe9de] flex items-center gap-1 font-sans transition cursor-pointer"
-            >
-              {showSecret ? <FiEyeOff className="w-3 h-3" /> : <FiEye className="w-3 h-3" />}
-              <span>{showSecret ? 'Ẩn' : 'Hiện'}</span>
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <span className="text-stone-400 dark:text-stone-500">Client ID:</span>
-            <span className="text-stone-800 dark:text-stone-200 truncate max-w-[200px]">{config.client_id}</span>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <span className="text-stone-400 dark:text-stone-500">API Key:</span>
-            <span className="text-stone-800 dark:text-stone-200 truncate max-w-[200px]">
-              {showSecret ? config.api_key : '••••••••••••••••••••'}
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <span className="text-stone-400 dark:text-stone-500">Checksum:</span>
-            <span className="text-stone-800 dark:text-stone-200 truncate max-w-[200px]">
-              {showSecret ? config.checksum_key : '••••••••••••••••••••'}
             </span>
           </div>
         </div>

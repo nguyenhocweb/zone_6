@@ -1,6 +1,7 @@
 import { PurchaseOrderRepository } from '../repositories/purchase-order.repository.js';
 import { MaterialRepository } from '../../../pho_ca_vat_lieu/material/repositories/material.repository.js';
 import { NotFoundError, BadRequestError } from '../../../../core/errors.js';
+import { dispatchRoleNotifications } from '../../../shared/notifications/services/notification.dispatcher.js';
 import type { IPurchaseOrderDoc } from '../models/purchase-order.model.js';
 import type { ReceivePoDto } from '../schemas/purchase-order.schema.js';
 
@@ -73,6 +74,15 @@ export class PoReceiveService {
       received_by_id: currentUser.id,
       received_by_name: currentUser.full_name || 'Nhân sự',
       ...(dto.notes && { notes: dto.notes }),
+    });
+
+    void dispatchRoleNotifications({
+      roles: ['quan_ly', 'admin_he_thong', 'pho_ca_vat_lieu'],
+      code: `PO_RECEIVE:${po.po_number}:${Date.now()}`,
+      type: 'PURCHASE_ORDER_ALERT',
+      severity: 'low',
+      title: `✅ Đã nhập kho đơn thu mua #${po.po_number}`,
+      message: `${currentUser.full_name || 'Nhân sự'} đã xác nhận nhập kho (${newStatus === 'COMPLETED' ? 'Hoàn tất 100%' : 'Nhận một phần'}).`,
     });
 
     return updatedPo;

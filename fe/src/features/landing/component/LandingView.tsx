@@ -3,6 +3,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useTheme } from '@/core/providers/ThemeProvider';
+import { usePublicReviewStores } from '@/features/reviews/hook/useReviews';
+import { LandingMenuSection } from './LandingMenuSection';
+import { LandingStoresSection } from './LandingStoresSection';
+import { LandingReviewsSection } from './LandingReviewsSection';
 import {
   FiMapPin,
   FiClock,
@@ -117,6 +121,7 @@ const Reveal: React.FC<RevealProps> = ({ children, className = '', delay = 0 }) 
 
 export const LandingView: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
+  const { data: publicStores = [] } = usePublicReviewStores();
   const [isMounted, setIsMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -161,10 +166,10 @@ export const LandingView: React.FC = () => {
                 boxShadow: t.cardHighlight,
               }}
             >
-              Z6
+              GP
             </div>
             <span className="text-base font-semibold tracking-wide" style={{ color: t.textPrimary }}>
-              Zone Six
+              Go Cà Phê
             </span>
           </Link>
 
@@ -182,6 +187,9 @@ export const LandingView: React.FC = () => {
             <a href="#stores" className="transition-colors hover:opacity-100" style={{ color: t.textSecondary }}>
               Cơ sở
             </a>
+            <Link href="/reviews" className="transition-colors hover:opacity-100" style={{ color: t.textSecondary }}>
+              Đánh giá
+            </Link>
           </nav>
 
           {/* Actions */}
@@ -320,7 +328,7 @@ export const LandingView: React.FC = () => {
                   }}
                 >
                   <FiMapPin className="w-3.5 h-3.5" style={{ color: t.textSecondary }} />
-                  <span>2 Chi nhánh</span>
+                  <span>{publicStores.length > 0 ? `${publicStores.length} Chi nhánh` : 'Chi nhánh'}</span>
                 </a>
               </div>
             </Reveal>
@@ -339,7 +347,7 @@ export const LandingView: React.FC = () => {
               >
                 <img
                   src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1000&q=85"
-                  alt="Cà phê thủ công Zone Six"
+                  alt="Cà phê thủ công Go Cà Phê"
                   loading="eager"
                   className="w-full aspect-[4/5] object-cover"
                 />
@@ -397,7 +405,7 @@ export const LandingView: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight" style={{ color: t.textPrimary }}>
-                  Khoảnh khắc Zone Six
+                  Khoảnh khắc Go Cà Phê
                 </h2>
                 <p className="text-xs sm:text-sm mt-1" style={{ color: t.textSecondary }}>
                   Góc nhỏ bình yên, chất gỗ trầm ấm và những giọt cà phê chiết xuất chậm rãi.
@@ -506,163 +514,8 @@ export const LandingView: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Thực Đơn Tuyển Chọn (Curated Signature Drinks - Nhiều ảnh thức uống thật, tên & mô tả 1 câu) */}
-      <section id="menu" className="py-16 sm:py-24 max-w-7xl mx-auto px-6 space-y-10">
-        <Reveal>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight" style={{ color: t.textPrimary }}>
-                Thức uống đặc trưng
-              </h2>
-              <p className="text-xs sm:text-sm mt-1" style={{ color: t.textSecondary }}>
-                Pha chế từ hạt rang mộc và trái cây tươi trong ngày.
-              </p>
-            </div>
-            <p className="text-xs" style={{ color: t.textMuted }}>
-              * Quét mã QR tại bàn để xem trọn bộ thực đơn
-            </p>
-          </div>
-        </Reveal>
-
-        {/* 4 Thẻ thức uống lớn bằng ảnh chân thực */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Món 1: Cà phê muối cố đô */}
-          <Reveal delay={100}>
-            <div
-              className="rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1"
-              style={{
-                backgroundColor: t.surface,
-                border: `1px solid ${t.hairline}`,
-                boxShadow: t.cardHighlight,
-              }}
-            >
-              <div className="aspect-[4/3] overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=700&q=85"
-                  alt="Cà phê muối cố đô"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-5 space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="text-sm font-semibold" style={{ color: t.textPrimary }}>
-                    Cà phê muối cố đô
-                  </h3>
-                  <span className="text-xs font-mono font-semibold" style={{ color: t.accent }}>
-                    29.000đ
-                  </span>
-                </div>
-                <p className="text-xs line-clamp-1" style={{ color: t.textSecondary }}>
-                  Kem muối béo mặn sánh mịn hòa quyện cà phê phin đậm đà.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Món 2: Trà dâu tây tươi */}
-          <Reveal delay={200}>
-            <div
-              className="rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1"
-              style={{
-                backgroundColor: t.surface,
-                border: `1px solid ${t.hairline}`,
-                boxShadow: t.cardHighlight,
-              }}
-            >
-              <div className="aspect-[4/3] overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&w=700&q=85"
-                  alt="Trà dâu tây tươi"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-5 space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="text-sm font-semibold" style={{ color: t.textPrimary }}>
-                    Trà dâu tây tươi
-                  </h3>
-                  <span className="text-xs font-mono font-semibold" style={{ color: t.accent }}>
-                    35.000đ
-                  </span>
-                </div>
-                <p className="text-xs line-clamp-1" style={{ color: t.textSecondary }}>
-                  Cốt trà lài ủ lạnh cùng dâu tây Đà Lạt chua ngọt mọng nước.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Món 3: Trà đào cam sả tươi */}
-          <Reveal delay={300}>
-            <div
-              className="rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1"
-              style={{
-                backgroundColor: t.surface,
-                border: `1px solid ${t.hairline}`,
-                boxShadow: t.cardHighlight,
-              }}
-            >
-              <div className="aspect-[4/3] overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=700&q=85"
-                  alt="Trà đào cam sả tươi"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-5 space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="text-sm font-semibold" style={{ color: t.textPrimary }}>
-                    Trà đào cam sả
-                  </h3>
-                  <span className="text-xs font-mono font-semibold" style={{ color: t.accent }}>
-                    32.000đ
-                  </span>
-                </div>
-                <p className="text-xs line-clamp-1" style={{ color: t.textSecondary }}>
-                  Cam vàng mọng nước, sả thơm nồng và những lát đào giòn.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Món 4: Cà phê Pour Over mộc */}
-          <Reveal delay={400}>
-            <div
-              className="rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1"
-              style={{
-                backgroundColor: t.surface,
-                border: `1px solid ${t.hairline}`,
-                boxShadow: t.cardHighlight,
-              }}
-            >
-              <div className="aspect-[4/3] overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=700&q=85"
-                  alt="Cà phê Pour Over thủ công"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-5 space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="text-sm font-semibold" style={{ color: t.textPrimary }}>
-                    Cà phê Pour Over
-                  </h3>
-                  <span className="text-xs font-mono font-semibold" style={{ color: t.accent }}>
-                    38.000đ
-                  </span>
-                </div>
-                <p className="text-xs line-clamp-1" style={{ color: t.textSecondary }}>
-                  Chiết xuất thủ công lưu trọn hương hoa trái tự nhiên của hạt Arabica.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* 4. Thực Đơn Tuyển Chọn (Lấy trực tiếp từ MongoDB) */}
+      <LandingMenuSection t={t as unknown as Record<string, string>} />
 
       {/* 5. Trải Nghiệm Gọi Món Tại Bàn (Visual Standee & Minimal 3 Steps) */}
       <section
@@ -810,109 +663,11 @@ export const LandingView: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. Hai Không Gian Tại Đà Nẵng (Ảnh lớn 2 chi nhánh thực tế, thông tin tối giản) */}
-      <section id="stores" className="py-16 sm:py-24 max-w-7xl mx-auto px-6 space-y-10">
-        <Reveal>
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight" style={{ color: t.textPrimary }}>
-              Hai góc quán
-            </h2>
-            <p className="text-xs sm:text-sm mt-1" style={{ color: t.textSecondary }}>
-              Không gian rộng rãi, thoáng đãng dành cho bạn tại Đà Nẵng.
-            </p>
-          </div>
-        </Reveal>
+      {/* 6. Hệ Thống Chi Nhánh Thật Từ DB */}
+      <LandingStoresSection t={t as unknown as Record<string, string>} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Cơ sở 1: Lương Nhữ Học */}
-          <Reveal delay={100}>
-            <div
-              className="rounded-2xl overflow-hidden group transition-all duration-300"
-              style={{
-                backgroundColor: t.surface,
-                border: `1px solid ${t.hairline}`,
-                boxShadow: t.cardHighlight,
-              }}
-            >
-              <div className="aspect-[16/10] overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1000&q=85"
-                  alt="Không gian Zone Six Lương Nhữ Học"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md text-[11px] font-medium bg-black/60 text-emerald-400 backdrop-blur-sm flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  Mở cửa
-                </div>
-              </div>
-              <div className="p-6 space-y-3">
-                <h3 className="text-base font-semibold" style={{ color: t.textPrimary }}>
-                  Zone Six — Lương Nhữ Học
-                </h3>
-                <div className="space-y-1 text-xs" style={{ color: t.textSecondary }}>
-                  <div className="flex items-center gap-2">
-                    <FiMapPin className="w-3.5 h-3.5 shrink-0" style={{ color: t.accent }} />
-                    <span>212 Lương Nhữ Học, Khuê Trung, Cẩm Lệ, Đà Nẵng</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FiClock className="w-3.5 h-3.5 shrink-0" style={{ color: t.textMuted }} />
-                    <span>07:00 – 23:30 mỗi ngày</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FiPhone className="w-3.5 h-3.5 shrink-0" style={{ color: t.textMuted }} />
-                    <span>0905 123 456</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Cơ sở 2: Hải Châu */}
-          <Reveal delay={200}>
-            <div
-              className="rounded-2xl overflow-hidden group transition-all duration-300"
-              style={{
-                backgroundColor: t.surface,
-                border: `1px solid ${t.hairline}`,
-                boxShadow: t.cardHighlight,
-              }}
-            >
-              <div className="aspect-[16/10] overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1000&q=85"
-                  alt="Không gian Zone Six Hải Châu"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md text-[11px] font-medium bg-black/60 text-emerald-400 backdrop-blur-sm flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  Mở cửa
-                </div>
-              </div>
-              <div className="p-6 space-y-3">
-                <h3 className="text-base font-semibold" style={{ color: t.textPrimary }}>
-                  Zone Six — Hải Châu
-                </h3>
-                <div className="space-y-1 text-xs" style={{ color: t.textSecondary }}>
-                  <div className="flex items-center gap-2">
-                    <FiMapPin className="w-3.5 h-3.5 shrink-0" style={{ color: t.accent }} />
-                    <span>56 Nguyễn Chí Thanh, Hải Châu 1, Hải Châu, Đà Nẵng</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FiClock className="w-3.5 h-3.5 shrink-0" style={{ color: t.textMuted }} />
-                    <span>07:00 – 23:30 mỗi ngày</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FiPhone className="w-3.5 h-3.5 shrink-0" style={{ color: t.textMuted }} />
-                    <span>0905 654 321</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* 7. Cảm Nhận & Đánh Giá Khách Hàng Từ DB + Nút Tới Trang /reviews */}
+      <LandingReviewsSection t={t as unknown as Record<string, string>} />
 
       {/* 7. Footer: Mộc mạc, yên bình, tinh tế */}
       <footer
@@ -925,14 +680,14 @@ export const LandingView: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div className="flex items-center gap-3">
             <span className="font-semibold tracking-wide" style={{ color: t.textPrimary }}>
-              Zone Six
+              Go Cà Phê
             </span>
             <span style={{ color: t.textMuted }}>•</span>
             <span style={{ color: t.textSecondary }}>Đà Nẵng</span>
           </div>
 
           <p style={{ color: t.textMuted }}>
-            &copy; {new Date().getFullYear()} Zone Six. Tất cả các quyền được bảo lưu.
+            &copy; {new Date().getFullYear()} Go Cà Phêất cả các quyền được bảo lưu.
           </p>
         </div>
       </footer>

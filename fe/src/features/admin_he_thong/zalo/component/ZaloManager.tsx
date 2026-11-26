@@ -68,7 +68,7 @@ const CHANNEL_METADATA: Record<
     suggestedIcon: '📸',
     channelNameRaw: 'ĐIỂM DANH & CHECK-IN',
     defaultSampleText: (storeName) =>
-      `📸 [ZONE SIX CHECK-IN]: Nhân viên [Nguyễn Văn A] đã check-in thành công ca Sáng (07:00 - 12:00) tại ${storeName}. Vị trí GPS: Hợp lệ.`,
+      `📸 [GO CÀ PHÊ CHECK-IN]: Nhân viên [Nguyễn Văn A] đã check-in thành công ca Sáng (07:00 - 12:00) tại ${storeName}. Vị trí GPS: Hợp lệ.`,
   },
   MATERIAL: {
     title: 'Kho & Nguyên vật liệu',
@@ -118,7 +118,7 @@ export const ZaloManager: React.FC = () => {
       return storesResponse.stores.map((s) => ({
         id: s.id || s._id || '',
         code: s.store_code,
-        shortCode: s.store_name.replace('Zone Six - ', ''),
+        shortCode: s.store_name.replace('Go Cà Phê - ', ''),
         name: s.store_name,
         address: s.address,
       }));
@@ -130,7 +130,7 @@ export const ZaloManager: React.FC = () => {
           id: storeConfigData.id || '',
           code: 'Z6-CS01',
           shortCode: storeConfigData.store_name || 'Cơ sở 1',
-          name: storeConfigData.store_name || 'Zone Six Cơ Sở 1',
+          name: storeConfigData.store_name || 'Go Cà Phê Cơ Sở 1',
           address: storeConfigData.address || '',
         },
       ];
@@ -333,7 +333,7 @@ export const ZaloManager: React.FC = () => {
     }
 
     const testContent = channel.defaultMessage?.trim() ||
-      `🤖 [TEST BOT ZONE SIX]: Đây là tin nhắn thử nghiệm kết nối nhóm nghiệp vụ [${channel.groupName || channel.channelType}]. Bot hoạt động chuẩn xác!`;
+      `🤖 [TEST BOT GO CÀ PHÊ]: Đây là tin nhắn thử nghiệm kết nối nhóm nghiệp vụ [${channel.groupName || channel.channelType}]. Bot hoạt động chuẩn xác!`;
 
     try {
       setTestingChannel(channel.channelType);

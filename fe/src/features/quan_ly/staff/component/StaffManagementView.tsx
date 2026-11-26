@@ -377,7 +377,7 @@ export const StaffManagementView: React.FC = () => {
       {/* 4. Danh Sách Nhân Viên */}
       {isLoading ? (
         <div className="p-12 text-center text-xs text-stone-400 dark:text-stone-500 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800">
-          Đang tải danh sách nhân sự Zone Six...
+          Đang tải danh sách nhân sự Go Cà Phê...
         </div>
       ) : isError ? (
         <div className="p-8 text-center text-xs text-rose-500 rounded-3xl bg-white dark:bg-[#1c1a17] border border-rose-200 dark:border-rose-900/50">
@@ -403,7 +403,7 @@ export const StaffManagementView: React.FC = () => {
                   <th className="py-3 px-4">Số Điện Thoại</th>
                   <th className="py-3 px-4">Mức Lương Giờ</th>
                   <th className="py-3 px-4">Cơ Sở Trực Thuộc</th>
-                  <th className="py-3 px-4">QR Điểm Danh</th>
+                  <th className="py-3 px-4">QR Thanh Toán Lương</th>
                   <th className="py-3 px-4">Vai Trò &amp; Vị Trí</th>
                   <th className="py-3 px-4 text-center">Trạng Thái</th>
                   <th className="py-3 px-4 text-center">Thao Tác</th>
@@ -464,7 +464,7 @@ export const StaffManagementView: React.FC = () => {
                         <div className="flex items-center gap-1.5">
                           <FiHome className="text-[10px] text-stone-400" />
                           <span className="font-medium text-stone-700 dark:text-stone-300 text-xs">
-                            {staff.assigned_store_name || 'Zone Six'}
+                            {staff.assigned_store_name || 'Go Cà Phê'}
                           </span>
                         </div>
                       </td>
@@ -474,7 +474,7 @@ export const StaffManagementView: React.FC = () => {
                         <div
                           onClick={() => setSelectedQrStaff(staff)}
                           className="flex items-center gap-2 cursor-pointer group/qr"
-                          title="Bấm để xem & tải mã QR"
+                          title="Bấm để xem mã QR thanh toán lương"
                         >
                           <img
                             src={qrThumbUrl}

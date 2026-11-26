@@ -174,7 +174,7 @@ export const StaffRegistrationsExcelTable: React.FC<Props> = ({
             </span>
           </div>
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-1.5">
-            Dành cho Quản lý &amp; Trưởng ca: Tổng hợp toàn bộ nguyện vọng ca của nhân sự theo định dạng biểu mẫu Zone Six.
+            Dành cho Quản lý &amp; Trưởng ca: Tổng hợp toàn bộ nguyện vọng ca của nhân sự theo định dạng biểu mẫu Go Cà Phê.
           </p>
         </div>
 

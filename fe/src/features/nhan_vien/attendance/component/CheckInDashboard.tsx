@@ -654,7 +654,7 @@ export const CheckInDashboard: React.FC = () => {
         context.fillStyle = "#F5D77F";
         context.font = "300 28px sans-serif";
         context.textAlign = "center";
-        context.fillText(user?.name || "Nhân viên Zone 6", 480, 300);
+        context.fillText(user?.name || "Nhân viên Go Cà Phê", 480, 300);
       }
     }
 
@@ -902,7 +902,7 @@ export const CheckInDashboard: React.FC = () => {
                       ? "Quét GPS..."
                       : distanceToStore !== null
                       ? `Cách quán ${distanceToStore}m ${isInsideGeofence ? "✓" : "⚠️"}`
-                      : "Tại Zone Six"}
+                      : "Tại Go Cà Phê"}
                   </span>
                 </div>
               </div>

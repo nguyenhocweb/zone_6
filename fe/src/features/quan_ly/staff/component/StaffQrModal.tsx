@@ -26,14 +26,15 @@ export const StaffQrModal: React.FC<StaffQrModalProps> = ({ staff, onClose }) =>
 
   if (!mounted || !staff) return null;
 
+  const virtualQrData = `DEMO-SALARY-QR-${staff.user_code || staff.id}`;
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
-    staff.qr_code || `QR-${staff.user_code}`
+    virtualQrData
   )}&bgcolor=ffffff&color=1c1917&margin=10`;
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText(staff.qr_code || `QR-${staff.user_code}`);
+    navigator.clipboard.writeText(virtualQrData);
     setCopied(true);
-    toast.success("Đã sao chép mã QR vào bộ nhớ tạm!");
+    toast.info("Đây là mã QR minh họa (chức năng thanh toán lương QR chưa cập nhật).");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -60,7 +61,7 @@ export const StaffQrModal: React.FC<StaffQrModalProps> = ({ staff, onClose }) =>
         <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
           <div className="flex items-center gap-2 text-stone-900 dark:text-[#efe9de] font-semibold text-sm">
             <FiMaximize2 className="w-4 h-4 text-stone-400 dark:text-stone-400" />
-            <span>Mã QR điểm danh ca trực</span>
+            <span>Mã QR thanh toán lương</span>
           </div>
           <button
             type="button"
@@ -71,13 +72,18 @@ export const StaffQrModal: React.FC<StaffQrModalProps> = ({ staff, onClose }) =>
           </button>
         </div>
 
-        {/* QR Display */}
-        <div className="p-3 bg-white rounded-2xl border border-stone-200 dark:border-stone-800 inline-block mx-auto shadow-sm">
+        {/* QR Display (Virtual Preview) */}
+        <div className="p-3 bg-white rounded-2xl border border-stone-200 dark:border-stone-800 inline-block mx-auto shadow-sm opacity-90">
           <img
             src={qrImageUrl}
-            alt={`QR Code ${staff.name}`}
-            className="w-48 h-48 rounded-xl object-contain mx-auto"
+            alt={`QR Thanh Toán Lương ${staff.name}`}
+            className="w-44 h-44 rounded-xl object-contain mx-auto"
           />
+        </div>
+
+        {/* Notice: Chưa cập nhật chức năng */}
+        <div className="px-3.5 py-2.5 rounded-2xl bg-amber-50 dark:bg-amber-950/25 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 text-xs font-medium">
+          Chưa cập nhật chức năng — Đây chỉ là mã QR ảo minh họa.
         </div>
 
         {/* Staff details */}

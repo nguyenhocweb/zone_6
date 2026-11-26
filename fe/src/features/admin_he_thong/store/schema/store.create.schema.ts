@@ -5,6 +5,7 @@ export const storeCreateSchema = z.object({
   store_code: z.string().trim().optional(),
   address: z.string().min(3, 'Địa chỉ chi nhánh phải từ 3 ký tự trở lên'),
   phone: z.string().trim().optional().nullable(),
+  image_url: z.string().trim().optional().nullable(),
   latitude: z.number().min(-90, 'Vĩ độ không hợp lệ').max(90, 'Vĩ độ không hợp lệ'),
   longitude: z.number().min(-180, 'Kinh độ không hợp lệ').max(180, 'Kinh độ không hợp lệ'),
   geofence_radius_meters: z.number().min(10, 'Bán kính tối thiểu 10m').max(5000, 'Bán kính tối đa 5000m'),

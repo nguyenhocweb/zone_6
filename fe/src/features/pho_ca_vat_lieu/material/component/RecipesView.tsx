@@ -79,7 +79,7 @@ export const RecipesView: React.FC = () => {
           <div className="flex items-center gap-2 mb-2">
             <span className="px-3 py-1 rounded-full text-[11px] font-medium bg-stone-100 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-800 text-stone-600 dark:text-stone-400 flex items-center gap-1.5">
               <FiFileText className="text-stone-400" />
-              <span>Sổ Tay Bí Quyết Pha Chế Zone 6</span>
+              <span>Sổ Tay Bí Quyết Pha Chế Go Cà Phê</span>
             </span>
             {user && (
               <span className="text-xs text-stone-500 dark:text-stone-400">
@@ -91,7 +91,7 @@ export const RecipesView: React.FC = () => {
             Quản Lý Món &amp; Sổ Tay Công Thức (SOP)
           </h1>
           <p className="text-xs md:text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-2xl leading-relaxed">
-            Danh mục các món thương phẩm bán khách hàng và các công thức sơ chế nội bộ bảo mật tiêu chuẩn Zone 6.
+            Danh mục các món thương phẩm bán khách hàng và các công thức sơ chế nội bộ bảo mật tiêu chuẩn Go Cà Phê.
           </p>
         </div>
 

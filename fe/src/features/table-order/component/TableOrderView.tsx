@@ -207,7 +207,7 @@ export const TableOrderView: React.FC = () => {
     ? `Bàn ${verifyData.table.table_number}`
     : 'Bàn Của Bạn';
   const zoneName = verifyData?.table?.zone_name || 'Khu Vực Quán';
-  const storeName = verifyData?.store?.store_name || 'Zone Six';
+  const storeName = verifyData?.store?.store_name || 'Go Cà Phê';
 
   return (
     <GeofenceGuard

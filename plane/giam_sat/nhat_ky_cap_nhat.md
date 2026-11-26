@@ -4,6 +4,262 @@
 
 ---
 
+### [2026-11-26 15:32] - Kết Nối Trung Tâm Thông Báo 6 Role Cho Toàn Bộ Các Phân Hệ Nghiệp Vụ (Reviews, Bàn QR, Hủy Bill, Yêu Cầu Nhập Kho, Nhận Hàng PO)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Rà soát toàn bộ các chức năng trong hệ thống và tích hợp gửi thông báo tự động vào Trung tâm Thông báo cho từng vai trò liên quan.
+- **Nội dung hoàn thành:**
+  - Tạo helper `notification.dispatcher.ts` (`dispatchRoleNotifications`) và mở rộng `NotificationType` trong `notification.model.ts`.
+  - Tích hợp bắn thông báo tự động cho 5 luồng nghiệp vụ trọng yếu:
+    1. **Đánh giá khách hàng mới (`review.create.service.ts`):** Gửi tới `admin_he_thong` & `quan_ly` (`urgent` nếu $\le 3\star$).
+    2. **Đơn gọi món QR tại bàn (`table-order.create.service.ts`):** Gửi tới `nhan_vien`, `truong_ca`, `quan_ly`, `admin_he_thong` (`high`).
+    3. **Hủy / Void hóa đơn (`order.void.service.ts`):** Gửi tới `quan_ly` & `admin_he_thong` (`high`).
+    4. **Phiếu yêu cầu nhập kho (`requisition.create.service.ts`):** Gửi tới `quan_ly` & `admin_he_thong` (`urgent`/`high`).
+    5. **Xác nhận nhập kho PO (`po.receive.service.ts`):** Gửi tới `quan_ly`, `admin_he_thong`, `pho_ca_vat_lieu` (`low`).
+- **Tệp thay đổi:**
+  - `be/src/modules/shared/notifications/models/notification.model.ts`, `services/notification.dispatcher.ts`
+  - `be/src/modules/reviews/services/review.create.service.ts`
+  - `be/src/modules/pos/services/table-order.create.service.ts`, `order.void.service.ts`
+  - `be/src/modules/pho_ca_vat_lieu/purchase_requisition/services/requisition.create.service.ts`
+  - `be/src/modules/quan_ly/purchase_order/services/po.receive.service.ts`
+
+---
+
+### [2026-11-26 15:21] - Tối Ưu Tốc Độ Trung Tâm Thông Báo 6 Role (BulkWrite + Cooldown 60s)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Khắc phục tình trạng trang `/notifications` tải quá lâu (loading liên tục) và không hiển thị dữ liệu cho các vai trò.
+- **Nguyên nhân:** `scanAndGenerateNotifications()` chạy đồng bộ hàng nghìn lệnh `await updateOne/updateMany` tuần tự trong vòng lặp lồng nhau trên mỗi lần gọi API.
+- **Giải pháp:** Chuyển toàn bộ thao tác ghi sang `bulkWrite` chạy song song theo từng Role Collection (`Promise.all`), bổ sung Single-Flight Lock + Cooldown 60 giây, và chuẩn hóa truy vấn tên nhân viên (`full_name || name`).
+- **Tệp thay đổi:**
+  - `be/src/modules/shared/notifications/services/notification.service.ts`
+  - `be/src/modules/pho_ca_lam_lich/scheduling/controllers/scheduling.controller.ts`
+
+---
+
+### [2026-11-26 15:17] - Đổi Cột QR Điểm Danh Thành "QR Thanh Toán Lương" (Mã Ảo & Chưa Cập Nhật Chức Năng)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Đổi tiêu đề cột `QR Điểm Danh` thành `QR Thanh Toán Lương`, khi bấm vào hiện mã QR ảo kèm thông báo rõ *"Chưa cập nhật chức năng"*.
+- **Tệp thay đổi:**
+  - `fe/src/features/quan_ly/staff/component/StaffManagementView.tsx`, `StaffQrModal.tsx`
+
+---
+
+### [2026-11-26 15:10] - Sửa Lỗi Tiêu Đề Email OTP & Nâng Cấp Quy Trình Sửa Đánh Giá 3 Bước (Xác Thực OTP Trước Mới Mở Form + Chọn Ảnh Cloudinary)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Sửa lỗi mất ký tự trong tiêu đề/tên người gửi email (`[Go Cà Phê] Mã OTP xác thực đánh giá (...)`).
+  - Khi bấm **Chỉnh sửa**, phải xác thực xong Email + OTP 6 số ở Backend (`verify-action-otp`) rồi mới mở form cập nhật thông tin giống hệt form tạo mới, bao gồm cả **xóa ảnh cũ / thêm ảnh mới từ máy đẩy lên Cloudinary**.
+- **Tệp thay đổi:**
+  - `be/src/core/services/email.service.ts`
+  - `be/src/modules/reviews/schemas/review.schema.ts`, `repositories/review.repository.ts`, `services/review.action.service.ts`, `controllers/review.action.controller.ts`, `routes/review.routes.ts`
+  - `fe/src/features/reviews/service/review.public.service.ts`, `hook/useReviews.ts`, `component/ReviewActionModal.tsx`
+
+---
+
+### [2026-11-26 15:02] - Thêm Menu Ba Chấm Sửa / Xóa Đánh Giá Công Khai Xác Thực Email OTP (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Tại góc trên bên phải mỗi cột bình luận đánh giá có nút ba chấm (`⋮`) gồm 2 lựa chọn: **Chỉnh sửa** và **Xóa đánh giá**.
+  - Bắt buộc nhập lại đúng Email đã dùng để đăng đánh giá đó và xác thực mã OTP 6 số gửi qua email mới được phép sửa hoặc xóa.
+- **Tệp thay đổi:**
+  - `be/src/modules/reviews/schemas/review.schema.ts`, `repositories/review.repository.ts`, `services/review.action.service.ts`, `controllers/review.action.controller.ts`, `routes/review.routes.ts`
+  - `fe/src/features/reviews/service/review.public.service.ts`, `hook/useReviews.ts`, `component/ReviewActionModal.tsx`, `component/ReviewCard.tsx`
+
+---
+
+### [2026-11-26 14:55] - Hiển Thị Số Chi Nhánh Thật Từ DB & Đổi Thương Hiệu Toàn Bộ Sang "Go Cà Phê" (Viết Tắt: GP)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Nút số chi nhánh trên Hero section trang chủ `/` gọi dữ liệu thật từ DB (`usePublicReviewStores`) để hiển thị đúng số lượng chi nhánh đang hoạt động (`{stores.length} Chi nhánh`).
+  - Đổi tên thương hiệu hiển thị toàn bộ trên hệ thống từ `Zone 6 / Zone Six` sang **`Go Cà Phê`** và logo viết tắt **`GP`** (thay cho `Z6`).
+- **Tệp thay đổi:**
+  - `fe/src/features/landing/component/LandingView.tsx`, `fe/src/core/components/layout/AppShell.tsx`, `fe/src/features/reviews/component/ReviewCard.tsx`
+  - Toàn bộ các trang/component hiển thị thương hiệu trong `fe/src/` và `be/src/core/services/email.service.ts`
+
+---
+
+### [2026-11-26 14:51] - Hiển Thị "Phục vụ 24/24h mỗi ngày" Khi Giờ Mở Và Đóng Ca Trùng Nhau
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Nếu tổng hợp giờ ca mở và ca đóng trùng nhau (ví dụ `07:00 – 07:00`), hiển thị `"Phục vụ 24/24h mỗi ngày"`.
+- **Tệp thay đổi:**
+  - `be/src/modules/reviews/services/review.get.service.ts`
+
+---
+
+### [2026-11-26 14:49] - Đồng Bộ Giờ Mở Cửa Thực Tế Từng Chi Nhánh Từ Cấu Hình Ca (/shifts) Lên Trang Chủ
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Giờ hoạt động hiển thị trên trang chủ (`07:00 – ... mỗi ngày`) phải lấy trực tiếp từ Cấu Hình Ca Làm Việc (`shift_configs`) đang kích hoạt của từng chi nhánh.
+  - Bổ sung bộ chọn chi nhánh trên trang Cấu Hình Ca (`/shifts`) cho Admin Hệ Thống và Quản Lý để cấu hình khung giờ làm việc riêng biệt cho từng chi nhánh.
+- **Tệp thay đổi:**
+  - `be/src/modules/reviews/services/review.get.service.ts`
+  - `fe/src/features/pho_ca_lam_lich/scheduling/component/ShiftsManagementView.tsx`
+  - `fe/src/features/landing/component/LandingStoresSection.tsx`, `fe/src/features/reviews/type/review.type.ts`
+
+---
+
+### [2026-11-26 14:46] - Lọc Chỉ Hiển Thị Tối Đa 4 Món Bán Cho Khách Trên Trang Chủ (LandingMenuSection)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Trên trang chủ `/` mục Thức uống đặc trưng chỉ hiển thị tối đa **4 món** và chỉ lấy các **món bán cho khách (`customer_product`, giá > 0)**, tuyệt đối không hiển thị công thức sơ chế nội bộ (`internal_prep`) kể cả khi Admin đang đăng nhập xem trang chủ.
+- **Tệp thay đổi:**
+  - `fe/src/features/landing/component/LandingMenuSection.tsx`
+
+---
+
+### [2026-11-26 14:44] - Gỡ Bỏ Link "Xem tất cả đánh giá" Trùng Lặp Ở Tiêu Đề Khối Đánh Giá Trang Chủ
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Gỡ bỏ link `"Xem tất cả đánh giá"` ở góc trên bên phải của khối đánh giá trên trang chủ `/` (giữ nút `"Xem tất cả & Viết đánh giá"` ở cột trái).
+- **Tệp thay đổi:**
+  - `fe/src/features/landing/component/LandingReviewsSection.tsx`
+
+---
+
+### [2026-11-26 14:43] - Nâng Cấp Khối Đánh Giá Trên Trang Chủ Sang Bố Cục 2 Cột (Tổng Quan Hài Lòng Bên Trái + Đánh Giá Bên Phải)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Hiển thị khối Tổng quan hài lòng (điểm trung bình `/ 5.0`, số lượt đánh giá xác thực OTP, thanh phân bổ 5 sao $\rightarrow$ 1 sao + nút chuyển trang `/reviews`) ở bên trái và một vài đánh giá tiêu biểu ở bên phải ngay trên trang chủ `/`.
+- **Tệp thay đổi:**
+  - `fe/src/features/landing/component/LandingReviewsSection.tsx`
+
+---
+
+### [2026-11-26 14:38] - Đồng Bộ Dữ Liệu Thật DB Cho Trang Chủ Landing, Bổ Sung Ảnh Chi Nhánh (Cloudinary) & Khối Đánh Giá Khách Hàng
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Trang chủ `/` (`LandingView.tsx`) phải lấy 100% dữ liệu thật từ MongoDB Atlas (danh sách chi nhánh, thực đơn thức uống đặc trưng, và đánh giá khách hàng), xóa bỏ hoàn toàn dữ liệu cứng mock.
+  - Bổ sung tính năng thêm/upload ảnh chi nhánh (`image_url`) lên Cloudinary tại trang Quản Lý Chi Nhánh (`/stores`) của Admin.
+  - Bổ sung khối hiển thị đánh giá khách hàng ngay trên trang chủ kèm nút chuyển đến trang `/reviews`.
+- **Tệp thay đổi:**
+  - `be/src/databases/prisma/schema/store_config.prisma`, `be/src/modules/admin_he_thong/store-config/models/store-config.model.ts`, `be/src/modules/admin_he_thong/store/schemas/store.schema.ts`, `be/src/modules/reviews/services/review.get.service.ts`
+  - `fe/src/features/admin_he_thong/store/component/` (`StoreImageField.tsx`, `StoreCard.tsx`, `CreateStoreModal.tsx`, `EditStoreModal.tsx`), `type/store.type.ts`, `schema/store.create.schema.ts`
+  - `fe/src/features/landing/component/` (`LandingView.tsx`, `LandingMenuSection.tsx`, `LandingStoresSection.tsx`, `LandingReviewsSection.tsx`)
+
+---
+
+### [2026-11-26 14:29] - Bố Cục Ngang Ảnh Trái / Chữ Phải & Lightbox Xem Nhiều Ảnh Với Lớp Phủ +N (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Khi đánh giá có ảnh: đặt nội dung nhận xét và thẻ tag nằm bên phải ảnh cho gọn gàng.
+  - Nếu có nhiều hơn 1 ảnh, chỉ hiển thị ảnh đầu tiên kèm lớp phủ tối làm mờ + số lượng ảnh còn lại (`+N`), click vào sẽ mở Lightbox xem toàn bộ danh sách ảnh.
+- **Tệp thay đổi:**
+  - `fe/src/features/reviews/component/ReviewCard.tsx`, `ReviewImageLightbox.tsx`
+
+---
+
+### [2026-11-26 14:22] - Nâng Cấp Layout 2 Cột (Sao Trái / Đánh Giá Phải), Phân Trang Xem Thêm 10 Bình Luận & Seed 25 Đánh Giá + 13 Phản Hồi (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Chuyển giao diện `/reviews` sang 2 cột: Cột trái cố định hiển thị Tổng số sao & phân bổ; Cột phải hiển thị danh sách đánh giá full-width không bị co cụm ("vón cục").
+  - Mỗi lần chỉ tải và hiển thị đúng 10 đánh giá của khách hàng (không tính phản hồi lồng bên trong), có nút `"Xem thêm 10 đánh giá"` để tải nối tiếp.
+  - Seed sẵn 25 đánh giá đa dạng (1–5 sao, có tên và ẩn danh) cùng 13 phản hồi từ Admin & Quản Lý vào MongoDB Atlas.
+- **Tệp thay đổi:**
+  - `fe/src/features/reviews/component/PublicReviewsView.tsx`, `ReviewCard.tsx`
+  - `be/scripts/seed_reviews_demo.ts`
+
+---
+
+### [2026-11-26 14:17] - Đưa Ảnh Đánh Giá Lên Trước Nội Dung & Tags Trong Bong Bóng Bình Luận (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Sắp xếp phần ảnh nằm phía trên nội dung nhận xét và thẻ tag trong `ReviewCard.tsx`.
+- **Tệp thay đổi:**
+  - `fe/src/features/reviews/component/ReviewCard.tsx`
+
+---
+
+### [2026-11-26 14:16] - Đưa Ảnh Đính Kèm Vào Chung Nền Bong Bóng Bình Luận (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Đặt phần ảnh đính kèm nằm chung bên trong nền bong bóng đánh giá (`bg-[#f3f0ea] dark:bg-[#221f1b]`) để đồng bộ bố cục.
+- **Tệp thay đổi:**
+  - `fe/src/features/reviews/component/ReviewCard.tsx`
+
+---
+
+### [2026-11-26 14:13] - Tối Ưu Giao Diện Danh Sách Đánh Giá Theo Phong Cách Bình Luận Facebook Gọn Gàng (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Sắp xếp lại từng đánh giá gọn gàng và đẹp mắt giống luồng bình luận Facebook (Avatar tròn, bong bóng nội dung gọn, ảnh đính kèm, dòng thời gian bên dưới và phản hồi Quản Lý lồng nhánh theo chiều dọc).
+- **Tệp thay đổi:**
+  - `fe/src/features/reviews/component/ReviewCard.tsx`, `PublicReviewsView.tsx`
+
+---
+
+### [2026-11-26 14:12] - Tinh Giản Bước Nhập OTP Đánh Giá Chi Nhánh (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Gỡ bỏ hộp thông báo `"Mã OTP 6 chữ số đã được gửi tới..."` khỏi màn hình nhập mã OTP đánh giá.
+- **Tệp thay đổi:**
+  - `fe/src/features/reviews/component/ReviewOtpVerifyStep.tsx`, `ReviewSubmitModal.tsx`
+
+---
+
+### [2026-11-26 14:08] - Gỡ Bỏ Mã Hóa Đơn & Tích Hợp Upload Ảnh Trải Nghiệm Lên Cloudinary Theo Quy Trình BE-Signed (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Bỏ hoàn toàn ô nhập `Mã hóa đơn (order_code)` khỏi form đánh giá.
+  - Thêm chức năng chọn ảnh từ máy (tối đa 4 ảnh, < 5MB/ảnh) và đẩy lên Cloudinary vào thư mục có cấu trúc `zone_6/reviews/{store_code_or_id}/{review_id}`.
+  - Quy trình chuẩn: Khi cập nhật/tạo đánh giá thành công trên Backend sẽ cấp chữ ký Cloudinary (`signature`, `timestamp`, `folder`, `upload_proof`) trả về cho Frontend; Frontend đẩy ảnh trực tiếp lên Cloudinary rồi gọi `PATCH /api/v1/reviews/public/:id/images` gắn URL ảnh vào bản ghi đánh giá.
+- **Tệp thay đổi:**
+  - `be/src/databases/prisma/schema/store_review.prisma`, `be/src/modules/reviews/models/store-review.model.ts`, `schemas/review.schema.ts`, `repositories/review.repository.ts`, `services/review.create.service.ts`, `services/review.get.service.ts`, `controllers/review.create.controller.ts`, `routes/review.routes.ts`
+  - `fe/src/features/reviews/type/review.type.ts`, `schema/review.schema.ts`, `service/review.public.service.ts`, `hook/useReviews.ts`, `component/ReviewFormStep.tsx`, `component/ReviewSubmitModal.tsx`, `component/ReviewCard.tsx`, `component/ManageReviewsView.tsx`
+
+---
+
+### [2026-11-26 14:02] - Cho Phép Đánh Giá Ẩn Danh Khi Để Trống Tên Hiển Thị (CN16)
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Tên hiển thị khi đánh giá không bắt buộc; nếu để trống sẽ tự động hiển thị dạng `"Người Ẩn Danh"`.
+- **Nội dung hoàn thành:**
+  - Cập nhật Zod schema & service ở cả Backend (`be/src/modules/reviews/`) và Frontend (`fe/src/features/reviews/`): cho phép `reviewer_name` rỗng/tùy chọn và fallback mặc định sang `'Người Ẩn Danh'`.
+  - Gỡ bỏ `required` và dấu sao đỏ `*` khỏi ô Tên hiển thị trong `ReviewFormStep.tsx`.
+- **Tệp thay đổi:**
+  - `be/src/modules/reviews/schemas/review.schema.ts`, `review.create.service.ts`
+  - `fe/src/features/reviews/schema/review.schema.ts`, `type/review.type.ts`, `ReviewFormStep.tsx`, `ReviewSubmitModal.tsx`
+
+---
+
+### [2026-11-26 13:58] - Ẩn Hoàn Toàn Khối Hiển Thị PayOS Credentials Khỏi Giao Diện Thẻ Cấu Hình
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Không bao giờ cho hiển thị khối PayOS Credentials (`Client ID`, `API Key`, `Checksum`, nút `Hiện/Ẩn`) trên giao diện thẻ cấu hình `/payos`.
+- **Nội dung hoàn thành:**
+  - Gỡ bỏ hoàn toàn khối `PayOS Credentials` và state `showSecret` khỏi `fe/src/features/admin_he_thong/payos/component/PayOSAccountCard.tsx` để đảm bảo bảo mật khóa bí mật trên UI.
+- **Tệp thay đổi:**
+  - `fe/src/features/admin_he_thong/payos/component/PayOSAccountCard.tsx`
+
+---
+
+### [2026-11-26 13:55] - Triển Khai CN16: Đánh Giá Chi Nhánh Không Cần Đăng Nhập (Email + OTP) & Phản Hồi Độc Quyền Cho Quản Lý / Admin
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:**
+  - Khách hàng đánh giá quán theo từng chi nhánh không cần đăng nhập (`/reviews`).
+  - Bắt buộc nhập Email và xác thực mã OTP 6 chữ số gửi qua email để chứng minh người thật, chống spam.
+  - 1 Email chỉ được đánh giá 1 chi nhánh tối đa 1 lần.
+  - Chức năng Phản Hồi Đánh Giá (`/manage-reviews`) chỉ hiển thị và cho phép truy cập đối với **Quản Lý** và **Admin Hệ Thống**.
+- **Nội dung hoàn thành:**
+  - **Database & Security (`be/src/databases/prisma/schema/`, `be/src/modules/reviews/`):**
+    - Tạo `store_review.prisma` (`store_reviews` với Compound Unique Index `{ store_id, canonical_email }`) và `review_otp.prisma` (`review_otps` với TTL index).
+    - `email-normalizer.util.ts`: Chuẩn hóa Gmail dot-trick & `+alias` (`canonicalizeEmail`), chặn disposable email, che email công khai (`maskEmail`), hash OTP bằng HMAC-SHA256.
+    - `review-rate-limit.middleware.ts`: Chống mail-bombing & brute-force (tối đa 3 OTP/15p/email, cooldown 60s, tối đa 12 req/15p/IP, khóa OTP sau 5 lần nhập sai).
+    - Tích hợp `EmailService.sendReviewOtp` trong `be/src/core/services/email.service.ts`.
+    - Kiểm tra tùy chọn `order_code` hợp lệ để gắn huy hiệu `"Đã trải nghiệm tại quán"`.
+    - Bảo vệ nghiêm ngặt các route `/manage`, `/:id/reply`, `/:id/status` bằng `authenticate` + `requireRoles('admin_he_thong', 'quan_ly')` (Quản lý chỉ thao tác được trên các chi nhánh được phân công `assigned_stores`).
+  - **Frontend Public & Management (`fe/src/features/reviews/`, `/reviews`, `/manage-reviews`):**
+    - Trang công khai `/reviews` (không cần đăng nhập, đã mở trong `AppShell.tsx` & gắn link trên `LandingView.tsx`) gồm bộ chọn chi nhánh, thống kê điểm sao, danh sách đánh giá ẩn email và modal 2 bước gửi OTP (`ReviewSubmitModal.tsx`, `ReviewOtpVerifyStep.tsx`).
+    - Trang quản trị `/manage-reviews` và menu Sidebar `"Phản Hồi Đánh Giá"` chỉ hiển thị duy nhất với `admin_he_thong` và `quan_ly`.
+    - 100% file tuân thủ Max 300 Lines Rule và Granular SRP.
+- **Tệp thay đổi chính:**
+  - `be/src/databases/prisma/schema/store_review.prisma`, `review_otp.prisma`
+  - `be/src/core/services/email.service.ts`, `be/src/routes/index.ts`
+  - `be/src/modules/reviews/**`
+  - `fe/src/features/reviews/**`, `fe/src/app/reviews/page.tsx`, `fe/src/app/manage-reviews/page.tsx`
+  - `fe/src/core/components/layout/AppShell.tsx`, `fe/src/features/landing/component/LandingView.tsx`
+
+---
+
+### [2026-11-26 13:42] - Khắc Phục Cảnh Báo Turbopack Instant Navigation Trên /payos
+- **Người/Agent thực hiện:** Antigravity AI Agent
+- **Yêu cầu người dùng:** Khắc phục lỗi `Route "/payos": Could not validate that a segment in your UI has instant navigation. Dropped segment: src/app/payos/page.tsx`.
+- **Nội dung hoàn thành:**
+  - Thêm `export const instant = false;` vào `fe/src/app/payos/page.tsx` để Next.js 16.4.6 (Turbopack) bỏ qua kiểm tra Instant Navigation đối với route quản trị cần xác thực Client (`AppShell`).
+- **Tệp thay đổi:**
+  - `fe/src/app/payos/page.tsx`
+
+---
+
 ### [2026-11-24 13:45] - Khắc Phục Lỗi Bố Cục Xem Chi Tiết Hóa Đơn Bị Tràn Màn Hình & Tránh Lồng Khung Bằng React Portal
 - **Người/Agent thực hiện:** Antigravity AI Agent
 - **Yêu cầu người dùng:** Khắc phục lỗi giao diện xem chi tiết hóa đơn: bị thanh bên (Sidebar) và thanh điều hướng đè/chiếm chỗ, nội dung cột phải và nút hành động (In Bill K80, Đóng ✕) bị đẩy tràn ra khỏi mép phải màn hình máy tính (`media_1795502386246_c9cc1023.jpg`).

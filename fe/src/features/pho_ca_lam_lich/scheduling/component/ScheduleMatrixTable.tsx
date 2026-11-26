@@ -317,7 +317,7 @@ export const ScheduleMatrixTable: React.FC<Props> = ({
                 <div className="flex flex-col">
                   <span className="font-semibold text-stone-900 dark:text-[#efe9de]">Vị Trí / Ca</span>
                   <span className="text-[10px] text-stone-500 dark:text-stone-400 font-normal mt-0.5">
-                    Zone Six Đà Nẵng
+                    Go Cà Phê Đà Nẵng
                   </span>
                 </div>
               </th>

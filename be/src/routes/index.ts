@@ -20,6 +20,7 @@ import { createPosRouter } from '../modules/pos/routes/pos.routes.js';
 import { createTableRouter } from '../modules/admin_he_thong/table/routes/table.routes.js';
 import { createPayOSRouter } from '../modules/admin_he_thong/payos/routes/payos.routes.js';
 import { createCloudinaryRouter } from '../modules/shared/cloudinary/routes/cloudinary.routes.js';
+import { createReviewRouter } from '../modules/reviews/routes/review.routes.js';
 
 export function createApiRouter(zaloService: ZaloService): Router {
   const router = Router();
@@ -105,6 +106,10 @@ export function createApiRouter(zaloService: ZaloService): Router {
   // 8d. Phân hệ Chữ Ký Cloudinary Lưu Trữ Ảnh Món Ăn (zone_6/menu/{id món})
   router.use('/v1/cloudinary', createCloudinaryRouter());
   router.use('/cloudinary', createCloudinaryRouter());
+
+  // 8e. Phân hệ Đánh Giá Chi Nhánh (Public Email OTP & Quản Lý/Admin Phản Hồi)
+  router.use('/v1/reviews', createReviewRouter());
+  router.use('/reviews', createReviewRouter());
 
   // 9. Phân hệ Zalo Integration (Cả v1 lẫn root zalo)
   const zaloRouter = createZaloRouter(zaloService);

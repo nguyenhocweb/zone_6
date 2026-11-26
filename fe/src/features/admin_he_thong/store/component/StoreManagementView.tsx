@@ -184,7 +184,7 @@ export const StoreManagementView: React.FC = () => {
       {isLoading ? (
         <div className="py-24 flex flex-col items-center justify-center gap-3 text-stone-500 dark:text-stone-400">
           <div className="w-6 h-6 border-2 border-stone-300 border-t-stone-700 dark:border-stone-700 dark:border-t-stone-300 rounded-full animate-spin" />
-          <p className="text-xs">Đang tải danh sách chi nhánh Zone Six...</p>
+          <p className="text-xs">Đang tải danh sách chi nhánh Go Cà Phê...</p>
         </div>
       ) : isError ? (
         <div className="p-8 rounded-3xl bg-white dark:bg-[#1c1a17] border border-rose-200 dark:border-rose-900/40 text-center space-y-4">

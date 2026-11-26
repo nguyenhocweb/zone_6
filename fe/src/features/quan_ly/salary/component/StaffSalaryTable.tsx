@@ -170,7 +170,7 @@ export const StaffSalaryTable: React.FC = () => {
       <div className="p-4 rounded-2xl bg-stone-50/70 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 flex items-center gap-3 text-xs text-stone-500 dark:text-stone-400">
         <FiShield className="w-4 h-4 text-stone-400 shrink-0" />
         <span>
-          <strong className="text-stone-800 dark:text-stone-200">Chính sách bảo mật nội bộ Zone Six:</strong> Thông tin hiển thị tuân thủ nghiêm ngặt phân quyền — chỉ bao gồm <strong>Tên nhân viên</strong>, <strong>Vị trí</strong>, <strong>Ca thực tế</strong> và <strong>Lương thực nhận</strong>. Mọi thông tin nhạy cảm (mật khẩu, mã QR cá nhân, số điện thoại) được bảo vệ và ẩn hoàn toàn.
+          <strong className="text-stone-800 dark:text-stone-200">Chính sách bảo mật nội bộ Go Cà Phê:</strong> Thông tin hiển thị tuân thủ nghiêm ngặt phân quyền — chỉ bao gồm <strong>Tên nhân viên</strong>, <strong>Vị trí</strong>, <strong>Ca thực tế</strong> và <strong>Lương thực nhận</strong>. Mọi thông tin nhạy cảm (mật khẩu, mã QR cá nhân, số điện thoại) được bảo vệ và ẩn hoàn toàn.
         </span>
       </div>
 

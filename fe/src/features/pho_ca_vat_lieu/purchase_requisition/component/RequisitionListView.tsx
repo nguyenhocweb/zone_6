@@ -226,7 +226,7 @@ export const RequisitionListView: React.FC<Props> = ({
                     </div>
                     <div className="text-[11px] text-stone-500 dark:text-stone-400 flex items-center gap-1.5 mt-0.5">
                       <FiHome className="w-3 h-3 text-stone-400" />
-                      {req.store_name || "Zone Six"}
+                      {req.store_name || "Go Cà Phê"}
                     </div>
                   </td>
                   <td className="p-3.5">

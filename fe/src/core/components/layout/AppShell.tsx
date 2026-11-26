@@ -52,7 +52,9 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
     pathname === "/" ||
     pathname === "/login" ||
     pathname === "/order" ||
-    pathname.startsWith("/order/");
+    pathname.startsWith("/order/") ||
+    pathname === "/reviews" ||
+    pathname.startsWith("/reviews/");
 
   if (isPublicPage) {
     return <>{children}</>;
@@ -64,7 +66,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#f7f4ee] dark:bg-[#141311] text-stone-600 dark:text-stone-300 gap-4">
         <div className="w-8 h-8 border-2 border-stone-400 border-t-transparent rounded-full animate-spin" />
         <span className="text-xs font-medium tracking-wide">
-          Đang tải dữ liệu Zone Six...
+          Đang tải dữ liệu Go Cà Phê
         </span>
       </div>
     );
@@ -101,6 +103,9 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const canConfigCheckin =
     user.role === "admin_he_thong" || user.role === "quan_ly";
 
+  const canManageReviews =
+    user.role === "admin_he_thong" || user.role === "quan_ly";
+
   const canManageStores = user.role === "admin_he_thong";
   const canConfigZalo = user.role === "admin_he_thong";
   const canConfigPayOS = user.role === "admin_he_thong";
@@ -132,6 +137,8 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
     pathname === "/checkin-config" || pathname.startsWith("/checkin-config");
   const isZaloActive = pathname === "/zalo" || pathname.startsWith("/zalo");
   const isPayOSActive = pathname === "/payos" || pathname.startsWith("/payos");
+  const isManageReviewsActive =
+    pathname === "/manage-reviews" || pathname.startsWith("/manage-reviews");
   const isProfileActive = pathname === "/profile" || pathname.startsWith("/profile");
   const isNotificationsActive =
     pathname === "/notifications" || pathname.startsWith("/notifications");
@@ -161,13 +168,13 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
               href="/schedule"
               className="w-9 h-9 rounded-xl bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-semibold text-xs tracking-wider shrink-0 transition-transform hover:scale-105"
             >
-              Z6
+              GP
             </Link>
             <Link
               href="/schedule"
               className="font-semibold text-sm tracking-wide text-stone-900 dark:text-stone-100 hover:opacity-80 transition"
             >
-              Zone Six
+              Go Cà Phê
             </Link>
           </div>
 
@@ -266,7 +273,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </Link>
               )}
 
-              {/* Xếp Lịch Zone 6 */}
+              {/* Xếp Lịch Go Cà Phê}
               <Link
                 href="/schedule"
                 id="tab-btn-scheduling"
@@ -277,7 +284,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   <div className={getIconClass(isScheduleActive)}>
                     <FiCalendar />
                   </div>
-                  <span className="truncate">Xếp Lịch Zone 6</span>
+                  <span className="truncate">Xếp Lịch Go Cà Phêpan>
                 </div>
               </Link>
 
@@ -343,6 +350,23 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   <span className="truncate">Quản Lý Hóa Đơn</span>
                 </div>
               </Link>
+
+              {/* Phản Hồi Đánh Giá (Chỉ Quản Lý & Admin Hệ Thống) */}
+              {canManageReviews && (
+                <Link
+                  href="/manage-reviews"
+                  id="tab-btn-manage-reviews"
+                  data-testid="tab-manage-reviews"
+                  className={getNavItemClass(isManageReviewsActive)}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={getIconClass(isManageReviewsActive)}>
+                      <FiMessageSquare />
+                    </div>
+                    <span className="truncate">Phản Hồi Đánh Giá</span>
+                  </div>
+                </Link>
+              )}
 
               {/* Đăng Ký Ca Làm */}
               <Link
@@ -556,7 +580,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         <div className="max-w-[1680px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-stone-600 dark:text-stone-400">
             <FiCheck className="text-stone-400" />
-            <span>Zone Six Đà Nẵng • Hệ thống vận hành nội bộ chuẩn mực</span>
+            <span>Go Cà Phê Nẵng • Hệ thống vận hành nội bộ chuẩn mực</span>
           </div>
           <div className="text-stone-400 font-mono text-[11px]">
             Node.js (TypeScript) &amp; Next.js 16

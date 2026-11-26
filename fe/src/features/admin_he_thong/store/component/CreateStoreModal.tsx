@@ -18,6 +18,7 @@ import { storeCreateSchema, type StoreCreateFormValues } from "../schema/store.c
 import { useCreateStore } from "../hook/useCreateStore";
 import { reverseGeocodeService } from "../../checkin-config/service/checkin-config.service";
 import { useGetShiftConfigs } from "@/features/pho_ca_lam_lich/scheduling/hook/useShiftConfigs";
+import { StoreImageField } from "./StoreImageField";
 import { toast } from "sonner";
 
 interface CreateStoreModalProps {
@@ -44,6 +45,7 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
       store_code: "",
       address: "",
       phone: "",
+      image_url: "",
       latitude: 16.032531,
       longitude: 108.210992,
       geofence_radius_meters: 100,
@@ -157,6 +159,7 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
         store_code: values.store_code ? values.store_code.trim().toUpperCase() : undefined,
         address: values.address.trim(),
         phone: values.phone?.trim() || null,
+        image_url: values.image_url?.trim() || null,
         latitude: Number(values.latitude),
         longitude: Number(values.longitude),
         geofence_radius_meters: Number(values.geofence_radius_meters),
@@ -199,7 +202,7 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
               Thêm chi nhánh mới
             </h3>
             <p className="text-xs text-stone-500 dark:text-stone-400">
-              Khởi tạo cơ sở mới trong chuỗi Zone Six Cafe &amp; Lounge
+              Khởi tạo cơ sở mới trong chuỗi Go Cà Phêfe &amp; Lounge
             </p>
           </div>
         </div>
@@ -214,7 +217,7 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
               </label>
               <input
                 {...register("store_name")}
-                placeholder="VD: Zone Six - Cơ Sở Lê Ninh"
+                placeholder="VD: Go Cà PhêCơ Sở Lê Ninh"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
               />
               {errors.store_name && (
@@ -237,6 +240,12 @@ export const CreateStoreModal: React.FC<CreateStoreModalProps> = ({ isOpen, onCl
               )}
             </div>
           </div>
+
+          <StoreImageField
+            value={watch("image_url")}
+            storeKey={watch("store_code") || watch("store_name")}
+            onChange={(url) => setValue("image_url", url, { shouldDirty: true })}
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Địa chỉ thực tế lấy từ GPS */}

@@ -43,7 +43,7 @@ export async function reverseGeocodeService(
   lat: number,
   lon: number
 ): Promise<string | null> {
-  // Ưu tiên gọi qua Backend Zone 6 (đảm bảo không bị CORS và không bị chặn User-Agent)
+  // Ưu tiên gọi qua Backend Go Cà Phê (đảm bảo không bị CORS và không bị chặn User-Agent)
   try {
     const res = await axiosClient.get<ApiResponse<{ address: string }>>(
       "/api/v1/store-config/reverse-geocode",

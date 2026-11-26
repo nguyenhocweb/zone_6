@@ -30,7 +30,7 @@ type ScheduleSubTabKey = "all_staff_schedule" | "register_shift";
 
 export const HomeTabs: React.FC = () => {
   const { user, isLoading, logout } = useAuth();
-  // Chức năng chính được chọn ban đầu: Xếp Lịch Zone 6
+  // Chức năng chính được chọn ban đầu: Xếp Lịch Go Cà Phê
   const [activeMainTab, setActiveMainTab] = useState<MainTabKey>("scheduling");
   // Mặc định bên trong chức năng chính: Xem lịch làm đã xếp (All Nhân Viên)
   const [scheduleSubTab, setScheduleSubTab] = useState<ScheduleSubTabKey>("all_staff_schedule");
@@ -195,10 +195,10 @@ export const HomeTabs: React.FC = () => {
         <div className="space-y-2">
           <div className="text-[10px] font-black uppercase text-[#6D7588] tracking-widest px-2 mb-2 flex items-center justify-between">
             <span>CHỨC NĂNG HỆ THỐNG</span>
-            <span className="text-[10px] text-[#D4AF37]">Zone 6</span>
+            <span className="text-[10px] text-[#D4AF37]">Go Cà Phê</span>
           </div>
 
-          {/* 1. Xếp Lịch Zone 6 (Chức Năng Chính) */}
+          {/* 1. Xếp Lịch Go Cà Phê (Chức Năng Chính) */}
           <button
             id="tab-btn-scheduling"
             data-testid="tab-scheduling"
@@ -223,7 +223,7 @@ export const HomeTabs: React.FC = () => {
               <FaCalendarAlt />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-black truncate">Xếp Lịch Zone 6</div>
+              <div className="text-xs font-black truncate">Xếp Lịch Go Cà Phê</div>
               <div
                 className={`text-[10px] truncate ${
                   activeMainTab === "scheduling" ? "text-[#2A230C]" : "text-[#555C6E]"

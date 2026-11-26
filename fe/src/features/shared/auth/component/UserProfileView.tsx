@@ -141,7 +141,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
               </span>
             </div>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-              Quản lý danh tính, phân quyền vai trò và bảo mật tài khoản Zone Six.
+              Quản lý danh tính, phân quyền vai trò và bảo mật tài khoản Go Cà Phê.
             </p>
           </div>
         </div>
@@ -162,7 +162,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* CỘT TRÁI (5 Cột): Thẻ Nhân Sự Số & Quyền Hạn */}
         <div className="lg:col-span-5 space-y-6">
-          {/* Thẻ Số Nhân Viên Zone Six */}
+          {/* Thẻ Số Nhân Viên Go Cà Phê */}
           <div className="p-6 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-5 transition-colors">
             {/* Header Thẻ */}
             <div className="flex items-center justify-between pb-4 border-b border-stone-100 dark:border-stone-800/80">
@@ -171,7 +171,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
                   Z6
                 </div>
                 <span className="font-semibold text-xs tracking-wider uppercase text-stone-900 dark:text-stone-100">
-                  Zone Six Đà Nẵng
+                  Go Cà Phê Đà Nẵng
                 </span>
               </div>
               <span className="text-[10px] tracking-widest text-stone-400 uppercase font-medium">
@@ -292,7 +292,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ onBackToSchedu
                 <span>Cập Nhật Thông Tin Cá Nhân</span>
               </h2>
               <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-                Thông tin hiển thị trên bảng xếp lịch và danh sách nhân sự Zone Six.
+                Thông tin hiển thị trên bảng xếp lịch và danh sách nhân sự Go Cà Phê.
               </p>
             </div>
 

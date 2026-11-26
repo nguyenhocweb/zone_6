@@ -3,6 +3,7 @@ import { OrderModel, IOrder } from '../models/order.model.js';
 import { TableRepository } from '../../admin_he_thong/table/repositories/table.repository.js';
 import { BadRequestError, ForbiddenError, NotFoundError } from '../../../core/errors.js';
 import { emitPosEvent } from '../socket/pos.socket.js';
+import { dispatchRoleNotifications } from '../../shared/notifications/services/notification.dispatcher.js';
 
 export interface VoidOrderPayload {
   orderId: string;
@@ -57,6 +58,15 @@ export class OrderVoidService {
       orderCode: order.order_code,
       voidedByName: dto.actor.name,
       voidReason: dto.voidReason,
+    });
+
+    void dispatchRoleNotifications({
+      roles: ['quan_ly', 'admin_he_thong'],
+      code: `ORDER_VOID:${order._id.toString()}`,
+      type: 'ORDER_VOID_ALERT',
+      severity: 'high',
+      title: `🚫 Hóa đơn #${order.order_code} đã bị hủy`,
+      message: `Nhân sự ${dto.actor.name} đã hủy hóa đơn trị giá ${order.final_amount.toLocaleString('vi-VN')}đ. Lý do: ${dto.voidReason.trim()}`,
     });
 
     return order;

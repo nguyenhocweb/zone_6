@@ -46,7 +46,7 @@ export const PosHeader: React.FC<PosHeaderProps> = ({
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-sm font-semibold text-stone-900 dark:text-[#efe9de] tracking-tight">
-              Zone Six POS
+              Go Cà Phê POS
             </h1>
             <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/40 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

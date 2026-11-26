@@ -19,6 +19,7 @@ import { useUpdateStore } from "../hook/useUpdateStore";
 import { reverseGeocodeService } from "../../checkin-config/service/checkin-config.service";
 import { useGetShiftConfigs } from "@/features/pho_ca_lam_lich/scheduling/hook/useShiftConfigs";
 import type { Store } from "../type/store.type";
+import { StoreImageField } from "./StoreImageField";
 import { toast } from "sonner";
 
 interface EditStoreModalProps {
@@ -50,6 +51,7 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
       store_code: "",
       address: "",
       phone: "",
+      image_url: "",
       latitude: 18.679584,
       longitude: 105.681329,
       geofence_radius_meters: 100,
@@ -75,6 +77,7 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
         store_code: store.store_code,
         address: store.address,
         phone: store.phone || "",
+        image_url: store.image_url || "",
         latitude: store.latitude,
         longitude: store.longitude,
         geofence_radius_meters: store.geofence_radius_meters,
@@ -176,6 +179,7 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
           store_code: values.store_code ? values.store_code.trim().toUpperCase() : undefined,
           address: values.address.trim(),
           phone: values.phone?.trim() || null,
+          image_url: values.image_url?.trim() || null,
           latitude: Number(values.latitude),
           longitude: Number(values.longitude),
           geofence_radius_meters: Number(values.geofence_radius_meters),
@@ -233,7 +237,7 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
               </label>
               <input
                 {...register("store_name")}
-                placeholder="VD: Zone Six - Cơ Sở Lê Ninh"
+                placeholder="VD: Go Cà PhêCơ Sở Lê Ninh"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-900 dark:text-[#efe9de] focus:border-stone-400 dark:focus:border-stone-600 focus:outline-none"
               />
               {errors.store_name && (
@@ -256,6 +260,12 @@ export const EditStoreModal: React.FC<EditStoreModalProps> = ({ store, isOpen, o
               )}
             </div>
           </div>
+
+          <StoreImageField
+            value={watch("image_url")}
+            storeKey={watch("store_code") || store.id}
+            onChange={(url) => setValue("image_url", url, { shouldDirty: true })}
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Địa chỉ thực tế lấy từ GPS */}

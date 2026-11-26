@@ -36,6 +36,17 @@ export const StoreCard: React.FC<StoreCardProps> = ({
         : "border-rose-200 dark:border-rose-900/40 opacity-85 hover:opacity-100"
         }`}
     >
+      {/* Top Banner nếu là cơ sở chính / hoặc đang mở */}
+      {store.image_url && (
+        <div className="h-36 w-full overflow-hidden border-b border-stone-100 dark:border-stone-800 bg-stone-100 dark:bg-[#25221e]">
+          <img
+            src={store.image_url}
+            alt={store.store_name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+      )}
+
       <div className="p-6 space-y-5">
         {/* Top Badges & Meta */}
         <div className="flex items-center justify-between gap-3">

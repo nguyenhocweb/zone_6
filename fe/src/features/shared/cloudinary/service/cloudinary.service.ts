@@ -12,7 +12,7 @@ interface ApiResponse<T> {
 }
 
 /**
- * 1. Xin chữ ký xác thực từ Backend Zone 6
+ * 1. Xin chữ ký xác thực từ Backend Go Cà Phê
  */
 export async function getCloudinaryMenuSignature(
   payload?: CloudinarySignPayload

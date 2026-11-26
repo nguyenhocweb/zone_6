@@ -4,6 +4,7 @@ model StoreConfig {
   storeCode                   String?  @unique @map("store_code")
   address                     String
   phone                       String?  @map("phone")
+  imageUrl                    String?  @map("image_url")
   latitude                    Float
   longitude                   Float
   geofenceRadiusMeters        Float    @default(100) @map("geofence_radius_meters")

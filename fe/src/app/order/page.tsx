@@ -3,8 +3,8 @@ import React, { Suspense } from 'react';
 import { TableOrderView } from '@/features/table-order/component/TableOrderView';
 
 export const metadata: Metadata = {
-  title: 'Gọi Món Tại Bàn - Zone Six Đà Nẵng',
-  description: 'Thực đơn điện tử và đặt món trực tuyến tại bàn Zone Six Đà Nẵng.',
+  title: 'Gọi Món Tại Bàn - Go Cà Phê Đà Nẵng',
+  description: 'Thực đơn điện tử và đặt món trực tuyến tại bàn Go Cà Phê Đà Nẵng.',
 };
 
 // Opt out of experimental Turbopack instant-navigation segment validation

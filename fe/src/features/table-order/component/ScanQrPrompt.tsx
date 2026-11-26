@@ -17,7 +17,7 @@ export const ScanQrPrompt: React.FC = () => {
             Yêu Cầu Quét Mã QR Tại Bàn
           </h1>
           <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-            Trang gọi món chỉ mở khi bạn quét mã QR Standee mica được đặt trực tiếp trên bàn tại quán Zone Six.
+            Trang gọi món chỉ mở khi bạn quét mã QR Standee mica được đặt trực tiếp trên bàn tại quán Go Cà Phê.
           </p>
         </div>
 
@@ -44,12 +44,12 @@ export const ScanQrPrompt: React.FC = () => {
           className="w-full py-3.5 px-4 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-stone-950 uppercase tracking-wider transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-amber-500/20"
         >
           <FaArrowLeft className="text-xs" />
-          <span>Quay Lại Trang Chủ Zone Six</span>
+          <span>Quay Lại Trang Chủ Go Cà Phê</span>
         </Link>
       </div>
 
       <div className="text-center text-[11px] text-stone-400 pt-6 pb-2">
-        Zone Six Signature © 2026 • Trải nghiệm dịch vụ số hóa tại bàn
+        Go Cà Phê Signature © 2026 • Trải nghiệm dịch vụ số hóa tại bàn
       </div>
     </div>
   );

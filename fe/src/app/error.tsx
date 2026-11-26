@@ -13,7 +13,7 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     // Ghi log lỗi để tiện tra cứu
-    console.error('Zone Six App Runtime Error:', error);
+    console.error('Go Cà Phê App Runtime Error:', error);
   }, [error]);
 
   return (

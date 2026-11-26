@@ -38,7 +38,7 @@ export const CheckinConfigView: React.FC = () => {
   const updateMutation = useUpdateCheckinConfig();
 
   // Form State
-  const [storeName, setStoreName] = useState("Zone Six Cafe & Lounge");
+  const [storeName, setStoreName] = useState("Go Cà Phê Cafe & Lounge");
   const [address, setAddress] = useState("214 Lê Ninh, Phường Quán Bàu, TP Vinh");
   const [latitude, setLatitude] = useState<number>(18.679584);
   const [longitude, setLongitude] = useState<number>(105.681329);
@@ -83,7 +83,7 @@ export const CheckinConfigView: React.FC = () => {
       if (!selectedStoreId && config.id) {
         setSelectedStoreId(config.id);
       }
-      setStoreName(config.store_name || "Zone Six Cafe & Lounge");
+      setStoreName(config.store_name || "Go Cà Phê Cafe & Lounge");
       setAddress(config.address || "214 Lê Ninh, Phường Quán Bàu, TP Vinh");
       setLatitude(config.latitude ?? 18.679584);
       setLongitude(config.longitude ?? 105.681329);
@@ -208,9 +208,9 @@ export const CheckinConfigView: React.FC = () => {
     );
   };
 
-  // Reset về cấu hình mặc định Zone 6
+  // Reset về cấu hình mặc định Go Cà Phê
   const handleResetDefaults = () => {
-    setStoreName("Zone Six Cafe & Lounge");
+    setStoreName("Go Cà Phê Cafe & Lounge");
     setAddress("214 Lê Ninh, Phường Quán Bàu, TP Vinh");
     setLatitude(18.679584);
     setLongitude(105.681329);
@@ -226,7 +226,7 @@ export const CheckinConfigView: React.FC = () => {
     setVatRate(8);
     setVatApplyMode("ALL");
     setVatAppliedShifts([]);
-    toast.info("Đã khôi phục các giá trị mặc định của Zone 6");
+    toast.info("Đã khôi phục các giá trị mặc định của Go Cà Phê");
   };
 
   // Submit lưu cấu hình
@@ -355,7 +355,7 @@ export const CheckinConfigView: React.FC = () => {
 
       {isLoading ? (
         <div className="p-12 text-center text-xs text-stone-500 dark:text-stone-400 rounded-3xl bg-white dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-800">
-          Đang tải thông tin cấu hình check-in Zone 6...
+          Đang tải thông tin cấu hình check-in Go Cà Phê...
         </div>
       ) : isError ? (
         <div className="p-8 text-center text-xs text-rose-500 dark:text-rose-400 rounded-3xl bg-white dark:bg-[#1c1a17] border border-rose-200 dark:border-rose-900/50">
@@ -404,7 +404,7 @@ export const CheckinConfigView: React.FC = () => {
                     value={storeName}
                     onChange={(e) => setStoreName(e.target.value)}
                     className="w-full py-2.5 px-3 rounded-xl bg-stone-50 dark:bg-[#25221e] border border-stone-200 dark:border-stone-800 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition font-medium"
-                    placeholder="Zone Six Cafe & Lounge"
+                    placeholder="Go Cà Phê Cafe & Lounge"
                     required
                   />
                 </div>
@@ -825,7 +825,7 @@ export const CheckinConfigView: React.FC = () => {
                     <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed">
                       Cả nhân viên thu ngân gọi tại quầy POS và khách tự quét QR gọi tại bàn đều hoạt động song song.
                     </p>
-                    <span className="text-[10px] text-stone-600 dark:text-stone-400 font-medium mt-2 inline-block">Khuyên dùng cho Zone 6</span>
+                    <span className="text-[10px] text-stone-600 dark:text-stone-400 font-medium mt-2 inline-block">Khuyên dùng cho Go Cà Phê</span>
                   </div>
 
                   {/* STAFF_ONLY */}
@@ -874,7 +874,7 @@ export const CheckinConfigView: React.FC = () => {
                   <div className="space-y-0.5">
                     <span className="text-xs font-medium text-stone-900 dark:text-[#efe9de]">Bán kính Geofence quét QR bàn:</span>
                     <p className="text-[11px] text-stone-500 dark:text-stone-400">
-                      Khoảng cách tối đa từ điện thoại khách đến tâm quán Zone Six để mở được giao diện gọi món
+                      Khoảng cách tối đa từ điện thoại khách đến tâm quán Go Cà Phê để mở được giao diện gọi món
                     </p>
                   </div>
                   <div className="flex items-baseline gap-1 text-stone-900 dark:text-[#efe9de]">
@@ -1184,7 +1184,7 @@ export const CheckinConfigView: React.FC = () => {
               className="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-[#25221e] hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-400 text-xs font-medium transition cursor-pointer"
             >
               <FiRotateCcw className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
-              <span>Khôi phục mặc định Zone 6</span>
+              <span>Khôi phục mặc định Go Cà Phê</span>
             </button>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">

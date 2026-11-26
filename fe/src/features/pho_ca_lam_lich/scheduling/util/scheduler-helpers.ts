@@ -257,8 +257,8 @@ export const getSlotWorkStatus = (
   const isOlderThanPreviousWeek = startMs < previousMondayMs;
 
   // QUY TẮC ĐIỂM DANH (CHECK-IN) THEO CẤU HÌNH HỆ THỐNG:
-  // Cho phép check-in trước ca làm (mặc định 90p theo cấu hình Zone 6, hoặc truyền từ quán)
-  // và sau ca làm (mặc định 120p theo cấu hình Zone 6, hoặc truyền từ quán)
+  // Cho phép check-in trước ca làm (mặc định 90p theo cấu hình Go Cà Phê, hoặc truyền từ quán)
+  // và sau ca làm (mặc định 120p theo cấu hình Go Cà Phê, hoặc truyền từ quán)
   const allowedBefore = checkinWindowMinutes?.before ?? 90;
   const allowedAfter = checkinWindowMinutes?.after ?? 120;
 

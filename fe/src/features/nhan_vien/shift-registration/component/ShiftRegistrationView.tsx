@@ -497,7 +497,7 @@ export const ShiftRegistrationView: React.FC<ShiftRegistrationViewProps> = ({
               <div className="text-xs font-semibold text-stone-900 dark:text-[#efe9de]">
                 {availableStores.find((s: Store) => s.id === selectedStoreId)?.store_name ||
                   (user as any)?.assigned_store_name ||
-                  "Zone Six Coffee"}
+                  "Go Cà Phê Coffee"}
               </div>
             </div>
           </div>

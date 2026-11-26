@@ -7,7 +7,7 @@ export function useGetStaff(params?: { search?: string; role?: string; store_id?
   return useQuery<StaffItem[], Error>({
     queryKey: queryKeys.staff.list(params),
     queryFn: () => getStaffListService(params),
-    staleTime: 60 * 1000, // 60s per Zone 6 architectural standard
+    staleTime: 60 * 1000, // 60s per Go Cà Phê architectural standard
     refetchOnWindowFocus: false,
   });
 }

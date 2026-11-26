@@ -426,7 +426,7 @@ export const CheckInCameraModal: React.FC<CheckInCameraModalProps> = ({
       context.fillStyle = "#F5D77F";
       context.font = "300 28px sans-serif";
       context.textAlign = "center";
-      context.fillText(slotData?.staff_name || "Nhân viên Zone Six", 480, 300);
+      context.fillText(slotData?.staff_name || "Nhân viên Go Cà Phê", 480, 300);
     }
 
     drawWatermark(

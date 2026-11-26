@@ -455,7 +455,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
             Thêm Công Thức Pha Chế / Món Mới
           </h2>
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-            Thiết lập định lượng nguyên liệu và quy trình chuẩn SOP Zone 6
+            Thiết lập định lượng nguyên liệu và quy trình chuẩn SOP Go Cà Phê
           </p>
         </div>
 
@@ -615,7 +615,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                   <input
                     type="text"
                     {...register("name")}
-                    placeholder="Vd: Trà Dâu Tươi Zone 6, Cốt Trà Đen..."
+                    placeholder="Vd: Trà Dâu Tươi Go Cà Phê, Cốt Trà Đen..."
                     className="w-full bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 rounded-xl px-4 py-2.5 text-xs text-stone-900 dark:text-[#efe9de] focus:outline-none focus:border-stone-400 transition-colors"
                   />
                   {errors.name && (
@@ -1245,7 +1245,7 @@ export const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                     Bước 4: Chọn Cơ Sở / Chi Nhánh Lưu Công Thức Món
                   </h3>
                   <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-relaxed">
-                    Mỗi chi nhánh Zone Six quản lý thực đơn và định mức kho độc lập. Vui lòng chọn cơ sở mà bạn muốn áp dụng công thức/món này.
+                    Mỗi chi nhánh Go Cà Phê quản lý thực đơn và định mức kho độc lập. Vui lòng chọn cơ sở mà bạn muốn áp dụng công thức/món này.
                   </p>
                 </div>
               </div>

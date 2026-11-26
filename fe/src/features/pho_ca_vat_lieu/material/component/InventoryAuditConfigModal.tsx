@@ -221,7 +221,7 @@ export const InventoryAuditConfigModal: React.FC<InventoryAuditConfigModalProps>
                 <FiHome className="text-stone-400" />
                 <span>Áp dụng cho: </span>
                 <strong className="text-stone-800 dark:text-stone-200">
-                  {storeName || (selectedStoreId ? 'Cơ sở đã chọn' : 'Toàn bộ chuỗi Zone Six')}
+                  {storeName || (selectedStoreId ? 'Cơ sở đã chọn' : 'Toàn bộ chuỗi Go Cà Phê')}
                 </strong>
               </p>
             </div>

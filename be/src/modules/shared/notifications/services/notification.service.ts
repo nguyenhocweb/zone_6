@@ -51,65 +51,114 @@ export interface NotificationStats {
   role_counts?: Record<string, number>;
 }
 
-async function upsertToModel(
+let lastScanAt = 0;
+let activeScanPromise: Promise<void> | null = null;
+const SCAN_COOLDOWN_MS = 60 * 1000;
+
+type BulkOp = {
+  updateOne?: { filter: Record<string, any>; update: Record<string, any>; upsert?: boolean };
+  updateMany?: { filter: Record<string, any>; update: Record<string, any> };
+};
+
+function queueUpsert(
+  buckets: Map<Model<IScheduleNotificationDoc>, BulkOp[]>,
   model: Model<IScheduleNotificationDoc>,
   item: Partial<IScheduleNotificationDoc> & { code: string }
-): Promise<void> {
-  await model.findOneAndUpdate(
-    { code: item.code },
-    {
-      $set: {
-        code: item.code,
-        type: item.type,
-        severity: item.severity,
-        title: item.title,
-        message: item.message,
-        week_start_date: item.week_start_date,
-        day: item.day,
-        shift: item.shift,
-        role_in_slot: item.role_in_slot || 'All',
-        staff_name: item.staff_name || null,
-        user_code: item.user_code || null,
-        user_id: item.user_id || null,
-        shift_start_time: item.shift_start_time || null,
-        shift_end_time: item.shift_end_time || null,
-        hours_until_shift: item.hours_until_shift ?? null,
-        target_role: item.target_role,
-        is_resolved: item.is_resolved ?? false,
+): void {
+  const ops = buckets.get(model) || [];
+  ops.push({
+    updateOne: {
+      filter: { code: item.code },
+      update: {
+        $set: {
+          code: item.code,
+          type: item.type,
+          severity: item.severity,
+          title: item.title,
+          message: item.message,
+          week_start_date: item.week_start_date,
+          day: item.day,
+          shift: item.shift,
+          role_in_slot: item.role_in_slot || 'All',
+          staff_name: item.staff_name || null,
+          user_code: item.user_code || null,
+          user_id: item.user_id || null,
+          shift_start_time: item.shift_start_time || null,
+          shift_end_time: item.shift_end_time || null,
+          hours_until_shift: item.hours_until_shift ?? null,
+          target_role: item.target_role,
+          is_resolved: item.is_resolved ?? false,
+        },
+        $setOnInsert: {
+          is_read: false,
+          is_dismissed: false,
+          read_by: [],
+        },
       },
-      $setOnInsert: {
-        is_read: false,
-        is_dismissed: false,
-        read_by: [],
-      },
+      upsert: true,
     },
-    { upsert: true, returnDocument: 'after' }
-  );
+  });
+  buckets.set(model, ops);
+}
+
+function queueResolve(
+  buckets: Map<Model<IScheduleNotificationDoc>, BulkOp[]>,
+  models: Model<IScheduleNotificationDoc>[],
+  codes: string[]
+): void {
+  for (const model of models) {
+    const ops = buckets.get(model) || [];
+    ops.push({
+      updateMany: {
+        filter: { code: { $in: codes }, is_resolved: false },
+        update: { $set: { is_resolved: true } },
+      },
+    });
+    buckets.set(model, ops);
+  }
 }
 
 export class ScheduleNotificationService {
-  /**
-   * Quét và tự động đồng bộ cảnh báo vào các TABLE RIÊNG BIỆT CHO TỪNG ROLE trong MongoDB:
-   * 1. notifications_truong_ca (Trưởng ca: Hết ca chưa check-in [Cao], Ca trống 1-2 ngày [Gấp])
-   * 2. notifications_quan_ly (Quản lý: Cảnh báo toàn quán, ca trống, quá hạn check-in)
-   * 3. notifications_admin (Admin: Giám sát toàn hệ thống)
-   * 4. notifications_pho_ca_lam_lich (Phó ca làm lịch: Ca trống cần xếp gấp, đợt đăng ký)
-   * 5. notifications_pho_ca_vat_lieu (Phó ca vật liệu: Nhắc kiểm tra vật liệu trước ca)
-   * 6. notifications_nhan_vien (Nhân viên: Nhắc ca làm cá nhân, nhắc check-in, đợt đăng ký)
-   */
   async scanAndGenerateNotifications(now: Date = new Date()): Promise<void> {
+    if (Date.now() - lastScanAt < SCAN_COOLDOWN_MS) {
+      return;
+    }
+    if (activeScanPromise) {
+      return activeScanPromise;
+    }
+
+    activeScanPromise = this.runBulkScan(now).finally(() => {
+      lastScanAt = Date.now();
+      activeScanPromise = null;
+    });
+    return activeScanPromise;
+  }
+
+  private async runBulkScan(now: Date): Promise<void> {
     try {
-      const schedules = await WeeklyScheduleModel.find({}).sort({ week_start_date: -1 }).limit(10);
+      const schedules = await WeeklyScheduleModel.find({})
+        .sort({ week_start_date: -1 })
+        .limit(3)
+        .lean();
       if (!schedules || schedules.length === 0) return;
 
-      // Nạp danh sách User để gắn ID (user_id) và Mã NV (user_code) chính xác, tránh dùng chung thông báo
       const allUsers = await UserModel.find({ is_active: true }).lean();
       const userByName = new Map<string, any>();
       for (const u of allUsers) {
-        if (u.name) {
-          userByName.set(u.name.trim().toLowerCase(), u);
+        const displayName = (u as any).full_name || (u as any).name;
+        if (displayName) {
+          userByName.set(String(displayName).trim().toLowerCase(), u);
         }
       }
+
+      const buckets = new Map<Model<IScheduleNotificationDoc>, BulkOp[]>();
+      const allModels = Object.values(ALL_ROLE_NOTIFICATION_MODELS);
+      const staffManagers = [
+        TruongCaNotificationModel,
+        QuanLyNotificationModel,
+        AdminNotificationModel,
+        PhoCaLamLichNotificationModel,
+      ];
 
       for (const schedule of schedules) {
         if (!schedule.slots || schedule.slots.length === 0) continue;
@@ -119,112 +168,63 @@ export class ScheduleNotificationService {
 
           const timeRange = getShiftTimeRange(schedule.week_start_date, slot.day, slot.shift);
           if (!timeRange) continue;
-
           const { startTime, endTime } = timeRange;
 
-          // =========================================================================
-          // 1. TRƯỜNG HỢP: HẾT CA MÀ CHƯA CHECK-IN -> MỨC ĐỘ CAO (HIGH)
-          // Gắn ID cụ thể của nhân viên (user_id, user_code) để không bị nhầm lẫn dùng chung
-          // =========================================================================
           if (slot.staff_name && slot.staff_name.trim() !== '' && !slot.is_empty) {
             const staffTrim = slot.staff_name.trim();
             const matchedUser = userByName.get(staffTrim.toLowerCase());
             const staffUserId = matchedUser ? String(matchedUser._id) : null;
             const staffUserCode = matchedUser?.user_code || null;
-            const staffDisplayName = matchedUser?.name || staffTrim;
+            const staffDisplayName = matchedUser?.full_name || matchedUser?.name || staffTrim;
 
             const hasShiftEnded = now.getTime() > endTime.getTime();
             const slotCode = `UNCHECKED:${schedule.week_start_date}:${slot.day}:${slot.shift}:${staffUserCode || staffTrim}`;
 
             if (hasShiftEnded) {
               if (!slot.is_checked_in) {
-                // Đẩy vào Table Trưởng ca
-                await upsertToModel(TruongCaNotificationModel, {
+                const base = {
                   code: slotCode,
                   type: 'UNCHECKED_EXPIRED_SHIFT' as NotificationType,
                   severity: 'high' as NotificationSeverity,
+                  week_start_date: schedule.week_start_date,
+                  day: slot.day,
+                  shift: slot.shift,
+                  role_in_slot: slot.role || 'All',
+                  staff_name: staffDisplayName,
+                  user_code: staffUserCode,
+                  user_id: staffUserId,
+                  shift_start_time: startTime,
+                  shift_end_time: endTime,
+                  is_resolved: false,
+                };
+                queueUpsert(buckets, TruongCaNotificationModel, {
+                  ...base,
                   title: `⚠️ Hết ca chưa điểm danh: [${staffUserCode || 'NV'}] ${staffDisplayName}`,
                   message: `Ca ${slot.shift} (${slot.day}) ngày ${formatVNDate(startTime)} của nhân sự [${staffUserCode || 'N/A'}] ${staffDisplayName} đã kết thúc lúc ${formatVNTime(endTime)} nhưng chưa được tích điểm danh check-in!`,
-                  week_start_date: schedule.week_start_date,
-                  day: slot.day,
-                  shift: slot.shift,
-                  role_in_slot: slot.role || 'All',
-                  staff_name: staffDisplayName,
-                  user_code: staffUserCode,
-                  user_id: staffUserId,
-                  shift_start_time: startTime,
-                  shift_end_time: endTime,
                   target_role: 'truong_ca',
-                  is_resolved: false,
                 });
-
-                // Đẩy vào Table Quản lý
-                await upsertToModel(QuanLyNotificationModel, {
-                  code: slotCode,
-                  type: 'UNCHECKED_EXPIRED_SHIFT' as NotificationType,
-                  severity: 'high' as NotificationSeverity,
+                queueUpsert(buckets, QuanLyNotificationModel, {
+                  ...base,
                   title: `⚠️ Quá giờ chưa check-in: [${staffUserCode || 'NV'}] ${staffDisplayName}`,
                   message: `Nhân sự [${staffUserCode || 'N/A'}] ${staffDisplayName} ca ${slot.shift} (${slot.day}) ngày ${formatVNDate(startTime)} chưa được trưởng ca điểm danh sau khi hết ca.`,
-                  week_start_date: schedule.week_start_date,
-                  day: slot.day,
-                  shift: slot.shift,
-                  role_in_slot: slot.role || 'All',
-                  staff_name: staffDisplayName,
-                  user_code: staffUserCode,
-                  user_id: staffUserId,
-                  shift_start_time: startTime,
-                  shift_end_time: endTime,
                   target_role: 'quan_ly',
-                  is_resolved: false,
                 });
-
-                // Đẩy vào Table Admin
-                await upsertToModel(AdminNotificationModel, {
-                  code: slotCode,
-                  type: 'UNCHECKED_EXPIRED_SHIFT' as NotificationType,
-                  severity: 'high' as NotificationSeverity,
+                queueUpsert(buckets, AdminNotificationModel, {
+                  ...base,
                   title: `⚠️ Hết ca chưa check-in: [${staffUserCode || 'NV'}] ${staffDisplayName}`,
                   message: `Ca ${slot.shift} (${slot.day}) của [${staffUserCode || 'N/A'}] ${staffDisplayName} đã hết lúc ${formatVNTime(endTime)} nhưng chưa có dữ liệu check-in.`,
-                  week_start_date: schedule.week_start_date,
-                  day: slot.day,
-                  shift: slot.shift,
-                  role_in_slot: slot.role || 'All',
-                  staff_name: staffDisplayName,
-                  user_code: staffUserCode,
-                  user_id: staffUserId,
-                  shift_start_time: startTime,
-                  shift_end_time: endTime,
                   target_role: 'admin_he_thong',
-                  is_resolved: false,
                 });
-
-                // Đẩy vào Table Nhân viên - Gắn chặt user_id và user_code của chính nhân viên đó
-                await upsertToModel(NhanVienNotificationModel, {
-                  code: slotCode,
-                  type: 'UNCHECKED_EXPIRED_SHIFT' as NotificationType,
-                  severity: 'high' as NotificationSeverity,
+                queueUpsert(buckets, NhanVienNotificationModel, {
+                  ...base,
                   title: `⚠️ Bạn chưa được check-in ca ${slot.shift} (${slot.day})`,
                   message: `Ca ${slot.shift} (${slot.day}) ngày ${formatVNDate(startTime)} của bạn [Mã NV: ${staffUserCode || 'N/A'}] đã hết giờ làm lúc ${formatVNTime(endTime)} nhưng chưa được ghi nhận check-in. Vui lòng báo trưởng ca để tích điểm danh!`,
-                  week_start_date: schedule.week_start_date,
-                  day: slot.day,
-                  shift: slot.shift,
-                  role_in_slot: slot.role || 'All',
-                  staff_name: staffDisplayName,
-                  user_code: staffUserCode,
-                  user_id: staffUserId,
-                  shift_start_time: startTime,
-                  shift_end_time: endTime,
                   target_role: 'nhan_vien',
-                  is_resolved: false,
                 });
               } else {
-                // Đã check-in -> Đánh dấu resolved trên toàn bộ các table
-                for (const model of Object.values(ALL_ROLE_NOTIFICATION_MODELS)) {
-                  await model.updateOne({ code: slotCode }, { $set: { is_resolved: true } });
-                }
+                queueResolve(buckets, allModels, [slotCode]);
               }
             } else {
-              // Ca chưa hết: Nếu là ca trong ngày của nhân viên -> Tạo thông báo nhắc ca làm cá nhân cho Nhân viên
               const isToday =
                 now.getDate() === startTime.getDate() &&
                 now.getMonth() === startTime.getMonth() &&
@@ -232,9 +232,8 @@ export class ScheduleNotificationService {
 
               if (isToday && startTime.getTime() > now.getTime()) {
                 const diffHours = (startTime.getTime() - now.getTime()) / (1000 * 60 * 60);
-                const staffShiftCode = `STAFF_SHIFT:${schedule.week_start_date}:${slot.day}:${slot.shift}:${staffUserCode || staffTrim}`;
-                await upsertToModel(NhanVienNotificationModel, {
-                  code: staffShiftCode,
+                queueUpsert(buckets, NhanVienNotificationModel, {
+                  code: `STAFF_SHIFT:${schedule.week_start_date}:${slot.day}:${slot.shift}:${staffUserCode || staffTrim}`,
                   type: 'SHIFT_PERSONAL_REMINDER' as NotificationType,
                   severity: (diffHours <= 2 ? 'high' : 'medium') as NotificationSeverity,
                   title: `📅 Ca làm hôm nay: Ca ${slot.shift} (${formatVNTime(startTime)} - ${formatVNTime(endTime)})`,
@@ -256,11 +255,6 @@ export class ScheduleNotificationService {
             }
           }
 
-          // =========================================================================
-          // 2. TRƯỜNG HỢP: CA TRỐNG CHƯA CÓ NGƯỜI LÀM
-          // - Trước 2 ngày (24h - 48h): GẤP (URGENT)
-          // - Trước 1 ngày (<= 24h): GẤP (URGENT - Nhắc lần 2)
-          // =========================================================================
           const isEmptySlot = !slot.staff_name || slot.staff_name.trim() === '' || slot.is_empty;
           const emptySlotBaseCode = `${schedule.week_start_date}:${slot.day}:${slot.shift}:${slot.role || 'slot'}`;
           const code1Day = `EMPTY_1D:${emptySlotBaseCode}`;
@@ -269,126 +263,78 @@ export class ScheduleNotificationService {
 
           if (isEmptySlot) {
             if (startTime.getTime() > now.getTime()) {
-              const diffMs = startTime.getTime() - now.getTime();
-              const diffHours = diffMs / (1000 * 60 * 60);
+              const diffHours = (startTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+              const baseEmpty = {
+                week_start_date: schedule.week_start_date,
+                day: slot.day,
+                shift: slot.shift,
+                role_in_slot: slot.role || 'All',
+                staff_name: null,
+                shift_start_time: startTime,
+                shift_end_time: endTime,
+                hours_until_shift: Math.round(diffHours),
+                is_resolved: false,
+              };
 
               if (diffHours <= 24) {
-                // TRƯỚC 1 NGÀY (<= 24h) -> GẤP (Nhắc lần 2)
-                const payload = {
+                const p = {
+                  ...baseEmpty,
                   code: code1Day,
                   type: 'EMPTY_SLOT_1_DAY' as NotificationType,
                   severity: 'urgent' as NotificationSeverity,
                   title: `🚨 KHẨN CẤP: Ca trống trước 1 ngày chưa có người!`,
                   message: `Ca ${slot.shift} (${slot.day}) ngày ${formatVNDate(startTime)} chỉ còn ~${Math.max(1, Math.round(diffHours))} giờ nữa là bắt đầu nhưng VẪN CHƯA CÓ NGƯỜI LÀM (Nhắc lần 2)! Cần điều phối gấp.`,
-                  week_start_date: schedule.week_start_date,
-                  day: slot.day,
-                  shift: slot.shift,
-                  role_in_slot: slot.role || 'All',
-                  staff_name: null,
-                  shift_start_time: startTime,
-                  shift_end_time: endTime,
-                  hours_until_shift: Math.round(diffHours),
-                  is_resolved: false,
                 };
-
-                // Lưu đồng bộ vào Table Trưởng ca, Quản lý, Admin và Phó ca làm lịch
-                await upsertToModel(TruongCaNotificationModel, { ...payload, target_role: 'truong_ca' });
-                await upsertToModel(QuanLyNotificationModel, { ...payload, target_role: 'quan_ly' });
-                await upsertToModel(AdminNotificationModel, { ...payload, target_role: 'admin_he_thong' });
-                await upsertToModel(PhoCaLamLichNotificationModel, {
-                  ...payload,
+                queueUpsert(buckets, TruongCaNotificationModel, { ...p, target_role: 'truong_ca' });
+                queueUpsert(buckets, QuanLyNotificationModel, { ...p, target_role: 'quan_ly' });
+                queueUpsert(buckets, AdminNotificationModel, { ...p, target_role: 'admin_he_thong' });
+                queueUpsert(buckets, PhoCaLamLichNotificationModel, {
+                  ...p,
                   target_role: 'pho_ca_lam_lich',
                   title: `🚨 Ca trống gấp cần xếp: Ca ${slot.shift} (${slot.day})`,
                 });
-
-                // Giải quyết cảnh báo 2 ngày trước để tránh trùng lặp
-                for (const model of [
-                  TruongCaNotificationModel,
-                  QuanLyNotificationModel,
-                  AdminNotificationModel,
-                  PhoCaLamLichNotificationModel,
-                ]) {
-                  await model.updateOne({ code: code2Days }, { $set: { is_resolved: true } });
-                }
+                queueResolve(buckets, staffManagers, [code2Days]);
               } else if (diffHours <= 48) {
-                // TRƯỚC 2 NGÀY (24h - 48h) -> GẤP (URGENT)
-                const payload = {
+                const p = {
+                  ...baseEmpty,
                   code: code2Days,
                   type: 'EMPTY_SLOT_2_DAYS' as NotificationType,
                   severity: 'urgent' as NotificationSeverity,
                   title: `⚠️ GẤP: Ca trống trước 2 ngày chưa có người làm`,
                   message: `Ca ${slot.shift} (${slot.day}) ngày ${formatVNDate(startTime)} còn ~${Math.round(diffHours)} giờ nữa bắt đầu nhưng hiện đang trống nhân sự. Cần xếp người vào ca.`,
-                  week_start_date: schedule.week_start_date,
-                  day: slot.day,
-                  shift: slot.shift,
-                  role_in_slot: slot.role || 'All',
-                  staff_name: null,
-                  shift_start_time: startTime,
-                  shift_end_time: endTime,
-                  hours_until_shift: Math.round(diffHours),
-                  is_resolved: false,
                 };
-
-                await upsertToModel(TruongCaNotificationModel, { ...payload, target_role: 'truong_ca' });
-                await upsertToModel(QuanLyNotificationModel, { ...payload, target_role: 'quan_ly' });
-                await upsertToModel(AdminNotificationModel, { ...payload, target_role: 'admin_he_thong' });
-                await upsertToModel(PhoCaLamLichNotificationModel, {
-                  ...payload,
+                queueUpsert(buckets, TruongCaNotificationModel, { ...p, target_role: 'truong_ca' });
+                queueUpsert(buckets, QuanLyNotificationModel, { ...p, target_role: 'quan_ly' });
+                queueUpsert(buckets, AdminNotificationModel, { ...p, target_role: 'admin_he_thong' });
+                queueUpsert(buckets, PhoCaLamLichNotificationModel, {
+                  ...p,
                   target_role: 'pho_ca_lam_lich',
                   title: `⚠️ Cần xếp ca trống: Ca ${slot.shift} (${slot.day})`,
                 });
               } else if (diffHours <= 96) {
-                // TRƯỚC 3-4 NGÀY (> 48h) -> TRUNG BÌNH (MEDIUM)
-                const payload = {
+                const p = {
+                  ...baseEmpty,
                   code: codeUpcoming,
                   type: 'EMPTY_SLOT_UPCOMING' as NotificationType,
                   severity: 'medium' as NotificationSeverity,
                   title: `Ca trống sắp tới (còn ~${Math.round(diffHours / 24)} ngày)`,
                   message: `Ca ${slot.shift} (${slot.day}) ngày ${formatVNDate(startTime)} hiện chưa có người nhận ca. Hãy chuẩn bị nhân sự dự phòng.`,
-                  week_start_date: schedule.week_start_date,
-                  day: slot.day,
-                  shift: slot.shift,
-                  role_in_slot: slot.role || 'All',
-                  staff_name: null,
-                  shift_start_time: startTime,
-                  shift_end_time: endTime,
-                  hours_until_shift: Math.round(diffHours),
-                  is_resolved: false,
                 };
-
-                await upsertToModel(TruongCaNotificationModel, { ...payload, target_role: 'truong_ca' });
-                await upsertToModel(QuanLyNotificationModel, { ...payload, target_role: 'quan_ly' });
-                await upsertToModel(AdminNotificationModel, { ...payload, target_role: 'admin_he_thong' });
-                await upsertToModel(PhoCaLamLichNotificationModel, { ...payload, target_role: 'pho_ca_lam_lich' });
+                queueUpsert(buckets, TruongCaNotificationModel, { ...p, target_role: 'truong_ca' });
+                queueUpsert(buckets, QuanLyNotificationModel, { ...p, target_role: 'quan_ly' });
+                queueUpsert(buckets, AdminNotificationModel, { ...p, target_role: 'admin_he_thong' });
+                queueUpsert(buckets, PhoCaLamLichNotificationModel, { ...p, target_role: 'pho_ca_lam_lich' });
               }
             }
           } else {
-            // Đã xếp người vào ca -> Đánh dấu resolved cho các table
-            for (const model of [
-              TruongCaNotificationModel,
-              QuanLyNotificationModel,
-              AdminNotificationModel,
-              PhoCaLamLichNotificationModel,
-            ]) {
-              await model.updateMany(
-                {
-                  code: { $in: [code1Day, code2Days, codeUpcoming] },
-                  is_resolved: false,
-                },
-                { $set: { is_resolved: true } }
-              );
-            }
+            queueResolve(buckets, staffManagers, [code1Day, code2Days, codeUpcoming]);
           }
 
-          // =========================================================================
-          // 3. TRƯỜNG HỢP: NHẮC KIỂM TRA NGUYÊN VẬT LIỆU CHO PHÓ CA VẬT LIỆU
-          // =========================================================================
           if (startTime.getTime() > now.getTime()) {
             const diffHours = (startTime.getTime() - now.getTime()) / (1000 * 60 * 60);
             if (diffHours <= 6) {
-              const materialCode = `MATERIAL:${schedule.week_start_date}:${slot.day}:${slot.shift}`;
-              await upsertToModel(PhoCaVatLieuNotificationModel, {
-                code: materialCode,
+              queueUpsert(buckets, PhoCaVatLieuNotificationModel, {
+                code: `MATERIAL:${schedule.week_start_date}:${slot.day}:${slot.shift}`,
                 type: 'MATERIAL_CHECK_REMINDER' as NotificationType,
                 severity: (diffHours <= 2 ? 'high' : 'medium') as NotificationSeverity,
                 title: `📦 Chuẩn bị vật liệu ca ${slot.shift} (${slot.day})`,
@@ -408,6 +354,12 @@ export class ScheduleNotificationService {
           }
         }
       }
+
+      await Promise.all(
+        Array.from(buckets.entries())
+          .filter(([, ops]) => ops.length > 0)
+          .map(([model, ops]) => model.bulkWrite(ops as any[], { ordered: false }))
+      );
     } catch (err) {
       console.error('Error scanning schedule notifications across role collections:', err);
     }

@@ -606,7 +606,7 @@ export class SchedulingController {
       const result = await this.notificationService.getNotifications({
         userId: user?.userId,
         userCode: fullUser?.user_code || userIdentifier,
-        userName: fullUser?.name || user?.name,
+        userName: fullUser?.full_name || fullUser?.name || user?.name,
         role: userRole,
         targetRole: userRole, // Cố định theo role của người dùng đang đăng nhập
         severity: severity as any,

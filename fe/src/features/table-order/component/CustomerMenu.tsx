@@ -171,7 +171,7 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-[#201d19] text-stone-400">
                       <FaCoffee className="text-2xl text-amber-500/60 mb-1" />
-                      <span className="text-[10px] font-medium text-stone-400">Zone Six Cafe</span>
+                      <span className="text-[10px] font-medium text-stone-400">Go Cà Phê Cafe</span>
                     </div>
                   )}
 
@@ -196,7 +196,7 @@ export const CustomerMenu: React.FC<CustomerMenuProps> = ({
                       {item.name || item.title}
                     </h4>
                     <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-2 mt-0.5 leading-relaxed">
-                      {item.description || item.sub_title || 'Đồ uống tinh tế, chuẩn công thức Zone Six'}
+                      {item.description || item.sub_title || 'Đồ uống tinh tế, chuẩn công thức Go Cà Phê'}
                     </p>
                   </div>
 

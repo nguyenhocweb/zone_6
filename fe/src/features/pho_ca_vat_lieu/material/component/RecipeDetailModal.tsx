@@ -44,7 +44,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
         {isLoading ? (
           <div className="py-20 flex flex-col items-center justify-center text-center">
             <FiLoader className="animate-spin text-3xl text-stone-400 mb-3" />
-            <p className="text-sm text-stone-500 dark:text-stone-400">Đang tải công thức pha chế Zone 6...</p>
+            <p className="text-sm text-stone-500 dark:text-stone-400">Đang tải công thức pha chế Go Cà Phê...</p>
           </div>
         ) : isError || !recipe ? (
           <div className="py-16 text-center">
@@ -171,7 +171,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                 <div className="w-12 h-12 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-400 flex items-center justify-center mx-auto text-xl">
                   <FiLock />
                 </div>
-                <h4 className="text-base font-semibold text-stone-900 dark:text-[#efe9de]">Công Thức Bí Quyết Độc Quyền Zone 6</h4>
+                <h4 className="text-base font-semibold text-stone-900 dark:text-[#efe9de]">Công Thức Bí Quyết Độc Quyền Go Cà Phê</h4>
                 <p className="text-xs text-stone-500 dark:text-stone-400 max-w-md mx-auto leading-relaxed">
                   Định lượng chi tiết nguyên vật liệu và quy trình pha chế tiêu chuẩn (SOP) chỉ được cấp quyền cho nhân sự nội bộ (từ cấp <strong>Nhân Viên</strong> trở lên) đã đăng nhập vào hệ thống.
                 </p>

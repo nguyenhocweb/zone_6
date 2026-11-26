@@ -5,6 +5,7 @@ import { calculateDistanceMeters } from '../../../core/utils/geofence.js';
 import { BadRequestError, ForbiddenError, NotFoundError } from '../../../core/errors.js';
 import { emitPosEvent } from '../socket/pos.socket.js';
 import { emitTableEvent } from '../../admin_he_thong/table/socket/table.socket.js';
+import { dispatchRoleNotifications } from '../../shared/notifications/services/notification.dispatcher.js';
 
 export interface CreateTableOrderPayload {
   token: string;
@@ -139,6 +140,15 @@ export class TableOrderCreateService {
       finalAmount: order.final_amount,
       itemsCount: order.items.length,
       createdAt: order.created_at,
+    });
+
+    void dispatchRoleNotifications({
+      roles: ['nhan_vien', 'truong_ca', 'quan_ly', 'admin_he_thong'],
+      code: `TABLE_ORDER:${order._id.toString()}`,
+      type: 'TABLE_ORDER_ALERT',
+      severity: 'high',
+      title: `🛎️ Đơn gọi món tại Bàn ${table.table_number}: #${order.order_code}`,
+      message: `Khách ${order.customer_name || 'tại bàn'} vừa đặt ${order.items.length} món (${order.final_amount.toLocaleString('vi-VN')}đ). Vui lòng xác nhận và pha chế.`,
     });
 
     return order;

@@ -5,9 +5,9 @@ import { InventoryAuditView } from "@/features/pho_ca_vat_lieu/material/componen
 export const instant = false;
 
 export const metadata: Metadata = {
-  title: "Kiểm Kê Kho & Đối Soát Tồn Kho | Zone 6",
+  title: "Kiểm Kê Kho & Đối Soát Tồn Kho | Go Cà Phê",
   description:
-    "Phân hệ kiểm kê kho thực tế, đối soát chênh lệch, tra cứu tài khoản kiểm kho theo từng ngày và cập nhật tồn kho hệ thống Zone 6",
+    "Phân hệ kiểm kê kho thực tế, đối soát chênh lệch, tra cứu tài khoản kiểm kho theo từng ngày và cập nhật tồn kho hệ thống Go Cà Phê",
 };
 
 export default function InventoryAuditPage() {

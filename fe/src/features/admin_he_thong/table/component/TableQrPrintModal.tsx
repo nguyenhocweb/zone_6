@@ -79,7 +79,7 @@ export const TableQrPrintModal: React.FC<TableQrPrintModalProps> = ({ table, onC
           <div className="w-full p-6 rounded-3xl bg-stone-50 dark:bg-[#25221e] border border-stone-200/80 dark:border-stone-700/60 shadow-lg flex flex-col items-center text-center space-y-4 relative overflow-hidden">
             {/* Top Accent Badge */}
             <div className="px-3 py-1 rounded-full bg-stone-100 dark:bg-[#1c1a17] border border-stone-200/80 dark:border-stone-700/60 text-stone-600 dark:text-stone-400 text-[10px] font-semibold uppercase tracking-widest">
-              Zone Six Coffee & Lounge
+              Go Cà Phê Coffee & Lounge
             </div>
 
             {/* Table Number Title */}
@@ -108,7 +108,7 @@ export const TableQrPrintModal: React.FC<TableQrPrintModalProps> = ({ table, onC
               </div>
               <p className="text-[10px] text-stone-500 dark:text-stone-400 max-w-[240px] leading-relaxed mx-auto">
                 <FiShield className="inline mr-1 text-stone-400" />
-                Được bảo vệ bởi GPS Geofence Zone Six. Quý khách vui lòng cho phép định vị trên điện thoại.
+                Được bảo vệ bởi GPS Geofence Go Cà Phê. Quý khách vui lòng cho phép định vị trên điện thoại.
               </p>
             </div>
           </div>

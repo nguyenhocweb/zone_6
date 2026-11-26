@@ -4,7 +4,7 @@ import { FiPackage } from "react-icons/fi";
 import { ProcurementDashboard } from "@/features/quan_ly/procurement/component/ProcurementDashboard";
 
 export const metadata: Metadata = {
-  title: "Trung Tâm Thu Mua & Đơn Hàng Gộp | Zone 6",
+  title: "Trung Tâm Thu Mua & Đơn Hàng Gộp | Go Cà Phê",
   description: "Quản lý đơn thu mua PO, gộp yêu cầu nhập kho đa chi nhánh và kiểm soát nhập kho toàn chuỗi",
 };
 
